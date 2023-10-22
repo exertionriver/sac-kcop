@@ -1,0 +1,71 @@
+
+buildscript {
+    ext.kotlinVersion = '1.9.0'
+    ext.kotlinxSerializationVersion = '1.6.0'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://plugins.gradle.org/m2/" }
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlinxSerializationVersion"
+    }
+}
+
+allprojects {
+    apply plugin: "kotlin"
+    apply plugin: "idea"
+    apply plugin: "kotlin"
+    apply plugin: "kotlinx-serialization"
+
+    sourceSets.main.java.srcDirs = [ "src/" ]
+    sourceSets.test.java.srcDirs = [ "test/" ]
+
+    version = '0.4'
+    ext {
+        appName = "Sweet Astro Console"
+        gdxVersion = '1.12.0'
+        roboVMVersion = '2.3.16'
+        box2DLightsVersion = '1.5'
+        ashleyVersion = '1.7.4'
+        aiVersion = '1.8.2'
+        gdxControllersVersion = '2.2.1'
+        ktxVersion = '1.12.0-rc1'
+        kotlinxVersion = '1.6.1'
+        kotlinxCoroutineVersion = '1.7.0-Beta'
+        kotlinxSerializationVersion = '1.4.1'
+        gltfVersion = '2.0.0-rc.1'
+        shapedrawerVersion = '2.6.0' //https://github.com/earlygrey/shapedrawer
+        junitVersion = '5.9.3'
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        google()
+        gradlePluginPortal()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "https://jitpack.io" }
+    }
+
+    dependencies {
+        implementation fileTree(dir: 'lib', include: ['swisseph*.jar'])
+        testImplementation 'org.jetbrains.kotlin:kotlin-test'
+        implementation "org.jetbrains.kotlinx:kotlinx-datetime:0.4.1"
+        implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion"
+    }
+    test {
+        useJUnitPlatform()
+    }
+
+    kotlin {
+        jvmToolchain(16)
+    }
+}
