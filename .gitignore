@@ -10,3 +10,5 @@ local.properties
 /notes/**
 ephe/**
 lib/**
+kcop/**
+kcop*.jar
