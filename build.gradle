@@ -54,11 +54,20 @@ allprojects {
     dependencies {
         implementation fileTree(dir: 'lib', include: ['swisseph*.jar'])
 
-        implementation fileTree(dir: './', include: ['kcop*.jar'])
+        implementation fileTree(dir: 'kcop', include: ['kcop*.jar'])
 
         testImplementation 'org.jetbrains.kotlin:kotlin-test'
     }
     test {
         useJUnitPlatform()
     }
+}
+tasks.register('sacFatJar', Jar) {
+    manifest {
+        attributes 'Main-Class': 'river.exertion.sac'
+    }
+    archiveBaseName = 'sac-kcop'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }

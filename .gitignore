@@ -8,7 +8,7 @@ android/res/**
 desktop/build/**
 local.properties
 /notes/**
-ephe/**
+kcop/ephe/**
 lib/**
 kcop/**
 kcop*.jar
