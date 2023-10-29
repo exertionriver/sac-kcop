@@ -1,46 +1,39 @@
 package river.exertion.sac.view
 
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.ui.Table
+import kotlinx.datetime.LocalDateTime
 import river.exertion.kcop.asset.view.ColorPalette
+import river.exertion.kcop.view.KcopFont
 import river.exertion.kcop.view.klop.IDisplayViewLayoutHandler
 import river.exertion.kcop.view.layout.DisplayView
-import river.exertion.kcop.view.layout.displayViewLayout.*
+import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutHandler
+import river.exertion.sac.swe.CalcUt
+import river.exertion.sac.swe.Houses
+import river.exertion.sac.swe.Julday
 
 object SACLayout : IDisplayViewLayoutHandler {
 
     var baseColorName = "darkGray"
     var baseColor = ColorPalette.of(baseColorName)
 
-    fun dvLayout() = DVLayout(name = "SACDVLayout", layout = mutableListOf(
-        DVTable(tableIdx = "layout", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
-            DVTextPane().apply {
-                this.idx = "1"
-                this.width = DVPaneType.DVPDimension.FULL.tag()
-                this.height = DVPaneType.DVPDimension.LARGE.tag()
-           }, DVRow(), DVTextPane().apply {
-                this.idx = "2"
-                this.width = DVPaneType.DVPDimension.FULL.tag()
-                this.height = DVPaneType.DVPDimension.TITLE.tag()
-            }
-        ))
-    ))
-
     override fun build(): Actor {
-        DVLayoutHandler.currentDvLayout = dvLayout()
-        DVLayoutHandler.currentDvLayout.setTextPaneContent(1,"test234")
-        DVLayoutHandler.currentDvLayout.setTextPaneContent(2,"test345")
+        DVLayoutHandler.currentDvLayout = SACDVLayout.dvLayout()
+        DVLayoutHandler.currentFontSize = KcopFont.TEXT
+        val testLDT = LocalDateTime(1978,11,16,18,39,0,0)
+        val testLat = 30.2667
+        val testLong = -97.75
+
+        val uniTimeDec = Julday.getJulianUTCTimeDecimal(testLDT, Julday.UNIVERSAL_TIME)
+        val uniTimeHouses = Houses.getCelestialHousesData(uniTimeDec, testLat, testLong)
+        val uniCelestials = CalcUt.getCelestialsData(uniTimeDec, uniTimeHouses)
+
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("AppLabel","%1.4f".format(uniCelestials[0].longitude))
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("AppLabel2","%1.4f".format(uniCelestials[1].longitude))
         return DVLayoutHandler.build()
     }
 
     override fun clearContent() {
-//        sampleSwatchesCtrl.clearChildren()
-//        baseSwatchesCtrl.clearChildren()
-//        compSwatchesCtrl.clearChildren()
-//        triadFirstSwatchesCtrl.clearChildren()
-//        triadSecondSwatchesCtrl.clearChildren()
-
-        DisplayView.currentDisplayViewLayoutHandler = null
+        DVLayoutHandler.currentDvLayout.clearContent()
         DisplayView.build()
     }
 

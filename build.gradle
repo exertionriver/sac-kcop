@@ -62,12 +62,23 @@ allprojects {
         useJUnitPlatform()
     }
 }
+
 tasks.register('sacFatJar', Jar) {
     manifest {
         attributes 'Main-Class': 'river.exertion.sac'
     }
     archiveBaseName = 'sac-kcop'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    from configurations.runtimeClasspath.findAll { it.name.contains("swisseph")}.collect {zipTree(it)}
     with jar
+}
+
+tasks.register('sacFatJarDeploy') {
+    dependsOn sacFatJar
+
+    copy {
+        from "build/libs"
+        into "kcop/plugin"
+        include "**/sac-kcop*"
+    }
 }

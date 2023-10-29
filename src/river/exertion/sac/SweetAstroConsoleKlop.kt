@@ -9,7 +9,7 @@ object SweetAstroConsoleKlop : IDisplayViewKlop {
 
     override var id = Id.randomId()
 
-    override var name = this::class.simpleName.toString()
+    override var tag = "sac"
 
     override fun load() { }
 
