@@ -5,6 +5,6 @@ import java.nio.file.Paths
 
 object Swe {
 
-    val sw = SwissEph()
+    val sw = SwissEph("./assets/plugin/ephe")
 
 }

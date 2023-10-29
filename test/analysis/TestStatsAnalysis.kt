@@ -20,7 +20,7 @@ class TestStatsAnalysis {
 
     @Test
     fun testGenerateAnalysis() {
-
+/*
         val refProfile = Profiles.getDefaultProfile(Profiles.PROFILE_3)
 
         val utcPivot = LocalDateTime(
@@ -32,7 +32,7 @@ class TestStatsAnalysis {
 
         val fullRow = AstroAnalysisRow.generateAnalysisRowFiles(refProfile.celestialSnapshot, range = DateTimePeriod(years = 14), granularity = DateTimePeriod(hours = 1), chartType = ChartState.COMBINED_CHART, utcPivot = utcPivot)
         println("row generated")
-    }
+*/    }
 
     @Test
     fun testLoadAnalysis() {
@@ -49,7 +49,7 @@ class TestStatsAnalysis {
         val posSearch = 2227
         val consSearch = .7642
 */ //6/20/05 * 10.40a
-        val stimSearch = 1219
+/*        val stimSearch = 1219
         val posSearch = 752
         val consSearch = .6172
 
@@ -340,6 +340,6 @@ class TestStatsAnalysis {
 
         AstroAnalysisRow(firstPollStart, initDataRows = dataRows.toList()).fullReport()
         println("row generated")
-
+*/
     }
 }

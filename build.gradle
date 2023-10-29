@@ -52,9 +52,9 @@ allprojects {
     }
 
     dependencies {
-        implementation fileTree(dir: 'lib', include: ['swisseph*.jar'])
+        implementation fileTree(dir: './lib', include: ['swisseph*.jar'])
 
-        implementation fileTree(dir: 'kcop', include: ['kcop*.jar'])
+        implementation fileTree(dir: './', include: ['kcop*.jar'])
 
         testImplementation 'org.jetbrains.kotlin:kotlin-test'
     }
@@ -78,7 +78,18 @@ tasks.register('sacFatJarDeploy') {
 
     copy {
         from "build/libs"
-        into "kcop/plugin"
+        into "assets/plugin"
         include "**/sac-kcop*"
+    }
+}
+
+tasks.register('jarDeploy') {
+    dependsOn build
+    dependsOn jar
+
+    copy {
+        from "build/libs"
+        into "assets/plugin"
+        include "**/Sweet*"
     }
 }

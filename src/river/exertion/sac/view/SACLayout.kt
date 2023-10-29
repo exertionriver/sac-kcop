@@ -29,6 +29,8 @@ object SACLayout : IDisplayViewLayoutHandler {
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("AppLabel","%1.4f".format(uniCelestials[0].longitude))
         DVLayoutHandler.currentDvLayout.setTextPaneContent("AppLabel2","%1.4f".format(uniCelestials[1].longitude))
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("AppLabel3","%1.4f".format(uniCelestials[2].longitude))
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("AppLabel4","%1.4f".format(uniCelestials[3].longitude))
         return DVLayoutHandler.build()
     }
 
