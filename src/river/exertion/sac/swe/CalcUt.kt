@@ -34,8 +34,6 @@ object CalcUt {
 
     private fun getCelestialData(julianUtcTimeDecimal : Double, celestialIdx : Int, celestialHousesData : DoubleArray, synCelestialHousesData : DoubleArray, aspectCelestialOverride: AspectCelestial = AspectCelestial.ASPECT_CELESTIAL_NONE, aspectCelestialLongOverride : Double = 0.0) : CelestialData {
 
-//        val sw = SwissEph("../android/assets/ephe")
-
         var calcUtDatas = DoubleArray(6)
         var errorOut = StringBuffer()
         var retVal = 0
