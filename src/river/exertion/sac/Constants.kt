@@ -7,9 +7,6 @@ object Constants {
     const val APP_NAME = "SweetAstroConsole"
     const val APP_VERSION = "0.4"
 
-    //EPHE_PATH works for main code. Created ln -s $EPHE_PATH /users/ephe for test code
-    const val EPHE_PATH = "/usr/local/swe/ephe/"
-
     const val LABEL_SPACE = " "
     const val SYM_RETRO = "\u211E\uFE0F"
     //https://en.wikipedia.org/wiki/Longitude
@@ -261,9 +258,9 @@ object Constants {
     const val SYM_NEGATION = "\u00AC" //not
     const val SYM_ANGLE = "\u2222" //angle
 
-    const val SYM_MAJOR_BOX = "\u229E" //box with plus
+    const val SYM_MAJOR_BOX = "\u22A0" //box with plus
     const val SYM_MINOR_BOX = "\u229F" //box with minus
-    const val SYM_ALL_BOX = "\u22A0" //box with cross
+    const val SYM_ALL_BOX = "\u229E" //box with cross
 
     const val SYM_SUNNY = "\u2600"
     const val SYM_CLOUDY = "\u2601"
