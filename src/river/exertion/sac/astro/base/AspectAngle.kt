@@ -45,7 +45,7 @@ enum class AspectAngle {
     fun isAspectAngle() = this != ASPECT_ANGLE_NONE
 
     companion object {
-        fun fromOrdinal(ordinal: Int) = values().firstOrNull { it.ordinal == ordinal }
-        fun fromName(name: String) = values().firstOrNull { it.name == name }
+        fun fromOrdinal(ordinal: Int) = entries.firstOrNull { it.ordinal == ordinal }
+        fun fromName(name: String) = entries.firstOrNull { it.name == name }
     }
 }

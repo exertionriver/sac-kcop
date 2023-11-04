@@ -21,7 +21,7 @@ enum class RenderAspectCelestial {
     , ASPECT_ASCENDANT { override fun getLabel() = RenderCelestialHouse.HOUSE_1_ASC.getLabel() }
     , ASPECT_MIDHEAVEN { override fun getLabel() = RenderCelestialHouse.HOUSE_10_MC.getLabel() }
     , ASPECT_CELESTIAL_NONE
-//extended aspects are not rendered on chart but can affect detail sums, as in the case of romantic aspects
+    //extended aspects are not rendered on chart but can affect detail sums, as in the case of romantic aspects
     , ASPECT_SUN_MOON_MIDPOINT { override fun getLabel() = Constants.SYM_SUN + "/" + Constants.SYM_MOON }
     , ASPECT_FIRST_HOUSE { override fun getLabel() = Constants.SYM_HOUSE_1 + " " }
     , ASPECT_SEVENTH_HOUSE { override fun getLabel() = RenderCelestialHouse.HOUSE_7.getLabel() }

@@ -47,9 +47,10 @@ enum class RenderSign {
         fun getSignLabelFromCelestialLongitude(celestialLongitude : Double, celestialLongitudeSpeed : Double = 0.0) : String {
 
             return if (celestialLongitudeSpeed < 0)
-                getElementLabel(Sign.getSignFromCelestialLongitude(celestialLongitude)) + " " + Constants.SYM_RETRO
+                //getElementLabel(
+                    fromName(Sign.getSignFromCelestialLongitude(celestialLongitude).toString())!!.getLabel() + " " + Constants.SYM_RETRO
             else
-                getElementLabel(Sign.getSignFromCelestialLongitude(celestialLongitude)) + "  " //space offset for Constants.SYM_RETRO
+                fromName(Sign.getSignFromCelestialLongitude(celestialLongitude).toString())!!.getLabel() + "  " //space offset for Constants.SYM_RETRO
         }
     }
 }

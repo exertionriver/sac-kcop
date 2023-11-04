@@ -1,5 +1,7 @@
 package river.exertion.sac.astro.base
 
+import river.exertion.sac.astro.render.RenderAspectCelestial
+
 enum class AspectCelestial {
     ASPECT_SUN
     , ASPECT_MOON
@@ -29,6 +31,7 @@ enum class AspectCelestial {
     open fun isExtendedAspect() : Boolean = false
 
     fun isChartAspectCelestial() = ( !this.isExtendedAspect() && (this != ASPECT_CELESTIAL_NONE) )
+    fun renderAspectCelestial() = RenderAspectCelestial.fromName(this.name)!!
 
     companion object {
         fun fromOrdinal(ordinal: Int) = entries.firstOrNull { it.ordinal == ordinal }

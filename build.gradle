@@ -1,6 +1,6 @@
 
 buildscript {
-    ext.kotlinVersion = '1.9.10'
+    ext.kotlinVersion = '1.9.20'
     ext.gdxVersion = '1.12.0'
 
     repositories {

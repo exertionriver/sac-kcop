@@ -8,7 +8,7 @@ object Constants {
     const val APP_VERSION = "0.4"
 
     const val LABEL_SPACE = " "
-    const val SYM_RETRO = "\u211E\uFE0F"
+    const val SYM_RETRO = "\u211E"
     //https://en.wikipedia.org/wiki/Longitude
     const val SYM_EARTH_LONG = "\u03BB" //lambda
     const val SYM_EARTH_LAT = "\u03C6" //phi
@@ -74,18 +74,18 @@ object Constants {
 
     //text selector used (uFE0E)
     const val SYM_SIGN = "\u2630" //heaven trigram
-    const val SYM_ARIES = "\u2648\uFE0E"
-    const val SYM_TAURUS = "\u2649\uFE0E"
-    const val SYM_GEMINI = "\u264A\uFE0E"
-    const val SYM_CANCER = "\u264B\uFE0E"
-    const val SYM_LEO = "\u264C\uFE0E"
-    const val SYM_VIRGO = "\u264D\uFE0E"
-    const val SYM_LIBRA = "\u264E\uFE0E"
-    const val SYM_SCORPIO = "\u264F\uFE0E"
-    const val SYM_SAGITTARIUS = "\u2650\uFE0E"
-    const val SYM_CAPRICORN = "\u2651\uFE0E"
-    const val SYM_AQUARIUS = "\u2652\uFE0E"
-    const val SYM_PISCES = "\u2653\uFE0E"
+    const val SYM_ARIES = "\u2648"
+    const val SYM_TAURUS = "\u2649"
+    const val SYM_GEMINI = "\u264A"
+    const val SYM_CANCER = "\u264B"
+    const val SYM_LEO = "\u264C"
+    const val SYM_VIRGO = "\u264D"
+    const val SYM_LIBRA = "\u264E"
+    const val SYM_SCORPIO = "\u264F"
+    const val SYM_SAGITTARIUS = "\u2650"
+    const val SYM_CAPRICORN = "\u2651"
+    const val SYM_AQUARIUS = "\u2652"
+    const val SYM_PISCES = "\u2653"
 
     const val SYM_EXISTS_IN = "\u2208"
     const val SYM_CONTAINS = "\u220B"
@@ -264,7 +264,7 @@ object Constants {
 
     const val SYM_SUNNY = "\u2600"
     const val SYM_CLOUDY = "\u2601"
-    const val SYM_STIMULATION = "\u26A1\uFE0E" //voltage
+    const val SYM_STIMULATION = "\u26A1" //voltage
     const val SYM_IMPROVEMENT = "\u2195" //updown arrow
     const val SYM_CHARACTER = "\u2638" //dharmachakra
     const val SYM_ROMANTIC = "\u2661" //empty heart

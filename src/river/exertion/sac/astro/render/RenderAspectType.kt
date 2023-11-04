@@ -4,20 +4,20 @@ import river.exertion.sac.Constants
 import river.exertion.sac.Constants.LABEL_SPACE
 
 enum class RenderAspectType {
-    CONJUNCTION { override fun getLabel() = Constants.SYM_CONJUNCTION.plus(LABEL_SPACE) }
-    , SEXTILE { override fun getLabel() = Constants.SYM_SEXTILE.plus(LABEL_SPACE) }
-    , SQUARE { override fun getLabel() = Constants.SYM_SQUARE.plus(LABEL_SPACE) }
-    , TRINE { override fun getLabel() = Constants.SYM_TRINE.plus(LABEL_SPACE) }
-    , OPPOSITION { override fun getLabel() = Constants.SYM_OPPOSITION.plus(LABEL_SPACE) }
-    , QUINCUNX { override fun getLabel() = Constants.SYM_QUINCUNX.plus(LABEL_SPACE) }
-    , SEMISEXTILE { override fun getLabel() = Constants.SYM_SEMISEXTILE.plus(LABEL_SPACE) }
-    , QUINTILE { override fun getLabel() = Constants.SYM_QUINTILE.plus(LABEL_SPACE) }
+    CONJUNCTION { override fun getLabel() = Constants.SYM_CONJUNCTION }
+    , SEXTILE { override fun getLabel() = Constants.SYM_SEXTILE }
+    , SQUARE { override fun getLabel() = Constants.SYM_SQUARE }
+    , TRINE { override fun getLabel() = Constants.SYM_TRINE }
+    , OPPOSITION { override fun getLabel() = Constants.SYM_OPPOSITION }
+    , QUINCUNX { override fun getLabel() = Constants.SYM_QUINCUNX }
+    , SEMISEXTILE { override fun getLabel() = Constants.SYM_SEMISEXTILE }
+    , QUINTILE { override fun getLabel() = Constants.SYM_QUINTILE }
     , BIQUINTILE { override fun getLabel() = Constants.SYM_BIQUINTILE }
-    , SEMISQUARE { override fun getLabel() = Constants.SYM_SEMISQUARE.plus(LABEL_SPACE) }
-    , SESQUISQUARE { override fun getLabel() = Constants.SYM_SESQUISQUARE.plus(LABEL_SPACE) }
+    , SEMISQUARE { override fun getLabel() = Constants.SYM_SEMISQUARE }
+    , SESQUISQUARE { override fun getLabel() = Constants.SYM_SESQUISQUARE }
     , SEPTILE { override fun getLabel() = Constants.SYM_SEPTILE }
     , NOVILE { override fun getLabel() = Constants.SYM_NOVILE }
-    , ASPECT_NONE { override fun getLabel() = Constants.SYM_ASPECT_NONE.plus(LABEL_SPACE) }
+    , ASPECT_NONE { override fun getLabel() = Constants.SYM_ASPECT_NONE }
     ;
 
     abstract fun getLabel(): String

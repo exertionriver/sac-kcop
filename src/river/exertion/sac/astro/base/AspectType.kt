@@ -24,7 +24,7 @@ enum class AspectType {
     abstract fun getAngleDegree(): Double
 
     companion object {
-        fun fromOrdinal(ordinal: Int) = AspectCelestial.values().firstOrNull { it.ordinal == ordinal }
-        fun fromName(name: String) = AspectCelestial.values().firstOrNull { it.name == name }
+        fun fromOrdinal(ordinal: Int) = AspectCelestial.entries.firstOrNull { it.ordinal == ordinal }
+        fun fromName(name: String) = AspectCelestial.entries.firstOrNull { it.name == name }
     }
 }
