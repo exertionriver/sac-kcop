@@ -34,7 +34,7 @@ allprojects {
         ashleyVersion = '1.7.4'
         aiVersion = '1.8.2'
         gdxControllersVersion = '2.2.1'
-        ktxVersion = '1.12.0-rc1'
+        ktxVersion = '1.12.1-rc1'
         kotlinxCoroutineVersion = '1.7.0-Beta'
         gltfVersion = '2.0.0-rc.1'
         shapedrawerVersion = '2.6.0' //https://github.com/earlygrey/shapedrawer
@@ -80,16 +80,5 @@ tasks.register('sacFatJarDeploy') {
         from "build/libs"
         into "assetExt/plugin"
         include "**/sac-kcop*"
-    }
-}
-
-tasks.register('jarDeploy') {
-    dependsOn build
-    dependsOn jar
-
-    copy {
-        from "build/libs"
-        into "assetExt/plugin"
-        include "**/Sweet*"
     }
 }

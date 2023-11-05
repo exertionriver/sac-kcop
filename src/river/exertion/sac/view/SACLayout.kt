@@ -39,8 +39,6 @@ object SACLayout : IDisplayViewLayoutHandler {
 
         KcopFont.TEXT.font = AssetManagerHandler.getAssets<BitmapFont>().firstOrNull { it.data.name.contains("CODE2000") }.apply { this?.data?.setScale(KcopFont.TEXT.fontScale) }
 
-        DVLayoutHandler.currentLayoutApproach = DVLayout.Companion.Approach.VARIABLE
-
         DVLayoutHandler.currentDvLayout.setTextPaneContent("AppLabel","%1.4f".format(uniCelestials[0].longitude))
         DVLayoutHandler.currentDvLayout.setTextPaneContent("AppLabel3","%1.4f".format(uniCelestials[2].longitude))
 
