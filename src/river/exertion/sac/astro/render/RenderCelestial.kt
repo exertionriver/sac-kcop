@@ -1,7 +1,6 @@
 package river.exertion.sac.astro.render
 
 import river.exertion.sac.Constants
-import river.exertion.sac.Constants.LABEL_SPACE
 
 enum class RenderCelestial {
     SUN { override fun getLabel() = Constants.SYM_SUN }

@@ -39,8 +39,34 @@ object SACLayout : IDisplayViewLayoutHandler {
 
         KcopFont.TEXT.font = AssetManagerHandler.getAssets<BitmapFont>().firstOrNull { it.data.name.contains("CODE2000") }.apply { this?.data?.setScale(KcopFont.TEXT.fontScale) }
 
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("AppLabel","%1.4f".format(uniCelestials[0].longitude))
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("AppLabel3","%1.4f".format(uniCelestials[2].longitude))
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("appTitleVersion","${Constants.APP_NAME} v${Constants.APP_VERSION}")
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("appState","Test Hardcoded Label")
+
+        val stateAttributes = AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT.getLabel() +
+                AspectsState.ALL_ASPECTS.getLabel() +
+                TimeAspectsState.TIME_ASPECTS_ENABLED.getLabel()
+                ChartState.NATAL_CHART.getLabel()
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("appStateAttributes",stateAttributes)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("appProfiles", "[exR]")
+
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localTimeLabel", RenderEarthLocation.getEarthLocalTimeLabel())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localTime", "${"%02d".format(testEarthLocation.localDateTime.hour)}:${"%02d".format(testEarthLocation.localDateTime.minute)}:${"%02d".format(testEarthLocation.localDateTime.second)}")
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localDateLabel", RenderEarthLocation.getEarthLocalDateLabel())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localDate", "${"%4d".format(testEarthLocation.localDateTime.year)}.${"%02d".format(testEarthLocation.localDateTime.monthNumber)}.${"%02d".format(testEarthLocation.localDateTime.dayOfMonth)}")
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localTimezoneLabel", RenderEarthLocation.getEarthTimezoneLabel())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("LocalTimezone", testEarthLocation.getTimezoneOffsetString())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localLatitudeLabel", RenderEarthLocation.getEarthLatitudeLabel())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localLatitude", "%1.4f".format(testEarthLocation.latitude))
+
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTimeLabel", RenderEarthLocation.getEarthUTCTimeLabel())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTime", "${"%02d".format(testEarthLocation.utcDateTime.hour)}:${"%02d".format(testEarthLocation.utcDateTime.minute)}:${"%02d".format(testEarthLocation.utcDateTime.second)}")
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("utcDateLabel", RenderEarthLocation.getEarthUTCDateLabel())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("utcDate", "${"%4d".format(testEarthLocation.utcDateTime.year)}.${"%02d".format(testEarthLocation.utcDateTime.monthNumber)}.${"%02d".format(testEarthLocation.utcDateTime.dayOfMonth)}")
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTimezoneLabel", RenderEarthLocation.getUTCLongitudeLabel())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTimezone", "0.0")
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localLongitudeLabel", RenderEarthLocation.getEarthLongitudeLabel())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localLongitude", "%1.4f".format(testEarthLocation.longitude))
+
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("celestialHeader",RenderCelestial.getCelestialsLabel())
         DVLayoutHandler.currentDvLayout.setTextPaneContent("signHeader",RenderCelestial.getCelestialsSignLabel())

@@ -1,7 +1,6 @@
 package river.exertion.sac.astro.render
 
 import river.exertion.sac.Constants
-import river.exertion.sac.Constants.LABEL_SPACE
 import river.exertion.sac.astro.state.ChartStateType
 import river.exertion.sac.astro.state.ChartStateType.Companion.decodeChartStateType
 
@@ -28,7 +27,7 @@ object RenderChartStateType {
         }
 
         (counter..2).forEach {
-            returnString += Constants.KNRM + LABEL_SPACE + LABEL_SPACE
+            returnString += Constants.KNRM + "  "
         }
 
         return returnString

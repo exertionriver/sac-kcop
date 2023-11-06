@@ -37,7 +37,7 @@ enum class RenderSign {
             else -> fromName(sign.toString())!!.getLabel()
         }
 
-        fun getSignLongitudeLabel() = Constants.SYM_CELESTIAL_LONG + "(" + Constants.SYM_SIGN + " )"
+        fun getSignLongitudeLabel() = Constants.SYM_CELESTIAL_LONG + "(" + Constants.SYM_SIGN + ")"
 
         fun getSignLabelFromCelestialData(celestialData : CelestialData) : String {
 

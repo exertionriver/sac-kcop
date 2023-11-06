@@ -1,6 +1,5 @@
 package river.exertion.sac.astro.state
 
-import river.exertion.sac.Constants.LABEL_SPACE
 import river.exertion.sac.Constants.SYM_DEFAULT_ORBS
 import river.exertion.sac.Constants.SYM_HYBRID_ORBS
 import river.exertion.sac.Constants.SYM_NATCOMP_CHART
@@ -15,9 +14,7 @@ import river.exertion.sac.astro.base.AspectType
 //Hybrid Orb defn is an original creation
 enum class AspectOverlayState {
     ASPECT_NATCOMP_OVERLAY_DEFAULT {
-        override fun getLabel() = SYM_DEFAULT_ORBS.plus(LABEL_SPACE).plus(SYM_NATCOMP_CHART).plus(
-            LABEL_SPACE
-        )
+        override fun getLabel() = SYM_DEFAULT_ORBS.plus(" ").plus(SYM_NATCOMP_CHART).plus(" ")
 
         override fun getAspectAngleOrb(aspectAngle: AspectAngle): Double = when (aspectAngle.getAspectType()) {
             AspectType.CONJUNCTION -> (10).toDouble()
@@ -45,9 +42,7 @@ enum class AspectOverlayState {
         override fun isNatComp() = true
     },
     ASPECT_NATCOMP_OVERLAY_SELECTIVE {
-        override fun getLabel() = SYM_SELECTIVE_ORBS.plus(LABEL_SPACE).plus(SYM_NATCOMP_CHART).plus(
-            LABEL_SPACE
-        )
+        override fun getLabel() = SYM_SELECTIVE_ORBS.plus(" ").plus(SYM_NATCOMP_CHART).plus(" ")
 
         override fun getAspectAngleOrb(aspectAngle: AspectAngle): Double = when (aspectAngle.getAspectType()) {
             AspectType.CONJUNCTION -> (10).toDouble()
@@ -68,9 +63,7 @@ enum class AspectOverlayState {
         override fun isNatComp() = true
     },
     ASPECT_NATCOMP_OVERLAY_HYBRID {
-        override fun getLabel() = SYM_HYBRID_ORBS.plus(LABEL_SPACE).plus(SYM_NATCOMP_CHART).plus(
-            LABEL_SPACE
-        )
+        override fun getLabel() = SYM_HYBRID_ORBS.plus(" ").plus(SYM_NATCOMP_CHART).plus(" ")
 
         override fun getAspectAngleOrb(aspectAngle: AspectAngle): Double = when (aspectAngle.getAspectType()) {
             AspectType.CONJUNCTION -> (10).toDouble()
@@ -95,9 +88,7 @@ enum class AspectOverlayState {
         override fun isNatComp() = true
     },
     ASPECT_SYNASTRY_OVERLAY_DEFAULT {
-        override fun getLabel() = SYM_DEFAULT_ORBS.plus(LABEL_SPACE).plus(SYM_SYNASTRY_CHART).plus(
-            LABEL_SPACE
-        )
+        override fun getLabel() = SYM_DEFAULT_ORBS.plus(" ").plus(SYM_SYNASTRY_CHART).plus(" ")
 
         override fun getAspectAngleOrb(aspectAngle: AspectAngle): Double =
             ASPECT_NATCOMP_OVERLAY_DEFAULT.getAspectAngleOrb(aspectAngle)
@@ -113,9 +104,7 @@ enum class AspectOverlayState {
         override fun isNatComp() = false
     },
     ASPECT_SYNASTRY_OVERLAY_SELECTIVE {
-        override fun getLabel() = SYM_SELECTIVE_ORBS.plus(LABEL_SPACE).plus(SYM_SYNASTRY_CHART).plus(
-            LABEL_SPACE
-        )
+        override fun getLabel() = SYM_SELECTIVE_ORBS.plus(" ").plus(SYM_SYNASTRY_CHART).plus(" ")
 
         override fun getAspectAngleOrb(aspectAngle: AspectAngle): Double = when (aspectAngle.getAspectType()) {
             AspectType.CONJUNCTION -> (10).toDouble()
@@ -136,9 +125,7 @@ enum class AspectOverlayState {
         override fun isNatComp() = false
     },
     ASPECT_SYNASTRY_OVERLAY_HYBRID {
-        override fun getLabel() = SYM_HYBRID_ORBS.plus(LABEL_SPACE).plus(SYM_SYNASTRY_CHART).plus(
-            LABEL_SPACE
-        )
+        override fun getLabel() = SYM_HYBRID_ORBS.plus(" ").plus(SYM_SYNASTRY_CHART).plus(" ")
 
         override fun getAspectAngleOrb(aspectAngle: AspectAngle): Double = ASPECT_NATCOMP_OVERLAY_HYBRID.getAspectAngleOrb(aspectAngle)
 

@@ -7,15 +7,14 @@ object Constants {
     const val APP_NAME = "SweetAstroConsole"
     const val APP_VERSION = "0.4"
 
-    const val LABEL_SPACE = " "
     const val SYM_RETRO = "\u211E"
     //https://en.wikipedia.org/wiki/Longitude
     const val SYM_EARTH_LONG = "\u03BB" //lambda
     const val SYM_EARTH_LAT = "\u03C6" //phi
     const val SYM_EARTH_ALT = "\u21A8" //vertical
-    const val SYM_UTC = "\u2D40 " //yah
+    const val SYM_UTC = "\u2D40" //yah
     //const val SYM_UTC = "\u29B6" //'circled vertical bar'
-    const val SYM_TZ = "\u25CD " //circle with lines
+    const val SYM_TZ = "\u25CD" //circle with lines
     //https://en.wikipedia.org/wiki/Ecliptic_coordinate_system#Spherical_coordinates
     const val SYM_CELESTIAL_LAT = "\u03B2" //beta
     const val SYM_CELESTIAL_LONG = "\u03BB" //lambda
@@ -27,7 +26,7 @@ object Constants {
     const val SYM_REV_MOON = "\u263D"
     const val SYM_MERCURY = "\u263F"
     const val SYM_VENUS = "\u2640"
-    const val SYM_EARTH = "\u2d32 " //yabh
+    const val SYM_EARTH = "\u2d32" //yabh
 //    const val SYM_EARTH = "\u2295" //'circled plus'
 //  const val SYM_EARTH = "\u2A01\uFE0E" //'n-ary circled plus'
     const val SYM_MARS = "\u2642"

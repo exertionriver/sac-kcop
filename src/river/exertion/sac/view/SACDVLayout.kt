@@ -17,7 +17,7 @@ object SACDVLayout {
                 DVTextPane().apply { this.tag = "${renderCelestial.name}_sign" },
                 DVTextPane().apply { this.tag = "${renderCelestial.name}_long"; this.width = DVPaneType.DVPDimension.TINY.tag() },
                 DVTextPane().apply { this.tag = "${renderCelestial.name}_signLong"; this.width = DVPaneType.DVPDimension.TINY.tag() },
-                DVTextPane().apply { this.tag = "${renderCelestial.name}_house" },
+                DVTextPane().apply { this.tag = "${renderCelestial.name}_house"; this.width = DVPaneType.DVPDimension.TINY.tag() },
                 DVTextPane().apply { this.tag = "${renderCelestial.name}_dist"; this.width = DVPaneType.DVPDimension.TINY.tag() },
                 DVTextPane().apply { this.tag = "${renderCelestial.name}_speed"; this.width = DVPaneType.DVPDimension.TINY.tag() },
                 DVRow()
@@ -38,7 +38,7 @@ object SACDVLayout {
             DVTextPane().apply { this.tag = "signHeader" },
             DVTextPane().apply { this.tag = "celestialLongitude"; this.width = DVPaneType.DVPDimension.TINY.tag()  },
             DVTextPane().apply { this.tag = "signLongitude"; this.width = DVPaneType.DVPDimension.TINY.tag() },
-            DVTextPane().apply { this.tag = "celestialHouse" },
+            DVTextPane().apply { this.tag = "celestialHouse"; this.width = DVPaneType.DVPDimension.TINY.tag() },
             DVTextPane().apply { this.tag = "celestialDistance"; this.width = DVPaneType.DVPDimension.TINY.tag()  },
             DVTextPane().apply { this.tag = "celestialSpeed"; this.width = DVPaneType.DVPDimension.TINY.tag()  },
             DVRow(),
@@ -102,7 +102,32 @@ object SACDVLayout {
     })
 
     fun headerTable() : DVTable = DVTable(tableTag = "header", colspan = "3", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
-        DVTextPane().apply { this.tag = "AppLabel" }
+        DVTable(tableTag = "titleState", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
+            DVTextPane().apply { this.tag = "appTitleVersion" },
+            DVTextPane().apply { this.tag = "appState" },
+            DVTextPane().apply { this.tag = "appStateAttributes" },
+            DVTextPane().apply { this.tag = "appProfiles" }
+        )),
+        DVRow(),
+        DVTable(tableTag = "infoRows", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
+            DVTextPane().apply { this.tag = "localTimeLabel" },
+            DVTextPane().apply { this.tag = "localTime" },
+            DVTextPane().apply { this.tag = "localDateLabel" },
+            DVTextPane().apply { this.tag = "localDate" },
+            DVTextPane().apply { this.tag = "localTimezoneLabel" },
+            DVTextPane().apply { this.tag = "LocalTimezone" },
+            DVTextPane().apply { this.tag = "localLatitudeLabel" },
+            DVTextPane().apply { this.tag = "localLatitude" },
+            DVRow(),
+            DVTextPane().apply { this.tag = "utcTimeLabel" },
+            DVTextPane().apply { this.tag = "utcTime" },
+            DVTextPane().apply { this.tag = "utcDateLabel" },
+            DVTextPane().apply { this.tag = "utcDate" },
+            DVTextPane().apply { this.tag = "utcTimezoneLabel" },
+            DVTextPane().apply { this.tag = "utcTimezone" },
+            DVTextPane().apply { this.tag = "localLongitudeLabel" },
+            DVTextPane().apply { this.tag = "localLongitude" },
+        ))
     ))
 
     fun dvLayout() = DVLayout(name = "SACDVLayout", layout = mutableListOf(

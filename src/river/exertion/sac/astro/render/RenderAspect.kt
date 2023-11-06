@@ -8,7 +8,6 @@ import river.exertion.sac.astro.base.AspectCelestial
 import river.exertion.sac.astro.state.AnalysisState
 import river.exertion.sac.astro.value.ValueAspect
 import river.exertion.sac.Constants
-import river.exertion.sac.Constants.LABEL_SPACE
 import kotlin.math.abs
 
 data class RenderAspect(val valueAspect : ValueAspect) {
@@ -63,13 +62,13 @@ data class RenderAspect(val valueAspect : ValueAspect) {
 
     fun getRenderLabel() : String {
 
-        val firstAspectSpace = if (stateAspect.aspectCelestialFirst != AspectCelestial.ASPECT_SUN_MOON_MIDPOINT) LABEL_SPACE else ""
-        val secondAspectSpace = if (stateAspect.aspectCelestialSecond != AspectCelestial.ASPECT_SUN_MOON_MIDPOINT) LABEL_SPACE else ""
+        val firstAspectSpace = if (stateAspect.aspectCelestialFirst != AspectCelestial.ASPECT_SUN_MOON_MIDPOINT) " " else ""
+        val secondAspectSpace = if (stateAspect.aspectCelestialSecond != AspectCelestial.ASPECT_SUN_MOON_MIDPOINT) " " else ""
 
-        val commonLabel = RenderSign.getElementLabel(stateAspect.signFirst) + LABEL_SPACE +
+        val commonLabel = RenderSign.getElementLabel(stateAspect.signFirst) + " " +
                 RenderAspectCelestial.fromName(stateAspect.aspectCelestialFirst.toString())!!.getLabel() + firstAspectSpace +
-                getAspectRenderLabel() + LABEL_SPACE +
-                RenderSign.getElementLabel(stateAspect.signSecond) + LABEL_SPACE +
+                getAspectRenderLabel() + " " +
+                RenderSign.getElementLabel(stateAspect.signSecond) + " " +
                 RenderAspectCelestial.fromName(stateAspect.aspectCelestialSecond.toString())!!.getLabel() + secondAspectSpace
 
         return commonLabel + "=" + getAspectValueRenderLabel()
@@ -88,7 +87,7 @@ data class RenderAspect(val valueAspect : ValueAspect) {
                 (valueAspect.getAspectModifier() == -4) -> Constants.KNRM + ":" + Constants.KBRED + "(-4) "
                 else -> Constants.KNRM + ":" + Constants.KRED + "(${valueAspect.getAspectModifier()}) "
             }
-            else -> LABEL_SPACE//.padStart(RenderDetails.getModWidth(), ' ')
+            else -> " "//.padStart(RenderDetails.getModWidth(), ' ')
         } + Constants.KNRM
     }
 

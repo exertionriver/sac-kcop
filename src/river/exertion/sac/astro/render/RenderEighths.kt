@@ -1,7 +1,6 @@
 package river.exertion.sac.astro.render
 
 import river.exertion.sac.Constants
-import river.exertion.sac.Constants.LABEL_SPACE
 
 @Suppress("UNUSED")
 enum class RenderEighths {
@@ -16,7 +15,7 @@ enum class RenderEighths {
     , EIGHT_EIGHTHS
     ;
 
-    open fun getLabel(): String = LABEL_SPACE
+    open fun getLabel(): String = " "
 
     companion object {
         fun fromOrdinal(ordinal: Int) = values().firstOrNull { it.ordinal == ordinal }
