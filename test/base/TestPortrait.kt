@@ -1,6 +1,7 @@
 package base
 
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
 import org.junit.jupiter.api.Test
 import river.exertion.sac.Constants
 import river.exertion.sac.astro.base.EarthLocation
@@ -18,7 +19,7 @@ class TestPortrait {
         val checkLocation = EarthLocation(refProfile.earthLocation.longitude
             , refProfile.earthLocation.latitude
             , refProfile.earthLocation.altitude
-            , -6.0 //put hour offset here
+            , TimeZone.of("UTC-6.0") //put hour offset here
             , LocalDate(1989, 6, 17)
         )
 
@@ -38,7 +39,7 @@ class TestPortrait {
         val checkLocation = EarthLocation(refProfile.earthLocation.longitude
             , refProfile.earthLocation.latitude
             , refProfile.earthLocation.altitude
-            , refProfile.earthLocation.getTimezoneOffsetInt().toDouble() //put hour offset here
+            , refProfile.earthLocation.timeZone //put hour offset here
             , LocalDate(refProfile.earthLocation.utcDateTime.year + yearOffset
                 , refProfile.earthLocation.utcDateTime.monthNumber
                 , refProfile.earthLocation.utcDateTime.dayOfMonth)
@@ -56,14 +57,14 @@ class TestPortrait {
             Constants.LON_ATX
             , Constants.LAT_ATX
             , Constants.ALT_ATX
-            , -5.0 //put hour offset here
+            , TimeZone.of("UTC-5.0") //put hour offset here
             , LocalDate(1971, 4, 5)
         )
 
         val checkLocation = EarthLocation(Constants.LON_ATX
             , Constants.LAT_ATX
             , Constants.ALT_ATX
-            , 11.0 //put hour offset here
+            , TimeZone.of("UTC+11.0") //put hour offset here
             , LocalDate(1972, 4, 9)
         )
 

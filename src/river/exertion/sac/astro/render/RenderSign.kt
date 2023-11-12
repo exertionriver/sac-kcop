@@ -50,7 +50,7 @@ enum class RenderSign {
                 //getElementLabel(
                     fromName(Sign.getSignFromCelestialLongitude(celestialLongitude).toString())!!.getLabel() + " " + Constants.SYM_RETRO
             else
-                fromName(Sign.getSignFromCelestialLongitude(celestialLongitude).toString())!!.getLabel() + "  " //space offset for Constants.SYM_RETRO
+                fromName(Sign.getSignFromCelestialLongitude(celestialLongitude).toString())!!.getLabel() //space offset for Constants.SYM_RETRO
         }
     }
 }

@@ -57,9 +57,9 @@ data class CelestialData(val celestialDataArray : DoubleArray) {
             val longSecInt = ((longitude - longDeg - longMin.toDouble() / 60) * 3600).roundToInt()
 
             return if (roundPrecision == ROUND_PRECISION_SEC_DEC)
-                "${"%2d".format(signDeg)}°${"%2d".format(longMin)}'${"%2.4f".format(longSec)}"
+                "${"%02d".format(signDeg)}°${"%02d".format(longMin)}'${"%02.4f".format(longSec)}"
             else
-                "${"%2d".format(signDeg)}°${"%2d".format(longMin)}'${"%2d".format(longSecInt)}"
+                "${"%02d".format(signDeg)}°${"%02d".format(longMin)}'${"%02d".format(longSecInt)}"
         }
 
         fun getCelestialsDataOverride(

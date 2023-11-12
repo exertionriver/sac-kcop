@@ -8,23 +8,21 @@ import river.exertion.sac.Constants.LON_TNM
 import river.exertion.sac.Constants.TZ_MST
 
 @ExperimentalUnsignedTypes
-data class EarthLocation(val longitude : Double = LON_TNM
-    , val latitude : Double = LAT_TNM
-    , val altitude : Double = ALT_TNM
-    , val timeZone : TimeZone = TimeZone.currentSystemDefault()
-    , val utcDateTime : LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC)
+data class EarthLocation(var longitude : Double = LON_TNM
+    , var latitude : Double = LAT_TNM
+    , var altitude : Double = ALT_TNM
+    , var timeZone : TimeZone = TimeZone.currentSystemDefault()
+    , var utcDateTime : LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC)
     , val timeUnknown : Boolean = false ) {
 
-    constructor(initLongitude : Double, initLatitude : Double, initAltitude : Double, initTimezoneOffset : Double
-                , initUtcDateTime : LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC)
-                , initTimeUnknown : Boolean = false) :
-            this(initLongitude, initLatitude, initAltitude, getTimeZoneFromOffsetInt(initTimezoneOffset.toInt()), initUtcDateTime, initTimeUnknown)
-
-    constructor(initLongitude : Double, initLatitude : Double, initAltitude : Double, initTimezone : Double
-                , initUtcDate : LocalDate) :
+    constructor(initLongitude : Double, initLatitude : Double, initAltitude : Double, initTimezone : TimeZone, initUtcDate : LocalDate) :
         this(initLongitude, initLatitude, initAltitude, initTimezone, getDefaultLocalDateTime(initUtcDate), true)
 
-    val localDateTime = utcDateTime.toInstant(TimeZone.UTC).toLocalDateTime(timeZone)
+    var localDateTime = utcDateTime.toInstant(TimeZone.UTC).toLocalDateTime(timeZone)
+
+    fun recalc() {
+        localDateTime = utcDateTime.toInstant(TimeZone.UTC).toLocalDateTime(timeZone)
+    }
 
     fun getUTCDateTimeString() = getDateTimeString(utcDateTime)
 
@@ -57,7 +55,7 @@ data class EarthLocation(val longitude : Double = LON_TNM
             return dateTime.hour.toString().padStart(2, '0') + EntryState.TIME_ENTRY.getDelim() + dateTime.minute.toString().padStart(2, '0') + EntryState.TIME_ENTRY.getDelim() + dateTime.second.toString().padStart(2, '0')
         }
 
-        fun getDefaultEarthLocation(utcDate : LocalDate) = EarthLocation(LON_TNM, LAT_TNM, ALT_TNM, TZ_MST, utcDate)
+        fun getDefaultEarthLocation(utcDate : LocalDate) = EarthLocation(LON_TNM, LAT_TNM, ALT_TNM, TimeZone.of(TZ_MST), utcDate)
 
         fun getDefaultLocalDateTime(ldt : LocalDate) : LocalDateTime = LocalDateTime(ldt.year, ldt.monthNumber, ldt.dayOfMonth, 12, 0,0)
 

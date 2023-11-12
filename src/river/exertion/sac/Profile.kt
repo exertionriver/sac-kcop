@@ -56,17 +56,7 @@ data class Profile (val profileName : String
                 )
             )
         }
-        fun getCopyWithTimezoneEntry(prevProfile: Profile, timezone: Double): Profile {
-            return Profile(
-                prevProfile.profileName, EarthLocation(
-                    prevProfile.earthLocation.longitude,
-                    prevProfile.earthLocation.latitude,
-                    prevProfile.earthLocation.altitude,
-                    timezone,
-                    prevProfile.earthLocation.utcDateTime
-                )
-            )
-        }
+
         fun getCopyWithNameEntry(prevProfile: Profile, name : String): Profile {
             return Profile(name, prevProfile.earthLocation)
         }

@@ -135,12 +135,13 @@ object Constants {
     const val KBCYN = "\u001B[96m"
     const val KBWHT = "\u001B[97m"
 
-    const val TZ_EDT = (-4.0)
-    const val TZ_EST = (-5.0)
-    const val TZ_CDT = (-5.0)
-    const val TZ_CST = (-6.0)
-    const val TZ_MDT = (-6.0)
-    const val TZ_MST = (-7.0)
+//https://www.iana.org/time-zones
+    const val TZ_EDT = "UTC-4"
+    const val TZ_EST = "UTC-5"
+    const val TZ_CDT = "UTC-5"
+    const val TZ_CST = "UTC-6"
+    const val TZ_MDT = "UTC-6"
+    const val TZ_MST = "UTC-7"
     //-97.75, 30.2667 : astro.com long/lat for ATX
     const val LON_ATX = (-97.7431)
     const val LAT_ATX = 30.2672
@@ -222,7 +223,7 @@ object Constants {
 
     const val SYM_NATCOMP_CHART = "\u25A7" //diagonal box
     const val SYM_SYNASTRY_CHART = "\u25A6" //crosshatch box
-    const val SYM_GREG_CALENDAR = "\u25A4 " //square with horizontal fill
+    const val SYM_GREG_CALENDAR = "\u25A4" //square with horizontal fill
     const val SYM_DIAMOND_DOUBLE_ORNAMENT = "\u25C8"
     const val SYM_CIRCLE_DOUBLE_ORNAMENT = "\u25C9"
     const val SYM_DIAMOND_SINGLE_ORNAMENT = "\u22C4"

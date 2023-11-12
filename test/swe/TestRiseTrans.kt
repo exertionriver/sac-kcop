@@ -17,7 +17,7 @@ import kotlin.test.assertEquals
 class TestRiseTrans {
 
     private val refProfile = Profile("testRiseTransProfile"
-        , EarthLocation(LON_TNM, LAT_TNM, ALT_TNM, TZ_MST
+        , EarthLocation(LON_TNM, LAT_TNM, ALT_TNM, TimeZone.of(TZ_MST)
         , LocalDate(2021, 11,8))
     )
 

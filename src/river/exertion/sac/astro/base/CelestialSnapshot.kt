@@ -6,21 +6,28 @@ import river.exertion.sac.swe.UtcToJd
 import river.exertion.sac.Constants.normalizeDeg
 
 @ExperimentalUnsignedTypes
-data class CelestialSnapshot(val refEarthLocation: EarthLocation
-    , val synEarthLocation: EarthLocation = refEarthLocation
-    , val refCelestialHouseData : DoubleArray = Houses.getCelestialHousesData(UtcToJd.getJulianTimeDecimal(refEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), refEarthLocation.latitude, refEarthLocation.longitude) //as per documentation, "/* calculate houses with tjd_ut */"
-    , val synCelestialHouseData : DoubleArray = Houses.getCelestialHousesData(UtcToJd.getJulianTimeDecimal(synEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), synEarthLocation.latitude, refEarthLocation.longitude) //as per documentation, "/* calculate houses with tjd_ut */"
-    , val refCelestialData: Array<CelestialData> = CalcUt.getCelestialsData(UtcToJd.getJulianTimeDecimal(refEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), refCelestialHouseData, synCelestialHouseData) ) { //as per documentation, "/* calculate planet with tjd_et */"
+data class CelestialSnapshot(var refEarthLocation: EarthLocation
+    , var synEarthLocation: EarthLocation = refEarthLocation
+    , var refCelestialHouseData : DoubleArray = Houses.getCelestialHousesData(UtcToJd.getJulianTimeDecimal(refEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), refEarthLocation.latitude, refEarthLocation.longitude) //as per documentation, "/* calculate houses with tjd_ut */"
+    , var synCelestialHouseData : DoubleArray = Houses.getCelestialHousesData(UtcToJd.getJulianTimeDecimal(synEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), synEarthLocation.latitude, refEarthLocation.longitude) //as per documentation, "/* calculate houses with tjd_ut */"
+    , var refCelestialData: Array<CelestialData> = CalcUt.getCelestialsData(UtcToJd.getJulianTimeDecimal(refEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), refCelestialHouseData, synCelestialHouseData) ) { //as per documentation, "/* calculate planet with tjd_et */"
 
-    val partOfFortuneData : Double = getPartOfFortuneData(refCelestialData[Celestial.SUN.ordinal].longitude
+    fun partOfFortuneData() : Double = Companion.partOfFortuneData(refCelestialData[Celestial.SUN.ordinal].longitude
             , refCelestialData[Celestial.MOON.ordinal].longitude
             , refCelestialHouseData[CelestialHouse.HOUSE_1_ASC.ordinal]
             , refCelestialData[Celestial.SUN.ordinal].celestialHouse)
 
-    val partOfSpiritData : Double = getPartOfSpiritData(refCelestialData[Celestial.SUN.ordinal].longitude
+    fun partOfSpiritData() : Double = Companion.partOfSpiritData(refCelestialData[Celestial.SUN.ordinal].longitude
         , refCelestialData[Celestial.MOON.ordinal].longitude
         , refCelestialHouseData[CelestialHouse.HOUSE_1_ASC.ordinal]
         , refCelestialData[Celestial.SUN.ordinal].celestialHouse)
+
+    fun recalc() {
+        refEarthLocation.recalc()
+        refCelestialHouseData = Houses.getCelestialHousesData(UtcToJd.getJulianTimeDecimal(refEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), refEarthLocation.latitude, refEarthLocation.longitude)
+        synCelestialHouseData = Houses.getCelestialHousesData(UtcToJd.getJulianTimeDecimal(synEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), synEarthLocation.latitude, refEarthLocation.longitude)
+        refCelestialData = CalcUt.getCelestialsData(UtcToJd.getJulianTimeDecimal(refEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), refCelestialHouseData, synCelestialHouseData)
+    }
 
     fun getAspectCelestialLongitudeMap() : Map<AspectCelestial, Double> {
 
@@ -36,7 +43,7 @@ data class CelestialSnapshot(val refEarthLocation: EarthLocation
                 unsortedMap[getAspectCelestial(celestialHouse)] = refCelestialHouseData[celestialHouse.ordinal]
         }
 
-        unsortedMap[AspectCelestial.ASPECT_PART_OF_FORTUNE] = partOfFortuneData
+        unsortedMap[AspectCelestial.ASPECT_PART_OF_FORTUNE] = partOfFortuneData()
 
         val sortedMap : MutableMap<AspectCelestial, Double> = LinkedHashMap()
         unsortedMap.entries.sortedBy { it.key }.forEach { sortedMap[it.key] = it.value }
@@ -51,8 +58,6 @@ data class CelestialSnapshot(val refEarthLocation: EarthLocation
 
         if (!refCelestialHouseData.contentEquals(other.refCelestialHouseData)) return false
         if (!refCelestialData.contentEquals(other.refCelestialData)) return false
-        if (partOfFortuneData != other.partOfFortuneData) return false
-        if (partOfSpiritData != other.partOfSpiritData) return false
 
         return true
     }
@@ -60,8 +65,6 @@ data class CelestialSnapshot(val refEarthLocation: EarthLocation
     override fun hashCode(): Int {
         var result = refCelestialHouseData.contentHashCode()
         result = 31 * result + refCelestialData.hashCode()
-        result = 31 * result + partOfFortuneData.hashCode()
-        result = 31 * result + partOfSpiritData.hashCode()
         return result
     }
 
@@ -71,14 +74,14 @@ data class CelestialSnapshot(val refEarthLocation: EarthLocation
             return (sunHouse < 7)
         }
 
-        fun getPartOfFortuneData(sunLongitude : Double, moonLongitude : Double, ascLongitude : Double, sunHouse : Double) : Double {
+        fun partOfFortuneData(sunLongitude : Double, moonLongitude : Double, ascLongitude : Double, sunHouse : Double) : Double {
 
             val sunMoonDiff : Double = if (isNightChart(sunHouse)) (sunLongitude - moonLongitude) else (moonLongitude - sunLongitude)
 
             return (ascLongitude + sunMoonDiff).normalizeDeg()
         }
 
-        fun getPartOfSpiritData(sunLongitude : Double, moonLongitude : Double, ascLongitude : Double, sunHouse : Double) : Double {
+        fun partOfSpiritData(sunLongitude : Double, moonLongitude : Double, ascLongitude : Double, sunHouse : Double) : Double {
 
             val sunMoonDiff : Double = if (isNightChart(sunHouse)) (moonLongitude - sunLongitude) else (sunLongitude - moonLongitude)
 

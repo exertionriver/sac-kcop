@@ -59,26 +59,7 @@ enum class Profiles {
 
         fun isStoredProfile(profileIdx : Int) = ( !isCurNavProfile(profileIdx) && !isNoneProfile(profileIdx) )
 
-        fun getDefaultProfile(profile : Profiles) : Profile {
-
-            return when (profile) {
-                PROFILE_1 -> Profile("exR"
-                        , EarthLocation(LON_ATX, LAT_ATX, ALT_ATX, TZ_CST
-                        , LocalDateTime(1978, 11, 16, 18, 39, 0, 0) ) )
-                PROFILE_2 -> Profile("emL"
-                        , EarthLocation(LON_BCS, LAT_BCS, ALT_BCS, TZ_CDT
-                        , LocalDateTime(1981, 7, 21, 15, 39, 0, 0) ) )
-                PROFILE_3 -> Profile("mT"
-                        , EarthLocation(LON_MHN, LAT_MHN, ALT_MHN, TZ_EST
-                        , LocalDateTime(1990, 2, 18, 13, 16, 0, 0) ) )
-                PROFILE_4 -> Profile("mM"
-                        , EarthLocation(LON_NMA, LAT_NMA, ALT_NMA, TZ_EST
-                        , LocalDateTime(1993, 11, 27, 4, 17, 0, 0) ) )
-                PROFILE_CUR_NAV -> Profile(profile.getDefaultName(), EarthLocation() )
-                PROFILE_NONE -> Profile(profile.getDefaultName(), EarthLocation(), true )
-                else -> Profile(profile.getDefaultName(), EarthLocation() )
-            }
-        }
+        fun getDefaultProfile(profile : Profiles) : Profile = Profile(profile.getDefaultName(), EarthLocation() )
 
         fun getDefaultProfiles() : Array<Profile> {
 
