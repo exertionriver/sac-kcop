@@ -1,9 +1,11 @@
 package river.exertion.sac.astro.render
 
+import river.exertion.kcop.asset.view.ColorPalette
 import river.exertion.sac.Constants
 import river.exertion.sac.astro.base.CelestialData
 import river.exertion.sac.astro.base.Sign
 import river.exertion.sac.astro.base.SignElement
+import river.exertion.sac.view.SACLayout
 
 enum class RenderSign {
     ARIES { override fun getLabel() = Constants.SYM_ARIES }
@@ -29,13 +31,16 @@ enum class RenderSign {
 
         fun getSynLabel(sign : Sign) : String = Constants.KMAG + fromName(sign.toString())!!.getLabel() + Constants.KNRM
 
-        fun getElementLabel(sign : Sign) : String = when {
-            (sign.getElement() == SignElement.FIRE_ELEMENT) -> Constants.KRED + fromName(sign.toString())!!.getLabel() + Constants.KNRM
-            (sign.getElement() == SignElement.EARTH_ELEMENT) -> Constants.KYEL + fromName(sign.toString())!!.getLabel()+ Constants.KNRM
-            (sign.getElement() == SignElement.AIR_ELEMENT) -> Constants.KGRN + fromName(sign.toString())!!.getLabel() + Constants.KNRM
-            (sign.getElement() == SignElement.WATER_ELEMENT) -> Constants.KBLU + fromName(sign.toString())!!.getLabel() + Constants.KNRM
-            else -> fromName(sign.toString())!!.getLabel()
+        fun getSignColor(sign : Sign) : ColorPalette = when {
+            (sign.getElement() == SignElement.FIRE_ELEMENT) -> SACLayout.fireFontColor
+            (sign.getElement() == SignElement.EARTH_ELEMENT) -> SACLayout.earthFontColor
+            (sign.getElement() == SignElement.AIR_ELEMENT) -> SACLayout.airFontColor
+            (sign.getElement() == SignElement.WATER_ELEMENT) -> SACLayout.waterFontColor
+            else -> SACLayout.baseValuesFontColor
         }
+
+        fun getSignColor(celestialLongitude : Double) : ColorPalette =
+            getSignColor(Sign.getSignFromCelestialLongitude(celestialLongitude))
 
         fun getSignLongitudeLabel() = Constants.SYM_CELESTIAL_LONG + "(" + Constants.SYM_SIGN + ")"
 
@@ -47,8 +52,7 @@ enum class RenderSign {
         fun getSignLabelFromCelestialLongitude(celestialLongitude : Double, celestialLongitudeSpeed : Double = 0.0) : String {
 
             return if (celestialLongitudeSpeed < 0)
-                //getElementLabel(
-                    fromName(Sign.getSignFromCelestialLongitude(celestialLongitude).toString())!!.getLabel() + " " + Constants.SYM_RETRO
+                fromName(Sign.getSignFromCelestialLongitude(celestialLongitude).toString())!!.getLabel() + " " + Constants.SYM_RETRO
             else
                 fromName(Sign.getSignFromCelestialLongitude(celestialLongitude).toString())!!.getLabel() //space offset for Constants.SYM_RETRO
         }

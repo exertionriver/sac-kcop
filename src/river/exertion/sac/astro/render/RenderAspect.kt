@@ -65,10 +65,10 @@ data class RenderAspect(val valueAspect : ValueAspect) {
         val firstAspectSpace = if (stateAspect.aspectCelestialFirst != AspectCelestial.ASPECT_SUN_MOON_MIDPOINT) " " else ""
         val secondAspectSpace = if (stateAspect.aspectCelestialSecond != AspectCelestial.ASPECT_SUN_MOON_MIDPOINT) " " else ""
 
-        val commonLabel = RenderSign.getElementLabel(stateAspect.signFirst) + " " +
+        val commonLabel = //RenderSign.getElementLabel(stateAspect.signFirst) + " " +
                 RenderAspectCelestial.fromName(stateAspect.aspectCelestialFirst.toString())!!.getLabel() + firstAspectSpace +
                 getAspectRenderLabel() + " " +
-                RenderSign.getElementLabel(stateAspect.signSecond) + " " +
+                //RenderSign.getElementLabel(stateAspect.signSecond) + " " +
                 RenderAspectCelestial.fromName(stateAspect.aspectCelestialSecond.toString())!!.getLabel() + secondAspectSpace
 
         return commonLabel + "=" + getAspectValueRenderLabel()

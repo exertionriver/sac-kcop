@@ -1,6 +1,10 @@
 package river.exertion.sac.astro.render
 
+import river.exertion.kcop.asset.view.ColorPalette
 import river.exertion.sac.Constants
+import river.exertion.sac.astro.base.SignElement
+import river.exertion.sac.astro.value.ValueAspectType
+import river.exertion.sac.view.SACLayout
 
 enum class RenderAspectType {
     CONJUNCTION { override fun getLabel() = Constants.SYM_CONJUNCTION }
@@ -20,6 +24,13 @@ enum class RenderAspectType {
     ;
 
     abstract fun getLabel(): String
+    fun getLabelColor() :  ColorPalette = when {
+        ValueAspectType.fromName(this.name) == null -> SACLayout.baseValuesFontColor
+        ValueAspectType.fromName(this.name)!!.isPositive() -> SACLayout.positiveFontColor
+        ValueAspectType.fromName(this.name)!!.isNegative() -> SACLayout.negativeFontColor
+        ValueAspectType.fromName(this.name)!!.isNeutral() -> SACLayout.neutralFontColor
+        else -> SACLayout.baseValuesFontColor
+    }
 
     companion object {
         fun fromOrdinal(ordinal: Int) = entries.firstOrNull { it.ordinal == ordinal }

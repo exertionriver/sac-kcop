@@ -1,5 +1,6 @@
 package river.exertion.sac.view
 
+import river.exertion.kcop.asset.view.ColorPalette
 import river.exertion.kcop.view.layout.displayViewLayout.*
 import river.exertion.kcop.view.layout.displayViewLayout.asset.DVAlign
 import river.exertion.sac.Constants
@@ -151,34 +152,35 @@ object SACCelestialsHousesDVLayout {
     var stateChart : StateChart = SACComponent.sacChart
 
     fun rebuild() {
+        DVLayoutHandler.currentFontColor = SACLayout.baseFontColor
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("appTitleVersion","${Constants.APP_NAME} v${Constants.APP_VERSION}")
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("appState","Test Hardcoded Label")
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("appState","Test Hardcoded Label", SACLayout.baseValuesFontColor)
 
         val stateAttributes = AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT.getLabel() +
                 AspectsState.ALL_ASPECTS.getLabel() +
                 TimeAspectsState.TIME_ASPECTS_ENABLED.getLabel()
         ChartState.NATAL_CHART.getLabel()
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("appStateAttributes",stateAttributes)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("appProfiles", "[exR]")
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("appStateAttributes",stateAttributes, SACLayout.baseValuesFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("appProfiles", "[exR]", SACLayout.baseValuesFontColor)
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localTimeLabel", RenderEarthLocation.getEarthLocalTimeLabel())
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("localTime", "${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.hour)}:${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.minute)}:${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.second)}")
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localTime", "${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.hour)}:${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.minute)}:${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.second)}", SACLayout.baseValuesFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localDateLabel", RenderEarthLocation.getEarthLocalDateLabel())
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("localDate", "${"%4d".format(celestialSnapshot.refEarthLocation.localDateTime.year)}.${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.monthNumber)}.${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.dayOfMonth)}")
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localDate", "${"%4d".format(celestialSnapshot.refEarthLocation.localDateTime.year)}.${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.monthNumber)}.${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.dayOfMonth)}", SACLayout.baseValuesFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localTimezoneLabel", RenderEarthLocation.getEarthTimezoneLabel())
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("LocalTimezone", celestialSnapshot.refEarthLocation.getTimezoneOffsetString())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("LocalTimezone", celestialSnapshot.refEarthLocation.getTimezoneOffsetString(), SACLayout.baseValuesFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localLatitudeLabel", RenderEarthLocation.getEarthLatitudeLabel())
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("localLatitude", "%1.4f".format(celestialSnapshot.refEarthLocation.latitude))
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localLatitude", "%1.4f".format(celestialSnapshot.refEarthLocation.latitude), SACLayout.baseValuesFontColor)
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTimeLabel", RenderEarthLocation.getEarthUTCTimeLabel())
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTime", "${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.hour)}:${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.minute)}:${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.second)}")
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTime", "${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.hour)}:${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.minute)}:${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.second)}", SACLayout.baseValuesFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent("utcDateLabel", RenderEarthLocation.getEarthUTCDateLabel())
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("utcDate", "${"%4d".format(celestialSnapshot.refEarthLocation.utcDateTime.year)}.${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.monthNumber)}.${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.dayOfMonth)}")
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("utcDate", "${"%4d".format(celestialSnapshot.refEarthLocation.utcDateTime.year)}.${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.monthNumber)}.${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.dayOfMonth)}", SACLayout.baseValuesFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTimezoneLabel", RenderEarthLocation.getUTCLongitudeLabel())
         DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTimezone", "0.0")
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localLongitudeLabel", RenderEarthLocation.getEarthLongitudeLabel())
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("localLongitude", "%1.4f".format(celestialSnapshot.refEarthLocation.longitude))
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localLongitude", "%1.4f".format(celestialSnapshot.refEarthLocation.longitude), SACLayout.baseValuesFontColor)
 
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("celestialHeader",RenderCelestial.getCelestialsLabel())
@@ -189,18 +191,18 @@ object SACCelestialsHousesDVLayout {
         DVLayoutHandler.currentDvLayout.setTextPaneContent("celestialDistance",RenderCelestial.getCelestialsDistanceLabel())
         DVLayoutHandler.currentDvLayout.setTextPaneContent("celestialSpeed",RenderCelestial.getCelestialsLongitudeSpeedLabel())
         RenderCelestial.entries.forEachIndexed { idx, renderCelestial ->
-            DVLayoutHandler.currentDvLayout.setTextPaneContent(renderCelestial.name, renderCelestial.getLabel())
+            DVLayoutHandler.currentDvLayout.setTextPaneContent(renderCelestial.name, renderCelestial.getLabel(), SACLayout.baseValuesFontColor)
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_sign",
                 RenderSign.getSignLabelFromCelestialLongitude(
                     celestialSnapshot.refCelestialData[idx].longitude,
                     celestialSnapshot.refCelestialData[idx].longitudeSpeed
-                )
+                ), RenderSign.getSignColor(celestialSnapshot.refCelestialData[idx].longitude)
             )
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_long", "%1.4f".format(celestialSnapshot.refCelestialData[idx].longitude) )
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_signLong", CelestialData.getFormattedSignLongitude(celestialSnapshot.refCelestialData[idx].longitude) )
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_house", RenderCelestialHouse.celestialHouseLabel(celestialSnapshot.refCelestialData[idx].celestialHouse) )
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_dist", "%1.4f".format(celestialSnapshot.refCelestialData[idx].distance) )
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_speed", "%1.4f".format(celestialSnapshot.refCelestialData[idx].longitudeSpeed) )
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_long", "%1.4f".format(celestialSnapshot.refCelestialData[idx].longitude), SACLayout.baseValuesFontColor )
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_signLong", CelestialData.getFormattedSignLongitude(celestialSnapshot.refCelestialData[idx].longitude), SACLayout.baseValuesFontColor )
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_house", RenderCelestialHouse.celestialHouseLabel(celestialSnapshot.refCelestialData[idx].celestialHouse), SACLayout.baseValuesFontColor )
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_dist", "%1.4f".format(celestialSnapshot.refCelestialData[idx].distance), SACLayout.baseValuesFontColor )
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_speed", "%1.4f".format(celestialSnapshot.refCelestialData[idx].longitudeSpeed), SACLayout.baseValuesFontColor )
         }
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("houseSystemName", HouseName.getHouseName())
@@ -215,28 +217,28 @@ object SACCelestialsHousesDVLayout {
         housesRows().forEachIndexed { idx, renderCelestialHouseName ->
             when {
                 (renderCelestialHouseName == "PART_OF_SPIRIT") -> {
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent(renderCelestialHouseName, RenderCelestialHouse.getPartOfSpiritLabel())
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent(renderCelestialHouseName, RenderCelestialHouse.getPartOfSpiritLabel(), SACLayout.baseValuesFontColor)
                     DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestialHouseName}_sign",
-                        RenderSign.getSignLabelFromCelestialLongitude(posData)
+                        RenderSign.getSignLabelFromCelestialLongitude(posData), RenderSign.getSignColor(posData)
                     )
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestialHouseName}_long", "%1.4f".format(posData) )
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestialHouseName}_signLong", CelestialData.getFormattedSignLongitude(posData) )
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestialHouseName}_long", "%1.4f".format(posData), SACLayout.baseValuesFontColor )
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestialHouseName}_signLong", CelestialData.getFormattedSignLongitude(posData), SACLayout.baseValuesFontColor )
                 }
                 (renderCelestialHouseName == "PART_OF_FORTUNE") -> {
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent(renderCelestialHouseName, RenderCelestialHouse.getPartOfFortuneLabel())
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent(renderCelestialHouseName, RenderCelestialHouse.getPartOfFortuneLabel(), SACLayout.baseValuesFontColor)
                     DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestialHouseName}_sign",
-                        RenderSign.getSignLabelFromCelestialLongitude(pofData)
+                        RenderSign.getSignLabelFromCelestialLongitude(pofData), RenderSign.getSignColor(pofData)
                     )
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestialHouseName}_long", "%1.4f".format(pofData) )
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestialHouseName}_signLong", CelestialData.getFormattedSignLongitude(pofData) )
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestialHouseName}_long", "%1.4f".format(pofData), SACLayout.baseValuesFontColor )
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestialHouseName}_signLong", CelestialData.getFormattedSignLongitude(pofData), SACLayout.baseValuesFontColor )
                 }
                 else -> {
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent(renderCelestialHouseName, RenderCelestialHouse.fromOrdinal(idx)!!.getLabel())
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent(renderCelestialHouseName, RenderCelestialHouse.fromOrdinal(idx)!!.getLabel(), SACLayout.baseValuesFontColor)
                     DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestialHouseName}_sign",
-                        RenderSign.getSignLabelFromCelestialLongitude(celestialSnapshot.refCelestialHouseData[idx])
+                        RenderSign.getSignLabelFromCelestialLongitude(celestialSnapshot.refCelestialHouseData[idx]), RenderSign.getSignColor(celestialSnapshot.refCelestialHouseData[idx])
                     )
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestialHouseName}_long", "%1.4f".format(celestialSnapshot.refCelestialHouseData[idx]) )
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestialHouseName}_signLong", CelestialData.getFormattedSignLongitude(celestialSnapshot.refCelestialHouseData[idx]) )
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestialHouseName}_long", "%1.4f".format(celestialSnapshot.refCelestialHouseData[idx]), SACLayout.baseValuesFontColor )
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestialHouseName}_signLong", CelestialData.getFormattedSignLongitude(celestialSnapshot.refCelestialHouseData[idx]), SACLayout.baseValuesFontColor )
                 }
             }
         }
@@ -250,10 +252,11 @@ object SACCelestialsHousesDVLayout {
                 if (rowIdx == colIdx) {
                     DVLayoutHandler.currentDvLayout.setTextPaneContent(chartAspectCelestial.name, chartAspectCelestial.renderAspectCelestial().getLabel())
                 } else {
+                    val renderAspectType = RenderAspectType.fromName(
+                        chartAspects.firstOrNull { it.aspectCelestialFirst == AspectCelestial.fromOrdinal(colIdx) && it.aspectCelestialSecond == chartAspectCelestial }?.aspectAngle?.getAspectType()?.name ?: RenderAspectType.ASPECT_NONE.name
+                    )!!
                     DVLayoutHandler.currentDvLayout.setTextPaneContent("${chartAspectCelestial.name}_${AspectCelestial.fromOrdinal(colIdx)}",
-                        RenderAspectType.fromName(
-                            chartAspects.firstOrNull { it.aspectCelestialFirst == AspectCelestial.fromOrdinal(colIdx) && it.aspectCelestialSecond == chartAspectCelestial }?.aspectAngle?.getAspectType()?.name ?: RenderAspectType.ASPECT_NONE.name
-                        )!!.getLabel() )
+                    renderAspectType.getLabel(), renderAspectType.getLabelColor() )
                 }
                 colIdx++
             }
