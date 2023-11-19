@@ -74,6 +74,8 @@ enum class MultiKeys {
             BANG_1.keysDown() || AT_2.keysDown() || HASH_3.keysDown() || DOLLAR_4.keysDown() || PERCENT_5.keysDown() ||
             CARET_6.keysDown() || AMPERSAND_7.keysDown() || ASTERISK_8.keysDown() || OPENPARENS_9.keysDown() || CLOSEPARENS_0.keysDown()
 
+        fun numPressed() = MultiKeys.keysDown.first { it in 7..16 } - 7
+
         fun singleKeyException(): Nothing = throw Exception("keyDown() not supported for multi-key entry, use keysDown() instead.")
     }
 }

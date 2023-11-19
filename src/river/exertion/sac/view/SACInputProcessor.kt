@@ -2,6 +2,7 @@ package river.exertion.sac.view
 
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine
+import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.state.*
 
 object SACInputProcessor : InputProcessor {
@@ -42,14 +43,14 @@ object SACInputProcessor : InputProcessor {
                 chartStateMachine.changeState(ChartState.cycleSynastry(chartStateMachine.currentState))
                 aspectOverlayStateMachine.changeState(AspectOverlayState.toggleState(chartStateMachine.currentState, aspectOverlayStateMachine.currentState))
 
-                entryStateMachine.changeState(EntryState.PROFILE_NUMBER_ENTRY)
+                entryStateMachine.changeState(EntryState.LOCATION_NUMBER_ENTRY)
             }
 
             MultiKeys.EQUALS.keysDown() -> {
                 chartStateMachine.changeState(ChartState.cycleComposite(chartStateMachine.currentState))
                 aspectOverlayStateMachine.changeState(AspectOverlayState.toggleState(chartStateMachine.currentState, aspectOverlayStateMachine.currentState))
 
-                entryStateMachine.changeState(EntryState.PROFILE_NUMBER_ENTRY)
+                entryStateMachine.changeState(EntryState.LOCATION_NUMBER_ENTRY)
             }
 
             MultiKeys.MINUS.keyDown() -> {
@@ -96,12 +97,21 @@ object SACInputProcessor : InputProcessor {
                 entryStateMachine.changeState(EntryState.defaultState())
             }
 
-            MultiKeys.numKeyDown() -> navStateMachine.changeState(NavState.PROFILE_RECALL)
+            MultiKeys.numKeyDown() -> {
+                navStateMachine.changeState(NavState.LOCATION_RECALL)
+
+                val recallIdx = MultiKeys.numPressed()
+
+                SACComponent.recallEarthLocationEntry(recallIdx)
+            }
 
             //setting numbered profiles
             MultiKeys.numPunctDown() -> {
-                navStateMachine.changeState(NavState.ENTRY_PAUSED)
-                entryStateMachine.changeState(EntryState.PROFILE_ENTRY)
+                navStateMachine.changeState(NavState.LOCATION_STORE)
+
+                val storeIdx = MultiKeys.numPressed()
+
+                SACComponent.storeEarthLocationEntry(storeIdx)
             }
 
             MultiKeys.D.keysDown() -> {

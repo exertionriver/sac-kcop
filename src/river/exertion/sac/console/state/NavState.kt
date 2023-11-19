@@ -1,9 +1,9 @@
 package river.exertion.sac.console.state
 
-import com.badlogic.gdx.ai.fsm.DefaultStateMachine
 import com.badlogic.gdx.ai.fsm.State
 import com.badlogic.gdx.ai.msg.Telegram
 import kotlinx.datetime.*
+import river.exertion.sac.component.SACComponent
 import river.exertion.sac.view.SACInputProcessor
 
 enum class NavState : State<SACInputProcessor> {
@@ -48,8 +48,14 @@ enum class NavState : State<SACInputProcessor> {
         override fun getLabel() = "Entry:Paused"
         override fun isPaused() = true
     }
-    , PROFILE_RECALL {
-        override fun getLabel() = "Profile Recall"
+    , LOCATION_RECALL {
+        override fun getLabel() = "Location Recalled"
+        override fun updCurNavTime() { curNavTime = SACComponent.sacUTCDateTime.toInstant(TimeZone.UTC) }
+        override fun isPaused() = true
+    }
+    , LOCATION_STORE {
+        override fun getLabel() = "Location Stored"
+        override fun updCurNavTime() { curNavTime = SACComponent.sacUTCDateTime.toInstant(TimeZone.UTC) }
         override fun isPaused() = true
     }
     ;

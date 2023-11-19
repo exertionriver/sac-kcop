@@ -11,8 +11,7 @@ enum class EntryState : State<SACInputProcessor> {
     , LAT_ENTRY { override fun getLabel() = "Latitude Entry"; override fun getPrompt() = "(-S)xy.z123 : " }
     , LONG_ENTRY { override fun getLabel() = "Longitude Entry"; override fun getPrompt() = "(-W)xy.z123 : " }
     , TZ_ENTRY { override fun getLabel() = "Timezone Entry"; override fun getPrompt() = "(-W)hh : " }
-    , PROFILE_ENTRY { override fun getLabel() = "Profile Entry"; override fun getPrompt() = "profile name: " }
-    , PROFILE_NUMBER_ENTRY { override fun getLabel() = "Profile Number Entry"; override fun getPrompt() = "profile number: " }
+    , LOCATION_NUMBER_ENTRY { override fun getLabel() = "Location Number Entry"; override fun getPrompt() = "location number: " }
     , RESET_DEFAULTS ;
 
     open fun getLabel(): String = ""

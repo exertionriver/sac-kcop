@@ -34,8 +34,14 @@ class SACComponent : IComponent, Telegraph {
     override var componentId = Id.randomId()
     override var isInitialized = false
 
+    @OptIn(ExperimentalUnsignedTypes::class)
     fun sacRecalc() {
+        sacEarthLocation.latitude = sacLatitude
+        sacEarthLocation.longitude = sacLongitude
+        sacEarthLocation.altitude = sacAltitude
+        sacEarthLocation.timeZone = sacTimezone
         sacEarthLocation.utcDateTime = sacUTCDateTime
+
         sacCelestialSnapshot.refEarthLocation = sacEarthLocation
         sacCelestialSnapshot.recalc()
         sacChart = StateChart(StateChart.getAspects(sacCelestialSnapshot, sacCelestialSnapshot, ChartState.NATAL_CHART
@@ -99,10 +105,31 @@ class SACComponent : IComponent, Telegraph {
         var sacTimezone = TimeZone.of(Constants.TZ_MST)
         var sacUTCDateTime = NavState.curNavTimeUTC()
 
+        @OptIn(ExperimentalUnsignedTypes::class)
+        var earthLocationArray = Array(10) { _ -> EarthLocation(sacLongitude, sacLatitude, sacAltitude, sacTimezone, sacUTCDateTime) }
+
         var sacEarthLocation = EarthLocation(sacLongitude, sacLatitude, sacAltitude, sacTimezone, sacUTCDateTime)
         var sacCelestialSnapshot = CelestialSnapshot(sacEarthLocation)
         var sacChart = StateChart(StateChart.getAspects(sacCelestialSnapshot, sacCelestialSnapshot, ChartState.NATAL_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT))
+
+        @OptIn(ExperimentalUnsignedTypes::class)
+        fun recallEarthLocationEntry(recallIdx : Int) {
+            sacLatitude = earthLocationArray[recallIdx].latitude
+            sacLongitude = earthLocationArray[recallIdx].longitude
+            sacAltitude = earthLocationArray[recallIdx].altitude
+            sacTimezone = earthLocationArray[recallIdx].timeZone
+            sacUTCDateTime = earthLocationArray[recallIdx].utcDateTime
+        }
+
+        @OptIn(ExperimentalUnsignedTypes::class)
+        fun storeEarthLocationEntry(storeIdx : Int) {
+            earthLocationArray[storeIdx].latitude = sacLatitude
+            earthLocationArray[storeIdx].longitude = sacLongitude
+            earthLocationArray[storeIdx].altitude = sacAltitude
+            earthLocationArray[storeIdx].timeZone = sacTimezone
+            earthLocationArray[storeIdx].utcDateTime = sacUTCDateTime
+        }
 
 
         fun ecsInit() {

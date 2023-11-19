@@ -2,9 +2,7 @@ package river.exertion.sac.system
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IntervalIteratingSystem
-import kotlinx.datetime.*
 import ktx.ashley.allOf
-import river.exertion.kcop.base.Log
 import river.exertion.kcop.view.layout.DisplayView
 import river.exertion.sac.console.state.NavState
 import river.exertion.sac.component.SACComponent
@@ -20,7 +18,10 @@ class SACSystem : IntervalIteratingSystem(allOf(SACComponent::class).get(), .4f)
         if (sacComponent.isInitialized) {
             SACInputProcessor.navStateMachine.currentState.updCurNavTime()
 
-            SACComponent.sacUTCDateTime = NavState.curNavTimeUTC()
+            if (!SACInputProcessor.navStateMachine.isInState(NavState.LOCATION_RECALL)) {
+                SACComponent.sacUTCDateTime = NavState.curNavTimeUTC()
+            }
+
             sacComponent.sacRecalc()
 
             SACCelestialsHousesDVLayout.celestialSnapshot = SACComponent.sacCelestialSnapshot
