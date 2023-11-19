@@ -1,4 +1,4 @@
-package river.exertion.sac.astro.state
+package river.exertion.sac.console.state
 
 import kotlin.math.pow
 

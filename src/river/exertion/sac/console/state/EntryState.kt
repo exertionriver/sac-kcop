@@ -1,8 +1,10 @@
-package river.exertion.sac.astro.state
+package river.exertion.sac.console.state
 
-@ExperimentalUnsignedTypes
-enum class EntryState {
+import com.badlogic.gdx.ai.fsm.State
+import com.badlogic.gdx.ai.msg.Telegram
+import river.exertion.sac.view.SACInputProcessor
 
+enum class EntryState : State<SACInputProcessor> {
     NO_ENTRY
     , DATE_ENTRY { override fun getLabel() = "Date Entry (UTC)"; override fun getPrompt() = "yyyy.mm.dd (UTC) : "; override fun getDelim() = "." }
     , TIME_ENTRY { override fun getLabel() = "Time Entry (UTC)"; override fun getPrompt() = "hh:mm:ss (UTC) : "; override fun getDelim() = ":" }
@@ -17,4 +19,12 @@ enum class EntryState {
     open fun getPrompt(): String = ""
     open fun getDelim(): String = ""
 
+    override fun update(sacInputProcessor: SACInputProcessor) { }
+    override fun enter(sacInputProcessor: SACInputProcessor?) { }
+    override fun exit(sacInputProcessor: SACInputProcessor?) { }
+    override fun onMessage(sacInputProcessor: SACInputProcessor?, telegram: Telegram?): Boolean = true
+
+    companion object {
+        fun defaultState() = NO_ENTRY
+    }
 }

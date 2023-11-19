@@ -1,7 +1,7 @@
-package river.exertion.sac.astro.state
+package river.exertion.sac.console.state
 
 enum class HelpState {
-    HELP_DISABLED { override fun getRenderHelpFirstLine() = " ".padEnd(HELP_ENABLED.getRenderHelpFirstLine().length, ' ')
+/*    HELP_DISABLED { override fun getRenderHelpFirstLine() = " ".padEnd(HELP_ENABLED.getRenderHelpFirstLine().length, ' ')
                     override fun getRenderHelpSecondLine() = " ".padEnd(HELP_ENABLED.getRenderHelpSecondLine().length, ' ')
     }
     , HELP_ENABLED { override fun getRenderHelpFirstLine() = "Navigate by: [s]econds, [m]inutes, [h]ours, [d]ays, [w]eeks, m[o]nths, [y]ears, [-]reverse nav; [ESC]return to current time; change [p]resets, [a]spects toggle, [t]ime toggle"
@@ -10,4 +10,4 @@ enum class HelpState {
 
     abstract fun getRenderHelpFirstLine() : String
     abstract fun getRenderHelpSecondLine() : String
-}
+*/}

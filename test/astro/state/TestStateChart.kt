@@ -4,6 +4,10 @@ import org.junit.jupiter.api.Test
 import river.exertion.sac.astro.base.AspectCelestial
 import river.exertion.sac.astro.state.*
 import river.exertion.sac.Profiles
+import river.exertion.sac.console.state.AspectOverlayState
+import river.exertion.sac.console.state.AspectsState
+import river.exertion.sac.console.state.ChartState
+import river.exertion.sac.console.state.TimeAspectsState
 
 @OptIn(ExperimentalUnsignedTypes::class)
 object TestStateChart {

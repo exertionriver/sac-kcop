@@ -1,6 +1,5 @@
 package river.exertion.sac.view
 
-import river.exertion.kcop.asset.view.ColorPalette
 import river.exertion.kcop.view.layout.displayViewLayout.*
 import river.exertion.kcop.view.layout.displayViewLayout.asset.DVAlign
 import river.exertion.sac.Constants
@@ -8,6 +7,10 @@ import river.exertion.sac.astro.base.*
 import river.exertion.sac.astro.render.*
 import river.exertion.sac.astro.state.*
 import river.exertion.sac.component.SACComponent
+import river.exertion.sac.console.state.AspectOverlayState
+import river.exertion.sac.console.state.AspectsState
+import river.exertion.sac.console.state.ChartState
+import river.exertion.sac.console.state.TimeAspectsState
 import river.exertion.sac.swe.HouseName
 
 object SACCelestialsHousesDVLayout {
@@ -155,12 +158,14 @@ object SACCelestialsHousesDVLayout {
         DVLayoutHandler.currentFontColor = SACLayout.baseFontColor
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("appTitleVersion","${Constants.APP_NAME} v${Constants.APP_VERSION}")
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("appState","Test Hardcoded Label", SACLayout.baseValuesFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("appState",SACInputProcessor.navStateMachine.currentState.getLabel(), SACLayout.baseValuesFontColor)
 
-        val stateAttributes = AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT.getLabel() +
-                AspectsState.ALL_ASPECTS.getLabel() +
-                TimeAspectsState.TIME_ASPECTS_ENABLED.getLabel()
-        ChartState.NATAL_CHART.getLabel()
+        val stateAttributes =
+            SACInputProcessor.aspectOverlayStateMachine.currentState.getLabel() +
+            SACInputProcessor.chartStateMachine.currentState.getLabel() +
+            SACInputProcessor.aspectsStateMachine.currentState.getLabel() +
+            SACInputProcessor.timeAspectsStateMachine.currentState.getLabel()
+
         DVLayoutHandler.currentDvLayout.setTextPaneContent("appStateAttributes",stateAttributes, SACLayout.baseValuesFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent("appProfiles", "[exR]", SACLayout.baseValuesFontColor)
 

@@ -5,7 +5,7 @@ import river.exertion.sac.astro.render.RenderValue.Companion.negativeLabel
 import river.exertion.sac.astro.render.RenderValue.Companion.neutralLabel
 import river.exertion.sac.astro.render.RenderValue.Companion.positiveLabel
 import river.exertion.sac.astro.base.AspectCelestial
-import river.exertion.sac.astro.state.AnalysisState
+import river.exertion.sac.console.state.AnalysisState
 import river.exertion.sac.astro.value.ValueAspect
 import river.exertion.sac.Constants
 import kotlin.math.abs

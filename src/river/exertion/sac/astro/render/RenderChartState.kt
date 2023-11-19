@@ -4,7 +4,7 @@ import river.exertion.sac.astro.render.RenderValue.Companion.valueDivider
 import river.exertion.sac.astro.value.Value
 import river.exertion.sac.console.render.RenderState
 import river.exertion.sac.Constants
-import river.exertion.sac.astro.state.ChartState
+import river.exertion.sac.console.state.ChartState
 import kotlin.math.abs
 
 @ExperimentalUnsignedTypes

@@ -3,7 +3,7 @@ package river.exertion.sac.astro.render
 import kotlinx.datetime.LocalDateTime
 import river.exertion.sac.Constants
 import river.exertion.sac.astro.base.EarthLocation
-import river.exertion.sac.astro.state.EntryState
+import river.exertion.sac.console.state.EntryState
 
 @ExperimentalUnsignedTypes
 object RenderEarthLocation {

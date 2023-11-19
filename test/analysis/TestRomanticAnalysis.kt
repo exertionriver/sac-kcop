@@ -7,6 +7,7 @@ import river.exertion.sac.astro.value.ValueAspect.Companion.valueAspectReduceBas
 import river.exertion.sac.astro.value.ValueChart
 import river.exertion.sac.Profiles
 import org.junit.jupiter.api.Test
+import river.exertion.sac.console.state.*
 
 @ExperimentalUnsignedTypes
 class TestRomanticAnalysis {

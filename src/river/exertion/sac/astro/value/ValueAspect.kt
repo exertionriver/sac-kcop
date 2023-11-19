@@ -4,9 +4,10 @@ import river.exertion.sac.astro.base.AspectCelestial
 import river.exertion.sac.astro.base.AspectType
 import river.exertion.sac.astro.base.SignElement
 import river.exertion.sac.astro.base.SignMode
-import river.exertion.sac.astro.state.AnalysisState
-import river.exertion.sac.astro.state.ChartState
+import river.exertion.sac.console.state.AnalysisState
+import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.astro.state.StateAspect
+import river.exertion.sac.astro.state.StateAspectType
 import kotlin.math.abs
 
 //fourth chart aspects are for the opposite of current chartType for compSyn charts
@@ -199,7 +200,7 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
 
         val weightFirst = ValueAspectCelestial.fromName(stateAspect.aspectCelestialFirst.toString())!!.getWeight()
         val weightSecond = ValueAspectCelestial.fromName(stateAspect.aspectCelestialSecond.toString())!!.getWeight()
-        val weightAspect = stateAspect.aspectOverlayState.getAspectAngleOrb(stateAspect.aspectAngle)
+        val weightAspect = StateAspectType.of(stateAspect.aspectAngle).getAspectAngleOrb(stateAspect.aspectOverlayState)
 
         //full weightAspect at orb = 0, down to 0 weightAspect at the cusp of the orb
         val weightOrbAspect = ((60 * weightAspect) - (60 * stateAspect.orb)) / (60 * weightAspect)

@@ -1,8 +1,8 @@
 package river.exertion.sac.astro.render
 
 import river.exertion.sac.Constants
-import river.exertion.sac.astro.state.ChartStateType
-import river.exertion.sac.astro.state.ChartStateType.Companion.decodeChartStateType
+import river.exertion.sac.console.state.ChartStateType
+import river.exertion.sac.console.state.ChartStateType.Companion.decodeChartStateType
 
 @ExperimentalUnsignedTypes
 object RenderChartStateType {

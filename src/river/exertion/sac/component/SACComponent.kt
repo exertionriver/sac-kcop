@@ -3,29 +3,15 @@ package river.exertion.sac.component
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.ai.msg.Telegram
 import com.badlogic.gdx.ai.msg.Telegraph
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import river.exertion.kcop.ecs.EngineHandler
 import river.exertion.kcop.ecs.component.IComponent
 import river.exertion.kcop.messaging.MessageChannelHandler
-import river.exertion.kcop.asset.immersionTimer.ImmersionTimer
-import river.exertion.kcop.asset.irlTime.IrlTime
 import river.exertion.kcop.base.Id
 import river.exertion.kcop.profile.Profile
 import river.exertion.kcop.profile.asset.ProfileAsset
-import river.exertion.kcop.profile.settings.PSCompStatus
-import river.exertion.kcop.sim.narrative.NarrativeKlop
 import river.exertion.kcop.sim.narrative.NarrativeKlop.NarrativeBridge
-import river.exertion.kcop.sim.narrative.asset.NarrativeAsset
-import river.exertion.kcop.sim.narrative.asset.NarrativeStateAsset
 import river.exertion.kcop.sim.narrative.messaging.NarrativeComponentMessage
-import river.exertion.kcop.sim.narrative.structure.ImmersionLocation
-import river.exertion.kcop.sim.narrative.structure.ImmersionStatus
-import river.exertion.kcop.sim.narrative.structure.Narrative
-import river.exertion.kcop.sim.narrative.structure.NarrativeState
-import river.exertion.kcop.view.layout.displayViewLayout.DVLayout
-import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutHandler
-import river.exertion.kcop.view.KcopFont
 import river.exertion.kcop.view.layout.DisplayView
 import river.exertion.kcop.view.layout.StatusView
 import river.exertion.sac.Constants
@@ -33,9 +19,7 @@ import river.exertion.sac.SweetAstroConsoleKlop
 import river.exertion.sac.astro.base.CelestialSnapshot
 import river.exertion.sac.astro.base.EarthLocation
 import river.exertion.sac.astro.state.*
-import river.exertion.sac.swe.CalcUt
-import river.exertion.sac.swe.Houses
-import river.exertion.sac.swe.Julday
+import river.exertion.sac.console.state.*
 
 class SACComponent : IComponent, Telegraph {
 
@@ -113,7 +97,7 @@ class SACComponent : IComponent, Telegraph {
         var sacLongitude = Constants.LON_TNM
         var sacAltitude = Constants.ALT_TNM
         var sacTimezone = TimeZone.of(Constants.TZ_MST)
-        var sacUTCDateTime = IrlTime.utcLocalDateTime()
+        var sacUTCDateTime = NavState.curNavTimeUTC()
 
         var sacEarthLocation = EarthLocation(sacLongitude, sacLatitude, sacAltitude, sacTimezone, sacUTCDateTime)
         var sacCelestialSnapshot = CelestialSnapshot(sacEarthLocation)

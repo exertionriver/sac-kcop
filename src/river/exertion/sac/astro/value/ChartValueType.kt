@@ -1,6 +1,6 @@
 package river.exertion.sac.astro.value
 
-import river.exertion.sac.astro.state.ChartStateType
+import river.exertion.sac.console.state.ChartStateType
 
 @ExperimentalUnsignedTypes
 enum class ChartValueType {

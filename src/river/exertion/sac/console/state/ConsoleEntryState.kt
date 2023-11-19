@@ -20,33 +20,10 @@ import river.exertion.sac.Constants.KEY_T
 import river.exertion.sac.Constants.KEY_USCORE
 import river.exertion.sac.Constants.KEY_Z
 import river.exertion.sac.Constants.KEY_x
-import river.exertion.sac.astro.state.EntryState
 
 @ExperimentalUnsignedTypes
 object ConsoleEntryState {
 
-    fun getDefaultState() = EntryState.NO_ENTRY
-
-    fun EntryState.getNextState(input: Int) = this.getState(input)
-
-    fun EntryState.getState(input: Int): EntryState {
-
-        return when (input) {
-            KEY_D -> EntryState.DATE_ENTRY
-            KEY_T -> EntryState.TIME_ENTRY
-            KEY_O -> EntryState.LONG_ENTRY
-            KEY_A -> EntryState.LAT_ENTRY
-            KEY_Z -> EntryState.TZ_ENTRY
-            KEY_BANG, KEY_AT, KEY_HASH, KEY_DOLLAR, KEY_PERCENT
-                , KEY_CARET, KEY_AMPERSAND, KEY_ASTERISK, KEY_OPENPARENS
-                , KEY_CLOSEPARENS -> EntryState.PROFILE_ENTRY
-            KEY_PLUS, KEY_EQUALS -> EntryState.PROFILE_NUMBER_ENTRY
-            KEY_USCORE, KEY_ESC -> EntryState.NO_ENTRY
-
-            KEY_x -> EntryState.RESET_DEFAULTS
-            else -> this
-        }
-    }
 /*
     fun EntryState.getCurEntryProfile(prevCurProfile: Profile, inputOverride : String? = null): Profile {
 

@@ -1,7 +1,7 @@
 package river.exertion.sac.astro.base
 
 import kotlinx.datetime.*
-import river.exertion.sac.astro.state.EntryState
+import river.exertion.sac.console.state.EntryState
 import river.exertion.sac.Constants.ALT_TNM
 import river.exertion.sac.Constants.LAT_TNM
 import river.exertion.sac.Constants.LON_TNM

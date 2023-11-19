@@ -1,14 +1,12 @@
 package river.exertion.sac.astro.state
 
-import river.exertion.sac.console.state.ConsoleAspectOverlayState
-import river.exertion.sac.console.state.ConsoleAspectsState
-import river.exertion.sac.console.state.ConsoleTimeAspectsState
 import river.exertion.sac.astro.base.Aspect
 import river.exertion.sac.astro.base.AspectAngle
 import river.exertion.sac.astro.base.AspectCelestial
 import river.exertion.sac.astro.base.Sign
 import river.exertion.sac.astro.value.Value
 import river.exertion.sac.astro.value.ValueAspect
+import river.exertion.sac.console.state.*
 import kotlin.math.abs
 
 @OptIn(ExperimentalUnsignedTypes::class)
@@ -89,9 +87,9 @@ data class StateAspect(val signFirst : Sign
                 baseEmptyAspect.aspectCelestialSecond,
                 baseEmptyAspect.aspectAngle,
                 baseEmptyAspect.orb,
-                ConsoleAspectsState.getDefaultState(),
-                ConsoleTimeAspectsState.getDefaultState(),
-                ConsoleAspectOverlayState.getDefaultState()
+                AspectsState.defaultState(),
+                TimeAspectsState.defaultState(),
+                AspectOverlayState.defaultState()
             )
         }
 
@@ -100,9 +98,10 @@ data class StateAspect(val signFirst : Sign
             , aspectCelestialSecond : AspectCelestial
             , aspectAngle : AspectAngle
         ) =
-                aspectOverlayState.getAspectAngleOrb(aspectAngle) * minOf(
-                aspectOverlayState.getAspectCelestialOrbModifier(aspectCelestialFirst),
-                aspectOverlayState.getAspectCelestialOrbModifier(aspectCelestialSecond) )
+                StateAspectType.of(aspectAngle).getAspectAngleOrb(aspectOverlayState) * minOf(
+                    StateAspectCelestial.of(aspectCelestialFirst).getAspectCelestialOrbModifier(aspectOverlayState),
+                    StateAspectCelestial.of(aspectCelestialSecond).getAspectCelestialOrbModifier(aspectOverlayState)
+                )
 
         fun findAspectAngle(aspectCelestialFirst : AspectCelestial
                             , aspectCelestialFirstAngle : Double
@@ -117,14 +116,14 @@ data class StateAspect(val signFirst : Sign
             var returnAspectAngle = AspectAngle.ASPECT_ANGLE_NONE
             var minOrb = 360.0
 
-            val maxOrbLimit = aspectOverlayState.getAspectAngleOrb(AspectAngle.CONJUNCTION_0)
+            val maxOrbLimit = StateAspectType.of(AspectAngle.CONJUNCTION_0).getAspectAngleOrb(aspectOverlayState)
 
             val aspectCelestialAngleDiff = Aspect.calcNormAngleDiff(aspectCelestialFirstAngle, aspectCelestialSecondAngle)
 //             println("findAspectAngle() aspectCelestialAngleDiff: $aspectCelestialAngleDiff")
 //             println(AspectAngle.values().filter { it.isAspectAngle() }.sortedByDescending { it.getAngleDegree() })
 
             //iterate through aspectAngles
-            for (aspectAngle in AspectAngle.values().filter { it.isAspectAngle() }.sortedByDescending { it.getAngleDegree() } ) {
+            for (aspectAngle in AspectAngle.entries.filter { it.isAspectAngle() }.sortedByDescending { it.getAngleDegree() } ) {
                 if ((aspectsState == AspectsState.MAJOR_ASPECTS) && (!aspectAngle.getAspectType().isMajor() )) continue ;
                 if ((aspectsState == AspectsState.MINOR_ASPECTS) && (!aspectAngle.getAspectType().isMajor() && !aspectAngle.getAspectType().isMinor()) ) continue ;
                 if ((timeAspectsState == TimeAspectsState.TIME_ASPECTS_DISABLED) && (aspectCelestialFirst.isTimeAspect())) continue ;

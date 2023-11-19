@@ -3,8 +3,11 @@ package river.exertion.sac.astro.value
 import river.exertion.sac.astro.base.AspectAngle
 import river.exertion.sac.astro.base.AspectCelestial
 import river.exertion.sac.astro.state.*
-import river.exertion.sac.astro.state.ChartStateType.Companion.encodeChartStateType
+import river.exertion.sac.console.state.ChartStateType.Companion.encodeChartStateType
 import river.exertion.sac.astro.state.StateBaseAspect.Companion.stateBaseAspects
+import river.exertion.sac.console.state.AnalysisState
+import river.exertion.sac.console.state.ChartState
+import river.exertion.sac.console.state.ChartStateType
 
 @ExperimentalUnsignedTypes
 class ValueChart (val chartRows: Array<ValueChartRow>, val analysisState: AnalysisState = AnalysisState.NO_ANALYSIS) {
