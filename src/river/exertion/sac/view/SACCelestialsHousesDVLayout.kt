@@ -158,7 +158,7 @@ object SACCelestialsHousesDVLayout {
         DVLayoutHandler.currentFontColor = SACLayout.baseFontColor
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("appTitleVersion","${Constants.APP_NAME} v${Constants.APP_VERSION}")
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("appState",SACInputProcessor.navStateMachine.currentState.getLabel(), SACLayout.baseValuesFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("appState",SACInputProcessor.navStateMachine.currentState.getLabel()+SACInputProcessor.navDirStateMachine.currentState.getLabel(), SACLayout.baseValuesFontColor)
 
         val stateAttributes =
             SACInputProcessor.aspectOverlayStateMachine.currentState.getLabel() +

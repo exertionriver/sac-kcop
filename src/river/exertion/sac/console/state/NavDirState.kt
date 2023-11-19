@@ -7,7 +7,7 @@ import river.exertion.sac.view.SACInputProcessor
 
 enum class NavDirState : State<SACInputProcessor> {
     NAV_FORWARD { override fun getIncDec() = 1 }
-    , NAV_REVERSE { override fun getLabel() = SYM_RETRO; override fun getIncDec() = -1 }
+    , NAV_REVERSE { override fun getLabel() = ":Rev"; override fun getIncDec() = -1 }
     ;
     open fun getLabel(): String = ""
     abstract fun getIncDec(): Int
