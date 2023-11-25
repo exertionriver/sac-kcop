@@ -1,5 +1,8 @@
 package river.exertion.sac.view
 
+import kotlinx.datetime.*
+import river.exertion.kcop.asset.view.ColorPalette
+import river.exertion.kcop.view.MultiKeys
 import river.exertion.kcop.view.layout.displayViewLayout.*
 import river.exertion.kcop.view.layout.displayViewLayout.asset.DVAlign
 import river.exertion.sac.Constants
@@ -7,10 +10,7 @@ import river.exertion.sac.astro.base.*
 import river.exertion.sac.astro.render.*
 import river.exertion.sac.astro.state.*
 import river.exertion.sac.component.SACComponent
-import river.exertion.sac.console.state.AspectOverlayState
-import river.exertion.sac.console.state.AspectsState
-import river.exertion.sac.console.state.ChartState
-import river.exertion.sac.console.state.TimeAspectsState
+import river.exertion.sac.console.state.*
 import river.exertion.sac.swe.HouseName
 
 object SACCelestialsHousesDVLayout {
@@ -172,7 +172,7 @@ object SACCelestialsHousesDVLayout {
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localTimeLabel", RenderEarthLocation.getEarthLocalTimeLabel())
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localTime", "${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.hour)}:${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.minute)}:${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.second)}", SACLayout.baseValuesFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localDateLabel", RenderEarthLocation.getEarthLocalDateLabel())
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("localDate", "${"%4d".format(celestialSnapshot.refEarthLocation.localDateTime.year)}.${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.monthNumber)}.${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.dayOfMonth)}", SACLayout.baseValuesFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localDate", "${"%4d".format(celestialSnapshot.refEarthLocation.localDateTime.year)}-${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.monthNumber)}-${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.dayOfMonth)}", SACLayout.baseValuesFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localTimezoneLabel", RenderEarthLocation.getEarthTimezoneLabel())
         DVLayoutHandler.currentDvLayout.setTextPaneContent("LocalTimezone", celestialSnapshot.refEarthLocation.getTimezoneOffsetString(), SACLayout.baseValuesFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localLatitudeLabel", RenderEarthLocation.getEarthLatitudeLabel())
@@ -180,8 +180,40 @@ object SACCelestialsHousesDVLayout {
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTimeLabel", RenderEarthLocation.getEarthUTCTimeLabel())
         DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTime", "${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.hour)}:${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.minute)}:${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.second)}", SACLayout.baseValuesFontColor)
+
+        if (SACInputProcessor.entryStateMachine.isInState(EntryState.TIME_ENTRY)) {
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTimeLabel", colorOverride = SACLayout.highlightFontColor)
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTime", colorOverride = ColorPalette.of("green"))
+
+            DVLayoutHandler.currentDvLayout.setTextPaneMode("utcTime", DVTextPane.DVTextPaneMode.WRITE, "[0-9]{2}:[0-9]{2}:[0-9]{2}") {
+                NavState.curNavInstant = NavState.curNavInstant.toLocalDateTime(TimeZone.UTC).date.atTime(it.toLocalTime()).toInstant(TimeZone.UTC)
+                SACInputProcessor.entryStateMachine.changeState(EntryState.NO_ENTRY)
+                SACInputProcessor.navStateMachine.changeState(NavState.NAV_PAUSED)
+                MultiKeys.keysDown.clear()
+            }
+        } else {
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTimeLabel", colorOverride = SACLayout.baseFontColor)
+            DVLayoutHandler.currentDvLayout.setTextPaneMode("utcTime", DVTextPane.DVTextPaneMode.READ)
+        }
+
         DVLayoutHandler.currentDvLayout.setTextPaneContent("utcDateLabel", RenderEarthLocation.getEarthUTCDateLabel())
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("utcDate", "${"%4d".format(celestialSnapshot.refEarthLocation.utcDateTime.year)}.${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.monthNumber)}.${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.dayOfMonth)}", SACLayout.baseValuesFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("utcDate", "${"%4d".format(celestialSnapshot.refEarthLocation.utcDateTime.year)}-${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.monthNumber)}-${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.dayOfMonth)}", SACLayout.baseValuesFontColor)
+
+        if (SACInputProcessor.entryStateMachine.isInState(EntryState.DATE_ENTRY)) {
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("utcDateLabel", colorOverride = SACLayout.highlightFontColor)
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("utcDate", colorOverride = ColorPalette.of("green"))
+
+            DVLayoutHandler.currentDvLayout.setTextPaneMode("utcDate", DVTextPane.DVTextPaneMode.WRITE, "[0-9]{4}-[0-9]{2}-[0-9]{2}") {
+                NavState.curNavInstant = it.toLocalDate().atTime(NavState.curNavInstant.toLocalDateTime(TimeZone.UTC).time).toInstant(TimeZone.UTC)
+                SACInputProcessor.entryStateMachine.changeState(EntryState.NO_ENTRY)
+                SACInputProcessor.navStateMachine.changeState(NavState.NAV_PAUSED)
+                MultiKeys.keysDown.clear()
+            }
+        } else {
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("utcDateLabel", colorOverride = SACLayout.baseFontColor)
+            DVLayoutHandler.currentDvLayout.setTextPaneMode("utcDate", DVTextPane.DVTextPaneMode.READ)
+        }
+
         DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTimezoneLabel", RenderEarthLocation.getUTCLongitudeLabel())
         DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTimezone", "0.0")
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localLongitudeLabel", RenderEarthLocation.getEarthLongitudeLabel())

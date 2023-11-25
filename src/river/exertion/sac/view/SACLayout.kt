@@ -2,8 +2,11 @@ package river.exertion.sac.view
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
 import river.exertion.kcop.asset.AssetManagerHandler
 import river.exertion.kcop.asset.view.ColorPalette
+import river.exertion.kcop.base.KcopBase
 import river.exertion.kcop.view.KcopFont
 import river.exertion.kcop.view.klop.IDisplayViewLayoutHandler
 import river.exertion.kcop.view.layout.DisplayView
@@ -15,6 +18,8 @@ object SACLayout : IDisplayViewLayoutHandler {
     var baseColor = ColorPalette.of(baseColorName)
     var baseFontColor = ColorPalette.of("cornflowerBlue")
     var baseValuesFontColor = ColorPalette.of("paleGoldenrod")
+
+    var highlightFontColor = baseFontColor.incr(2)
 
     var fireFontColor = ColorPalette.of("maroon")
     var earthFontColor = ColorPalette.of("olive")

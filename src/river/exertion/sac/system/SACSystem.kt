@@ -16,18 +16,31 @@ class SACSystem : IntervalIteratingSystem(allOf(SACComponent::class).get(), .4f)
         val sacComponent = SACComponent.getFor(entity)!!
 
         if (sacComponent.isInitialized) {
-            SACInputProcessor.navStateMachine.currentState.updCurNavTime()
 
-            if (!SACInputProcessor.navStateMachine.isInState(NavState.LOCATION_RECALL)) {
-                SACComponent.sacUTCDateTime = NavState.curNavTimeUTC()
+            if (SACInputProcessor.navStateMachine.isInState(NavState.ENTRY_PAUSED)) {
+                if (!entryLock) {
+                    DisplayView.build()
+                    entryLock = true
+                }
+            } else {
+                SACInputProcessor.navStateMachine.currentState.updCurNavInstant()
+
+                if (!SACInputProcessor.navStateMachine.isInState(NavState.LOCATION_RECALL)) {
+                    SACComponent.sacUTCDateTime = NavState.curNavDateTimeUTC()
+                }
+
+                sacComponent.sacRecalc()
+
+                SACCelestialsHousesDVLayout.celestialSnapshot = SACComponent.sacCelestialSnapshot
+                SACCelestialsHousesDVLayout.stateChart = SACComponent.sacChart
+
+                DisplayView.build()
+                entryLock = false
             }
-
-            sacComponent.sacRecalc()
-
-            SACCelestialsHousesDVLayout.celestialSnapshot = SACComponent.sacCelestialSnapshot
-            SACCelestialsHousesDVLayout.stateChart = SACComponent.sacChart
-
-            DisplayView.build()
         }
+    }
+
+    companion object {
+        var entryLock = false
     }
 }

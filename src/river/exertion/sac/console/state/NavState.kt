@@ -9,7 +9,7 @@ import river.exertion.sac.view.SACInputProcessor
 enum class NavState : State<SACInputProcessor> {
     CURRENT {
         override fun getLabel() = "Current Time"
-        override fun updCurNavTime() { curNavTime = Clock.System.now() }
+        override fun updCurNavInstant() { curNavInstant = Clock.System.now() }
         override fun isCurrent() = true
     }
     , NAV_PAUSED {
@@ -18,31 +18,31 @@ enum class NavState : State<SACInputProcessor> {
     }
     , NAV_SECOND {
         override fun getLabel() = "Nav:Second"
-        override fun updCurNavTime() { curNavTime = curNavTime.plus(SACInputProcessor.navDirStateMachine.currentState.getIncDec(), DateTimeUnit.SECOND) }
+        override fun updCurNavInstant() { curNavInstant = curNavInstant.plus(SACInputProcessor.navDirStateMachine.currentState.getIncDec(), DateTimeUnit.SECOND) }
     }
     , NAV_MINUTE {
         override fun getLabel() = "Nav:Minute"
-        override fun updCurNavTime() { curNavTime = curNavTime.plus(SACInputProcessor.navDirStateMachine.currentState.getIncDec(), DateTimeUnit.MINUTE) }
+        override fun updCurNavInstant() { curNavInstant = curNavInstant.plus(SACInputProcessor.navDirStateMachine.currentState.getIncDec(), DateTimeUnit.MINUTE) }
     }
     , NAV_HOUR {
         override fun getLabel() = "Nav:Hour"
-        override fun updCurNavTime() { curNavTime = curNavTime.plus(SACInputProcessor.navDirStateMachine.currentState.getIncDec(), DateTimeUnit.HOUR) }
+        override fun updCurNavInstant() { curNavInstant = curNavInstant.plus(SACInputProcessor.navDirStateMachine.currentState.getIncDec(), DateTimeUnit.HOUR) }
     }
     , NAV_DAY {
         override fun getLabel() = "Nav:Day"
-        override fun updCurNavTime() { curNavTime = curNavTime.plus(DateTimePeriod(days = SACInputProcessor.navDirStateMachine.currentState.getIncDec()), TimeZone.UTC) }
+        override fun updCurNavInstant() { curNavInstant = curNavInstant.plus(DateTimePeriod(days = SACInputProcessor.navDirStateMachine.currentState.getIncDec()), TimeZone.UTC) }
     }
     , NAV_WEEK {
         override fun getLabel() = "Nav:Week"
-        override fun updCurNavTime() { curNavTime = curNavTime.plus(DateTimePeriod(days = SACInputProcessor.navDirStateMachine.currentState.getIncDec() * 7), TimeZone.UTC) }
+        override fun updCurNavInstant() { curNavInstant = curNavInstant.plus(DateTimePeriod(days = SACInputProcessor.navDirStateMachine.currentState.getIncDec() * 7), TimeZone.UTC) }
     }
     , NAV_MONTH {
         override fun getLabel() = "Nav:Month"
-        override fun updCurNavTime() { curNavTime = curNavTime.plus(DateTimePeriod(months = SACInputProcessor.navDirStateMachine.currentState.getIncDec()), TimeZone.UTC) }
+        override fun updCurNavInstant() { curNavInstant = curNavInstant.plus(DateTimePeriod(months = SACInputProcessor.navDirStateMachine.currentState.getIncDec()), TimeZone.UTC) }
     }
     , NAV_YEAR {
         override fun getLabel() = "Nav:Year"
-        override fun updCurNavTime() { curNavTime = curNavTime.plus(DateTimePeriod(years = SACInputProcessor.navDirStateMachine.currentState.getIncDec()), TimeZone.UTC) }
+        override fun updCurNavInstant() { curNavInstant = curNavInstant.plus(DateTimePeriod(years = SACInputProcessor.navDirStateMachine.currentState.getIncDec()), TimeZone.UTC) }
     }
     , ENTRY_PAUSED {
         override fun getLabel() = "Entry:Paused"
@@ -50,19 +50,19 @@ enum class NavState : State<SACInputProcessor> {
     }
     , LOCATION_RECALL {
         override fun getLabel() = "Location Recalled"
-        override fun updCurNavTime() { curNavTime = SACComponent.sacUTCDateTime.toInstant(TimeZone.UTC) }
+        override fun updCurNavInstant() { curNavInstant = SACComponent.sacUTCDateTime.toInstant(TimeZone.UTC) }
         override fun isPaused() = true
     }
     , LOCATION_STORE {
         override fun getLabel() = "Location Stored"
-        override fun updCurNavTime() { curNavTime = SACComponent.sacUTCDateTime.toInstant(TimeZone.UTC) }
+        override fun updCurNavInstant() { curNavInstant = SACComponent.sacUTCDateTime.toInstant(TimeZone.UTC) }
         override fun isPaused() = true
     }
     ;
     abstract fun getLabel(): String
     open fun isCurrent() = false
     open fun isPaused() = false
-    open fun updCurNavTime() { }
+    open fun updCurNavInstant() { }
 
     override fun update(sacInputProcessor: SACInputProcessor) { }
     override fun enter(sacInputProcessor: SACInputProcessor?) { }
@@ -70,8 +70,8 @@ enum class NavState : State<SACInputProcessor> {
     override fun onMessage(sacInputProcessor: SACInputProcessor?, telegram: Telegram?): Boolean = true
 
     companion object {
-        var curNavTime = Clock.System.now()
-        fun curNavTimeUTC() = curNavTime.toLocalDateTime(TimeZone.UTC)
+        var curNavInstant = Clock.System.now()
+        fun curNavDateTimeUTC() = curNavInstant.toLocalDateTime(TimeZone.UTC)
 
         fun defaultState() = CURRENT
 

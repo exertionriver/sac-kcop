@@ -2,6 +2,7 @@ package river.exertion.sac.view
 
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine
+import river.exertion.kcop.view.MultiKeys
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.state.*
 
@@ -22,10 +23,6 @@ object SACInputProcessor : InputProcessor {
         MultiKeys.keysDown.add(keycode)
 
         when {
-            MultiKeys.SPACE.keyDown() -> {
-                navStateMachine.changeState(NavState.cyclePause(navStateMachine.currentState))
-            }
-
             //escape to console starting state
             MultiKeys.ESCAPE.keyDown() -> {
                 navStateMachine.changeState(NavState.defaultState())
@@ -37,6 +34,21 @@ object SACInputProcessor : InputProcessor {
                 chartStateMachine.changeState(ChartState.defaultState())
                 aspectsStateMachine.changeState(AspectsState.defaultState())
                 aspectOverlayStateMachine.changeState(AspectOverlayState.defaultState())
+            }
+
+            //remove modifications, leave navigation
+            MultiKeys.USCORE.keysDown() -> {
+                entryStateMachine.changeState(EntryState.RESET_DEFAULTS)
+                timeAspectsStateMachine.changeState(TimeAspectsState.defaultState())
+                analysisStateMachine.changeState(AnalysisState.defaultState())
+                detailsStateMachine.changeState(DetailsState.defaultState())
+                chartStateMachine.changeState(ChartState.defaultState())
+                aspectsStateMachine.changeState(AspectsState.defaultState())
+                aspectOverlayStateMachine.changeState(AspectOverlayState.defaultState())
+            }
+
+            MultiKeys.SPACE.keyDown() -> {
+                navStateMachine.changeState(NavState.cyclePause(navStateMachine.currentState))
             }
 
             MultiKeys.PLUS.keysDown() -> {
@@ -57,17 +69,6 @@ object SACInputProcessor : InputProcessor {
                 navDirStateMachine.changeState(NavDirState.cycleState(navDirStateMachine.currentState))
 
                 if (navStateMachine.currentState.isCurrent() ) navStateMachine.changeState(NavState.NAV_SECOND)
-            }
-
-            //remove modifications, leave navigation
-            MultiKeys.USCORE.keysDown() -> {
-                entryStateMachine.changeState(EntryState.RESET_DEFAULTS)
-                timeAspectsStateMachine.changeState(TimeAspectsState.defaultState())
-                analysisStateMachine.changeState(AnalysisState.defaultState())
-                detailsStateMachine.changeState(DetailsState.defaultState())
-                chartStateMachine.changeState(ChartState.defaultState())
-                aspectsStateMachine.changeState(AspectsState.defaultState())
-                aspectOverlayStateMachine.changeState(AspectOverlayState.defaultState())
             }
 
             MultiKeys.a.keyDown() -> aspectsStateMachine.changeState(AspectsState.cycleState(aspectsStateMachine.currentState))
@@ -91,11 +92,6 @@ object SACInputProcessor : InputProcessor {
             MultiKeys.R.keysDown() -> analysisStateMachine.changeState(AnalysisState.cycleRomanticState(analysisStateMachine.currentState))
 
             MultiKeys.e.keyDown() -> detailsStateMachine.changeState(DetailsState.cycleState(detailsStateMachine.currentState))
-
-            //exit entry state
-            MultiKeys.x.keyDown() -> {
-                entryStateMachine.changeState(EntryState.defaultState())
-            }
 
             MultiKeys.numKeyDown() -> {
                 navStateMachine.changeState(NavState.LOCATION_RECALL)
@@ -135,6 +131,7 @@ object SACInputProcessor : InputProcessor {
                 entryStateMachine.changeState(EntryState.TZ_ENTRY)
             }
         }
+
         return false
     }
 

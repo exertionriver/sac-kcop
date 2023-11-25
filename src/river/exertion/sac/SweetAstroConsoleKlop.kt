@@ -1,18 +1,22 @@
 package river.exertion.sac
 
+import com.badlogic.gdx.Input
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
 import river.exertion.kcop.base.Id
+import river.exertion.kcop.base.KcopBase
 import river.exertion.kcop.ecs.EngineHandler
 import river.exertion.kcop.ecs.component.IComponent
-import river.exertion.kcop.ecs.component.IrlTimeComponent
 import river.exertion.kcop.ecs.entity.SubjectEntity
 import river.exertion.kcop.ecs.klop.IECSKlop
-import river.exertion.kcop.profile.component.ProfileComponent
-import river.exertion.kcop.sim.narrative.system.NarrativeTextSystem
-import river.exertion.sac.view.SACInputProcessor
-import river.exertion.sac.view.SACLayout
+import river.exertion.kcop.view.MultiKeys
 import river.exertion.kcop.view.klop.IDisplayViewKlop
 import river.exertion.sac.component.SACComponent
+import river.exertion.sac.console.state.EntryState
+import river.exertion.sac.console.state.NavState
 import river.exertion.sac.system.SACSystem
+import river.exertion.sac.view.SACInputProcessor
+import river.exertion.sac.view.SACLayout
 
 object SweetAstroConsoleKlop : IDisplayViewKlop, IECSKlop {
 
@@ -22,6 +26,18 @@ object SweetAstroConsoleKlop : IDisplayViewKlop, IECSKlop {
 
     override fun load() {
         loadSystems()
+
+        KcopBase.stage.addListener(object : InputListener() {
+            override fun keyDown(event : InputEvent, keycode : Int) : Boolean {
+                //used to escape from text entry
+                if ( (keycode == Input.Keys.ESCAPE) && (SACInputProcessor.navStateMachine.isInState(NavState.ENTRY_PAUSED) ) )  {
+                    SACInputProcessor.entryStateMachine.changeState(EntryState.NO_ENTRY)
+                    SACInputProcessor.navStateMachine.changeState(NavState.NAV_PAUSED)
+                    MultiKeys.keysDown.clear()
+                }
+                return false
+            }
+        })
     }
 
     override fun unload() {

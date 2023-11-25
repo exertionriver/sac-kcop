@@ -103,7 +103,7 @@ class SACComponent : IComponent, Telegraph {
         var sacLongitude = Constants.LON_TNM
         var sacAltitude = Constants.ALT_TNM
         var sacTimezone = TimeZone.of(Constants.TZ_MST)
-        var sacUTCDateTime = NavState.curNavTimeUTC()
+        var sacUTCDateTime = NavState.curNavDateTimeUTC()
 
         @OptIn(ExperimentalUnsignedTypes::class)
         var earthLocationArray = Array(10) { _ -> EarthLocation(sacLongitude, sacLatitude, sacAltitude, sacTimezone, sacUTCDateTime) }
