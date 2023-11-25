@@ -23,7 +23,7 @@ object RiseTrans {
 
         geopos[0] = earthLocation.longitude
         geopos[1] = earthLocation.latitude
-        geopos[2] = earthLocation.altitude
+        geopos[2] = earthLocation.altitude.toDouble()
 
         Swe.sw.swe_set_topo(geopos[0], geopos[1], geopos[2])
 

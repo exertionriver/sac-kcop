@@ -10,12 +10,12 @@ import river.exertion.sac.Constants.TZ_MST
 @ExperimentalUnsignedTypes
 data class EarthLocation(var longitude : Double = LON_TNM
     , var latitude : Double = LAT_TNM
-    , var altitude : Double = ALT_TNM
+    , var altitude : Int = ALT_TNM
     , var timeZone : TimeZone = TimeZone.currentSystemDefault()
     , var utcDateTime : LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC)
     , val timeUnknown : Boolean = false ) {
 
-    constructor(initLongitude : Double, initLatitude : Double, initAltitude : Double, initTimezone : TimeZone, initUtcDate : LocalDate) :
+    constructor(initLongitude : Double, initLatitude : Double, initAltitude : Int, initTimezone : TimeZone, initUtcDate : LocalDate) :
         this(initLongitude, initLatitude, initAltitude, initTimezone, getDefaultLocalDateTime(initUtcDate), true)
 
     var localDateTime = utcDateTime.toInstant(TimeZone.UTC).toLocalDateTime(timeZone)
@@ -64,16 +64,19 @@ data class EarthLocation(var longitude : Double = LON_TNM
         fun getTimeZoneOffsetStringInt(timeZoneOffset : Int) : String = if (timeZoneOffset >= 0) "+${timeZoneOffset}" else "$timeZoneOffset"
 
         private fun getTimezoneOffsetInt(timeZone : TimeZone) : Int =
-            if (timeZone == TimeZone.UTC) 0 else timeZone.offsetAt(Clock.System.now()).toString().split(":")[0].toInt()
+            if (timeZone == TimeZone.of("UTC")) 0
+            else timeZone.offsetAt(Clock.System.now()).toString().split(":")[0].toInt()
 
+      //  fun getTimeZoneFromOffsetInt(timeZoneOffset : Int) : TimeZone = TimeZone.of(getTimeZoneString(timeZoneOffset))
 
-        fun getTimeZoneFromOffsetInt(timeZoneOffset : Int) : TimeZone = TimeZone.of(getTimeZoneString(timeZoneOffset))
-
-        fun getTimeZoneString(timeZoneOffset : Int) : String = if (timeZoneOffset == 0) "Z" else getTimeZoneOffsetStringInt(timeZoneOffset)
-
+    //    fun getTimeZoneString(timeZoneOffset : Int) : String = if (timeZoneOffset == 0) "Z" else getTimeZoneOffsetStringInt(timeZoneOffset)
 
         fun getOffsetStringDouble(timeZone: TimeZone) : String = getTimeZoneOffsetStringDouble(getTimezoneOffsetInt(timeZone))
 
-        private fun getTimeZoneOffsetStringDouble(timeZoneOffset : Int) : String = if (timeZoneOffset >= 0) "+${timeZoneOffset.toDouble()}" else "${timeZoneOffset.toDouble()}"
+        private fun getTimeZoneOffsetStringDouble(timeZoneOffset : Int) : String = when {
+            (timeZoneOffset > 0) -> "UTC+${timeZoneOffset.toDouble()}"
+            (timeZoneOffset < 0) -> "UTC${timeZoneOffset.toDouble()}"
+            else -> "UTC"
+        }
     }
 }

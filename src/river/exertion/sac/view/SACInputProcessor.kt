@@ -120,11 +120,15 @@ object SACInputProcessor : InputProcessor {
             }
             MultiKeys.O.keysDown() -> {
                 navStateMachine.changeState(NavState.ENTRY_PAUSED)
-                entryStateMachine.changeState(EntryState.LONG_ENTRY)
+                entryStateMachine.changeState(EntryState.LON_ENTRY)
             }
             MultiKeys.A.keysDown() -> {
                 navStateMachine.changeState(NavState.ENTRY_PAUSED)
                 entryStateMachine.changeState(EntryState.LAT_ENTRY)
+            }
+            MultiKeys.L.keysDown() -> {
+                navStateMachine.changeState(NavState.ENTRY_PAUSED)
+                entryStateMachine.changeState(EntryState.ALT_ENTRY)
             }
             MultiKeys.Z.keysDown() -> {
                 navStateMachine.changeState(NavState.ENTRY_PAUSED)

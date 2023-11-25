@@ -148,7 +148,7 @@ object Constants {
     const val ALT_ATX = (130 + 305) / 2.0 //avg elevation
     const val LON_TNM = (-105.5734)
     const val LAT_TNM = 36.4072
-    const val ALT_TNM = 2124.0
+    const val ALT_TNM = 2124
     //-96.3334, 30.6333 : astro.com long/lat for BCS
     const val LON_BCS = (-96.37)
     const val LAT_BCS = 30.6744

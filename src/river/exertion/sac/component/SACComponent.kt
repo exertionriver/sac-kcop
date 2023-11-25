@@ -101,7 +101,7 @@ class SACComponent : IComponent, Telegraph {
         //TODO: allow manual setting of sac lat, long, alt, tz
         var sacLatitude = Constants.LAT_TNM
         var sacLongitude = Constants.LON_TNM
-        var sacAltitude = Constants.ALT_TNM
+        var sacAltitude : Int = Constants.ALT_TNM
         var sacTimezone = TimeZone.of(Constants.TZ_MST)
         var sacUTCDateTime = NavState.curNavDateTimeUTC()
 
