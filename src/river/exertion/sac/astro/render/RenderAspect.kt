@@ -76,34 +76,34 @@ data class RenderAspect(val valueAspect : ValueAspect) {
    }
 
     fun getRenderRomanticModLabel() : String {
-        if (valueAspect.analysisState != AnalysisState.ROMANTIC_ANALYSIS) return Constants.KNRM + ":" + Constants.KMAG + "(**) "
+        if (valueAspect.analysisState != AnalysisState.ROMANTIC_ANALYSIS) return ":(**) "
 
         return when {
             (valueAspect.getAspectModifier() > 0) -> when {
-                (valueAspect.getAspectModifier() == 4) -> Constants.KNRM + ":" + Constants.KBBLU + "(+4) "
-                else -> Constants.KNRM + ":" + Constants.KGRN + "(+${valueAspect.getAspectModifier()}) "
+                (valueAspect.getAspectModifier() == 4) -> ":(+4) "
+                else -> ":(+${valueAspect.getAspectModifier()}) "
             }
             (valueAspect.getAspectModifier() < 0) -> when {
-                (valueAspect.getAspectModifier() == -4) -> Constants.KNRM + ":" + Constants.KBRED + "(-4) "
-                else -> Constants.KNRM + ":" + Constants.KRED + "(${valueAspect.getAspectModifier()}) "
+                (valueAspect.getAspectModifier() == -4) -> ":(-4) "
+                else -> ":(${valueAspect.getAspectModifier()}) "
             }
-            else -> " "//.padStart(RenderDetails.getModWidth(), ' ')
-        } + Constants.KNRM
+            else -> " "
+        }
     }
 
     @OptIn(ExperimentalUnsignedTypes::class)
     fun getRenderCharacterModLabel() : String {
-        if (valueAspect.analysisState != AnalysisState.CHARACTER_ANALYSIS) return Constants.KNRM + ":" + Constants.KMAG + "(**)"
+        if (valueAspect.analysisState != AnalysisState.CHARACTER_ANALYSIS) return ":(**)"
 
-        return getChartStateTypesLabel(valueAspect.getAspectModifier())//.padStart(RenderDetails.getModWidth(), ' ')
+        return getChartStateTypesLabel(valueAspect.getAspectModifier())
     }
 
     companion object {
 
         //modifier flips value
-        fun String.revLabel() : String = Constants.KYEL + this + Constants.KNRM
+        fun String.revLabel() : String = this
 
-        fun getAspectNoneMarkerLabel() : String = Constants.KYEL + RenderAspectType.ASPECT_NONE.getLabel() + Constants.KNRM
+        fun getAspectNoneMarkerLabel() : String = RenderAspectType.ASPECT_NONE.getLabel()
 
         fun getLabelLength() : Int {
             return 23 //default Sign + Celestial + Aspect + Sign + Celestial + value

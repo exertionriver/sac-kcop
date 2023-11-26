@@ -5,7 +5,6 @@ import river.exertion.sac.astro.render.RenderAspect
 import river.exertion.sac.astro.state.*
 import river.exertion.sac.astro.value.ValueAspect
 import river.exertion.sac.astro.value.ValueChart
-import river.exertion.sac.Profiles
 import org.junit.jupiter.api.Test
 import river.exertion.sac.console.state.*
 

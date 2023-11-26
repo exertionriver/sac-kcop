@@ -29,9 +29,9 @@ enum class RenderAspectCelestial {
 
     open fun getLabel(): String = ""
 
-    fun getHeaderLabel() : String = Constants.KCYN + getLabel() + Constants.KNRM
-    fun getSynHeaderLabel() : String = Constants.KBLU + getLabel() + Constants.KNRM
-    fun getSynLabel() : String = Constants.KMAG + getLabel() + Constants.KNRM
+    fun getHeaderLabel() : String = getLabel()
+    fun getSynHeaderLabel() : String = getLabel()
+    fun getSynLabel() : String = getLabel()
 
     companion object {
         fun fromOrdinal(ordinal: Int) = entries.firstOrNull { it.ordinal == ordinal }

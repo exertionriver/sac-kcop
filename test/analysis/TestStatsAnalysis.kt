@@ -1,19 +1,6 @@
 package analysis
 
-import kotlinx.datetime.*
 import org.junit.jupiter.api.Test
-import river.exertion.sac.Constants.ALT_ATX
-import river.exertion.sac.Constants.LAT_ATX
-import river.exertion.sac.Constants.LON_ATX
-import river.exertion.sac.analysis.AstroAnalysisRow
-import river.exertion.sac.analysis.AstroAnalysisRow.Companion.generateAnalysisRowFromFiles
-import river.exertion.sac.analysis.AstroDataRow
-import river.exertion.sac.analysis.AstroRefValues
-import river.exertion.sac.astro.base.CelestialSnapshot
-import river.exertion.sac.astro.base.EarthLocation
-import river.exertion.sac.astro.state.*
-import river.exertion.sac.astro.value.ValueChart
-import river.exertion.sac.Profiles
 
 @ExperimentalUnsignedTypes
 class TestStatsAnalysis {

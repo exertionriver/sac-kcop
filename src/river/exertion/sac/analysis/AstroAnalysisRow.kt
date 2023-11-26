@@ -282,11 +282,11 @@ data class AstroAnalysisRow(val refUTC : LocalDateTime = Clock.System.now().toLo
 
                 pollSnapshot = CelestialSnapshot(
                     EarthLocation(
-                        refSnapshot.refEarthLocation.longitude,
-                        refSnapshot.refEarthLocation.latitude,
-                        refSnapshot.refEarthLocation.altitude,
-                        refSnapshot.refEarthLocation.timeZone,
-                        forwardPoll.toLocalDateTime(TimeZone.UTC)
+                        longitude = refSnapshot.refEarthLocation.longitude,
+                        latitude = refSnapshot.refEarthLocation.latitude,
+                        altitude = refSnapshot.refEarthLocation.altitude,
+                        timeZone = refSnapshot.refEarthLocation.timeZone,
+                        utcDateTime = forwardPoll.toLocalDateTime(TimeZone.UTC)
                     )
                 )
 

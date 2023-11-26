@@ -171,7 +171,7 @@ object SACCelestialsHousesDVLayout {
             SACInputProcessor.timeAspectsStateMachine.currentState.getLabel()
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("appStateAttributes",stateAttributes, SACLayout.baseValuesFontColor)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("appProfiles", "[exR]", SACLayout.baseValuesFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("appProfiles", SACComponent.sacEarthLocation.tag, SACLayout.baseValuesFontColor)
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localTimeLabel", RenderEarthLocation.getEarthLocalTimeLabel())
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localTime", "${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.hour)}:${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.minute)}:${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.second)}", SACLayout.baseValuesFontColor)

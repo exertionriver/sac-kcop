@@ -38,8 +38,8 @@ enum class RenderCelestial {
         fun getCelestialsLatitudeSpeedLabel() = "d(" + Constants.SYM_CELESTIAL_LAT + ")"
         fun getCelestialsDistanceSpeedLabel() = "d(" + Constants.SYM_CELESTIAL_DIST + ")"
         fun getCelestialsHouseLabel() = Constants.SYM_HOUSE + "(" + Constants.SYM_CELESTIAL + ")"
-        fun getCelestialsTransitHouseLabel() = Constants.KMAG + Constants.SYM_HOUSE + " " + Constants.SYM_CONTAINS + " " + Constants.KCYN + Constants.SYM_CELESTIAL + " " + Constants.KNRM
-        fun getCelestialsTransitCelestialsLabel() = Constants.KCYN + Constants.SYM_CELESTIAL + " " + Constants.KMAG + Constants.SYM_EXISTS_IN + " " + Constants.SYM_HOUSE + " " + Constants.KNRM
+        fun getCelestialsTransitHouseLabel() = Constants.SYM_HOUSE + " " + Constants.SYM_CONTAINS + " " + Constants.SYM_CELESTIAL + " "
+        fun getCelestialsTransitCelestialsLabel() = Constants.SYM_CELESTIAL + " " + Constants.SYM_EXISTS_IN + " " + Constants.SYM_HOUSE + " "
 
     }
 }

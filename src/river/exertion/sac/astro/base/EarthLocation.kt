@@ -3,15 +3,15 @@ package river.exertion.sac.astro.base
 import kotlinx.datetime.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import river.exertion.kcop.profile.Profile
 import river.exertion.sac.console.state.EntryState
-import river.exertion.sac.Constants.ALT_TNM
-import river.exertion.sac.Constants.LAT_TNM
-import river.exertion.sac.Constants.LON_TNM
-import river.exertion.sac.Constants.TZ_MST
 
+//https://www.iana.org/time-zones
 @Suppress("PROVIDED_RUNTIME_TOO_LOW")
 @Serializable
-data class EarthLocation(var longitude : Double = 0.0
+data class EarthLocation(
+    var tag : String = Profile.genName()
+    , var longitude : Double = 0.0
     , var latitude : Double = 0.0
     , var altitude : Int = 0
     , var timeZone : TimeZone = TimeZone.currentSystemDefault()
@@ -19,10 +19,10 @@ data class EarthLocation(var longitude : Double = 0.0
     , val timeUnknown : Boolean = false ) {
 
     constructor(initLongitude : Double, initLatitude : Double, initAltitude : Int, initTimezone : TimeZone, initUtcDate : LocalDate) :
-        this(initLongitude, initLatitude, initAltitude, initTimezone, getDefaultLocalDateTime(initUtcDate), true)
+        this(longitude = initLongitude, latitude = initLatitude, altitude = initAltitude, timeZone = initTimezone, utcDateTime = getDefaultLocalDateTime(initUtcDate), timeUnknown = true)
 
-    constructor(longitude: String, latitude: String, altitude : String, timeZone: String, utcDateTime: String) :
-            this(longitude.toDouble(), latitude.toDouble(), altitude.toInt(), TimeZone.of(timeZone), utcDateTime.toLocalDateTime())
+    constructor(tag: String, longitude: String, latitude: String, altitude : String, timeZone: String, utcDateTime: String) :
+            this(tag, longitude.toDouble(), latitude.toDouble(), altitude.toInt(), TimeZone.of(timeZone), utcDateTime.toLocalDateTime())
 
     @Transient
     var localDateTime = utcDateTime.toInstant(TimeZone.UTC).toLocalDateTime(timeZone)
@@ -62,7 +62,8 @@ data class EarthLocation(var longitude : Double = 0.0
             return dateTime.hour.toString().padStart(2, '0') + EntryState.TIME_ENTRY.getDelim() + dateTime.minute.toString().padStart(2, '0') + EntryState.TIME_ENTRY.getDelim() + dateTime.second.toString().padStart(2, '0')
         }
 
-        fun getDefaultEarthLocation(utcDate : LocalDate) = EarthLocation(LON_TNM, LAT_TNM, ALT_TNM, TimeZone.of(TZ_MST), utcDate)
+        fun getDefaultEarthLocation(utcDate : LocalDate) = EarthLocation().apply { this.utcDateTime = utcDate.atTime(Clock.System.now().toLocalDateTime(
+            TimeZone.UTC).time) }
 
         fun getDefaultLocalDateTime(ldt : LocalDate) : LocalDateTime = LocalDateTime(ldt.year, ldt.monthNumber, ldt.dayOfMonth, 12, 0,0)
 

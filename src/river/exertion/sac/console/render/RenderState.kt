@@ -45,16 +45,16 @@ object RenderState {
 */
     fun getNestedLabelString(outerLabelColorString : String, outerLabelString : String, innerLabelColorString : String = outerLabelColorString, innerLabelString : String = outerLabelString, nestedLabelColorString : String = outerLabelColorString) : String {
 
-        return outerLabelColorString + outerLabelString + nestedLabelColorString + "(" + innerLabelColorString + innerLabelString + nestedLabelColorString + ")" + Constants.KNRM
+        return outerLabelColorString + outerLabelString + nestedLabelColorString + "(" + innerLabelColorString + innerLabelString + nestedLabelColorString + ")"
     }
 
-    fun getLabelString(labelString : String, labelColorString : String) : String {
+    fun getLabelString(labelString : String, labelColorString : String = "") : String {
 
-        return labelColorString + labelString + Constants.KNRM
+        return labelColorString + labelString
     }
 
     fun getHeaderLabel(labelString : String) : String {
 
-        return getLabelString(labelString, Constants.KCYN)
+        return getLabelString(labelString)
     }
 }

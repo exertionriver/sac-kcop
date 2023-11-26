@@ -109,7 +109,7 @@ class SACComponent : IComponent, Telegraph {
             SACDefaultAssetStore.entries.filter { it.name != "Default"}[idx].get()
         }
 
-        var sacEarthLocation = EarthLocation(sacLongitude, sacLatitude, sacAltitude, sacTimezone, sacUTCDateTime)
+        var sacEarthLocation = EarthLocation("curNav", sacLongitude, sacLatitude, sacAltitude, sacTimezone, sacUTCDateTime)
         var sacCelestialSnapshot = CelestialSnapshot(sacEarthLocation)
         var sacChart = StateChart(StateChart.getAspects(sacCelestialSnapshot, sacCelestialSnapshot, ChartState.NATAL_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT))

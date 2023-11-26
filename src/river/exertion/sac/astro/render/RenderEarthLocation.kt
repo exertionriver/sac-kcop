@@ -17,7 +17,7 @@ object RenderEarthLocation {
     fun getEarthLocalTimeLabel() = Constants.SYM_EMPTY_HGLASS + "(" + Constants.SYM_TZ + ")"
     fun getEarthLocalDateLabel() = Constants.SYM_GREG_CALENDAR + "(" + Constants.SYM_TZ + ")"
 
-    fun getRenderTimeLabel(dateTime : LocalDateTime, dateTimeLabel : String) = Constants.KCYN + dateTimeLabel + ":" + Constants.KNRM + " " +
+    fun getRenderTimeLabel(dateTime : LocalDateTime, dateTimeLabel : String) = dateTimeLabel + ": " +
             dateTime.hour.toString().padStart(2, '0') + EntryState.TIME_ENTRY.getDelim() +
             dateTime.minute.toString().padStart(2, '0') + EntryState.TIME_ENTRY.getDelim() +
             dateTime.second.toString().padStart(2, '0')
@@ -26,7 +26,7 @@ object RenderEarthLocation {
 
     fun getRenderUTCTimeLabel(utcDateTime : LocalDateTime) = getRenderTimeLabel(utcDateTime, getEarthUTCTimeLabel())
 
-    fun getRenderDateLabel(dateTime : LocalDateTime, dateTimeLabel : String) = Constants.KCYN + dateTimeLabel + ":" + Constants.KNRM + " " +
+    fun getRenderDateLabel(dateTime : LocalDateTime, dateTimeLabel : String) = dateTimeLabel + ": " +
             dateTime.year.toString().padStart(4, '0') + EntryState.DATE_ENTRY.getDelim() +
             dateTime.monthNumber.toString().padStart(2, '0') + EntryState.DATE_ENTRY.getDelim() +
             dateTime.dayOfMonth.toString().padStart(2, '0')
@@ -35,15 +35,15 @@ object RenderEarthLocation {
 
     fun getRenderUTCDateLabel(utcDateTime : LocalDateTime) = getRenderDateLabel(utcDateTime, getEarthUTCDateLabel())
 
-    fun getRenderLocalTimezoneLabel(timeZoneOffsetString : String) = Constants.KCYN + getEarthTimezoneLabel() + ": " +
-            Constants.SYM_UTC + Constants.KNRM + timeZoneOffsetString
+    fun getRenderLocalTimezoneLabel(timeZoneOffsetString : String) = getEarthTimezoneLabel() + ": " +
+            Constants.SYM_UTC + timeZoneOffsetString
 
-    fun getRenderUTCTimezoneLabel() = Constants.KCYN + getUTCLongitudeLabel() + ":" + "0.0".padStart(7, ' ') + Constants.KNRM
+    fun getRenderUTCTimezoneLabel() = getUTCLongitudeLabel() + ":" + "0.0".padStart(7, ' ')
 
-    fun getRenderLocalLatitudeLabel(latitude : Double) = Constants.KCYN + getEarthLatitudeLabel() + "[-S]:" + Constants.KNRM +
+    fun getRenderLocalLatitudeLabel(latitude : Double) = getEarthLatitudeLabel() + "[-S]:" +
             latitude.toString().padStart(10, ' ')
 
-    fun getRenderLocalLongitudeLabel(longitude : Double) = Constants.KCYN + getEarthLongitudeLabel() + "[-W]:" + Constants.KNRM +
+    fun getRenderLocalLongitudeLabel(longitude : Double) = getEarthLongitudeLabel() + "[-W]:" +
             longitude.toString().padStart(10, ' ')
 
 

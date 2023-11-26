@@ -5,7 +5,6 @@ import river.exertion.sac.astro.base.Aspect
 import river.exertion.sac.astro.base.AspectAngle
 import river.exertion.sac.astro.base.AspectCelestial
 import river.exertion.sac.astro.base.Chart
-import river.exertion.sac.Profiles
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

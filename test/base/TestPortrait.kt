@@ -5,7 +5,6 @@ import kotlinx.datetime.TimeZone
 import org.junit.jupiter.api.Test
 import river.exertion.sac.Constants
 import river.exertion.sac.astro.base.EarthLocation
-import river.exertion.sac.Profiles
 
 @ExperimentalUnsignedTypes
 @OptIn(ExperimentalUnsignedTypes::class)

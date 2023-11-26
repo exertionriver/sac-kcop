@@ -16,18 +16,18 @@ object RenderChartStateType {
 
         chartStateTypes.sortedDescending().filter { it.ordinal <= ChartStateType.renderMaxIdx }.forEach {
             returnString += when (it) {
-                ChartStateType.REF_NATAL_CHART -> Constants.KBLU
-                ChartStateType.SYN_NATAL_CHART -> Constants.KMAG
-                else -> Constants.KCYN
+                ChartStateType.REF_NATAL_CHART -> ""
+                ChartStateType.SYN_NATAL_CHART -> ""
+                else -> ""
             }
 
-            returnString += it.getChartState().getLabel() + Constants.KNRM
+            returnString += it.getChartState().getLabel()
 
             counter++
         }
 
         (counter..2).forEach {
-            returnString += Constants.KNRM + "  "
+            returnString += "  "
         }
 
         return returnString

@@ -3,7 +3,6 @@ package astro.base
 import river.exertion.sac.astro.base.AspectCelestial
 import river.exertion.sac.astro.base.CelestialSnapshot
 import river.exertion.sac.astro.base.Chart
-import river.exertion.sac.Profiles
 import org.junit.jupiter.api.Test
 
 @OptIn(ExperimentalUnsignedTypes::class)

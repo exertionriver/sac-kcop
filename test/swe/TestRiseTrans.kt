@@ -10,7 +10,6 @@ import river.exertion.sac.Constants.ALT_TNM
 import river.exertion.sac.Constants.LAT_TNM
 import river.exertion.sac.Constants.LON_TNM
 import river.exertion.sac.Constants.TZ_MST
-import river.exertion.sac.Profile
 import kotlin.test.assertEquals
 
 @ExperimentalUnsignedTypes

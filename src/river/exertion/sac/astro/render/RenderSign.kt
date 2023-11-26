@@ -29,7 +29,7 @@ enum class RenderSign {
         fun fromOrdinal(ordinal: Int) = entries.firstOrNull { it.ordinal == ordinal }
         fun fromName(name: String) = entries.firstOrNull { it.name == name }
 
-        fun getSynLabel(sign : Sign) : String = Constants.KMAG + fromName(sign.toString())!!.getLabel() + Constants.KNRM
+        fun getSynLabel(sign : Sign) : String = fromName(sign.toString())!!.getLabel()
 
         fun getSignColor(sign : Sign) : ColorPalette = when {
             (sign.getElement() == SignElement.FIRE_ELEMENT) -> SACLayout.fireFontColor

@@ -24,8 +24,8 @@ data class RenderValue(val value : Value) {
     fun getPercentLabel() : String {
         val cons = abs(100 * value.positive.toDouble() / value.getStimulation().toDouble() ).toInt()
         val diss = abs(100 * value.negative.toDouble() / value.getStimulation().toDouble() ).toInt()
-        val consLabel = Constants.KGRN + cons.toString().padStart(2, ' ')
-        val dissLabel = Constants.KRED + diss.toString().padStart(2, ' ')
+        val consLabel = cons.toString().padStart(2, ' ')
+        val dissLabel = diss.toString().padStart(2, ' ')
 
         return consLabel.valueDivider().plus(dissLabel)
     }
@@ -33,15 +33,15 @@ data class RenderValue(val value : Value) {
     fun getStimLabel() : String {
 
         //TODO: move label to Astro folder
-        return Constants.KYEL + value.getStimulation().toString().padStart(4, ' ') + Constants.KNRM
+        return value.getStimulation().toString().padStart(4, ' ')
     }
 
     companion object {
 
-        fun String.positiveLabel() : String = Constants.KGRN + this + Constants.KNRM
-        fun String.neutralLabel() : String = Constants.KNRM + this + Constants.KNRM
-        fun String.negativeLabel() : String = Constants.KRED + this + Constants.KNRM
-        fun String.valueDivider() : String = this + Constants.KCYN + "." + Constants.KNRM
+        fun String.positiveLabel() : String = this
+        fun String.neutralLabel() : String = this
+        fun String.negativeLabel() : String = this
+        fun String.valueDivider() : String = this + "."
 
     }
 }
