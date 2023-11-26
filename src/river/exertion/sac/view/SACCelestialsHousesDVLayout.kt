@@ -40,7 +40,7 @@ object SACCelestialsHousesDVLayout {
         )
     })
 
-    private fun celestialsTable() : DVTable = DVTable(tableTag = "celestials", colspan = "3", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
+    private fun celestialsTable() : DVTable = DVTable(tableTag = "celestials", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
         DVTable(tableTag = "celestialsContent", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
             DVTextPane().apply { this.tag = "celestialHeader"; this.align = DVAlign.CENTER.tag() },
             DVTextPane().apply { this.tag = "signHeader"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.CENTER.tag() },
@@ -93,23 +93,28 @@ object SACCelestialsHousesDVLayout {
 
             while (colIdx <= rowIdx) {
                 if (rowIdx == colIdx) {
-                    this.add( DVTextPane().apply { this.tag = chartAspectCelestial.name } )
+                    this.add( DVTextPane().apply { this.tag = chartAspectCelestial.name; this.padLeft = ".1"; this.padRight = ".1"; this.align = DVAlign.CENTER.tag() } )
                 } else {
-                    this.add( DVTextPane().apply { this.tag = "${chartAspectCelestial.name}_${AspectCelestial.fromOrdinal(colIdx)}" } )
+                    this.add( DVTextPane().apply { this.tag = "${chartAspectCelestial.name}_${AspectCelestial.fromOrdinal(colIdx)}"; this.padLeft = ".1"; this.padRight = ".1"; this.align = DVAlign.CENTER.tag() } )
                 }
                 colIdx++
             }
             this.add(DVRow())
         } }
     )
-
     fun gridSpacer() : DVTable = DVTable(tableTag = "gridSpacer", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf<DVLayoutCell>().apply {
         this.add(
-            DVTextPane().apply { this.tag = "gridSpacerPane"; this.width = DVPaneType.DVPDimension.UNIT.tag() }
-        )
-    })
+            DVTextPane().apply { this.tag = "gridSpacerPane"; this.width = DVPaneType.DVPDimension.TINY.tag() }
+            )
+        })
 
-    fun headerTable() : DVTable = DVTable(tableTag = "header", colspan = "2", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
+    fun houseGridTables() : DVTable = DVTable(tableTag = "houseGridTables", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf<DVLayoutCell>(
+        housesTable(),
+        gridSpacer(),
+        gridTable()
+    ))
+
+    fun headerTable() : DVTable = DVTable(tableTag = "header", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
         DVTable(tableTag = "headerText", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
             DVTable(tableTag = "titleState", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
                 DVTextPane().apply { this.tag = "appTitleVersion"; this.width = DVPaneType.DVPDimension.MEDIUM.tag(); this.align = DVAlign.LEFT.tag() },
@@ -146,8 +151,7 @@ object SACCelestialsHousesDVLayout {
             DVRow(),
             celestialsTable(),
             DVRow(),
-            housesTable(),
-            gridTable()
+            houseGridTables()
         ))
     ))
 
