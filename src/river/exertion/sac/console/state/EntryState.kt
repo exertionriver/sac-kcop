@@ -13,7 +13,7 @@ enum class EntryState : State<SACInputProcessor> {
     , ALT_ENTRY { override fun getLabel() = "Altitude Entry"; override fun getPrompt() = "0.123m : " }
     , TZ_ENTRY { override fun getLabel() = "Timezone Entry"; override fun getPrompt() = "(-W)hh : " }
     , LOCATION_NUMBER_ENTRY { override fun getLabel() = "Location Number Entry"; override fun getPrompt() = "location number: " }
-    , RESET_DEFAULTS ;
+    ;
 
     open fun getLabel(): String = ""
     open fun getPrompt(): String = ""

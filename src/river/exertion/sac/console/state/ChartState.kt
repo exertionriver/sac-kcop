@@ -25,19 +25,5 @@ enum class ChartState : State<SACInputProcessor> {
 
     companion object {
         fun defaultState() = NATAL_CHART
-
-        fun cycleSynastry(chartState: ChartState) : ChartState {
-            return when (chartState) {
-                SYNASTRY_CHART -> NATAL_CHART
-                else -> SYNASTRY_CHART
-            }
-        }
-
-        fun cycleComposite(chartState: ChartState) : ChartState {
-            return when (chartState) {
-                COMPOSITE_CHART -> NATAL_CHART
-                else -> COMPOSITE_CHART
-            }
-        }
     }
 }

@@ -17,6 +17,7 @@ object SACInputProcessor : InputProcessor {
     val chartStateMachine = DefaultStateMachine(this, ChartState.defaultState())
     val aspectsStateMachine = DefaultStateMachine(this, AspectsState.defaultState())
     val aspectOverlayStateMachine = DefaultStateMachine(this, AspectOverlayState.defaultState())
+    val locationRecallStateMachine = DefaultStateMachine(this, LocationRecallState.defaultState())
 
     override fun keyDown(keycode: Int): Boolean {
 
@@ -34,11 +35,15 @@ object SACInputProcessor : InputProcessor {
                 chartStateMachine.changeState(ChartState.defaultState())
                 aspectsStateMachine.changeState(AspectsState.defaultState())
                 aspectOverlayStateMachine.changeState(AspectOverlayState.defaultState())
+                locationRecallStateMachine.changeState(LocationRecallState.defaultState())
+
+                SACComponent.refRecall = null
+                SACComponent.synCompRecall = null
             }
 
             //remove modifications, leave navigation
             MultiKeys.USCORE.keysDown() -> {
-                entryStateMachine.changeState(EntryState.RESET_DEFAULTS)
+                entryStateMachine.changeState(EntryState.defaultState())
                 timeAspectsStateMachine.changeState(TimeAspectsState.defaultState())
                 analysisStateMachine.changeState(AnalysisState.defaultState())
                 detailsStateMachine.changeState(DetailsState.defaultState())
@@ -52,17 +57,31 @@ object SACInputProcessor : InputProcessor {
             }
 
             MultiKeys.PLUS.keysDown() -> {
-                chartStateMachine.changeState(ChartState.cycleSynastry(chartStateMachine.currentState))
-                aspectOverlayStateMachine.changeState(AspectOverlayState.toggleState(chartStateMachine.currentState, aspectOverlayStateMachine.currentState))
+                if (chartStateMachine.isInState(ChartState.COMPOSITE_CHART)) {
+                    aspectOverlayStateMachine.changeState(AspectOverlayState.toggleState(chartStateMachine.currentState, aspectOverlayStateMachine.currentState))
+                }
 
-                entryStateMachine.changeState(EntryState.LOCATION_NUMBER_ENTRY)
+                chartStateMachine.changeState(ChartState.SYNASTRY_CHART)
+
+                if (navStateMachine.isInState(NavState.LOCATION_RECALL) || navStateMachine.isInState(NavState.LOCATION_STORE) ) {
+                    locationRecallStateMachine.changeState(LocationRecallState.REF_SYNCOMP_ENTRY)
+                } else {
+                    locationRecallStateMachine.changeState(LocationRecallState.CUR_NAV_SYNCOMP_ENTRY)
+                }
             }
 
             MultiKeys.EQUALS.keysDown() -> {
-                chartStateMachine.changeState(ChartState.cycleComposite(chartStateMachine.currentState))
-                aspectOverlayStateMachine.changeState(AspectOverlayState.toggleState(chartStateMachine.currentState, aspectOverlayStateMachine.currentState))
+                if (chartStateMachine.isInState(ChartState.SYNASTRY_CHART)) {
+                    aspectOverlayStateMachine.changeState(AspectOverlayState.toggleState(chartStateMachine.currentState, aspectOverlayStateMachine.currentState))
+                }
 
-                entryStateMachine.changeState(EntryState.LOCATION_NUMBER_ENTRY)
+                chartStateMachine.changeState(ChartState.COMPOSITE_CHART)
+
+                if (navStateMachine.isInState(NavState.LOCATION_RECALL) || navStateMachine.isInState(NavState.LOCATION_STORE) ) {
+                    locationRecallStateMachine.changeState(LocationRecallState.REF_SYNCOMP_ENTRY)
+                } else {
+                    locationRecallStateMachine.changeState(LocationRecallState.CUR_NAV_SYNCOMP_ENTRY)
+                }
             }
 
             MultiKeys.MINUS.keyDown() -> {
@@ -94,11 +113,25 @@ object SACInputProcessor : InputProcessor {
             MultiKeys.e.keyDown() -> detailsStateMachine.changeState(DetailsState.cycleState(detailsStateMachine.currentState))
 
             MultiKeys.numKeyDown() -> {
-                navStateMachine.changeState(NavState.LOCATION_RECALL)
-
                 val recallIdx = MultiKeys.numPressed()
 
-                SACComponent.recallEarthLocationEntry(recallIdx)
+                if (locationRecallStateMachine.currentState.isEntry()) {
+                    SACComponent.recallSynCompEarthLocationEntry(recallIdx)
+
+                    if (locationRecallStateMachine.isInState(LocationRecallState.CUR_NAV_SYNCOMP_ENTRY)) {
+                        locationRecallStateMachine.changeState(LocationRecallState.CUR_NAV_SYNCOMP_RECALL)
+                    }
+
+                    if (locationRecallStateMachine.isInState(LocationRecallState.REF_SYNCOMP_ENTRY)) {
+                        locationRecallStateMachine.changeState(LocationRecallState.REF_SYNCOMP_RECALL)
+                    }
+
+                } else {
+                    navStateMachine.changeState(NavState.LOCATION_RECALL)
+                    locationRecallStateMachine.changeState(LocationRecallState.REF_RECALL)
+
+                    SACComponent.recallRefEarthLocationEntry(recallIdx)
+                }
             }
 
             //setting numbered profiles
@@ -107,7 +140,7 @@ object SACInputProcessor : InputProcessor {
 
                 val storeIdx = MultiKeys.numPressed()
 
-                SACComponent.storeEarthLocationEntry(storeIdx)
+                SACComponent.storeRefEarthLocationEntry(storeIdx)
             }
 
             MultiKeys.D.keysDown() -> {

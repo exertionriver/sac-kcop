@@ -23,6 +23,7 @@ import river.exertion.sac.astro.base.CelestialSnapshot
 import river.exertion.sac.astro.base.EarthLocation
 import river.exertion.sac.astro.state.StateChart
 import river.exertion.sac.console.state.*
+import river.exertion.sac.view.SACInputProcessor
 
 class SACComponent : IComponent, Telegraph {
 
@@ -114,30 +115,32 @@ class SACComponent : IComponent, Telegraph {
         var sacChart = StateChart(StateChart.getAspects(sacCelestialSnapshot, sacCelestialSnapshot, ChartState.NATAL_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT))
 
-        @OptIn(ExperimentalUnsignedTypes::class)
-        fun recallEarthLocationEntry(recallIdx : Int) {
+        fun recallRefEarthLocationEntry(recallIdx : Int) {
             sacLatitude = earthLocationArray[recallIdx].latitude
             sacLongitude = earthLocationArray[recallIdx].longitude
             sacAltitude = earthLocationArray[recallIdx].altitude
             sacTimezone = earthLocationArray[recallIdx].timeZone
             sacUTCDateTime = earthLocationArray[recallIdx].utcDateTime
+
+            refRecall = earthLocationArray[recallIdx]
         }
 
-        @OptIn(ExperimentalUnsignedTypes::class)
-        fun storeEarthLocationEntry(storeIdx : Int) {
+        fun recallSynCompEarthLocationEntry(recallIdx : Int) {
+            synCompRecall = earthLocationArray[recallIdx]
+        }
+
+        fun storeRefEarthLocationEntry(storeIdx : Int) {
             earthLocationArray[storeIdx].latitude = sacLatitude
             earthLocationArray[storeIdx].longitude = sacLongitude
             earthLocationArray[storeIdx].altitude = sacAltitude
             earthLocationArray[storeIdx].timeZone = sacTimezone
             earthLocationArray[storeIdx].utcDateTime = sacUTCDateTime
+
+            refRecall = earthLocationArray[storeIdx]
         }
 
+        var refRecall : EarthLocation? = null
+        var synCompRecall : EarthLocation? = null
 
-        fun ecsInit() {
-            //inactivate current narrative
-//            MessageChannelHandler.send(NarrativeBridge, NarrativeComponentMessage(NarrativeComponentMessage.NarrativeMessageType.Inactivate))
-
-            EngineHandler.replaceComponent<SACComponent>()
-        }
     }
 }
