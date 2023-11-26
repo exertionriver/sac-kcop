@@ -4,7 +4,6 @@ import kotlinx.datetime.LocalDateTime
 import river.exertion.sac.astro.base.CelestialSnapshot
 import river.exertion.sac.astro.base.EarthLocation
 
-@ExperimentalUnsignedTypes
 data class Profile (val profileName : String
     , val earthLocation: EarthLocation
     , val isProfileBlank: Boolean = false // set to true for 'none' and empty profiles in Profiles.getDefaultProfile

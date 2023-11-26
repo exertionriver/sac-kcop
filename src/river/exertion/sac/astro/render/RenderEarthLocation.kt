@@ -5,7 +5,6 @@ import river.exertion.sac.Constants
 import river.exertion.sac.astro.base.EarthLocation
 import river.exertion.sac.console.state.EntryState
 
-@ExperimentalUnsignedTypes
 object RenderEarthLocation {
 
     fun getEarthLongitudeLabel() = Constants.SYM_EARTH_LONG + "(" + Constants.SYM_EARTH + ")"

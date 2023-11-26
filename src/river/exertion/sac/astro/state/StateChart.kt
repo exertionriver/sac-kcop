@@ -8,7 +8,6 @@ import river.exertion.sac.console.state.AspectsState
 import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.console.state.TimeAspectsState
 
-@ExperimentalUnsignedTypes
 class StateChart (val chartRows: Array<StateChartRow>, val chartState: ChartState = ChartState.NATAL_CHART) {
 
     constructor(chartAspects : Array<StateAspect>, chartState: ChartState = ChartState.NATAL_CHART) : this (

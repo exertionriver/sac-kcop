@@ -4,8 +4,11 @@ import river.exertion.sac.swe.CalcUt
 import river.exertion.sac.swe.Houses
 import river.exertion.sac.swe.UtcToJd
 import river.exertion.sac.Constants.normalizeDeg
+import java.util.*
+import kotlin.collections.HashMap
+import kotlin.collections.LinkedHashMap
 
-@ExperimentalUnsignedTypes
+
 data class CelestialSnapshot(var refEarthLocation: EarthLocation
     , var synEarthLocation: EarthLocation = refEarthLocation
     , var refCelestialHouseData : DoubleArray = Houses.getCelestialHousesData(UtcToJd.getJulianTimeDecimal(refEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), refEarthLocation.latitude, refEarthLocation.longitude) //as per documentation, "/* calculate houses with tjd_ut */"
@@ -31,7 +34,7 @@ data class CelestialSnapshot(var refEarthLocation: EarthLocation
 
     fun getAspectCelestialLongitudeMap() : Map<AspectCelestial, Double> {
 
-        val unsortedMap : MutableMap<AspectCelestial, Double> = HashMap()
+        val unsortedMap : MutableMap<AspectCelestial, Double> = EnumMap(AspectCelestial::class.java)
 
         for(celestial in Celestial.entries) {
             if (getAspectCelestial(celestial) != AspectCelestial.ASPECT_CELESTIAL_NONE)
@@ -116,7 +119,6 @@ data class CelestialSnapshot(var refEarthLocation: EarthLocation
             }
         }
 
-        @ExperimentalUnsignedTypes
         fun getCompositeSnapshot(firstSnapshot : CelestialSnapshot, secondSnapshot : CelestialSnapshot
                                  , firstEarthLocation: EarthLocation = EarthLocation(), secondEarthLocation: EarthLocation = EarthLocation()
         ) : CelestialSnapshot {

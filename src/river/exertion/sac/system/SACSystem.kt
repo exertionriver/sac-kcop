@@ -15,7 +15,7 @@ class SACSystem : IntervalIteratingSystem(allOf(SACComponent::class).get(), .4f)
 
         val sacComponent = SACComponent.getFor(entity)!!
 
-        if (sacComponent.isInitialized) {
+        if ( (sacComponent.isInitialized) && !DisplayView.menuOpen) {
 
             if (SACInputProcessor.navStateMachine.isInState(NavState.ENTRY_PAUSED)) {
                 if (!entryLock) {

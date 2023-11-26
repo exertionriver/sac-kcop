@@ -7,6 +7,7 @@ import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
 import river.exertion.sac.astro.value.Value
 
+@Suppress("PROVIDED_RUNTIME_TOO_LOW")
 @Serializable
 data class AstroDataRow(val pollUTC : LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC)
                         , val value : Value = Value())

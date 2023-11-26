@@ -1,16 +1,19 @@
 package river.exertion.sac.astro.base
 
 import kotlinx.datetime.*
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import river.exertion.sac.console.state.EntryState
 import river.exertion.sac.Constants.ALT_TNM
 import river.exertion.sac.Constants.LAT_TNM
 import river.exertion.sac.Constants.LON_TNM
 import river.exertion.sac.Constants.TZ_MST
 
-@ExperimentalUnsignedTypes
-data class EarthLocation(var longitude : Double = LON_TNM
-    , var latitude : Double = LAT_TNM
-    , var altitude : Int = ALT_TNM
+@Suppress("PROVIDED_RUNTIME_TOO_LOW")
+@Serializable
+data class EarthLocation(var longitude : Double = 0.0
+    , var latitude : Double = 0.0
+    , var altitude : Int = 0
     , var timeZone : TimeZone = TimeZone.currentSystemDefault()
     , var utcDateTime : LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC)
     , val timeUnknown : Boolean = false ) {
@@ -18,6 +21,10 @@ data class EarthLocation(var longitude : Double = LON_TNM
     constructor(initLongitude : Double, initLatitude : Double, initAltitude : Int, initTimezone : TimeZone, initUtcDate : LocalDate) :
         this(initLongitude, initLatitude, initAltitude, initTimezone, getDefaultLocalDateTime(initUtcDate), true)
 
+    constructor(longitude: String, latitude: String, altitude : String, timeZone: String, utcDateTime: String) :
+            this(longitude.toDouble(), latitude.toDouble(), altitude.toInt(), TimeZone.of(timeZone), utcDateTime.toLocalDateTime())
+
+    @Transient
     var localDateTime = utcDateTime.toInstant(TimeZone.UTC).toLocalDateTime(timeZone)
 
     fun recalc() {

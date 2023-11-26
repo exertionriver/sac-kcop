@@ -4,30 +4,29 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.ai.msg.Telegram
 import com.badlogic.gdx.ai.msg.Telegraph
 import kotlinx.datetime.TimeZone
+import river.exertion.kcop.asset.AssetManagerHandler
+import river.exertion.kcop.base.Id
 import river.exertion.kcop.ecs.EngineHandler
 import river.exertion.kcop.ecs.component.IComponent
 import river.exertion.kcop.messaging.MessageChannelHandler
-import river.exertion.kcop.base.Id
 import river.exertion.kcop.profile.Profile
 import river.exertion.kcop.profile.asset.ProfileAsset
 import river.exertion.kcop.sim.narrative.NarrativeKlop.NarrativeBridge
 import river.exertion.kcop.sim.narrative.messaging.NarrativeComponentMessage
+import river.exertion.kcop.view.asset.SoundAssetStore
 import river.exertion.kcop.view.layout.DisplayView
 import river.exertion.kcop.view.layout.StatusView
 import river.exertion.sac.Constants
 import river.exertion.sac.SweetAstroConsoleKlop
+import river.exertion.sac.asset.SACDefaultAssetStore
 import river.exertion.sac.astro.base.CelestialSnapshot
 import river.exertion.sac.astro.base.EarthLocation
-import river.exertion.sac.astro.state.*
+import river.exertion.sac.astro.state.StateChart
 import river.exertion.sac.console.state.*
 
 class SACComponent : IComponent, Telegraph {
 
     var refProfile : Profile
-        get() = ProfileAsset.currentProfileAsset.profile
-        set(value) { ProfileAsset.currentProfileAsset.profile = value }
-
-    var synProfile : Profile
         get() = ProfileAsset.currentProfileAsset.profile
         set(value) { ProfileAsset.currentProfileAsset.profile = value }
 
@@ -57,6 +56,8 @@ class SACComponent : IComponent, Telegraph {
         StatusView.clearStatuses()
 
         ProfileAsset.currentProfileAsset.profile.execSettings()
+
+
     }
 
     override fun handleMessage(msg: Telegram?): Boolean {
@@ -98,15 +99,15 @@ class SACComponent : IComponent, Telegraph {
 
         //TODO: allow location definitions with lat / long / alt / tz
         //TODO: allow location default set in properties file
-        //TODO: allow manual setting of sac lat, long, alt, tz
-        var sacLatitude = Constants.LAT_TNM
-        var sacLongitude = Constants.LON_TNM
-        var sacAltitude : Int = Constants.ALT_TNM
-        var sacTimezone = TimeZone.of(Constants.TZ_MST)
+        var sacLatitude = SACDefaultAssetStore.Default.get().latitude
+        var sacLongitude = SACDefaultAssetStore.Default.get().longitude
+        var sacAltitude : Int = SACDefaultAssetStore.Default.get().altitude
+        var sacTimezone = SACDefaultAssetStore.Default.get().timeZone
         var sacUTCDateTime = NavState.curNavDateTimeUTC()
 
-        @OptIn(ExperimentalUnsignedTypes::class)
-        var earthLocationArray = Array(10) { _ -> EarthLocation(sacLongitude, sacLatitude, sacAltitude, sacTimezone, sacUTCDateTime) }
+        var earthLocationArray = Array(10) { idx ->
+            SACDefaultAssetStore.entries.filter { it.name != "Default"}[idx].get()
+        }
 
         var sacEarthLocation = EarthLocation(sacLongitude, sacLatitude, sacAltitude, sacTimezone, sacUTCDateTime)
         var sacCelestialSnapshot = CelestialSnapshot(sacEarthLocation)

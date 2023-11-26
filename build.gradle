@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 buildscript {
     ext.kotlinVersion = '1.9.20'
@@ -14,16 +16,22 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion"
     }
 }
 
 allprojects {
     apply plugin: "kotlin"
     apply plugin: "idea"
-    apply plugin: "kotlin"
+    apply plugin: "org.jetbrains.kotlin.plugin.serialization"
 
     sourceSets.main.java.srcDirs = [ "src/" ]
     sourceSets.test.java.srcDirs = [ "test/" ]
+
+    compileKotlin {
+        compilerOptions.jvmTarget.set(JvmTarget.JVM_16)
+        compilerOptions.languageVersion.set(KotlinVersion.KOTLIN_1_9)
+    }
 
     version = '0.4'
     ext {
@@ -35,7 +43,8 @@ allprojects {
         aiVersion = '1.8.2'
         gdxControllersVersion = '2.2.1'
         ktxVersion = '1.12.1-rc1'
-        kotlinxCoroutineVersion = '1.7.0-Beta'
+        kotlinxCoroutineVersion = '1.7.3'
+        kotlinxSerializationVersion = '1.6.1'
         gltfVersion = '2.0.0-rc.1'
         shapedrawerVersion = '2.6.0' //https://github.com/earlygrey/shapedrawer
         junitVersion = '5.9.3'
@@ -55,6 +64,8 @@ allprojects {
         implementation fileTree(dir: 'lib', include: ['swisseph*.jar'])
 
         implementation fileTree(dir: '.', include: ['kcop*.jar'])
+
+        implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion"
 
         testImplementation 'org.jetbrains.kotlin:kotlin-test'
     }

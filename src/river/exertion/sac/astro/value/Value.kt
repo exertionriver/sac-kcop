@@ -3,6 +3,7 @@ package river.exertion.sac.astro.value
 import kotlinx.serialization.Serializable
 import kotlin.math.abs
 
+@Suppress("PROVIDED_RUNTIME_TOO_LOW")
 @Serializable
 data class Value (val positive : Int = 0, val negative : Int = 0) {
 

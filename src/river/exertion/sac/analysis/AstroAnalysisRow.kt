@@ -15,6 +15,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
+@Suppress("PROVIDED_RUNTIME_TOO_LOW")
 @Serializable
 data class AstroAnalysisRow(val refUTC : LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC),
                             val range: DateTimePeriod = DateTimePeriod(),

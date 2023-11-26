@@ -2,12 +2,10 @@ package river.exertion.sac.console.state
 
 import com.badlogic.gdx.ai.fsm.State
 import com.badlogic.gdx.ai.msg.Telegram
-import kotlinx.serialization.Serializable
 import river.exertion.sac.Constants.SYM_NATCOMP_CHART
 import river.exertion.sac.Constants.SYM_SYNASTRY_CHART
 import river.exertion.sac.view.SACInputProcessor
 
-@Serializable
 enum class ChartState : State<SACInputProcessor> {
     NONE_CHART //for values analysis only
     , NATAL_CHART
