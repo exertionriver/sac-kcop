@@ -88,25 +88,52 @@ object SACCelestialsHousesDVLayout {
     fun gridEntries() = AspectCelestial.entries.filter { it.isChartAspectCelestial() }
 
     fun gridTable() : DVTable = DVTable(tableTag = "grid", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf<DVLayoutCell>().apply {
-        gridEntries().forEachIndexed { rowIdx, chartAspectCelestial ->
-            var colIdx = 0
 
-            while (colIdx <= rowIdx) {
-                if (rowIdx == colIdx) {
-                    this.add( DVTextPane().apply { this.tag = chartAspectCelestial.name; this.padLeft = ".1"; this.padRight = ".1"; this.align = DVAlign.CENTER.tag() } )
-                } else {
-                    this.add( DVTextPane().apply { this.tag = "${chartAspectCelestial.name}_${AspectCelestial.fromOrdinal(colIdx)}"; this.padLeft = ".1"; this.padRight = ".1"; this.align = DVAlign.CENTER.tag() } )
+        if (SACInputProcessor.chartStateMachine.currentState.isNatComp()) {
+            gridEntries().forEachIndexed { rowIdx, chartAspectCelestial ->
+                var colIdx = 0
+
+                while (colIdx <= rowIdx) {
+                    if (colIdx == rowIdx) {
+                        this.add( DVTextPane().apply { this.tag = chartAspectCelestial.name; this.padLeft = ".1"; this.padRight = ".1"; this.align = DVAlign.CENTER.tag() } )
+                    } else {
+                        this.add( DVTextPane().apply { this.tag = "${chartAspectCelestial.name}_${AspectCelestial.fromOrdinal(colIdx)}"; this.padLeft = ".1"; this.padRight = ".1"; this.align = DVAlign.CENTER.tag() } )
+                    }
+                    colIdx++
                 }
-                colIdx++
+                this.add(DVRow())
+            }
+        } else {
+            this.add(DVTextPane().apply { this.tag = "chartSpace"; this.padLeft = ".1"; this.padRight = ".1"; this.align = DVAlign.CENTER.tag() } )
+
+            gridEntries().forEach { aspectCelestialHeader ->
+                this.add(DVTextPane().apply { this.tag = "${aspectCelestialHeader.name}_x"; this.padLeft = ".1"; this.padRight = ".1"; this.align = DVAlign.CENTER.tag() } )
             }
             this.add(DVRow())
-        } }
-    )
+
+            gridEntries().forEachIndexed { rowIdx, chartAspectCelestialRow ->
+                var colIdx = -1
+
+                while (colIdx < gridEntries().size) {
+                    if (colIdx == -1) {
+                        this.add(DVTextPane().apply { this.tag = "${AspectCelestial.fromOrdinal(rowIdx)!!.name}_y"; this.padLeft = ".1"; this.padRight = ".1"; this.align = DVAlign.CENTER.tag() } )
+                    } else {
+                        this.add( DVTextPane().apply { this.tag = "${chartAspectCelestialRow.name}_${AspectCelestial.fromOrdinal(colIdx)}"; this.padLeft = ".1"; this.padRight = ".1"; this.align = DVAlign.CENTER.tag() } )
+                    }
+                    colIdx++
+                }
+                this.add(DVRow())
+            }
+        }
+    })
+
     fun gridSpacer() : DVTable = DVTable(tableTag = "gridSpacer", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf<DVLayoutCell>().apply {
-        this.add(
+        if (SACInputProcessor.chartStateMachine.currentState.isNatComp()) {
+            this.add(
             DVTextPane().apply { this.tag = "gridSpacerPane"; this.width = DVPaneType.DVPDimension.TINY.tag() }
             )
-        })
+        }
+    })
 
     fun houseGridTables() : DVTable = DVTable(tableTag = "houseGridTables", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf<DVLayoutCell>(
         housesTable(),
@@ -185,7 +212,7 @@ object SACCelestialsHousesDVLayout {
             DVLayoutHandler.currentDvLayout.setTextPaneContent("LocalTimezone", colorOverride = ColorPalette.of("green"))
 
             DVLayoutHandler.currentDvLayout.setTextPaneMode("LocalTimezone", DVTextPane.DVTextPaneMode.WRITE, "UTC([-+]((1[0-8])|([0-9])))?") {
-                SACComponent.sacTimezone = TimeZone.of(it)
+                SACComponent.curNavEarthLocation.timeZone = TimeZone.of(it)
                 SACInputProcessor.entryStateMachine.changeState(EntryState.NO_ENTRY)
                 SACInputProcessor.navStateMachine.changeState(NavState.NAV_PAUSED)
                 MultiKeys.keysDown.clear()
@@ -203,7 +230,7 @@ object SACCelestialsHousesDVLayout {
             DVLayoutHandler.currentDvLayout.setTextPaneContent("localLatitude", colorOverride = ColorPalette.of("green"))
 
             DVLayoutHandler.currentDvLayout.setTextPaneMode("localLatitude", DVTextPane.DVTextPaneMode.WRITE, "(-)?[0-9]{1,3}(.[0-9]{1,4})?") {
-                SACComponent.sacLatitude = if (it.toDouble() < 0) it.toDouble().mod(-90.0) else it.toDouble().mod(90.0)
+                SACComponent.curNavEarthLocation.latitude = if (it.toDouble() < 0) it.toDouble().mod(-90.0) else it.toDouble().mod(90.0)
                 SACInputProcessor.entryStateMachine.changeState(EntryState.NO_ENTRY)
                 SACInputProcessor.navStateMachine.changeState(NavState.NAV_PAUSED)
                 MultiKeys.keysDown.clear()
@@ -221,7 +248,7 @@ object SACCelestialsHousesDVLayout {
             DVLayoutHandler.currentDvLayout.setTextPaneContent("localLongitude", colorOverride = ColorPalette.of("green"))
 
             DVLayoutHandler.currentDvLayout.setTextPaneMode("localLongitude", DVTextPane.DVTextPaneMode.WRITE, "(-)?[0-9]{1,3}(.[0-9]{1,4})?") {
-                SACComponent.sacLongitude = if (it.toDouble() < 0) it.toDouble().mod(-180.0) else it.toDouble().mod(180.0)
+                SACComponent.curNavEarthLocation.longitude = if (it.toDouble() < 0) it.toDouble().mod(-180.0) else it.toDouble().mod(180.0)
                 SACInputProcessor.entryStateMachine.changeState(EntryState.NO_ENTRY)
                 SACInputProcessor.navStateMachine.changeState(NavState.NAV_PAUSED)
                 MultiKeys.keysDown.clear()
@@ -240,6 +267,8 @@ object SACCelestialsHousesDVLayout {
 
             DVLayoutHandler.currentDvLayout.setTextPaneMode("utcTime", DVTextPane.DVTextPaneMode.WRITE, "[0-9]{2}:[0-9]{2}:[0-9]{2}") {
                 NavState.curNavInstant = NavState.curNavInstant.toLocalDateTime(TimeZone.UTC).date.atTime(it.toLocalTime()).toInstant(TimeZone.UTC)
+                SACComponent.curNavEarthLocation.utcDateTime = NavState.curNavDateTimeUTC()
+
                 SACInputProcessor.entryStateMachine.changeState(EntryState.NO_ENTRY)
                 SACInputProcessor.navStateMachine.changeState(NavState.NAV_PAUSED)
                 MultiKeys.keysDown.clear()
@@ -258,6 +287,8 @@ object SACCelestialsHousesDVLayout {
 
             DVLayoutHandler.currentDvLayout.setTextPaneMode("utcDate", DVTextPane.DVTextPaneMode.WRITE, "[0-9]{4}-[0-9]{2}-[0-9]{2}") {
                 NavState.curNavInstant = it.toLocalDate().atTime(NavState.curNavInstant.toLocalDateTime(TimeZone.UTC).time).toInstant(TimeZone.UTC)
+                SACComponent.curNavEarthLocation.utcDateTime = NavState.curNavDateTimeUTC()
+
                 SACInputProcessor.entryStateMachine.changeState(EntryState.NO_ENTRY)
                 SACInputProcessor.navStateMachine.changeState(NavState.NAV_PAUSED)
                 MultiKeys.keysDown.clear()
@@ -275,7 +306,7 @@ object SACCelestialsHousesDVLayout {
             DVLayoutHandler.currentDvLayout.setTextPaneContent("localAltitude", colorOverride = ColorPalette.of("green"))
 
             DVLayoutHandler.currentDvLayout.setTextPaneMode("localAltitude", DVTextPane.DVTextPaneMode.WRITE, "[0-9]{1,4}") {
-                SACComponent.sacAltitude = it.toInt()
+                SACComponent.curNavEarthLocation.altitude = it.toInt()
                 SACInputProcessor.entryStateMachine.changeState(EntryState.NO_ENTRY)
                 SACInputProcessor.navStateMachine.changeState(NavState.NAV_PAUSED)
                 MultiKeys.keysDown.clear()
@@ -347,7 +378,8 @@ object SACCelestialsHousesDVLayout {
 
         val chartAspects = stateChart.getStateAspects()
 
-        AspectCelestial.entries.filter { it.isChartAspectCelestial() }.forEachIndexed { rowIdx, chartAspectCelestial ->
+        if (SACInputProcessor.chartStateMachine.currentState.isNatComp()) {
+            gridEntries().forEachIndexed { rowIdx, chartAspectCelestial ->
             var colIdx = 0
 
             while (colIdx <= rowIdx) {
@@ -361,8 +393,28 @@ object SACCelestialsHousesDVLayout {
                     renderAspectType.getLabel(), renderAspectType.getLabelColor() )
                 }
                 colIdx++
+            } }
+        } else {
+            gridEntries().forEach { aspectCelestialHeader ->
+                DVLayoutHandler.currentDvLayout.setTextPaneContent("${aspectCelestialHeader.name}_x", aspectCelestialHeader.renderAspectCelestial().getLabel())
+            }
+
+            gridEntries().forEachIndexed { rowIdx, chartAspectCelestialRow ->
+                var colIdx = -1
+
+                while (colIdx < gridEntries().size) {
+                    if (colIdx == -1) {
+                        DVLayoutHandler.currentDvLayout.setTextPaneContent("${AspectCelestial.fromOrdinal(rowIdx)!!.name}_y", chartAspectCelestialRow.renderAspectCelestial().getLabel())
+                    } else {
+                        val renderAspectType = RenderAspectType.fromName(
+                            chartAspects.firstOrNull { it.aspectCelestialFirst == AspectCelestial.fromOrdinal(colIdx) && it.aspectCelestialSecond == chartAspectCelestialRow }?.aspectAngle?.getAspectType()?.name ?: RenderAspectType.ASPECT_NONE.name
+                        )!!
+                        DVLayoutHandler.currentDvLayout.setTextPaneContent("${chartAspectCelestialRow.name}_${AspectCelestial.fromOrdinal(colIdx)}",
+                            renderAspectType.getLabel(), renderAspectType.getLabelColor() )
+                    }
+                    colIdx++
+                }
             }
         }
-
     }
 }

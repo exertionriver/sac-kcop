@@ -8,7 +8,7 @@ import java.util.*
 import kotlin.collections.HashMap
 import kotlin.collections.LinkedHashMap
 
-
+//syn info is for transits
 data class CelestialSnapshot(var refEarthLocation: EarthLocation
     , var synEarthLocation: EarthLocation = refEarthLocation
     , var refCelestialHouseData : DoubleArray = Houses.getCelestialHousesData(UtcToJd.getJulianTimeDecimal(refEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), refEarthLocation.latitude, refEarthLocation.longitude) //as per documentation, "/* calculate houses with tjd_ut */"

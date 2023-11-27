@@ -25,10 +25,6 @@ class SACSystem : IntervalIteratingSystem(allOf(SACComponent::class).get(), .4f)
             } else {
                 SACInputProcessor.navStateMachine.currentState.updCurNavInstant()
 
-                if (!SACInputProcessor.navStateMachine.isInState(NavState.LOCATION_RECALL)) {
-                    SACComponent.sacUTCDateTime = NavState.curNavDateTimeUTC()
-                }
-
                 sacComponent.sacRecalc()
 
                 SACCelestialsHousesDVLayout.celestialSnapshot = SACComponent.sacCelestialSnapshot

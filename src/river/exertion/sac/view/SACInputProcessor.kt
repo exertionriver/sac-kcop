@@ -37,8 +37,7 @@ object SACInputProcessor : InputProcessor {
                 aspectOverlayStateMachine.changeState(AspectOverlayState.defaultState())
                 locationRecallStateMachine.changeState(LocationRecallState.defaultState())
 
-                SACComponent.refRecall = null
-                SACComponent.synCompRecall = null
+                SACComponent.resetEarthLocations()
             }
 
             //remove modifications, leave navigation
@@ -63,11 +62,7 @@ object SACInputProcessor : InputProcessor {
 
                 chartStateMachine.changeState(ChartState.SYNASTRY_CHART)
 
-                if (navStateMachine.isInState(NavState.LOCATION_RECALL) || navStateMachine.isInState(NavState.LOCATION_STORE) ) {
-                    locationRecallStateMachine.changeState(LocationRecallState.REF_SYNCOMP_ENTRY)
-                } else {
-                    locationRecallStateMachine.changeState(LocationRecallState.CUR_NAV_SYNCOMP_ENTRY)
-                }
+                locationRecallStateMachine.changeState(LocationRecallState.CUR_NAV_REF_SYNCOMP_ENTRY)
             }
 
             MultiKeys.EQUALS.keysDown() -> {
@@ -77,11 +72,7 @@ object SACInputProcessor : InputProcessor {
 
                 chartStateMachine.changeState(ChartState.COMPOSITE_CHART)
 
-                if (navStateMachine.isInState(NavState.LOCATION_RECALL) || navStateMachine.isInState(NavState.LOCATION_STORE) ) {
-                    locationRecallStateMachine.changeState(LocationRecallState.REF_SYNCOMP_ENTRY)
-                } else {
-                    locationRecallStateMachine.changeState(LocationRecallState.CUR_NAV_SYNCOMP_ENTRY)
-                }
+                locationRecallStateMachine.changeState(LocationRecallState.CUR_NAV_REF_SYNCOMP_ENTRY)
             }
 
             MultiKeys.MINUS.keyDown() -> {
@@ -115,20 +106,12 @@ object SACInputProcessor : InputProcessor {
             MultiKeys.numKeyDown() -> {
                 val recallIdx = MultiKeys.numPressed()
 
-                if (locationRecallStateMachine.currentState.isEntry()) {
+                if (locationRecallStateMachine.isInState(LocationRecallState.CUR_NAV_REF_SYNCOMP_ENTRY)) {
                     SACComponent.recallSynCompEarthLocationEntry(recallIdx)
 
-                    if (locationRecallStateMachine.isInState(LocationRecallState.CUR_NAV_SYNCOMP_ENTRY)) {
-                        locationRecallStateMachine.changeState(LocationRecallState.CUR_NAV_SYNCOMP_RECALL)
-                    }
-
-                    if (locationRecallStateMachine.isInState(LocationRecallState.REF_SYNCOMP_ENTRY)) {
-                        locationRecallStateMachine.changeState(LocationRecallState.REF_SYNCOMP_RECALL)
-                    }
-
+                    locationRecallStateMachine.changeState(LocationRecallState.CUR_NAV_REF_SYNCOMP_RECALL)
                 } else {
                     navStateMachine.changeState(NavState.LOCATION_RECALL)
-                    locationRecallStateMachine.changeState(LocationRecallState.REF_RECALL)
 
                     SACComponent.recallRefEarthLocationEntry(recallIdx)
                 }
