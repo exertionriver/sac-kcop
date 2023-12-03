@@ -12,6 +12,7 @@ import river.exertion.kcop.sim.narrative.NarrativeKlop.NarrativeBridge
 import river.exertion.kcop.sim.narrative.messaging.NarrativeComponentMessage
 import river.exertion.kcop.view.layout.DisplayView
 import river.exertion.kcop.view.layout.StatusView
+import river.exertion.kcop.view.layout.ViewLayout
 import river.exertion.sac.SweetAstroConsoleKlop
 import river.exertion.sac.asset.SACDefaultAssetStore
 import river.exertion.sac.astro.base.CelestialSnapshot
@@ -66,7 +67,7 @@ class SACComponent : IComponent, Telegraph {
 
         super.initialize(initData)
 
-        DisplayView.currentDisplayViewLayoutHandler = SweetAstroConsoleKlop.displayViewLayoutHandler()
+        ViewLayout.currentDisplayViewLayoutHandler = SweetAstroConsoleKlop.displayViewLayoutHandler()
 
         StatusView.clearStatuses()
 

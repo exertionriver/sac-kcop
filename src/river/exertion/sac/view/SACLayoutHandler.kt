@@ -2,17 +2,14 @@ package river.exertion.sac.view
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.InputListener
 import river.exertion.kcop.asset.AssetManagerHandler
 import river.exertion.kcop.asset.view.ColorPalette
-import river.exertion.kcop.base.KcopBase
 import river.exertion.kcop.view.KcopFont
 import river.exertion.kcop.view.klop.IDisplayViewLayoutHandler
 import river.exertion.kcop.view.layout.DisplayView
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutHandler
 
-object SACLayout : IDisplayViewLayoutHandler {
+object SACLayoutHandler : IDisplayViewLayoutHandler {
 
     var baseColorName = "darkGray"
     var baseColor = ColorPalette.of(baseColorName)
@@ -30,25 +27,24 @@ object SACLayout : IDisplayViewLayoutHandler {
     var negativeFontColor = ColorPalette.of("maroon")
     var neutralFontColor = ColorPalette.of("paleGoldenrod")
 
-    override fun build(): Actor {
+    override fun build() {
         DVLayoutHandler.currentDvLayout = SACCelestialsHousesDVLayout.dvLayout()
         DVLayoutHandler.currentFontSize = KcopFont.TEXT
 
         KcopFont.TEXT.font = AssetManagerHandler.getAssets<BitmapFont>().firstOrNull { it.data.name.contains("CODE2000") }.apply { this?.data?.setScale(KcopFont.TEXT.fontScale) }
 
         SACCelestialsHousesDVLayout.rebuild()
+        DVLayoutHandler.build()
 
-        return DVLayoutHandler.build()
     }
 
     override fun clearContent() {
         DVLayoutHandler.currentDvLayout.clearContent()
-        DisplayView.build()
     }
 
     fun setBaseColor(baseColorName: String?, baseColorPalette: ColorPalette?) {
         baseColor = baseColorPalette ?: baseColor
-        SACLayout.baseColorName = baseColorName ?: baseColor.tags()[0]
+        SACLayoutHandler.baseColorName = baseColorName ?: baseColor.tags()[0]
     }
 
 }

@@ -1,10 +1,5 @@
 package river.exertion.sac.astro.value
 
-import river.exertion.kcop.asset.view.ColorPalette
-import river.exertion.sac.astro.base.Sign
-import river.exertion.sac.astro.base.SignElement
-import river.exertion.sac.view.SACLayout
-
 enum class ValueAspectType {
     CONJUNCTION { override fun isPositive() = true }
     , SEXTILE { override fun isPositive() = true }

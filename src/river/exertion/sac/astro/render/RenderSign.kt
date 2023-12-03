@@ -5,7 +5,7 @@ import river.exertion.sac.Constants
 import river.exertion.sac.astro.base.CelestialData
 import river.exertion.sac.astro.base.Sign
 import river.exertion.sac.astro.base.SignElement
-import river.exertion.sac.view.SACLayout
+import river.exertion.sac.view.SACLayoutHandler
 
 enum class RenderSign {
     ARIES { override fun getLabel() = Constants.SYM_ARIES }
@@ -32,11 +32,11 @@ enum class RenderSign {
         fun getSynLabel(sign : Sign) : String = fromName(sign.toString())!!.getLabel()
 
         fun getSignColor(sign : Sign) : ColorPalette = when {
-            (sign.getElement() == SignElement.FIRE_ELEMENT) -> SACLayout.fireFontColor
-            (sign.getElement() == SignElement.EARTH_ELEMENT) -> SACLayout.earthFontColor
-            (sign.getElement() == SignElement.AIR_ELEMENT) -> SACLayout.airFontColor
-            (sign.getElement() == SignElement.WATER_ELEMENT) -> SACLayout.waterFontColor
-            else -> SACLayout.baseValuesFontColor
+            (sign.getElement() == SignElement.FIRE_ELEMENT) -> SACLayoutHandler.fireFontColor
+            (sign.getElement() == SignElement.EARTH_ELEMENT) -> SACLayoutHandler.earthFontColor
+            (sign.getElement() == SignElement.AIR_ELEMENT) -> SACLayoutHandler.airFontColor
+            (sign.getElement() == SignElement.WATER_ELEMENT) -> SACLayoutHandler.waterFontColor
+            else -> SACLayoutHandler.baseValuesFontColor
         }
 
         fun getSignColor(celestialLongitude : Double) : ColorPalette =

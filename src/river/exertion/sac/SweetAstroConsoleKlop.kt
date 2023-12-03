@@ -1,8 +1,6 @@
 package river.exertion.sac
 
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import river.exertion.kcop.asset.AssetManagerHandler
@@ -14,7 +12,6 @@ import river.exertion.kcop.ecs.component.IComponent
 import river.exertion.kcop.ecs.entity.SubjectEntity
 import river.exertion.kcop.ecs.klop.IECSKlop
 import river.exertion.kcop.view.MultiKeys
-import river.exertion.kcop.view.asset.TextureAssetStore
 import river.exertion.kcop.view.klop.IDisplayViewKlop
 import river.exertion.sac.asset.EarthLocationLoader
 import river.exertion.sac.asset.SACDefaultAssetStore
@@ -24,7 +21,7 @@ import river.exertion.sac.console.state.EntryState
 import river.exertion.sac.console.state.NavState
 import river.exertion.sac.system.SACSystem
 import river.exertion.sac.view.SACInputProcessor
-import river.exertion.sac.view.SACLayout
+import river.exertion.sac.view.SACLayoutHandler
 
 object SweetAstroConsoleKlop : IDisplayViewKlop, IAssetKlop, IECSKlop {
 
@@ -62,7 +59,7 @@ object SweetAstroConsoleKlop : IDisplayViewKlop, IAssetKlop, IECSKlop {
 
     override fun inputProcessor() = SACInputProcessor
 
-    override fun displayViewLayoutHandler() = SACLayout
+    override fun displayViewLayoutHandler() = SACLayoutHandler
 
     override fun loadSystems() {
         EngineHandler.addSystem(SACSystem())
