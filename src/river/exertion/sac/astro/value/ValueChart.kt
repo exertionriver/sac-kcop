@@ -9,7 +9,6 @@ import river.exertion.sac.console.state.AnalysisState
 import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.console.state.ChartStateType
 
-@ExperimentalUnsignedTypes
 class ValueChart (val chartRows: Array<ValueChartRow>, val analysisState: AnalysisState = AnalysisState.NO_ANALYSIS) {
 
     constructor(chartAspects : Array<ValueAspect>, analysisState: AnalysisState = AnalysisState.NO_ANALYSIS) : this (

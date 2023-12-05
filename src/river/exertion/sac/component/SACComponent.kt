@@ -5,12 +5,6 @@ import com.badlogic.gdx.ai.msg.Telegram
 import com.badlogic.gdx.ai.msg.Telegraph
 import river.exertion.kcop.base.Id
 import river.exertion.kcop.ecs.component.IComponent
-import river.exertion.kcop.messaging.MessageChannelHandler
-import river.exertion.kcop.profile.Profile
-import river.exertion.kcop.profile.asset.ProfileAsset
-import river.exertion.kcop.sim.narrative.NarrativeKlop.NarrativeBridge
-import river.exertion.kcop.sim.narrative.messaging.NarrativeComponentMessage
-import river.exertion.kcop.view.layout.DisplayView
 import river.exertion.kcop.view.layout.StatusView
 import river.exertion.kcop.view.layout.ViewLayout
 import river.exertion.sac.SweetAstroConsoleKlop
@@ -18,6 +12,7 @@ import river.exertion.sac.asset.SACDefaultAssetStore
 import river.exertion.sac.astro.base.CelestialSnapshot
 import river.exertion.sac.astro.base.EarthLocation
 import river.exertion.sac.astro.state.StateChart
+import river.exertion.sac.astro.value.ValueChart
 import river.exertion.sac.console.state.*
 import river.exertion.sac.view.SACInputProcessor
 
@@ -54,13 +49,16 @@ class SACComponent : IComponent, Telegraph {
 
         if (!compositeNoRecalc) sacCelestialSnapshot.recalc()
 
-        sacChart = StateChart(StateChart.getAspects(
+        //TODO: implement recalc for StateChart and ValueChart
+        sacStateChart = StateChart(StateChart.getAspects(
             sacCelestialSnapshot
             , if (synCompRecallEarthLocation != null) synCompCelestialSnapshot else sacCelestialSnapshot
             , SACInputProcessor.chartStateMachine.currentState
             , SACInputProcessor.aspectsStateMachine.currentState
             , SACInputProcessor.timeAspectsStateMachine.currentState
             , SACInputProcessor.aspectOverlayStateMachine.currentState))
+
+        sacValueChart = ValueChart(sacStateChart, SACInputProcessor.analysisStateMachine.currentState)
     }
 
     override fun initialize(initData: Any?) {
@@ -105,8 +103,10 @@ class SACComponent : IComponent, Telegraph {
         var sacCelestialSnapshot = CelestialSnapshot(curNavEarthLocation)
         var synCompCelestialSnapshot : CelestialSnapshot = CelestialSnapshot(curNavEarthLocation)
 
-        var sacChart = StateChart(StateChart.getAspects(sacCelestialSnapshot, sacCelestialSnapshot, ChartState.NATAL_CHART
-            , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT))
+        var sacStateChart = StateChart(StateChart.getAspects(sacCelestialSnapshot, sacCelestialSnapshot, ChartState.defaultState()
+            , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState()))
+
+        var sacValueChart = ValueChart(sacStateChart, AnalysisState.defaultState())
 
         fun recallRefEarthLocationEntry(recallIdx : Int) {
             curNavEarthLocation.tag = earthLocationArray[recallIdx].tag

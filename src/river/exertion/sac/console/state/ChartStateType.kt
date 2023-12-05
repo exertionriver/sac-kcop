@@ -2,7 +2,6 @@ package river.exertion.sac.console.state
 
 import kotlin.math.pow
 
-@ExperimentalUnsignedTypes
 enum class ChartStateType {
     SYN_NATAL_CHART { override fun getChartState() = ChartState.NATAL_CHART }
     , REF_NATAL_CHART { override fun getChartState() = ChartState.NATAL_CHART }

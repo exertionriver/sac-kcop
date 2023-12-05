@@ -3,7 +3,6 @@ package river.exertion.sac.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IntervalIteratingSystem
 import ktx.ashley.allOf
-import river.exertion.kcop.view.layout.DisplayAuxView
 import river.exertion.kcop.view.layout.DisplayView
 import river.exertion.kcop.view.layout.ViewLayout
 import river.exertion.sac.console.state.NavState
@@ -31,7 +30,8 @@ class SACSystem : IntervalIteratingSystem(allOf(SACComponent::class).get(), .4f)
                 sacComponent.sacRecalc()
 
                 SACCelestialsHousesDVLayout.celestialSnapshot = SACComponent.sacCelestialSnapshot
-                SACCelestialsHousesDVLayout.stateChart = SACComponent.sacChart
+                SACCelestialsHousesDVLayout.stateChart = SACComponent.sacStateChart
+                SACCelestialsHousesDVLayout.valueChart = SACComponent.sacValueChart
 
                 ViewLayout.rebuild()
 
