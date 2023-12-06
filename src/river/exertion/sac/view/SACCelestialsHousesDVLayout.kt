@@ -9,7 +9,6 @@ import river.exertion.sac.Constants
 import river.exertion.sac.astro.base.*
 import river.exertion.sac.astro.render.*
 import river.exertion.sac.astro.state.*
-import river.exertion.sac.astro.value.ValueAspect
 import river.exertion.sac.astro.value.ValueChart
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.render.RenderEarthLocationTags
@@ -411,7 +410,7 @@ object SACCelestialsHousesDVLayout {
 
             while (colIdx <= rowIdx) {
                 if (rowIdx == colIdx) {
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent(chartAspectCelestial.name, chartAspectCelestial.renderAspectCelestial().getLabel())
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent(chartAspectCelestial.name, chartAspectCelestial.renderAspectCelestial().getLabel(), SACLayoutHandler.refEarthLocationFontColor)
                 } else {
                     val renderAspectType = RenderAspectType.fromName(
                         chartAspects.firstOrNull { it.aspectCelestialFirst == AspectCelestial.fromOrdinal(colIdx) && it.aspectCelestialSecond == chartAspectCelestial }?.aspectAngle?.getAspectType()?.name ?: RenderAspectType.ASPECT_NONE.name
@@ -423,7 +422,7 @@ object SACCelestialsHousesDVLayout {
             } }
         } else {
             gridEntries().forEach { aspectCelestialHeader ->
-                DVLayoutHandler.currentDvLayout.setTextPaneContent("${aspectCelestialHeader.name}_x", aspectCelestialHeader.renderAspectCelestial().getLabel())
+                DVLayoutHandler.currentDvLayout.setTextPaneContent("${aspectCelestialHeader.name}_x", aspectCelestialHeader.renderAspectCelestial().getLabel(), SACLayoutHandler.refEarthLocationFontColor)
             }
 
             gridEntries().forEachIndexed { rowIdx, chartAspectCelestialRow ->
@@ -431,7 +430,7 @@ object SACCelestialsHousesDVLayout {
 
                 while (colIdx < gridEntries().size) {
                     if (colIdx == -1) {
-                        DVLayoutHandler.currentDvLayout.setTextPaneContent("${AspectCelestial.fromOrdinal(rowIdx)!!.name}_y", chartAspectCelestialRow.renderAspectCelestial().getLabel())
+                        DVLayoutHandler.currentDvLayout.setTextPaneContent("${AspectCelestial.fromOrdinal(rowIdx)!!.name}_y", chartAspectCelestialRow.renderAspectCelestial().getLabel(), SACLayoutHandler.synEarthLocationFontColor)
                     } else {
                         val renderAspectType = RenderAspectType.fromName(
                             chartAspects.firstOrNull { it.aspectCelestialFirst == AspectCelestial.fromOrdinal(colIdx) && it.aspectCelestialSecond == chartAspectCelestialRow }?.aspectAngle?.getAspectType()?.name ?: RenderAspectType.ASPECT_NONE.name

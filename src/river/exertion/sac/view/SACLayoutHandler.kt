@@ -1,12 +1,10 @@
 package river.exertion.sac.view
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.scenes.scene2d.Actor
 import river.exertion.kcop.asset.AssetManagerHandler
 import river.exertion.kcop.asset.view.ColorPalette
 import river.exertion.kcop.view.KcopFont
 import river.exertion.kcop.view.klop.IDisplayViewLayoutHandler
-import river.exertion.kcop.view.layout.DisplayView
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutHandler
 
 object SACLayoutHandler : IDisplayViewLayoutHandler {
@@ -26,6 +24,9 @@ object SACLayoutHandler : IDisplayViewLayoutHandler {
     var positiveFontColor = ColorPalette.of("green")
     var negativeFontColor = ColorPalette.of("maroon")
     var neutralFontColor = ColorPalette.of("paleGoldenrod")
+
+    var refEarthLocationFontColor = ColorPalette.of("teal")
+    var synEarthLocationFontColor = ColorPalette.of("purple")
 
     override fun build() {
         DVLayoutHandler.currentDvLayout = SACCelestialsHousesDVLayout.dvLayout()
