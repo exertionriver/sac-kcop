@@ -7,9 +7,9 @@ import river.exertion.sac.component.SACComponent
 import river.exertion.sac.view.SACInputProcessor
 
 enum class LocationRecallState : State<SACInputProcessor> {
-    CUR_NAV_REF { override fun getLabels() : List<String> = listOf("[", SACComponent.curNavEarthLocation.tag, "]") }
-    , CUR_NAV_REF_SYNCOMP_RECALL { override fun getLabels() : List<String> = listOf("[", SACComponent.curNavEarthLocation.tag, SACInputProcessor.chartStateMachine.currentState.getOperatorLabel(), SACComponent.synCompRecallEarthLocation?.tag ?: "??", "]") }
-    , CUR_NAV_REF_SYNCOMP_ENTRY { override fun getLabels() : List<String> = listOf("[", SACComponent.curNavEarthLocation.tag, SACInputProcessor.chartStateMachine.currentState.getOperatorLabel(), "?", "]") }
+    CUR_NAV_REF { override fun getLabels() : List<String> = listOf(SACComponent.curNavEarthLocation.tag) }
+    , CUR_NAV_REF_SYNCOMP_RECALL { override fun getLabels() : List<String> = listOf(SACComponent.curNavEarthLocation.tag, SACInputProcessor.chartStateMachine.currentState.getOperatorLabel(), SACComponent.synCompRecallEarthLocation?.tag ?: "??") }
+    , CUR_NAV_REF_SYNCOMP_ENTRY { override fun getLabels() : List<String> = listOf(SACComponent.curNavEarthLocation.tag, SACInputProcessor.chartStateMachine.currentState.getOperatorLabel(), "?", ) }
     ;
     abstract fun getLabels() : List<String>
     fun getLabel(): String = getLabels().str()
@@ -18,6 +18,12 @@ enum class LocationRecallState : State<SACInputProcessor> {
     override fun enter(sacInputProcessor: SACInputProcessor?) { }
     override fun exit(sacInputProcessor: SACInputProcessor?) { }
     override fun onMessage(sacInputProcessor: SACInputProcessor?, telegram: Telegram?): Boolean = true
+
+    fun eltLeftSquareLabel() = "["
+    fun eltLeftTag() = getLabels()[0]
+    fun eltOpTag() = getLabels()[1]
+    fun eltRightTag() = getLabels()[2]
+    fun eltRightSquareLabel() = "]"
 
     companion object {
         fun defaultState() = CUR_NAV_REF

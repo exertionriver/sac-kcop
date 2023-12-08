@@ -3,54 +3,47 @@ package astro.state
 import org.junit.jupiter.api.Test
 import river.exertion.sac.astro.base.AspectCelestial
 import river.exertion.sac.astro.state.*
+import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.state.AspectOverlayState
 import river.exertion.sac.console.state.AspectsState
 import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.console.state.TimeAspectsState
 
-@OptIn(ExperimentalUnsignedTypes::class)
 object TestStateChart {
 
-    @OptIn(ExperimentalUnsignedTypes::class)
     @Test
     fun testStateChartGetAspectsChart() {
-        val refProfile = Profiles.getDefaultProfile(Profiles.PROFILE_1)
 
-        val stateAspects = StateChart.getAspects(refProfile.celestialSnapshot, refProfile.celestialSnapshot, ChartState.NATAL_CHART
+        val stateAspects = StateChart.getAspects(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         val stateAspectsChart = StateChart.getAspectsChart(stateAspects)
 
-        println("stateAspects for ${refProfile.profileName}:")
+        println("stateAspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}:")
         stateAspects.forEach { println(it) }
 
-        println("stateAspectsChart for ${refProfile.profileName}")
+        println("stateAspectsChart for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
         stateAspectsChart.forEach { println(it) }
     }
 
     @Test
     fun testStateChartGetExtendedAspectsChart() {
-        val refProfile = Profiles.getDefaultProfile(Profiles.PROFILE_1)
-
-        val stateAspects = StateChart.getAspects(refProfile.celestialSnapshot, refProfile.celestialSnapshot, ChartState.NATAL_CHART
+        val stateAspects = StateChart.getAspects(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val stateExtendedAspects = StateChart.getExtendedAspects(refProfile.celestialSnapshot, refProfile.celestialSnapshot, ChartState.NATAL_CHART
+        val stateExtendedAspects = StateChart.getExtendedAspects(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         val stateAspectsChart = StateChart(stateAspects.plus(stateExtendedAspects))
 
-        println("stateAspects for ${refProfile.profileName}")
+        println("stateAspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
         stateAspectsChart.getStateAspects().forEach { println(it) }
     }
 
     @Test
     fun testStateChart() {
 
-        val refProfile = Profiles.getDefaultProfile(Profiles.PROFILE_1)
-        val synProfile = Profiles.getDefaultProfile(Profiles.PROFILE_2)
-
-        val natalChart = StateChart(refProfile.celestialSnapshot, refProfile.celestialSnapshot, ChartState.NATAL_CHART
+        val natalChart = StateChart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         println("natal Chart:")
@@ -61,7 +54,7 @@ object TestStateChart {
         //extended aspects stored in last row
         natalChart.chartRows[AspectCelestial.getChartSize()].rowAspects.forEachIndexed { idx, it -> println( "[$idx, ${AspectCelestial.getChartSize()}]: $it") }
 
-        val compChart = StateChart(refProfile.celestialSnapshot, synProfile.celestialSnapshot, ChartState.COMPOSITE_CHART
+        val compChart = StateChart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.COMPOSITE_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         println("comp Chart:")
@@ -72,7 +65,7 @@ object TestStateChart {
         //extended aspects stored in last row
         compChart.chartRows[AspectCelestial.getChartSize()].rowAspects.forEachIndexed { idx, it -> println( "[$idx, ${AspectCelestial.getChartSize()}]: $it") }
 
-        val synChart = StateChart(refProfile.celestialSnapshot, synProfile.celestialSnapshot, ChartState.SYNASTRY_CHART
+        val synChart = StateChart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.SYNASTRY_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT)
 
         println("syn Chart:")

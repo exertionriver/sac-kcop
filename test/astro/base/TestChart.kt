@@ -4,6 +4,7 @@ import river.exertion.sac.astro.base.AspectCelestial
 import river.exertion.sac.astro.base.CelestialSnapshot
 import river.exertion.sac.astro.base.Chart
 import org.junit.jupiter.api.Test
+import river.exertion.sac.component.SACComponent
 
 @OptIn(ExperimentalUnsignedTypes::class)
 object TestChart {
@@ -11,16 +12,14 @@ object TestChart {
     @Test
     fun testChartGetAspectsChart() {
 
-        val refProfile = Profiles.getDefaultProfile(Profiles.PROFILE_3)
-
-        val aspects = Chart.getAspects(refProfile.celestialSnapshot)
+        val aspects = Chart.getAspects(SACComponent.sacCelestialSnapshot)
 
         val aspectsChart = Chart.getAspectsChart(aspects)
 
-        println("aspects for ${refProfile.profileName}:")
+        println("aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}:")
         aspects.forEach { println(it) }
 
-        println("aspectsChart for ${refProfile.profileName}")
+        println("aspectsChart for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
         aspectsChart.forEach { println(it) }
     }
 
@@ -28,10 +27,7 @@ object TestChart {
     @Test
     fun testChart() {
 
-        val refProfile = Profiles.getDefaultProfile(Profiles.PROFILE_1)
-        val synProfile = Profiles.getDefaultProfile(Profiles.PROFILE_2)
-
-        val natalChart = Chart(refProfile.celestialSnapshot)
+        val natalChart = Chart(SACComponent.sacCelestialSnapshot)
 
         println("natal Chart:")
         for (verticalIdx in 0 until AspectCelestial.getChartSize())
@@ -39,7 +35,7 @@ object TestChart {
                 println("[$horizontalIdx, $verticalIdx]: ${natalChart.chartRows[horizontalIdx].rowAspects[verticalIdx]}")
             }
 
-        val compChart = Chart(CelestialSnapshot.getCompositeSnapshot(refProfile.celestialSnapshot, synProfile.celestialSnapshot) )
+        val compChart = Chart(CelestialSnapshot.getCompositeSnapshot(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot) )
 
         println("comp Chart:")
         for (verticalIdx in 0 until AspectCelestial.getChartSize())
@@ -47,7 +43,7 @@ object TestChart {
                 println("[$horizontalIdx, $verticalIdx]: ${compChart.chartRows[horizontalIdx].rowAspects[verticalIdx]}")
             }
 
-        val synChart = Chart(refProfile.celestialSnapshot, synProfile.celestialSnapshot)
+        val synChart = Chart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot)
 
         println("syn Chart:")
         for (verticalIdx in 0 until AspectCelestial.getChartSize())

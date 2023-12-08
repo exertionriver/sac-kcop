@@ -12,6 +12,7 @@ import river.exertion.sac.astro.state.*
 import river.exertion.sac.astro.value.ValueChart
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.render.RenderEarthLocationTags
+import river.exertion.sac.console.render.RenderSummaryAspects
 import river.exertion.sac.console.state.*
 import river.exertion.sac.swe.HouseName
 
@@ -149,7 +150,6 @@ object SACCelestialsHousesDVLayout {
                 DVTextPane().apply { this.tag = "appTitleVersion"; this.width = DVPaneType.DVPDimension.MEDIUM.tag(); this.align = DVAlign.LEFT.tag() },
                 DVTextPane().apply { this.tag = "appState"; this.width = DVPaneType.DVPDimension.MEDIUM.tag(); this.align = DVAlign.LEFT.tag() },
                 DVTextPane().apply { this.tag = "appStateAttributes"; this.width = DVPaneType.DVPDimension.SMALL.tag(); this.align = DVAlign.LEFT.tag() },
-//                DVTextPane().apply { this.tag = "appProfiles"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.LEFT.tag() }
                 RenderEarthLocationTags.dvTable()
             )),
             DVRow(),
@@ -183,29 +183,10 @@ object SACCelestialsHousesDVLayout {
             DVRow(),
             houseGridTables()
         )),
-        davLayoutTables()
-    ))
-
-
-    fun davLeftCol() : DVTable = DVTable(tableTag = "dav1Col", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
-        DVTextPane().apply { this.tag = "col1Aspects"; this.width = DVPaneType.DVPDimension.SMALL.tag(); this.height = DVPaneType.DVPDimension.TITLE.tag() },
-        DVRow(),
-        DVTextPane().apply { this.tag = "col1Summary"; this.width = DVPaneType.DVPDimension.SMALL.tag(); this.height = DVPaneType.DVPDimension.LARGE.tag() },
-    ))
-
-    fun davLayoutTables() : DVTable =
         DVTable(tableTag = "davLayout", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
-            davLeftCol(),
-            DVTable(tableTag = "dav2Col", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
-                DVTextPane().apply { this.tag = "col2Aspects"; this.width = DVPaneType.DVPDimension.SMALL.tag(); this.height = DVPaneType.DVPDimension.FULL.tag() },
-            )),
-            DVTable(tableTag = "dav3Col", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
-                DVTextPane().apply { this.tag = "col3Aspects"; this.width = DVPaneType.DVPDimension.SMALL.tag(); this.height = DVPaneType.DVPDimension.FULL.tag() },
-            )),
-            DVTable(tableTag = "dav4Col", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
-                DVTextPane().apply { this.tag = "col4Aspects"; this.width = DVPaneType.DVPDimension.SMALL.tag(); this.height = DVPaneType.DVPDimension.FULL.tag() },
-            )),
+            RenderSummaryAspects.dvTable()
         ))
+    ))
 
     var celestialSnapshot : CelestialSnapshot = SACComponent.sacCelestialSnapshot
     var stateChart : StateChart = SACComponent.sacStateChart
@@ -443,24 +424,6 @@ object SACCelestialsHousesDVLayout {
             }
         }
 
-        var col1Data = ""
-        var col2Data = ""
-        var col3Data = ""
-        var col4Data = ""
-
-        valueChart.getValueAspects().forEachIndexed { idx, valueAspect ->
-            when {
-                (idx > 108) -> col4Data = col4Data.plus(RenderAspect(valueAspect).getRenderLabel()).plus("\n")
-                (idx > 66) -> col3Data = col3Data.plus(RenderAspect(valueAspect).getRenderLabel()).plus("\n")
-                (idx > 24) -> col2Data = col2Data.plus(RenderAspect(valueAspect).getRenderLabel()).plus("\n")
-                else -> col1Data = col1Data.plus(RenderAspect(valueAspect).getRenderLabel()).plus("\n")
-            }
-        }
-
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("col1Aspects", col1Data, SACLayoutHandler.baseValuesFontColor)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("col1Summary", "summary", SACLayoutHandler.baseValuesFontColor)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("col2Aspects", col2Data, SACLayoutHandler.baseValuesFontColor)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("col3Aspects", col3Data, SACLayoutHandler.baseValuesFontColor)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("col4Aspects", col4Data, SACLayoutHandler.baseValuesFontColor)
+        RenderSummaryAspects.setContent()
     }
 }

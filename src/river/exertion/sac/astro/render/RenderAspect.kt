@@ -46,19 +46,32 @@ data class RenderAspect(val valueAspect : ValueAspect) {
 
     fun getAspectValueRenderLabel() = when {
         (valueAspect.analysisState != AnalysisState.ROMANTIC_ANALYSIS) -> when {
-            (valueAspect.getPositiveBaseValue() > 0) -> valueAspect.getPositiveBaseValue().toString().padStart(3, ' ').positiveLabel()
-            (valueAspect.getNegativeBaseValue() < 0) -> (-valueAspect.getNegativeBaseValue()).toString().padStart(3, ' ').negativeLabel()
-            else -> "0".padStart(3, ' ').neutralLabel()
+            (valueAspect.getPositiveBaseValue() > 0) -> valueAspect.getPositiveBaseValue().toString().positiveLabel()
+            (valueAspect.getNegativeBaseValue() < 0) -> (-valueAspect.getNegativeBaseValue()).toString().negativeLabel()
+            else -> "0".neutralLabel()
         }
         else -> when { //analysis state
-            (valueAspect.getPositiveBaseValue() > 0) && (valueAspect.getAspectModifier() < 0) -> abs(valueAspect.getBaseModNetValue().getNet()).toString().padStart(3, ' ').revLabel()
-            (valueAspect.getNegativeBaseValue() < 0) && (valueAspect.getAspectModifier() > 0) -> abs(valueAspect.getBaseModNetValue().getNet()).toString().padStart(3, ' ').revLabel()
-            (valueAspect.baseValue.getNet() != 0) && (valueAspect.baseValue.getNet() == 0) -> abs(valueAspect.getBaseModNetValue().getNet()).toString().padStart(3, ' ').revLabel()
-            (valueAspect.getPositiveBaseValue() > 0) -> abs(valueAspect.getBaseModNetValue().getNet()).toString().padStart(3, ' ').positiveLabel()
-            (valueAspect.getNegativeBaseValue() < 0) -> abs(valueAspect.getBaseModNetValue().getNet()).toString().padStart(3, ' ').negativeLabel()
-            else -> abs(valueAspect.getBaseModNetValue().getNet()).toString().padStart(3, ' ').neutralLabel()
+            (valueAspect.getPositiveBaseValue() > 0) && (valueAspect.getAspectModifier() < 0) -> abs(valueAspect.getBaseModNetValue().getNet()).toString().revLabel()
+            (valueAspect.getNegativeBaseValue() < 0) && (valueAspect.getAspectModifier() > 0) -> abs(valueAspect.getBaseModNetValue().getNet()).toString().revLabel()
+            (valueAspect.baseValue.getNet() != 0) && (valueAspect.baseValue.getNet() == 0) -> abs(valueAspect.getBaseModNetValue().getNet()).toString().revLabel()
+            (valueAspect.getPositiveBaseValue() > 0) -> abs(valueAspect.getBaseModNetValue().getNet()).toString().positiveLabel()
+            (valueAspect.getNegativeBaseValue() < 0) -> abs(valueAspect.getBaseModNetValue().getNet()).toString().negativeLabel()
+            else -> abs(valueAspect.getBaseModNetValue().getNet()).toString().neutralLabel()
         }
     }
+
+    fun getLabels() : List<String> = listOf(
+        RenderAspectCelestial.fromName(stateAspect.aspectCelestialFirst.toString())!!.getLabel(),
+        getAspectRenderLabel(),
+        RenderAspectCelestial.fromName(stateAspect.aspectCelestialSecond.toString())!!.getLabel(),
+        getAspectValueRenderLabel()
+    )
+
+    fun getAspectCelestial1Label() = getLabels()[0]
+    fun getAspectLabel() = getLabels()[1]
+    fun getAspectCelestial2Label() = getLabels()[2]
+    fun getAspectDelimLabel() = "="
+    fun getAspectValueLabel() = getLabels()[3]
 
     fun getRenderLabel() : String {
 

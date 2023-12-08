@@ -21,7 +21,7 @@ data class EarthLocation(
     constructor(initLongitude : Double, initLatitude : Double, initAltitude : Int, initTimezone : TimeZone, initUtcDate : LocalDate) :
         this(longitude = initLongitude, latitude = initLatitude, altitude = initAltitude, timeZone = initTimezone, utcDateTime = getDefaultLocalDateTime(initUtcDate), timeUnknown = true)
 
-    constructor(tag: String, longitude: String, latitude: String, altitude : String, timeZone: String, utcDateTime: String) :
+    public constructor(tag: String, longitude: String, latitude: String, altitude : String, timeZone: String, utcDateTime: String) :
             this(tag, longitude.toDouble(), latitude.toDouble(), altitude.toInt(), TimeZone.of(timeZone), utcDateTime.toLocalDateTime())
 
     @Transient

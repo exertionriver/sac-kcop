@@ -6,23 +6,22 @@ import river.exertion.sac.astro.value.ValueAspect.Companion.valueAspectReduceBas
 import river.exertion.sac.astro.value.ValueAspect.Companion.valueAspectReduceBaseModNet
 import river.exertion.sac.astro.value.ValueChart
 import org.junit.jupiter.api.Test
+import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.state.*
 
 @ExperimentalUnsignedTypes
 class TestRomanticAnalysis {
 
-    val refProfile = Profiles.getDefaultProfile(Profiles.PROFILE_1)
-    val synProfile = Profiles.getDefaultProfile(Profiles.PROFILE_2)
     val timeAspectsState = TimeAspectsState.TIME_ASPECTS_ENABLED
 
     @Test
     fun testCompareNatals() {
 
         val refNatalChart = ValueChart(
-            StateChart(refProfile.celestialSnapshot, ChartState.NATAL_CHART,
+            StateChart(SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT), AnalysisState.ROMANTIC_ANALYSIS)
 
-        val synNatalChart = ValueChart(StateChart(synProfile.celestialSnapshot, ChartState.NATAL_CHART,
+        val synNatalChart = ValueChart(StateChart(SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT), AnalysisState.ROMANTIC_ANALYSIS)
 
         val natal1Aspects = refNatalChart.getValueAspects()
@@ -41,7 +40,7 @@ class TestRomanticAnalysis {
 
     @Test
     fun testCompareSynastry() {
-        val synChart = ValueChart(StateChart(refProfile.celestialSnapshot, synProfile.celestialSnapshot, ChartState.SYNASTRY_CHART,
+        val synChart = ValueChart(StateChart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.SYNASTRY_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT), AnalysisState.ROMANTIC_ANALYSIS)
 
         val synAspects = synChart.getValueAspects()
@@ -52,7 +51,7 @@ class TestRomanticAnalysis {
 
     @Test
     fun testCompareComposite() {
-        val compChart = ValueChart(StateChart(refProfile.celestialSnapshot, synProfile.celestialSnapshot, ChartState.COMPOSITE_CHART,
+        val compChart = ValueChart(StateChart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.COMPOSITE_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT), AnalysisState.ROMANTIC_ANALYSIS)
 
         val compAspects = compChart.getValueAspects()

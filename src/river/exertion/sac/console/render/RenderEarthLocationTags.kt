@@ -23,15 +23,16 @@ object RenderEarthLocationTags {
     } )
 
     fun setContent() {
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("eltLeftSquare", SACInputProcessor.locationRecallStateMachine.currentState.getLabels()[0], SACLayoutHandler.baseValuesFontColor)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("eltLeftTag", SACInputProcessor.locationRecallStateMachine.currentState.getLabels()[1], SACLayoutHandler.refEarthLocationFontColor)
+        val locationRecallState = SACInputProcessor.locationRecallStateMachine.currentState
+
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("eltLeftSquare", locationRecallState.eltLeftSquareLabel(), SACLayoutHandler.baseValuesFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("eltLeftTag", locationRecallState.eltLeftTag(), SACLayoutHandler.refEarthLocationFontColor)
 
         if (!SACInputProcessor.locationRecallStateMachine.isInState(LocationRecallState.CUR_NAV_REF)) {
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("eltOperatorTag", SACInputProcessor.locationRecallStateMachine.currentState.getLabels()[2], SACLayoutHandler.baseValuesFontColor)
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("eltRightTag", SACInputProcessor.locationRecallStateMachine.currentState.getLabels()[3], SACLayoutHandler.synEarthLocationFontColor)
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("eltRightSquare", SACInputProcessor.locationRecallStateMachine.currentState.getLabels()[4], SACLayoutHandler.baseValuesFontColor)
-        } else {
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("eltRightSquare", SACInputProcessor.locationRecallStateMachine.currentState.getLabels()[2], SACLayoutHandler.baseValuesFontColor)
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("eltOperatorTag", locationRecallState.eltOpTag(), SACLayoutHandler.baseValuesFontColor)
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("eltRightTag", locationRecallState.eltRightTag(), SACLayoutHandler.synEarthLocationFontColor)
         }
+
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("eltRightSquare", locationRecallState.eltRightSquareLabel(), SACLayoutHandler.baseValuesFontColor)
     }
 }

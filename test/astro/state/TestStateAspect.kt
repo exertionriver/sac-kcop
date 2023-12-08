@@ -3,6 +3,7 @@ package astro.state
 import org.junit.jupiter.api.Test
 import river.exertion.sac.astro.base.Sign
 import river.exertion.sac.astro.state.*
+import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.state.AspectOverlayState
 import river.exertion.sac.console.state.AspectsState
 import river.exertion.sac.console.state.ChartState
@@ -14,8 +15,7 @@ object TestStateAspect {
     @Test
     fun testStateAspect() {
 
-        val refProfile = Profiles.getDefaultProfile(Profiles.PROFILE_1)
-        val refCelestialAspectMap = refProfile.celestialSnapshot.getAspectCelestialLongitudeMap()
+        val refCelestialAspectMap = SACComponent.sacCelestialSnapshot.getAspectCelestialLongitudeMap()
 
         refCelestialAspectMap.entries.forEach {
             println("ac:${it.key}, long:${it.value}")
@@ -37,29 +37,26 @@ object TestStateAspect {
     @Test
     fun testStateChartGetAspects() {
 
-        val refProfile = Profiles.getDefaultProfile(Profiles.PROFILE_1)
-        val refCelestialAspectMap = refProfile.celestialSnapshot.getAspectCelestialLongitudeMap()
+        val refCelestialAspectMap = SACComponent.sacCelestialSnapshot.getAspectCelestialLongitudeMap()
 
         refCelestialAspectMap.entries.forEach {
             println("ac:${it.key}, long:${it.value}")
         }
 
-        val stateAspects = StateChart.getAspects(refProfile.celestialSnapshot, refProfile.celestialSnapshot, ChartState.NATAL_CHART
+        val stateAspects = StateChart.getAspects(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        println("aspects for ${refProfile.profileName}")
+        println("aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
         stateAspects.forEach { println(it) }
     }
 
     @OptIn(ExperimentalUnsignedTypes::class)
     @Test
     fun testStateChartGetExtendedAspects() {
-        val refProfile = Profiles.getDefaultProfile(Profiles.PROFILE_1)
-
-        val stateExtendedAspects = StateChart.getExtendedAspects(refProfile.celestialSnapshot, refProfile.celestialSnapshot, ChartState.NATAL_CHART
+        val stateExtendedAspects = StateChart.getExtendedAspects(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        println("extendedAspects for ${refProfile.profileName}:")
+        println("extendedAspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}:")
         stateExtendedAspects.forEach { println(it) }
     }
 

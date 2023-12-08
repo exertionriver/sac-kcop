@@ -6,6 +6,7 @@ import river.exertion.sac.astro.state.*
 import river.exertion.sac.astro.value.ValueAspect
 import river.exertion.sac.astro.value.ValueChart
 import org.junit.jupiter.api.Test
+import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.state.*
 
 @OptIn(ExperimentalUnsignedTypes::class)
@@ -14,8 +15,7 @@ class TestRenderAspect {
     @Test
     fun testRenderAspect() {
 
-        val refProfile = Profiles.getDefaultProfile(Profiles.PROFILE_CUR_NAV)
-        val refCelestialAspectMap = refProfile.celestialSnapshot.getAspectCelestialLongitudeMap()
+        val refCelestialAspectMap = SACComponent.sacCelestialSnapshot.getAspectCelestialLongitudeMap()
 
         refCelestialAspectMap.entries.forEach {
             println("ac:${it.key}, long:${it.value}")
@@ -40,18 +40,17 @@ class TestRenderAspect {
     @Test
     fun testValueChartRenderAspects() {
 
-        val refProfile = Profiles.getDefaultProfile(Profiles.PROFILE_CUR_NAV)
-        val refCelestialAspectMap = refProfile.celestialSnapshot.getAspectCelestialLongitudeMap()
+        val refCelestialAspectMap = SACComponent.sacCelestialSnapshot.getAspectCelestialLongitudeMap()
 
         refCelestialAspectMap.entries.forEach {
             println("ac:${it.key}, long:${it.value}")
         }
 
         val valueAspects = ValueChart(
-            StateChart.getAspects(refProfile.celestialSnapshot, refProfile.celestialSnapshot, ChartState.NATAL_CHART
+            StateChart.getAspects(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT), ChartState.NATAL_CHART).getValueAspects()
 
-        println("aspects for ${refProfile.profileName}")
+        println("aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
         valueAspects.forEach { println(RenderAspect(it).getRenderLabel() ) }
     }
 
@@ -59,44 +58,43 @@ class TestRenderAspect {
     @Test
     fun testRenderAspectsAnalysis() {
 
-        val refProfile = Profiles.getDefaultProfile(Profiles.PROFILE_1)
-        val refCelestialAspectMap = refProfile.celestialSnapshot.getAspectCelestialLongitudeMap()
+        val refCelestialAspectMap = SACComponent.sacCelestialSnapshot.getAspectCelestialLongitudeMap()
 
         refCelestialAspectMap.entries.forEach {
             println("ac:${it.key}, long:${it.value}")
         }
 
-        val stateAspects = StateChart.getAspects(refProfile.celestialSnapshot, refProfile.celestialSnapshot, ChartState.NATAL_CHART
+        val stateAspects = StateChart.getAspects(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         var valueAspects = ValueChart(stateAspects, ChartState.NATAL_CHART, AnalysisState.NO_ANALYSIS).getValueAspects()
 
-        println("NO_ANALYSIS aspects for ${refProfile.profileName}")
+        println("NO_ANALYSIS aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
         valueAspects.forEach { println(it) }
 
         valueAspects = ValueChart(stateAspects, ChartState.NATAL_CHART, AnalysisState.CHARACTER_ANALYSIS).getValueAspects()
 
-        println("CHARACTER_ANALYSIS aspects for ${refProfile.profileName}")
+        println("CHARACTER_ANALYSIS aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
         valueAspects.forEach { println(it) }
 
         valueAspects = ValueChart(stateAspects, ChartState.NATAL_CHART, AnalysisState.ROMANTIC_ANALYSIS).getValueAspects()
 
-        println("ROMANTIC_ANALYSIS aspects for ${refProfile.profileName}")
+        println("ROMANTIC_ANALYSIS aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
         valueAspects.forEach { println(it) }
 
         valueAspects = ValueChart(stateAspects, ChartState.NATAL_CHART, AnalysisState.PLANET_ANALYSIS).getValueAspects()
 
-        println("PLANET_ANALYSIS aspects for ${refProfile.profileName}")
+        println("PLANET_ANALYSIS aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
         valueAspects.forEach { println(it) }
 
         valueAspects = ValueChart(stateAspects, ChartState.NATAL_CHART, AnalysisState.ELEMENT_ANALYSIS).getValueAspects()
 
-        println("ELEMENT_ANALYSIS aspects for ${refProfile.profileName}")
+        println("ELEMENT_ANALYSIS aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
         valueAspects.forEach { println(it) }
 
         valueAspects = ValueChart(stateAspects, ChartState.NATAL_CHART, AnalysisState.MODE_ANALYSIS).getValueAspects()
 
-        println("MODE_ANALYSIS aspects for ${refProfile.profileName}")
+        println("MODE_ANALYSIS aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
         valueAspects.forEach { println(it) }
     }
 }

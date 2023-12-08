@@ -6,6 +6,7 @@ import river.exertion.sac.astro.base.AspectAngle
 import river.exertion.sac.astro.base.AspectCelestial
 import river.exertion.sac.astro.base.Chart
 import org.junit.jupiter.api.Test
+import river.exertion.sac.component.SACComponent
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalUnsignedTypes::class)
@@ -129,15 +130,13 @@ class TestAspect {
     @Test
     fun testChartGetAspects() {
 
-        val refProfile = Profiles.getDefaultProfile(Profiles.PROFILE_1)
-
-        refProfile.celestialSnapshot.getAspectCelestialLongitudeMap().entries.forEach {
+        SACComponent.sacCelestialSnapshot.getAspectCelestialLongitudeMap().entries.forEach {
             println("ac:${it.key}, long:${it.value}")
         }
 
-        val aspects = Chart.getAspects(refProfile.celestialSnapshot)
+        val aspects = Chart.getAspects(SACComponent.sacCelestialSnapshot)
 
-        println("aspects for ${refProfile.profileName}")
+        println("aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
         aspects.forEach { println(it) }
 
     }
