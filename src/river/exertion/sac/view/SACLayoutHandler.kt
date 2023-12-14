@@ -24,6 +24,7 @@ object SACLayoutHandler : IDisplayViewLayoutHandler {
     var positiveFontColor = ColorPalette.of("green")
     var negativeFontColor = ColorPalette.of("maroon")
     var neutralFontColor = ColorPalette.of("paleGoldenrod")
+    var reversalFontColor = ColorPalette.of("yellow")
 
     var refEarthLocationFontColor = ColorPalette.of("teal")
     var synEarthLocationFontColor = ColorPalette.of("purple")

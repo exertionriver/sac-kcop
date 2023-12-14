@@ -2,12 +2,15 @@ package river.exertion.sac.astro.value
 
 import river.exertion.sac.astro.base.AspectAngle
 import river.exertion.sac.astro.base.AspectCelestial
-import river.exertion.sac.astro.state.*
-import river.exertion.sac.console.state.ChartStateType.Companion.encodeChartStateType
+import river.exertion.sac.astro.render.RenderAspect
+import river.exertion.sac.astro.render.RenderValueType
+import river.exertion.sac.astro.state.StateAspect
+import river.exertion.sac.astro.state.StateBaseAspect
 import river.exertion.sac.astro.state.StateBaseAspect.Companion.stateBaseAspects
-import river.exertion.sac.console.state.AnalysisState
-import river.exertion.sac.console.state.ChartState
-import river.exertion.sac.console.state.ChartStateType
+import river.exertion.sac.astro.state.StateChart
+import river.exertion.sac.console.state.*
+import river.exertion.sac.console.state.ChartStateType.Companion.encodeChartStateType
+import river.exertion.sac.view.SACInputProcessor
 
 class ValueChart (val chartRows: Array<ValueChartRow>, val analysisState: AnalysisState = AnalysisState.NO_ANALYSIS) {
 
@@ -34,7 +37,39 @@ class ValueChart (val chartRows: Array<ValueChartRow>, val analysisState: Analys
 
         chartRows.forEach { returnList.addAll( it.rowAspects ) }
 
-        return returnList.filter { it.stateAspect.aspectAngle != AspectAngle.ASPECT_ANGLE_NONE }.sortedBy { it.stateAspect.aspectCelestialSecond.ordinal }.sortedBy { it.stateAspect.aspectCelestialFirst.ordinal }
+        return returnList.filter { it.stateAspect.aspectAngle != AspectAngle.ASPECT_ANGLE_NONE }.sortedBy { it.stateAspect.aspectCelestialSecond }.sortedBy { it.stateAspect.aspectCelestialFirst }
+    }
+
+    fun getSortedFilteredValueAspects() : List<ValueAspect> {
+
+        val valueAspects = getValueAspects()
+
+        val sortedValueAspects = when {
+            SACInputProcessor.aspectsSortStateMachine.isInState(AspectsSortState.ASPECT) -> valueAspects.sortedBy { it.stateAspect.aspectAngle.getAspectType() }
+            SACInputProcessor.aspectsSortStateMachine.isInState(AspectsSortState.SECOND_CELESTIAL) -> valueAspects.sortedBy { it.stateAspect.aspectCelestialSecond }
+            SACInputProcessor.aspectsSortStateMachine.isInState(AspectsSortState.VALUE_MAGNITUDE) -> valueAspects.sortedByDescending { RenderAspect(it).getAspectValue().second }
+            SACInputProcessor.aspectsSortStateMachine.isInState(AspectsSortState.VALUE_POS_TO_NEG) -> {
+                valueAspects.filter { RenderAspect(it).getAspectValue().first == RenderValueType.POSITIVE || RenderAspect(it).getAspectValue().first == RenderValueType.REVERSAL_TO_POS }.sortedByDescending { RenderAspect(it).getAspectValue().second }.sortedBy { RenderAspect(it).getAspectValue().first }.plus(
+                    valueAspects.filter { RenderAspect(it).getAspectValue().first == RenderValueType.NEUTRAL || RenderAspect(it).getAspectValue().first == RenderValueType.REVERSAL_TO_NEUT }.sortedBy { it.stateAspect.aspectAngle.getAspectType() }.sortedBy { RenderAspect(it).getAspectValue().first }.plus(
+                        valueAspects.filter { RenderAspect(it).getAspectValue().first == RenderValueType.NEGATIVE || RenderAspect(it).getAspectValue().first == RenderValueType.REVERSAL_TO_NEG }.sortedBy { RenderAspect(it).getAspectValue().second }.sortedBy { RenderAspect(it).getAspectValue().first }
+                    ))
+            }
+            SACInputProcessor.aspectsSortStateMachine.isInState(AspectsSortState.VALUE_NEG_TO_POS) -> {
+                valueAspects.filter { RenderAspect(it).getAspectValue().first == RenderValueType.NEGATIVE || RenderAspect(it).getAspectValue().first == RenderValueType.REVERSAL_TO_NEG }.sortedByDescending { RenderAspect(it).getAspectValue().second }.sortedBy { RenderAspect(it).getAspectValue().first }.plus(
+                    valueAspects.filter { RenderAspect(it).getAspectValue().first == RenderValueType.NEUTRAL || RenderAspect(it).getAspectValue().first == RenderValueType.REVERSAL_TO_NEUT }.sortedBy { it.stateAspect.aspectAngle.getAspectType() }.sortedBy { RenderAspect(it).getAspectValue().first }.plus(
+                        valueAspects.filter { RenderAspect(it).getAspectValue().first == RenderValueType.POSITIVE || RenderAspect(it).getAspectValue().first == RenderValueType.REVERSAL_TO_POS }.sortedBy { RenderAspect(it).getAspectValue().second }.sortedBy { RenderAspect(it).getAspectValue().first }
+                    ))
+            }
+            else -> valueAspects.sortedBy { it.stateAspect.aspectCelestialFirst }
+        }
+
+        val filteredValueAspects = when {
+            SACInputProcessor.aspectsFilterStateMachine.isInState(AspectsFilterState.OVER_TWENTY) -> sortedValueAspects.filter { RenderAspect(it).getAspectValue().second >= 20 }
+            SACInputProcessor.aspectsFilterStateMachine.isInState(AspectsFilterState.OVER_FIFTY) -> sortedValueAspects.filter { RenderAspect(it).getAspectValue().second >= 50 }
+            else -> sortedValueAspects
+        }
+
+        return filteredValueAspects
     }
 
     companion object {

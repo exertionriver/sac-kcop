@@ -18,6 +18,8 @@ object SACInputProcessor : InputProcessor {
     val aspectsStateMachine = DefaultStateMachine(this, AspectsState.defaultState())
     val aspectOverlayStateMachine = DefaultStateMachine(this, AspectOverlayState.defaultState())
     val locationRecallStateMachine = DefaultStateMachine(this, LocationRecallState.defaultState())
+    val aspectsSortStateMachine = DefaultStateMachine(this, AspectsSortState.defaultState())
+    val aspectsFilterStateMachine = DefaultStateMachine(this, AspectsFilterState.defaultState())
 
     override fun keyDown(keycode: Int): Boolean {
 
@@ -82,6 +84,10 @@ object SACInputProcessor : InputProcessor {
             }
 
             MultiKeys.a.keyDown() -> aspectsStateMachine.changeState(AspectsState.cycleState(aspectsStateMachine.currentState))
+
+            MultiKeys.r.keyDown() -> aspectsSortStateMachine.changeState(AspectsSortState.cycleState(aspectsSortStateMachine.currentState))
+
+            MultiKeys.f.keyDown() -> aspectsFilterStateMachine.changeState(AspectsFilterState.cycleState(aspectsFilterStateMachine.currentState))
 
             MultiKeys.s.keyDown() -> navStateMachine.changeState(NavState.NAV_SECOND)
             MultiKeys.m.keyDown() -> navStateMachine.changeState(NavState.NAV_MINUTE)

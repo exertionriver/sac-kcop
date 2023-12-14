@@ -1,5 +1,6 @@
 package river.exertion.sac.astro.render
 
+import river.exertion.kcop.base.str
 import river.exertion.sac.astro.render.RenderChartStateType.getChartStateTypesLabel
 import river.exertion.sac.astro.render.RenderValue.Companion.negativeLabel
 import river.exertion.sac.astro.render.RenderValue.Companion.neutralLabel
@@ -14,58 +15,103 @@ data class RenderAspect(val valueAspect : ValueAspect) {
 
     val stateAspect = valueAspect.stateAspect
 
-    fun getAspectRenderLabel() = when {
+    fun getAspectRenderLabel() : Pair<RenderValueType, String> = when {
         (valueAspect.analysisState != AnalysisState.ROMANTIC_ANALYSIS) -> when {
-            (valueAspect.getPositiveBaseValue() > 0) -> RenderAspectType.fromName(
-                stateAspect.aspectAngle.getAspectType().toString()
-            )!!.getLabel().positiveLabel()
-            (valueAspect.getNegativeBaseValue() < 0) -> RenderAspectType.fromName(
-                stateAspect.aspectAngle.getAspectType().toString()
-            )!!.getLabel().negativeLabel()
-            else -> RenderAspectType.fromName(stateAspect.aspectAngle.getAspectType().toString())!!.getLabel().neutralLabel()
+            (valueAspect.getPositiveBaseValue() > 0) -> Pair(
+                RenderValueType.POSITIVE,
+                RenderAspectType.fromName(stateAspect.aspectAngle.getAspectType().toString())!!.getLabel()
+            )
+            (valueAspect.getNegativeBaseValue() < 0) -> Pair(
+                RenderValueType.NEGATIVE,
+                RenderAspectType.fromName(stateAspect.aspectAngle.getAspectType().toString())!!.getLabel()
+            )
+            else -> Pair(
+                RenderValueType.NEUTRAL,
+                RenderAspectType.fromName(stateAspect.aspectAngle.getAspectType().toString())!!.getLabel()
+            )
         }
         else -> when { //analysis state
-            (valueAspect.getPositiveBaseValue() > 0) && (valueAspect.getAspectModifier() < 0) -> RenderAspectType.fromName(
-                stateAspect.aspectAngle.getAspectType().toString()
-            )!!.getLabel().revLabel()
-            (valueAspect.getNegativeBaseValue() < 0) && (valueAspect.getAspectModifier() > 0) -> RenderAspectType.fromName(
-                stateAspect.aspectAngle.getAspectType().toString()
-            )!!.getLabel().revLabel()
-            (valueAspect.baseValue.getNet() != 0) && (valueAspect.baseValue.getNet() == 0) -> RenderAspectType.fromName(
-                stateAspect.aspectAngle.getAspectType().toString()
-            )!!.getLabel().revLabel()
-            (valueAspect.getPositiveBaseValue() > 0) -> RenderAspectType.fromName(
-                stateAspect.aspectAngle.getAspectType().toString()
-            )!!.getLabel().positiveLabel()
-            (valueAspect.getNegativeBaseValue() < 0) -> RenderAspectType.fromName(
-                stateAspect.aspectAngle.getAspectType().toString()
-            )!!.getLabel().negativeLabel()
-            else -> RenderAspectType.fromName(stateAspect.aspectAngle.getAspectType().toString())!!.getLabel().neutralLabel()
+            (valueAspect.getPositiveBaseValue() > 0) && (valueAspect.getAspectModifier() < 0) -> Pair(
+                RenderValueType.REVERSAL_TO_NEG,
+                RenderAspectType.fromName(stateAspect.aspectAngle.getAspectType().toString())!!.getLabel()
+            )
+            (valueAspect.getNegativeBaseValue() < 0) && (valueAspect.getAspectModifier() > 0) -> Pair(
+                RenderValueType.REVERSAL_TO_POS,
+                RenderAspectType.fromName(stateAspect.aspectAngle.getAspectType().toString())!!.getLabel()
+            )
+            (valueAspect.baseValue.getNet() != 0) && (valueAspect.baseValue.getNet() == 0) -> Pair(
+                RenderValueType.REVERSAL_TO_NEUT,
+                RenderAspectType.fromName(stateAspect.aspectAngle.getAspectType().toString())!!.getLabel()
+            )
+            (valueAspect.getPositiveBaseValue() > 0) -> Pair(
+                RenderValueType.POSITIVE,
+                RenderAspectType.fromName(stateAspect.aspectAngle.getAspectType().toString())!!.getLabel()
+            )
+            (valueAspect.getNegativeBaseValue() < 0) -> Pair(
+                RenderValueType.NEGATIVE,
+                RenderAspectType.fromName(stateAspect.aspectAngle.getAspectType().toString())!!.getLabel()
+            )
+            else -> Pair(
+                RenderValueType.NEUTRAL,
+                RenderAspectType.fromName(stateAspect.aspectAngle.getAspectType().toString())!!.getLabel()
+            )
         }
     }
 
-    fun getAspectValueRenderLabel() = when {
+    fun getAspectValueRenderLabel() : Pair<RenderValueType, String> = getAspectValue().let { Pair(it.first, it.second.toString()) }
+
+    fun getAspectValue() : Pair<RenderValueType, Int> = when {
         (valueAspect.analysisState != AnalysisState.ROMANTIC_ANALYSIS) -> when {
-            (valueAspect.getPositiveBaseValue() > 0) -> valueAspect.getPositiveBaseValue().toString().positiveLabel()
-            (valueAspect.getNegativeBaseValue() < 0) -> (-valueAspect.getNegativeBaseValue()).toString().negativeLabel()
-            else -> "0".neutralLabel()
+            (valueAspect.getPositiveBaseValue() > 0) -> Pair(
+                RenderValueType.POSITIVE,
+                valueAspect.getPositiveBaseValue()
+            )
+            (valueAspect.getNegativeBaseValue() < 0) -> Pair(
+                RenderValueType.NEGATIVE,
+                (-valueAspect.getNegativeBaseValue())
+            )
+            else -> Pair(
+                RenderValueType.NEUTRAL,
+                0
+            )
         }
         else -> when { //analysis state
-            (valueAspect.getPositiveBaseValue() > 0) && (valueAspect.getAspectModifier() < 0) -> abs(valueAspect.getBaseModNetValue().getNet()).toString().revLabel()
-            (valueAspect.getNegativeBaseValue() < 0) && (valueAspect.getAspectModifier() > 0) -> abs(valueAspect.getBaseModNetValue().getNet()).toString().revLabel()
-            (valueAspect.baseValue.getNet() != 0) && (valueAspect.baseValue.getNet() == 0) -> abs(valueAspect.getBaseModNetValue().getNet()).toString().revLabel()
-            (valueAspect.getPositiveBaseValue() > 0) -> abs(valueAspect.getBaseModNetValue().getNet()).toString().positiveLabel()
-            (valueAspect.getNegativeBaseValue() < 0) -> abs(valueAspect.getBaseModNetValue().getNet()).toString().negativeLabel()
-            else -> abs(valueAspect.getBaseModNetValue().getNet()).toString().neutralLabel()
+            (valueAspect.getPositiveBaseValue() > 0) && (valueAspect.getAspectModifier() < 0) -> Pair(
+                RenderValueType.REVERSAL_TO_NEG,
+                abs(valueAspect.getBaseModNetValue().getNet())
+            )
+            (valueAspect.getNegativeBaseValue() < 0) && (valueAspect.getAspectModifier() > 0) -> Pair(
+                RenderValueType.REVERSAL_TO_POS,
+                abs(valueAspect.getBaseModNetValue().getNet())
+            )
+            (valueAspect.baseValue.getNet() != 0) && (valueAspect.baseValue.getNet() == 0) -> Pair(
+                RenderValueType.REVERSAL_TO_NEUT,
+                abs(valueAspect.getBaseModNetValue().getNet())
+            )
+            (valueAspect.getPositiveBaseValue() > 0) -> Pair(
+                RenderValueType.POSITIVE,
+                abs(valueAspect.getBaseModNetValue().getNet())
+            )
+            (valueAspect.getNegativeBaseValue() < 0) -> Pair(
+                RenderValueType.NEGATIVE,
+                abs(valueAspect.getBaseModNetValue().getNet())
+            )
+            else -> Pair(
+                RenderValueType.NEUTRAL,
+                abs(valueAspect.getBaseModNetValue().getNet())
+            )
         }
     }
 
     fun getLabels() : List<String> = listOf(
         RenderAspectCelestial.fromName(stateAspect.aspectCelestialFirst.toString())!!.getLabel(),
-        getAspectRenderLabel(),
+        getAspectRenderLabel().second,
         RenderAspectCelestial.fromName(stateAspect.aspectCelestialSecond.toString())!!.getLabel(),
-        getAspectValueRenderLabel()
+        getAspectValueRenderLabel().second
     )
+
+    fun getAspectValueType() = getAspectRenderLabel().first
+    fun getValueValueType() = getAspectValueRenderLabel().first
 
     fun getAspectCelestial1Label() = getLabels()[0]
     fun getAspectLabel() = getLabels()[1]
@@ -73,20 +119,7 @@ data class RenderAspect(val valueAspect : ValueAspect) {
     fun getAspectDelimLabel() = "="
     fun getAspectValueLabel() = getLabels()[3]
 
-    fun getRenderLabel() : String {
-
-        val firstAspectSpace = if (stateAspect.aspectCelestialFirst != AspectCelestial.ASPECT_SUN_MOON_MIDPOINT) " " else ""
-        val secondAspectSpace = if (stateAspect.aspectCelestialSecond != AspectCelestial.ASPECT_SUN_MOON_MIDPOINT) " " else ""
-
-        val commonLabel = //RenderSign.getElementLabel(stateAspect.signFirst) + " " +
-                RenderAspectCelestial.fromName(stateAspect.aspectCelestialFirst.toString())!!.getLabel() + firstAspectSpace +
-                getAspectRenderLabel() + " " +
-                //RenderSign.getElementLabel(stateAspect.signSecond) + " " +
-                RenderAspectCelestial.fromName(stateAspect.aspectCelestialSecond.toString())!!.getLabel() + secondAspectSpace
-
-        return commonLabel + "=" + getAspectValueRenderLabel()
-
-   }
+    fun getRenderLabel() : String = getLabels().str()
 
     fun getRenderRomanticModLabel() : String {
         if (valueAspect.analysisState != AnalysisState.ROMANTIC_ANALYSIS) return ":(**) "
@@ -104,22 +137,9 @@ data class RenderAspect(val valueAspect : ValueAspect) {
         }
     }
 
-    @OptIn(ExperimentalUnsignedTypes::class)
     fun getRenderCharacterModLabel() : String {
         if (valueAspect.analysisState != AnalysisState.CHARACTER_ANALYSIS) return ":(**)"
 
         return getChartStateTypesLabel(valueAspect.getAspectModifier())
-    }
-
-    companion object {
-
-        //modifier flips value
-        fun String.revLabel() : String = this
-
-        fun getAspectNoneMarkerLabel() : String = RenderAspectType.ASPECT_NONE.getLabel()
-
-        fun getLabelLength() : Int {
-            return 23 //default Sign + Celestial + Aspect + Sign + Celestial + value
-        }
     }
 }
