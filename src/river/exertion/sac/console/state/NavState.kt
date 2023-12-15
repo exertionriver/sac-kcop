@@ -50,12 +50,12 @@ enum class NavState : State<SACInputProcessor> {
     }
     , LOCATION_RECALL {
         override fun getLabel() = "Location Recalled"
-        override fun updCurNavInstant() { curNavInstant = SACComponent.curNavEarthLocation.utcDateTime.toInstant(TimeZone.UTC) }
+        override fun updCurNavInstant() { curNavInstant = SACComponent.sacEarthLocation.utcDateTime.toInstant(TimeZone.UTC) }
         override fun isPaused() = true
     }
     , LOCATION_STORE {
         override fun getLabel() = "Location Stored"
-        override fun updCurNavInstant() { curNavInstant = SACComponent.curNavEarthLocation.utcDateTime.toInstant(TimeZone.UTC) }
+        override fun updCurNavInstant() { curNavInstant = SACComponent.sacEarthLocation.utcDateTime.toInstant(TimeZone.UTC) }
         override fun isPaused() = true
     }
     ;

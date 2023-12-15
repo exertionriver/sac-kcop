@@ -3,10 +3,11 @@ package river.exertion.sac.console.render
 import river.exertion.kcop.view.layout.displayViewLayout.*
 import river.exertion.kcop.view.layout.displayViewLayout.asset.DVAlign
 import river.exertion.sac.astro.render.RenderAspect
+import river.exertion.sac.astro.render.RenderChartState
+import river.exertion.sac.astro.render.RenderValue
 import river.exertion.sac.astro.render.RenderValueType
-import river.exertion.sac.console.state.AspectsSortState
+import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.state.ChartState
-import river.exertion.sac.console.state.LocationRecallState
 import river.exertion.sac.view.SACCelestialsHousesDVLayout
 import river.exertion.sac.view.SACInputProcessor
 import river.exertion.sac.view.SACLayoutHandler
@@ -114,4 +115,12 @@ object RenderSummaryAspects {
             RenderValueType.NEUTRAL -> SACLayoutHandler.neutralFontColor
             else -> SACLayoutHandler.reversalFontColor
         }
+
+    fun summarySumLine() = mutableListOf(
+        RenderChartState.getChartSumLabel(SACInputProcessor.chartStateMachine.currentState),
+        RenderValue(SACComponent.sacValueChart.getBaseValue()).getLabel(),
+        RenderValue(SACComponent.sacValueChart.getBaseValue()).getPercentLabel(),
+        RenderValue(SACComponent.sacValueChart.getBaseValue()).getStimLabel(),
+    )
+
 }

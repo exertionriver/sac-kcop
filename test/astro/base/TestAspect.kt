@@ -130,13 +130,13 @@ class TestAspect {
     @Test
     fun testChartGetAspects() {
 
-        SACComponent.sacCelestialSnapshot.getAspectCelestialLongitudeMap().entries.forEach {
+        SACComponent.refNatCelestialSnapshot.getAspectCelestialLongitudeMap().entries.forEach {
             println("ac:${it.key}, long:${it.value}")
         }
 
-        val aspects = Chart.getAspects(SACComponent.sacCelestialSnapshot)
+        val aspects = Chart.getAspects(SACComponent.refNatCelestialSnapshot)
 
-        println("aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
+        println("aspects for ${SACComponent.refNatCelestialSnapshot.refEarthLocation.tag}")
         aspects.forEach { println(it) }
 
     }

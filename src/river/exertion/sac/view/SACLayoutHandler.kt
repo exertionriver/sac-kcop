@@ -43,10 +43,4 @@ object SACLayoutHandler : IDisplayViewLayoutHandler {
     override fun clearContent() {
         DVLayoutHandler.currentDvLayout.clearContent()
     }
-
-    fun setBaseColor(baseColorName: String?, baseColorPalette: ColorPalette?) {
-        baseColor = baseColorPalette ?: baseColor
-        SACLayoutHandler.baseColorName = baseColorName ?: baseColor.tags()[0]
-    }
-
 }

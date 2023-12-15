@@ -15,10 +15,9 @@ object RenderChartState {
     fun String.romChartLabel() : String = Constants.SYM_ROMANTIC + this + ":"
     fun String.impRomChartLabel() : String = Constants.SYM_IMPROVEMENT + Constants.SYM_ROMANTIC + this + ":"
 
-    fun getChartSumLabel(chartState : ChartState, colorString : String) : String =
+    fun getChartSumLabel(chartState : ChartState) : String =
         RenderState.getNestedLabelString(
             Constants.SYM_SIGMA,
-            colorString,
             chartState.getLabel()
         )
 

@@ -15,7 +15,7 @@ object TestStateAspect {
     @Test
     fun testStateAspect() {
 
-        val refCelestialAspectMap = SACComponent.sacCelestialSnapshot.getAspectCelestialLongitudeMap()
+        val refCelestialAspectMap = SACComponent.refNatCelestialSnapshot.getAspectCelestialLongitudeMap()
 
         refCelestialAspectMap.entries.forEach {
             println("ac:${it.key}, long:${it.value}")
@@ -37,26 +37,26 @@ object TestStateAspect {
     @Test
     fun testStateChartGetAspects() {
 
-        val refCelestialAspectMap = SACComponent.sacCelestialSnapshot.getAspectCelestialLongitudeMap()
+        val refCelestialAspectMap = SACComponent.refNatCelestialSnapshot.getAspectCelestialLongitudeMap()
 
         refCelestialAspectMap.entries.forEach {
             println("ac:${it.key}, long:${it.value}")
         }
 
-        val stateAspects = StateChart.getAspects(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART
+        val stateAspects = StateChart.getAspects(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        println("aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
+        println("aspects for ${SACComponent.refNatCelestialSnapshot.refEarthLocation.tag}")
         stateAspects.forEach { println(it) }
     }
 
     @OptIn(ExperimentalUnsignedTypes::class)
     @Test
     fun testStateChartGetExtendedAspects() {
-        val stateExtendedAspects = StateChart.getExtendedAspects(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART
+        val stateExtendedAspects = StateChart.getExtendedAspects(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        println("extendedAspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}:")
+        println("extendedAspects for ${SACComponent.refNatCelestialSnapshot.refEarthLocation.tag}:")
         stateExtendedAspects.forEach { println(it) }
     }
 

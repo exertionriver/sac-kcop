@@ -24,25 +24,30 @@ class SACComponent : IComponent, Telegraph {
     var compositeNoRecalc = false
 
     fun sacRecalc() {
-        curNavEarthLocation.utcDateTime = NavState.curNavDateTimeUTC()
-        curNavEarthLocation.recalc()
-
-        sacCelestialSnapshot.refEarthLocation = curNavEarthLocation
+        sacEarthLocation.utcDateTime = NavState.curNavDateTimeUTC()
+        sacEarthLocation.recalc()
 
         compositeNoRecalc = false
 
-        if (synCompRecallEarthLocation != null) {
-            curNavCelestialSnapshot.refEarthLocation = curNavEarthLocation
-            curNavCelestialSnapshot.synEarthLocation = synCompRecallEarthLocation!!
+        if (refEarthLocation != null) {
+            refNatCelestialSnapshot.refEarthLocation = refEarthLocation!!
+        } else {
+            refNatCelestialSnapshot.refEarthLocation = sacEarthLocation
+        }
 
-            synCompCelestialSnapshot.refEarthLocation = synCompRecallEarthLocation!!
-            sacCelestialSnapshot.synEarthLocation = synCompRecallEarthLocation!!
+        refNatCelestialSnapshot.recalc()
 
-            curNavCelestialSnapshot.recalc()
-            synCompCelestialSnapshot.recalc()
+        if (synEarthLocation != null) {
+            sacCelestialSnapshot.refEarthLocation = sacEarthLocation
+            sacCelestialSnapshot.synEarthLocation = synEarthLocation!!
+
+            synNatCelestialSnapshot.refEarthLocation = synEarthLocation!!
+
+            sacCelestialSnapshot.recalc()
+            synNatCelestialSnapshot.recalc()
 
             if (SACInputProcessor.chartStateMachine.isInState(ChartState.COMPOSITE_CHART)) {
-                sacCelestialSnapshot = CelestialSnapshot.getCompositeSnapshot(curNavCelestialSnapshot, synCompCelestialSnapshot, curNavEarthLocation, synCompRecallEarthLocation!!)
+                sacCelestialSnapshot = CelestialSnapshot.getCompositeSnapshot(sacCelestialSnapshot, synNatCelestialSnapshot, sacEarthLocation, synEarthLocation!!)
                 compositeNoRecalc = true
             }
         }
@@ -51,14 +56,38 @@ class SACComponent : IComponent, Telegraph {
 
         //TODO: implement recalc for StateChart and ValueChart
         sacStateChart = StateChart(StateChart.getAspects(
-            sacCelestialSnapshot
-            , if (synCompRecallEarthLocation != null) synCompCelestialSnapshot else sacCelestialSnapshot
+            refNatCelestialSnapshot
+            , if (synEarthLocation != null) synNatCelestialSnapshot else refNatCelestialSnapshot
             , SACInputProcessor.chartStateMachine.currentState
             , SACInputProcessor.aspectsStateMachine.currentState
             , SACInputProcessor.timeAspectsStateMachine.currentState
             , SACInputProcessor.aspectOverlayStateMachine.currentState))
 
         sacValueChart = ValueChart(sacStateChart, SACInputProcessor.analysisStateMachine.currentState)
+
+        if (refEarthLocation != null) {
+            refNatStateChart = StateChart(StateChart.getAspects(
+                refNatCelestialSnapshot
+                , refNatCelestialSnapshot
+                , ChartState.NATAL_CHART
+                , SACInputProcessor.aspectsStateMachine.currentState
+                , SACInputProcessor.timeAspectsStateMachine.currentState
+                , SACInputProcessor.aspectOverlayStateMachine.currentState))
+
+            refNatValueChart = ValueChart(refNatStateChart, SACInputProcessor.analysisStateMachine.currentState)
+        }
+
+        if (synEarthLocation != null) {
+            synNatStateChart = StateChart(StateChart.getAspects(
+                synNatCelestialSnapshot
+                , synNatCelestialSnapshot
+                , ChartState.NATAL_CHART
+                , SACInputProcessor.aspectsStateMachine.currentState
+                , SACInputProcessor.timeAspectsStateMachine.currentState
+                , SACInputProcessor.aspectOverlayStateMachine.currentState))
+
+            synNatValueChart = ValueChart(synNatStateChart, SACInputProcessor.analysisStateMachine.currentState)
+        }
     }
 
     override fun initialize(initData: Any?) {
@@ -84,48 +113,71 @@ class SACComponent : IComponent, Telegraph {
             SACDefaultAssetStore.entries.filter { it.name != "Default"}[idx].get()
         }
 
-        var curNavEarthLocation = EarthLocation()
+        var sacEarthLocation = EarthLocation()
+        var refEarthLocation : EarthLocation? = null
+        var synEarthLocation : EarthLocation? = null
 
         fun resetEarthLocations() {
-            curNavEarthLocation.tag = "curNav"
-            curNavEarthLocation.longitude = SACDefaultAssetStore.Default.get().longitude
-            curNavEarthLocation.latitude = SACDefaultAssetStore.Default.get().latitude
-            curNavEarthLocation.altitude = SACDefaultAssetStore.Default.get().altitude
-            curNavEarthLocation.timeZone = SACDefaultAssetStore.Default.get().timeZone
-            curNavEarthLocation.utcDateTime = NavState.curNavDateTimeUTC()
+            sacEarthLocation.tag = "curNav"
+            sacEarthLocation.longitude = SACDefaultAssetStore.Default.get().longitude
+            sacEarthLocation.latitude = SACDefaultAssetStore.Default.get().latitude
+            sacEarthLocation.altitude = SACDefaultAssetStore.Default.get().altitude
+            sacEarthLocation.timeZone = SACDefaultAssetStore.Default.get().timeZone
+            sacEarthLocation.utcDateTime = NavState.curNavDateTimeUTC()
 
-            synCompRecallEarthLocation = null
+            refEarthLocation = null
+            synEarthLocation = null
         }
 
-        var synCompRecallEarthLocation : EarthLocation? = null
-
-        var curNavCelestialSnapshot = CelestialSnapshot(curNavEarthLocation)
-        var sacCelestialSnapshot = CelestialSnapshot(curNavEarthLocation)
-        var synCompCelestialSnapshot : CelestialSnapshot = CelestialSnapshot(curNavEarthLocation)
+        var sacCelestialSnapshot = CelestialSnapshot(sacEarthLocation)
+        var refNatCelestialSnapshot = CelestialSnapshot(sacEarthLocation)
+        var synNatCelestialSnapshot = CelestialSnapshot(sacEarthLocation)
 
         var sacStateChart = StateChart(StateChart.getAspects(sacCelestialSnapshot, sacCelestialSnapshot, ChartState.defaultState()
             , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState()))
+        var refNatStateChart = StateChart(StateChart.getAspects(refNatCelestialSnapshot, refNatCelestialSnapshot, ChartState.defaultState()
+            , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState()))
+        var synNatStateChart = StateChart(StateChart.getAspects(synNatCelestialSnapshot, synNatCelestialSnapshot, ChartState.defaultState()
+            , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState()))
 
         var sacValueChart = ValueChart(sacStateChart, AnalysisState.defaultState())
+        var refNatValueChart = ValueChart(refNatStateChart, AnalysisState.defaultState())
+        var synNatValueChart = ValueChart(synNatStateChart, AnalysisState.defaultState())
 
         fun recallRefEarthLocationEntry(recallIdx : Int) {
-            curNavEarthLocation.tag = earthLocationArray[recallIdx].tag
-            curNavEarthLocation.longitude = earthLocationArray[recallIdx].longitude
-            curNavEarthLocation.latitude = earthLocationArray[recallIdx].latitude
-            curNavEarthLocation.altitude = earthLocationArray[recallIdx].altitude
-            curNavEarthLocation.timeZone = earthLocationArray[recallIdx].timeZone
-            curNavEarthLocation.utcDateTime = earthLocationArray[recallIdx].utcDateTime
+            sacEarthLocation.tag = earthLocationArray[recallIdx].tag
+            sacEarthLocation.longitude = earthLocationArray[recallIdx].longitude
+            sacEarthLocation.latitude = earthLocationArray[recallIdx].latitude
+            sacEarthLocation.altitude = earthLocationArray[recallIdx].altitude
+            sacEarthLocation.timeZone = earthLocationArray[recallIdx].timeZone
+            sacEarthLocation.utcDateTime = earthLocationArray[recallIdx].utcDateTime
+
+            refEarthLocation = EarthLocation(
+                earthLocationArray[recallIdx].tag
+                , earthLocationArray[recallIdx].longitude
+                , earthLocationArray[recallIdx].latitude
+                , earthLocationArray[recallIdx].altitude
+                , earthLocationArray[recallIdx].timeZone
+                , earthLocationArray[recallIdx].utcDateTime
+            )
         }
 
         fun recallSynCompEarthLocationEntry(recallIdx : Int) {
-            synCompRecallEarthLocation = earthLocationArray[recallIdx]
+            synEarthLocation = EarthLocation(
+                earthLocationArray[recallIdx].tag
+                , earthLocationArray[recallIdx].longitude
+                , earthLocationArray[recallIdx].latitude
+                , earthLocationArray[recallIdx].altitude
+                , earthLocationArray[recallIdx].timeZone
+                , earthLocationArray[recallIdx].utcDateTime
+            )
         }
 
         fun storeRefEarthLocationEntry(storeIdx : Int) {
-            earthLocationArray[storeIdx].latitude = curNavEarthLocation.latitude
-            earthLocationArray[storeIdx].longitude = curNavEarthLocation.longitude
-            earthLocationArray[storeIdx].altitude = curNavEarthLocation.altitude
-            earthLocationArray[storeIdx].timeZone = curNavEarthLocation.timeZone
+            earthLocationArray[storeIdx].latitude = sacEarthLocation.latitude
+            earthLocationArray[storeIdx].longitude = sacEarthLocation.longitude
+            earthLocationArray[storeIdx].altitude = sacEarthLocation.altitude
+            earthLocationArray[storeIdx].timeZone = sacEarthLocation.timeZone
             earthLocationArray[storeIdx].utcDateTime = NavState.curNavDateTimeUTC()
         }
     }

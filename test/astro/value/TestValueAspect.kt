@@ -13,7 +13,7 @@ object TestValueAspect {
     @Test
     fun testValueAspect() {
 
-        val refCelestialAspectMap = SACComponent.sacCelestialSnapshot.getAspectCelestialLongitudeMap()
+        val refCelestialAspectMap = SACComponent.refNatCelestialSnapshot.getAspectCelestialLongitudeMap()
 
         refCelestialAspectMap.entries.forEach {
             println("ac:${it.key}, long:${it.value}")
@@ -37,60 +37,60 @@ object TestValueAspect {
     @Test
     fun testStateChartValueAspects() {
 
-        val refCelestialAspectMap = SACComponent.sacCelestialSnapshot.getAspectCelestialLongitudeMap()
+        val refCelestialAspectMap = SACComponent.refNatCelestialSnapshot.getAspectCelestialLongitudeMap()
 
         refCelestialAspectMap.entries.forEach {
             println("ac:${it.key}, long:${it.value}")
         }
 
         val valueAspects = ValueChart(
-            StateChart.getAspects(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART
+            StateChart.getAspects(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT), ChartState.NATAL_CHART).getValueAspects()
 
-        println("aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
+        println("aspects for ${SACComponent.refNatCelestialSnapshot.refEarthLocation.tag}")
         valueAspects.forEach { println(it) }
     }
 
     @Test
     fun testValueAspectsAnalysis() {
 
-        val refCelestialAspectMap = SACComponent.sacCelestialSnapshot.getAspectCelestialLongitudeMap()
+        val refCelestialAspectMap = SACComponent.refNatCelestialSnapshot.getAspectCelestialLongitudeMap()
 
         refCelestialAspectMap.entries.forEach {
             println("ac:${it.key}, long:${it.value}")
         }
 
-        val stateAspects = StateChart.getAspects(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART
+        val stateAspects = StateChart.getAspects(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         var valueAspects = ValueChart(stateAspects, ChartState.NATAL_CHART, AnalysisState.NO_ANALYSIS).getValueAspects()
 
-        println("NO_ANALYSIS aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
+        println("NO_ANALYSIS aspects for ${SACComponent.refNatCelestialSnapshot.refEarthLocation.tag}")
         valueAspects.forEach { println(it) }
 
         valueAspects = ValueChart(stateAspects, ChartState.NATAL_CHART, AnalysisState.CHARACTER_ANALYSIS).getValueAspects()
 
-        println("CHARACTER_ANALYSIS aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
+        println("CHARACTER_ANALYSIS aspects for ${SACComponent.refNatCelestialSnapshot.refEarthLocation.tag}")
         valueAspects.forEach { println(it) }
 
         valueAspects = ValueChart(stateAspects, ChartState.NATAL_CHART, AnalysisState.ROMANTIC_ANALYSIS).getValueAspects()
 
-        println("ROMANTIC_ANALYSIS aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
+        println("ROMANTIC_ANALYSIS aspects for ${SACComponent.refNatCelestialSnapshot.refEarthLocation.tag}")
         valueAspects.forEach { println(it) }
 
         valueAspects = ValueChart(stateAspects, ChartState.NATAL_CHART, AnalysisState.PLANET_ANALYSIS).getValueAspects()
 
-        println("PLANET_ANALYSIS aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
+        println("PLANET_ANALYSIS aspects for ${SACComponent.refNatCelestialSnapshot.refEarthLocation.tag}")
         valueAspects.forEach { println(it) }
 
         valueAspects = ValueChart(stateAspects, ChartState.NATAL_CHART, AnalysisState.ELEMENT_ANALYSIS).getValueAspects()
 
-        println("ELEMENT_ANALYSIS aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
+        println("ELEMENT_ANALYSIS aspects for ${SACComponent.refNatCelestialSnapshot.refEarthLocation.tag}")
         valueAspects.forEach { println(it) }
 
         valueAspects = ValueChart(stateAspects, ChartState.NATAL_CHART, AnalysisState.MODE_ANALYSIS).getValueAspects()
 
-        println("MODE_ANALYSIS aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
+        println("MODE_ANALYSIS aspects for ${SACComponent.refNatCelestialSnapshot.refEarthLocation.tag}")
         valueAspects.forEach { println(it) }
     }
 }

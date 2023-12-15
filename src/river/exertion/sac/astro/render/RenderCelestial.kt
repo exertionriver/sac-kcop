@@ -1,6 +1,8 @@
 package river.exertion.sac.astro.render
 
 import river.exertion.sac.Constants
+import river.exertion.sac.astro.base.Celestial
+import river.exertion.sac.astro.base.CelestialData
 
 enum class RenderCelestial {
     SUN { override fun getLabel() = Constants.SYM_SUN }
@@ -41,5 +43,22 @@ enum class RenderCelestial {
         fun getCelestialsTransitHouseLabel() = Constants.SYM_HOUSE + " " + Constants.SYM_CONTAINS + " " + Constants.SYM_CELESTIAL + " "
         fun getCelestialsTransitCelestialsLabel() = Constants.SYM_CELESTIAL + " " + Constants.SYM_EXISTS_IN + " " + Constants.SYM_HOUSE + " "
 
+        fun getTransitCelestialsLabel(refTransitHouseNum : Int, synCelestialData: Array<CelestialData>) : String {
+
+            var transitCelestialsLabel = ""
+            val transitCelestialRenderMax = Celestial.getTransitMax().ordinal
+            var celestialHouseNumInt: Int
+
+            for (celestialTransitPlanetIdx in Celestial.SUN.ordinal..transitCelestialRenderMax) {
+
+                celestialHouseNumInt = synCelestialData[celestialTransitPlanetIdx].celestialHouse.toInt()
+                if (celestialHouseNumInt == refTransitHouseNum) {
+                    transitCelestialsLabel =
+                        transitCelestialsLabel.plus(RenderCelestial.fromOrdinal(celestialTransitPlanetIdx)!!.getLabel())
+                }
+            }
+
+            return transitCelestialsLabel
+        }
     }
 }

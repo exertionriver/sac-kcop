@@ -23,10 +23,10 @@ class TestCharacterAnalysis {
 
     @Test
     fun testCompareNatals() {
-        val refNatalChart = StateChart(SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART,
+        val refNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val synNatalChart = StateChart(SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART,
+        val synNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         val refNatalAspects = refNatalChart.getStateAspects().stateBaseAspects()
@@ -43,13 +43,13 @@ class TestCharacterAnalysis {
 
     @Test
     fun testCompareSynastry() {
-        val synChart = StateChart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.SYNASTRY_CHART,
+        val synChart = StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.SYNASTRY_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT)
 
-        val refNatalChart = StateChart(SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART,
+        val refNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val synNatalChart = StateChart(SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART,
+        val synNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         val synAspects = synChart.getStateAspects().stateBaseAspects()
@@ -74,13 +74,13 @@ class TestCharacterAnalysis {
 
     @Test
     fun testCompareComposite() {
-        val compChart = StateChart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.COMPOSITE_CHART,
+        val compChart = StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.COMPOSITE_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val refNatalChart = StateChart(SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART,
+        val refNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val synNatalChart = StateChart(SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART,
+        val synNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         val compAspects = compChart.getStateAspects().stateBaseAspects()
@@ -104,10 +104,10 @@ class TestCharacterAnalysis {
 
     @Test
     fun testCompareSynastryComposite() {
-        val synChart = StateChart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.SYNASTRY_CHART,
+        val synChart = StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.SYNASTRY_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT)
 
-        val compChart = StateChart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.COMPOSITE_CHART,
+        val compChart = StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.COMPOSITE_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         val compAspects = compChart.getStateAspects().stateBaseAspects()
@@ -125,16 +125,16 @@ class TestCharacterAnalysis {
 
     @Test
     fun testCompareSynastryValueChart() {
-        val refNatalChart = StateChart(SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART,
+        val refNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val synNatalChart = StateChart(SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART,
+        val synNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val synChart = StateChart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.SYNASTRY_CHART,
+        val synChart = StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.SYNASTRY_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT)
 
-        val compChart = StateChart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.COMPOSITE_CHART,
+        val compChart = StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.COMPOSITE_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         val valueChart = ValueChart(synChart.chartState, synChart, compChart, refNatalChart, synNatalChart)
@@ -145,16 +145,16 @@ class TestCharacterAnalysis {
 
     @Test
     fun testCompareCompositeValueChart() {
-        val refNatalChart = StateChart(SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART,
+        val refNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val synNatalChart = StateChart(SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART,
+        val synNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val synChart = StateChart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.SYNASTRY_CHART,
+        val synChart = StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.SYNASTRY_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT)
 
-        val compChart = StateChart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.COMPOSITE_CHART,
+        val compChart = StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.COMPOSITE_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         val valueChart = ValueChart(compChart.chartState, synChart, compChart, refNatalChart, synNatalChart)

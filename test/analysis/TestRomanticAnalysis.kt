@@ -18,10 +18,10 @@ class TestRomanticAnalysis {
     fun testCompareNatals() {
 
         val refNatalChart = ValueChart(
-            StateChart(SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART,
+            StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT), AnalysisState.ROMANTIC_ANALYSIS)
 
-        val synNatalChart = ValueChart(StateChart(SACComponent.sacCelestialSnapshot, ChartState.NATAL_CHART,
+        val synNatalChart = ValueChart(StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT), AnalysisState.ROMANTIC_ANALYSIS)
 
         val natal1Aspects = refNatalChart.getValueAspects()
@@ -40,7 +40,7 @@ class TestRomanticAnalysis {
 
     @Test
     fun testCompareSynastry() {
-        val synChart = ValueChart(StateChart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.SYNASTRY_CHART,
+        val synChart = ValueChart(StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.SYNASTRY_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT), AnalysisState.ROMANTIC_ANALYSIS)
 
         val synAspects = synChart.getValueAspects()
@@ -51,7 +51,7 @@ class TestRomanticAnalysis {
 
     @Test
     fun testCompareComposite() {
-        val compChart = ValueChart(StateChart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot, ChartState.COMPOSITE_CHART,
+        val compChart = ValueChart(StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.COMPOSITE_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT), AnalysisState.ROMANTIC_ANALYSIS)
 
         val compAspects = compChart.getValueAspects()

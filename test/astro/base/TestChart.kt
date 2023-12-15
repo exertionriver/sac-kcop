@@ -12,14 +12,14 @@ object TestChart {
     @Test
     fun testChartGetAspectsChart() {
 
-        val aspects = Chart.getAspects(SACComponent.sacCelestialSnapshot)
+        val aspects = Chart.getAspects(SACComponent.refNatCelestialSnapshot)
 
         val aspectsChart = Chart.getAspectsChart(aspects)
 
-        println("aspects for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}:")
+        println("aspects for ${SACComponent.refNatCelestialSnapshot.refEarthLocation.tag}:")
         aspects.forEach { println(it) }
 
-        println("aspectsChart for ${SACComponent.sacCelestialSnapshot.refEarthLocation.tag}")
+        println("aspectsChart for ${SACComponent.refNatCelestialSnapshot.refEarthLocation.tag}")
         aspectsChart.forEach { println(it) }
     }
 
@@ -27,7 +27,7 @@ object TestChart {
     @Test
     fun testChart() {
 
-        val natalChart = Chart(SACComponent.sacCelestialSnapshot)
+        val natalChart = Chart(SACComponent.refNatCelestialSnapshot)
 
         println("natal Chart:")
         for (verticalIdx in 0 until AspectCelestial.getChartSize())
@@ -35,7 +35,7 @@ object TestChart {
                 println("[$horizontalIdx, $verticalIdx]: ${natalChart.chartRows[horizontalIdx].rowAspects[verticalIdx]}")
             }
 
-        val compChart = Chart(CelestialSnapshot.getCompositeSnapshot(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot) )
+        val compChart = Chart(CelestialSnapshot.getCompositeSnapshot(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot) )
 
         println("comp Chart:")
         for (verticalIdx in 0 until AspectCelestial.getChartSize())
@@ -43,7 +43,7 @@ object TestChart {
                 println("[$horizontalIdx, $verticalIdx]: ${compChart.chartRows[horizontalIdx].rowAspects[verticalIdx]}")
             }
 
-        val synChart = Chart(SACComponent.sacCelestialSnapshot, SACComponent.sacCelestialSnapshot)
+        val synChart = Chart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot)
 
         println("syn Chart:")
         for (verticalIdx in 0 until AspectCelestial.getChartSize())
