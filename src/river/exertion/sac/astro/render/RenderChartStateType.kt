@@ -1,10 +1,8 @@
 package river.exertion.sac.astro.render
 
-import river.exertion.sac.Constants
 import river.exertion.sac.console.state.ChartStateType
 import river.exertion.sac.console.state.ChartStateType.Companion.decodeChartStateType
 
-@ExperimentalUnsignedTypes
 object RenderChartStateType {
 
     fun getChartStateTypesLabel(chartStateTypeEncoding : Int) : String {

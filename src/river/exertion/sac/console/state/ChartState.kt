@@ -10,11 +10,11 @@ enum class ChartState : State<SACInputProcessor> {
     NONE_CHART //for values analysis only
     , NATAL_CHART
     , COMPOSITE_CHART { override fun getOperatorLabel() = "=" }
-    , SYNASTRY_CHART { override fun getLabel() = SYM_SYNASTRY_CHART.plus(" ") ; override fun getOperatorLabel() = "+"; override fun isNatComp() = false }
+    , SYNASTRY_CHART { override fun getLabel() = SYM_SYNASTRY_CHART ; override fun getOperatorLabel() = "+"; override fun isNatComp() = false }
     , COMBINED_CHART //for values analysis only
     ;
 
-    open fun getLabel() : String = SYM_NATCOMP_CHART.plus(" ")
+    open fun getLabel() : String = SYM_NATCOMP_CHART
     open fun getOperatorLabel() : String = ""
     open fun isNatComp() : Boolean = true
 

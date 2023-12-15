@@ -26,11 +26,11 @@ class ValueChart (val chartRows: Array<ValueChartRow>, val analysisState: Analys
     constructor(chartState : ChartState, synChart : StateChart, compChart : StateChart, refNatalChart : StateChart, synNatalChart : StateChart) :
             this (getCharacterAspectsStateAspects(chartState, synChart, compChart, refNatalChart, synNatalChart), AnalysisState.CHARACTER_ANALYSIS)
 
-    fun getBaseValue() = Value(getValueAspects().map { it.baseValue.positive }.reduce { acc, basePositive -> acc + basePositive },
-            getValueAspects().map { it.baseValue.negative }.reduce { acc, baseNegative -> acc + baseNegative } )
+    fun getBaseValue() = Value(getSortedFilteredValueAspects().map { it.baseValue.positive }.reduce { acc, basePositive -> acc + basePositive },
+        getSortedFilteredValueAspects().map { it.baseValue.negative }.reduce { acc, baseNegative -> acc + baseNegative } )
 
-    fun getModValue() = Value(getValueAspects().map { it.getModValue().positive }.reduce { acc, modPositive -> acc + modPositive },
-        getValueAspects().map { it.getModValue().negative }.reduce { acc, modNegative -> acc + modNegative } )
+    fun getModValue() = Value(getSortedFilteredValueAspects().map { it.getModValue().positive }.reduce { acc, modPositive -> acc + modPositive },
+        getSortedFilteredValueAspects().map { it.getModValue().negative }.reduce { acc, modNegative -> acc + modNegative } )
 
     fun getValueAspects() : List<ValueAspect> {
         val returnList = mutableListOf<ValueAspect>()

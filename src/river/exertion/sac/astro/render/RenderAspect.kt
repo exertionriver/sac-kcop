@@ -2,13 +2,8 @@ package river.exertion.sac.astro.render
 
 import river.exertion.kcop.base.str
 import river.exertion.sac.astro.render.RenderChartStateType.getChartStateTypesLabel
-import river.exertion.sac.astro.render.RenderValue.Companion.negativeLabel
-import river.exertion.sac.astro.render.RenderValue.Companion.neutralLabel
-import river.exertion.sac.astro.render.RenderValue.Companion.positiveLabel
-import river.exertion.sac.astro.base.AspectCelestial
-import river.exertion.sac.console.state.AnalysisState
 import river.exertion.sac.astro.value.ValueAspect
-import river.exertion.sac.Constants
+import river.exertion.sac.console.state.AnalysisState
 import kotlin.math.abs
 
 data class RenderAspect(val valueAspect : ValueAspect) {

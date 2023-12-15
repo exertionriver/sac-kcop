@@ -36,9 +36,7 @@ object RenderSummaryAspects {
                 this.add(DVRow())
                 idx++
             }
-            this.add(DVTable(tableTag = "summary", cellType = DVLayoutCell.DVLCellTypes.TABLE, colspan = "5", panes = mutableListOf<DVLayoutCell>().apply {
-                this.add(DVTextPane().apply { this.tag = "col1Summary"; this.height = DVPaneType.DVPDimension.LARGE.tag() })
-            }))
+            this.add(RenderSummary.dvTable())
         }))
 
         this.add(DVTable(tableTag = "col2aspects", cellType = DVLayoutCell.DVLCellTypes.TABLE, height = DVPaneType.DVPDimension.FULL.tag(),
@@ -106,6 +104,8 @@ object RenderSummaryAspects {
             DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectDelim_$idx", RenderAspect(valueAspect).getAspectDelimLabel(), SACLayoutHandler.baseValuesFontColor)
             DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectValue_$idx", RenderAspect(valueAspect).getAspectValueLabel(), aspectValueColor(RenderAspect(valueAspect).getValueValueType()))
         }
+
+        RenderSummary.setContent()
     }
 
     fun aspectValueColor(renderValueType: RenderValueType) =
@@ -115,12 +115,4 @@ object RenderSummaryAspects {
             RenderValueType.NEUTRAL -> SACLayoutHandler.neutralFontColor
             else -> SACLayoutHandler.reversalFontColor
         }
-
-    fun summarySumLine() = mutableListOf(
-        RenderChartState.getChartSumLabel(SACInputProcessor.chartStateMachine.currentState),
-        RenderValue(SACComponent.sacValueChart.getBaseValue()).getLabel(),
-        RenderValue(SACComponent.sacValueChart.getBaseValue()).getPercentLabel(),
-        RenderValue(SACComponent.sacValueChart.getBaseValue()).getStimLabel(),
-    )
-
 }

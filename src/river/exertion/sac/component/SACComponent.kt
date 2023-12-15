@@ -65,17 +65,15 @@ class SACComponent : IComponent, Telegraph {
 
         sacValueChart = ValueChart(sacStateChart, SACInputProcessor.analysisStateMachine.currentState)
 
-        if (refEarthLocation != null) {
-            refNatStateChart = StateChart(StateChart.getAspects(
-                refNatCelestialSnapshot
-                , refNatCelestialSnapshot
-                , ChartState.NATAL_CHART
-                , SACInputProcessor.aspectsStateMachine.currentState
-                , SACInputProcessor.timeAspectsStateMachine.currentState
-                , SACInputProcessor.aspectOverlayStateMachine.currentState))
+        refNatStateChart = StateChart(StateChart.getAspects(
+            refNatCelestialSnapshot
+            , refNatCelestialSnapshot
+            , ChartState.NATAL_CHART
+            , SACInputProcessor.aspectsStateMachine.currentState
+            , SACInputProcessor.timeAspectsStateMachine.currentState
+            , SACInputProcessor.aspectOverlayStateMachine.currentState))
 
-            refNatValueChart = ValueChart(refNatStateChart, SACInputProcessor.analysisStateMachine.currentState)
-        }
+        refNatValueChart = ValueChart(refNatStateChart, SACInputProcessor.analysisStateMachine.currentState)
 
         if (synEarthLocation != null) {
             synNatStateChart = StateChart(StateChart.getAspects(

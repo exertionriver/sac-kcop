@@ -1,13 +1,11 @@
 package river.exertion.sac.astro.render
 
-import river.exertion.sac.astro.render.RenderValue.Companion.valueDivider
-import river.exertion.sac.astro.value.Value
-import river.exertion.sac.console.render.RenderState
 import river.exertion.sac.Constants
+import river.exertion.sac.astro.value.Value
 import river.exertion.sac.console.state.ChartState
+import river.exertion.sac.view.SACInputProcessor
 import kotlin.math.abs
 
-@ExperimentalUnsignedTypes
 object RenderChartState {
 
     fun String.chartLabel() : String = this + ":"
@@ -15,11 +13,7 @@ object RenderChartState {
     fun String.romChartLabel() : String = Constants.SYM_ROMANTIC + this + ":"
     fun String.impRomChartLabel() : String = Constants.SYM_IMPROVEMENT + Constants.SYM_ROMANTIC + this + ":"
 
-    fun getChartSumLabel(chartState : ChartState) : String =
-        RenderState.getNestedLabelString(
-            Constants.SYM_SIGMA,
-            chartState.getLabel()
-        )
+    fun getChartSumLabel(overrideState : ChartState? = null) : String = "${Constants.SYM_SIGMA}${overrideState?.getLabel() ?: SACInputProcessor.chartStateMachine.currentState.getLabel()}:"
 
     fun getChartImpLabel(sharedChartValue : Value, natalChartValue : Value) : String {
         val pos = sharedChartValue.positive - natalChartValue.positive
@@ -27,7 +21,7 @@ object RenderChartState {
         val posLabel = abs(pos).toString().padStart(4, ' ')
         val negLabel = abs(neg).toString().padStart(4, ' ')
 
-        return posLabel.valueDivider().plus(negLabel)
+        return posLabel.plus(negLabel)
     }
 
     fun getChartImpPercentLabel(sharedChartValue : Value, natalChartValue : Value) : String {
@@ -49,7 +43,7 @@ object RenderChartState {
         val consLabel = cons.toString().padStart(2, ' ')
         val dissLabel = diss.toString().padStart(2, ' ')
 
-        return consLabel.valueDivider().plus(dissLabel)
+        return consLabel.plus(dissLabel)
     }
 
     fun getChartImpStimLabel(sharedChartValue : Value, natalChartValue : Value) : String {
