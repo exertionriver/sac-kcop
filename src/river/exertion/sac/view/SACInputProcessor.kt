@@ -42,15 +42,17 @@ object SACInputProcessor : InputProcessor {
                 SACComponent.resetEarthLocations()
             }
 
-            //remove modifications, leave navigation
+            //remove modifications, leave navigation, chart
             MultiKeys.USCORE.keysDown() -> {
                 entryStateMachine.changeState(EntryState.defaultState())
                 timeAspectsStateMachine.changeState(TimeAspectsState.defaultState())
                 analysisStateMachine.changeState(AnalysisState.defaultState())
                 detailsStateMachine.changeState(DetailsState.defaultState())
-                chartStateMachine.changeState(ChartState.defaultState())
                 aspectsStateMachine.changeState(AspectsState.defaultState())
                 aspectOverlayStateMachine.changeState(AspectOverlayState.defaultState())
+                aspectsSortStateMachine.changeState(AspectsSortState.defaultState())
+                aspectsFilterStateMachine.changeState(AspectsFilterState.defaultState())
+
             }
 
             MultiKeys.SPACE.keyDown() -> {

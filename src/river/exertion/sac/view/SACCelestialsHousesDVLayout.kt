@@ -160,7 +160,7 @@ object SACCelestialsHousesDVLayout {
                 DVTextPane().apply { this.tag = "appTitleVersion"; this.width = DVPaneType.DVPDimension.MEDIUM.tag(); this.align = DVAlign.LEFT.tag() },
                 DVTextPane().apply { this.tag = "appState"; this.width = DVPaneType.DVPDimension.MEDIUM.tag(); this.align = DVAlign.LEFT.tag() },
                 DVTextPane().apply { this.tag = "appStateAttributes"; this.width = DVPaneType.DVPDimension.SMALL.tag(); this.align = DVAlign.LEFT.tag() },
-                RenderEarthLocationTags.dvTable()
+                RenderEarthLocationTags.setLayout()
             )),
             DVRow(),
             DVTable(tableTag = "infoRows", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
@@ -194,7 +194,7 @@ object SACCelestialsHousesDVLayout {
             houseGridTables()
         )),
         DVTable(tableTag = "davLayout", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
-            RenderSummaryAspects.dvTable()
+            RenderSummaryAspects.setLayout()
         ))
     ))
 

@@ -1,7 +1,6 @@
 package river.exertion.sac.astro.render
 
 import river.exertion.sac.astro.value.Value
-import river.exertion.sac.Constants
 import kotlin.math.abs
 
 data class RenderValue(val value : Value) {
@@ -23,7 +22,7 @@ data class RenderValue(val value : Value) {
 
     companion object {
 
-        fun valueDivider() : String = "."
+        fun labelDivider() : String = "."
 
     }
 }

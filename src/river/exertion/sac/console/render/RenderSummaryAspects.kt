@@ -3,25 +3,25 @@ package river.exertion.sac.console.render
 import river.exertion.kcop.view.layout.displayViewLayout.*
 import river.exertion.kcop.view.layout.displayViewLayout.asset.DVAlign
 import river.exertion.sac.astro.render.RenderAspect
-import river.exertion.sac.astro.render.RenderChartState
-import river.exertion.sac.astro.render.RenderValue
 import river.exertion.sac.astro.render.RenderValueType
-import river.exertion.sac.component.SACComponent
+import river.exertion.sac.console.render.summary.RenderSummary
 import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.view.SACCelestialsHousesDVLayout
 import river.exertion.sac.view.SACInputProcessor
 import river.exertion.sac.view.SACLayoutHandler
 
-object RenderSummaryAspects {
+object RenderSummaryAspects : IConsoleRender {
 
-    val tableTag = "summaryAspects"
+    override val layoutTag = "summaryAspects"
 
-    private val col1AspectsMaxEntries = 24
-    private val col2AspectsMaxEntries = 66
-    private val col3AspectsMaxEntries = 108
-    private val col4AspectsMaxEntries = 150
+    const val col1AspectsMaxEntries = 24
+    const val col2AspectsMaxEntries = 66
+    const val col3AspectsMaxEntries = 108
+    const val col4AspectsMaxEntries = 150
 
-    fun dvTable() = DVTable(tableTag = tableTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf<DVLayoutCell>().apply {
+    const val summaryMaxEntries = (col3AspectsMaxEntries - col2AspectsMaxEntries) - col1AspectsMaxEntries - 3
+
+    override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf<DVLayoutCell>().apply {
         var idx = 0
         val valueAspects = SACCelestialsHousesDVLayout.valueChart.getValueAspects()
 
@@ -36,7 +36,7 @@ object RenderSummaryAspects {
                 this.add(DVRow())
                 idx++
             }
-            this.add(RenderSummary.dvTable())
+            this.add(RenderSummary.setLayout())
         }))
 
         this.add(DVTable(tableTag = "col2aspects", cellType = DVLayoutCell.DVLCellTypes.TABLE, height = DVPaneType.DVPDimension.FULL.tag(),
@@ -86,7 +86,7 @@ object RenderSummaryAspects {
 
     } )
 
-    fun setContent() {
+    override fun setContent() {
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("col1Summary", "summary", SACLayoutHandler.baseValuesFontColor)
 

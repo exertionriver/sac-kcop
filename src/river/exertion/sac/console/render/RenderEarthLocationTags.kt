@@ -5,11 +5,11 @@ import river.exertion.sac.console.state.LocationRecallState
 import river.exertion.sac.view.SACInputProcessor
 import river.exertion.sac.view.SACLayoutHandler
 
-object RenderEarthLocationTags {
+object RenderEarthLocationTags : IConsoleRender {
 
-    val tableTag = "earthLocationTags"
+    override val layoutTag = "earthLocationTags"
 
-    fun dvTable() = DVTable(tableTag = tableTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf<DVLayoutCell>().apply {
+    override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf<DVLayoutCell>().apply {
 
         this.add(DVTextPane().apply { this.tag = "eltLeftSquare" })
         this.add(DVTextPane().apply { this.tag = "eltLeftTag" })
@@ -22,7 +22,7 @@ object RenderEarthLocationTags {
         this.add(DVTextPane().apply { this.tag = "eltRightSquare" })
     } )
 
-    fun setContent() {
+    override fun setContent() {
         val locationRecallState = SACInputProcessor.locationRecallStateMachine.currentState
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("eltLeftSquare", locationRecallState.eltLeftSquareLabel(), SACLayoutHandler.baseValuesFontColor)
