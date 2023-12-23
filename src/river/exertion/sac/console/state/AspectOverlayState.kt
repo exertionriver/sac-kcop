@@ -56,16 +56,16 @@ enum class AspectOverlayState : State<SACInputProcessor>  {
             return when {
                 chartState.isNatComp() ->
                     when (aspectOverlayState) {
-                        ASPECT_SYNASTRY_OVERLAY_DEFAULT -> ASPECT_NATCOMP_OVERLAY_DEFAULT
-                        ASPECT_SYNASTRY_OVERLAY_SELECTIVE -> ASPECT_NATCOMP_OVERLAY_SELECTIVE
-                        ASPECT_SYNASTRY_OVERLAY_HYBRID -> ASPECT_NATCOMP_OVERLAY_HYBRID
+                        ASPECT_NATCOMP_OVERLAY_DEFAULT -> ASPECT_SYNASTRY_OVERLAY_DEFAULT
+                        ASPECT_NATCOMP_OVERLAY_SELECTIVE -> ASPECT_SYNASTRY_OVERLAY_SELECTIVE
+                        ASPECT_NATCOMP_OVERLAY_HYBRID -> ASPECT_SYNASTRY_OVERLAY_HYBRID
                         else -> aspectOverlayState
                     }
                 else ->
                     when (aspectOverlayState) {
-                        ASPECT_NATCOMP_OVERLAY_DEFAULT -> ASPECT_SYNASTRY_OVERLAY_DEFAULT
-                        ASPECT_NATCOMP_OVERLAY_SELECTIVE -> ASPECT_SYNASTRY_OVERLAY_SELECTIVE
-                        ASPECT_NATCOMP_OVERLAY_HYBRID -> ASPECT_SYNASTRY_OVERLAY_HYBRID
+                        ASPECT_SYNASTRY_OVERLAY_DEFAULT -> ASPECT_NATCOMP_OVERLAY_DEFAULT
+                        ASPECT_SYNASTRY_OVERLAY_SELECTIVE -> ASPECT_NATCOMP_OVERLAY_SELECTIVE
+                        ASPECT_SYNASTRY_OVERLAY_HYBRID -> ASPECT_NATCOMP_OVERLAY_HYBRID
                         else -> aspectOverlayState
                     }
             }

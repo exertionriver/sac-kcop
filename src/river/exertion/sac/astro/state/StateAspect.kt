@@ -9,7 +9,6 @@ import river.exertion.sac.astro.value.ValueAspect
 import river.exertion.sac.console.state.*
 import kotlin.math.abs
 
-@OptIn(ExperimentalUnsignedTypes::class)
 data class StateAspect(val signFirst : Sign
     , val aspectCelestialFirst : AspectCelestial
     , val signSecond : Sign

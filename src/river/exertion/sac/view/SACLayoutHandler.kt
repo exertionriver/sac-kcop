@@ -6,6 +6,7 @@ import river.exertion.kcop.asset.view.ColorPalette
 import river.exertion.kcop.view.KcopFont
 import river.exertion.kcop.view.klop.IDisplayViewLayoutHandler
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutHandler
+import river.exertion.sac.astro.render.RenderValueType
 
 object SACLayoutHandler : IDisplayViewLayoutHandler {
 
@@ -42,5 +43,14 @@ object SACLayoutHandler : IDisplayViewLayoutHandler {
 
     override fun clearContent() {
         DVLayoutHandler.currentDvLayout.clearContent()
+    }
+
+    fun fontColor(renderValueType : RenderValueType) : ColorPalette {
+        return when (renderValueType) {
+            RenderValueType.POSITIVE -> positiveFontColor
+            RenderValueType.NEGATIVE -> negativeFontColor
+            RenderValueType.NEUTRAL -> neutralFontColor
+            else -> reversalFontColor
+        }
     }
 }

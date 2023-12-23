@@ -13,7 +13,6 @@ import kotlin.math.abs
 //fourth chart aspects are for the opposite of current chartType for compSyn charts
 //if chartState == SYNASTRY_CHART, fourth chart aspects are aspects that the composite chart shares with the natal charts
 //if chartState == COMPOSITE_CHART, fourth chart aspects are aspects that the synastry chart shares with the natal charts
-@OptIn(ExperimentalUnsignedTypes::class)
 data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartState = ChartState.NATAL_CHART, val analysisState: AnalysisState = AnalysisState.NO_ANALYSIS, val characterModifier: Int = 0, val fourthChartAspect: Boolean = false) {
 
     val baseValue = getAspectBaseValue()

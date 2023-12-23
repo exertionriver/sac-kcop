@@ -9,6 +9,7 @@ import river.exertion.sac.astro.render.RenderValue
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.render.IConsoleRender
 import river.exertion.sac.view.SACLayoutHandler
+import river.exertion.sac.view.SACLayoutHandler.fontColor
 
 object RenderSummarySumSynNatal : IConsoleRender {
 
@@ -29,13 +30,13 @@ object RenderSummarySumSynNatal : IConsoleRender {
         val chartValue = RenderValue(SACComponent.synNatValueChart.getBaseValue())
         val layoutPanes = setLayout().panes
 
-        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[0].tag!!, RenderChartState.getChartSumLabel(), SACLayoutHandler.baseValuesFontColor)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[1].tag!!, chartValue.getValuesLabel().first, SACLayoutHandler.positiveFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[0].tag!!, RenderChartState.getChartSumLabel(), SACLayoutHandler.synEarthLocationFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[1].tag!!, chartValue.getPosValueLabel().second, fontColor(chartValue.getPosValueLabel().first))
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[2].tag!!, RenderValue.labelDivider(), SACLayoutHandler.baseValuesFontColor)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[3].tag!!, chartValue.getValuesLabel().second, SACLayoutHandler.negativeFontColor)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[4].tag!!, chartValue.getPercentLabel().first, SACLayoutHandler.positiveFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[3].tag!!, chartValue.getNegValueLabel().second, fontColor(chartValue.getNegValueLabel().first))
+        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[4].tag!!, chartValue.getConsPercentLabel().second, fontColor(chartValue.getConsPercentLabel().first))
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[5].tag!!, RenderValue.labelDivider(), SACLayoutHandler.baseValuesFontColor)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[6].tag!!, chartValue.getPercentLabel().second, SACLayoutHandler.negativeFontColor)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[7].tag!!, chartValue.getStimLabel(), SACLayoutHandler.airFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[6].tag!!, chartValue.getDissPercentLabel().second, fontColor(chartValue.getDissPercentLabel().first))
+        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[7].tag!!, chartValue.getStimLabel().second, fontColor(chartValue.getStimLabel().first))
     }
 }

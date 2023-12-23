@@ -22,6 +22,9 @@ object RenderSummary : IConsoleRender {
                 0 -> this.add(RenderSummarySumChart.setLayout())
                 1 -> this.add(RenderSummarySumRefNatal.setLayout())
                 2 -> this.add(RenderSummarySumSynNatal.setLayout())
+
+                4 -> this.add(RenderSummarySumRefImp.setLayout())
+                5 -> this.add(RenderSummarySumSynImp.setLayout())
                 else -> this.add(DVTextPane().apply { this.tag = "${layoutTag}_spacer${summaryRowIdx}"})
             }
 
@@ -35,6 +38,9 @@ object RenderSummary : IConsoleRender {
         if (!SACInputProcessor.locationRecallStateMachine.isInState(LocationRecallState.CUR_NAV_REF)) {
             RenderSummarySumRefNatal.setContent()
             RenderSummarySumSynNatal.setContent()
+
+            RenderSummarySumRefImp.setContent()
+            RenderSummarySumSynImp.setContent()
         }
     }
 }

@@ -61,7 +61,9 @@ class SACComponent : IComponent, Telegraph {
             , SACInputProcessor.chartStateMachine.currentState
             , SACInputProcessor.aspectsStateMachine.currentState
             , SACInputProcessor.timeAspectsStateMachine.currentState
-            , SACInputProcessor.aspectOverlayStateMachine.currentState))
+            , SACInputProcessor.aspectOverlayStateMachine.currentState)
+        , SACInputProcessor.chartStateMachine.currentState
+        )
 
         sacValueChart = ValueChart(sacStateChart, SACInputProcessor.analysisStateMachine.currentState)
 
@@ -71,7 +73,7 @@ class SACComponent : IComponent, Telegraph {
             , ChartState.NATAL_CHART
             , SACInputProcessor.aspectsStateMachine.currentState
             , SACInputProcessor.timeAspectsStateMachine.currentState
-            , SACInputProcessor.aspectOverlayStateMachine.currentState))
+            , AspectOverlayState.toggleState(ChartState.SYNASTRY_CHART, SACInputProcessor.aspectOverlayStateMachine.currentState)))
 
         refNatValueChart = ValueChart(refNatStateChart, SACInputProcessor.analysisStateMachine.currentState)
 
@@ -82,7 +84,7 @@ class SACComponent : IComponent, Telegraph {
                 , ChartState.NATAL_CHART
                 , SACInputProcessor.aspectsStateMachine.currentState
                 , SACInputProcessor.timeAspectsStateMachine.currentState
-                , SACInputProcessor.aspectOverlayStateMachine.currentState))
+                , AspectOverlayState.toggleState(ChartState.SYNASTRY_CHART, SACInputProcessor.aspectOverlayStateMachine.currentState)))
 
             synNatValueChart = ValueChart(synNatStateChart, SACInputProcessor.analysisStateMachine.currentState)
         }

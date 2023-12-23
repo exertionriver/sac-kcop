@@ -3,7 +3,6 @@ package river.exertion.sac.astro.value
 import kotlin.math.abs
 import kotlin.math.max
 
-@OptIn(ExperimentalUnsignedTypes::class)
 data class ValueChartCompare(val modValueChart : ValueChart, val firstNatalValueChart : ValueChart, val secondNatalValueChart : ValueChart) {
 
     fun getRefImprovedStim() : Double = modValueChart.getModValue().getStimulation() / firstNatalValueChart.getModValue().getStimulation() * 100.0

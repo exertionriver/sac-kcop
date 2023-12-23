@@ -5,20 +5,19 @@ import kotlin.math.abs
 
 data class RenderValue(val value : Value) {
 
-    fun getValuesLabel() : Pair<String, String> = Pair(value.positive.toString().padStart(4, ' '), abs(value.negative).toString().padStart(4, ' '))
+    constructor(positive : Int, negative : Int) : this(Value(positive, negative))
 
-    fun getPercentLabel() : Pair<String, String> {
-        val cons = abs(100 * value.positive.toDouble() / value.getStimulation().toDouble() ).toInt()
-        val diss = abs(100 * value.negative.toDouble() / value.getStimulation().toDouble() ).toInt()
-        val consLabel = cons.toString().padStart(2, ' ')
-        val dissLabel = diss.toString().padStart(2, ' ')
+    fun getPosValueLabel() : Pair<RenderValueType, String> = Pair(RenderValueType.POSITIVE, value.positive.toString().padStart(4, ' '))
+    fun getNegValueLabel() : Pair<RenderValueType, String> = Pair(RenderValueType.NEGATIVE, abs(value.negative).toString().padStart(4, ' '))
 
-        return Pair(consLabel, dissLabel)
-    }
+    fun getConsPercentLabel() : Pair<RenderValueType, String> =
+        Pair(RenderValueType.POSITIVE, abs(100 * value.positive.toDouble() / value.getStimulation().toDouble() ).toInt().toString().padStart(3, ' '))
 
-    fun getStimLabel() : String {
-        return value.getStimulation().toString().padStart(4, ' ')
-    }
+    fun getDissPercentLabel() : Pair<RenderValueType, String> =
+        Pair(RenderValueType.NEGATIVE, abs(100 * value.negative.toDouble() / value.getStimulation().toDouble() ).toInt().toString().padStart(2, ' '))
+
+    fun getStimLabel() : Pair<RenderValueType, String> =
+        Pair(RenderValueType.POSITIVE, value.getStimulation().toString().padStart(4, ' '))
 
     companion object {
 

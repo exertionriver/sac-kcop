@@ -9,6 +9,7 @@ import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.view.SACCelestialsHousesDVLayout
 import river.exertion.sac.view.SACInputProcessor
 import river.exertion.sac.view.SACLayoutHandler
+import river.exertion.sac.view.SACLayoutHandler.fontColor
 
 object RenderSummaryAspects : IConsoleRender {
 
@@ -93,7 +94,7 @@ object RenderSummaryAspects : IConsoleRender {
         SACCelestialsHousesDVLayout.valueChart.getSortedFilteredValueAspects().forEachIndexed { idx, valueAspect ->
 
             DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectCelestial1_$idx", RenderAspect(valueAspect).getAspectCelestial1Label(), SACLayoutHandler.refEarthLocationFontColor)
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("aspect_$idx", RenderAspect(valueAspect).getAspectLabel(), aspectValueColor(RenderAspect(valueAspect).getAspectValueType()))
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("aspect_$idx", RenderAspect(valueAspect).getAspectLabel(), fontColor(RenderAspect(valueAspect).getAspectValueType()))
             DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectCelestial2_$idx", RenderAspect(valueAspect).getAspectCelestial2Label(),
                 if (SACInputProcessor.chartStateMachine.isInState(ChartState.SYNASTRY_CHART)) {
                     SACLayoutHandler.synEarthLocationFontColor
@@ -102,17 +103,9 @@ object RenderSummaryAspects : IConsoleRender {
                 }
             )
             DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectDelim_$idx", RenderAspect(valueAspect).getAspectDelimLabel(), SACLayoutHandler.baseValuesFontColor)
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectValue_$idx", RenderAspect(valueAspect).getAspectValueLabel(), aspectValueColor(RenderAspect(valueAspect).getValueValueType()))
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectValue_$idx", RenderAspect(valueAspect).getAspectValueLabel(), fontColor(RenderAspect(valueAspect).getValueValueType()))
         }
 
         RenderSummary.setContent()
     }
-
-    fun aspectValueColor(renderValueType: RenderValueType) =
-        when (renderValueType){
-            RenderValueType.POSITIVE -> SACLayoutHandler.positiveFontColor
-            RenderValueType.NEGATIVE -> SACLayoutHandler.negativeFontColor
-            RenderValueType.NEUTRAL -> SACLayoutHandler.neutralFontColor
-            else -> SACLayoutHandler.reversalFontColor
-        }
 }

@@ -60,7 +60,7 @@ object SACInputProcessor : InputProcessor {
             }
 
             MultiKeys.PLUS.keysDown() -> {
-                if (chartStateMachine.isInState(ChartState.COMPOSITE_CHART)) {
+                if (!chartStateMachine.isInState(ChartState.SYNASTRY_CHART)) {
                     aspectOverlayStateMachine.changeState(AspectOverlayState.toggleState(chartStateMachine.currentState, aspectOverlayStateMachine.currentState))
                 }
 
