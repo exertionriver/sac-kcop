@@ -88,6 +88,8 @@ class SACComponent : IComponent, Telegraph {
 
             synNatValueChart = ValueChart(synNatStateChart, SACInputProcessor.analysisStateMachine.currentState)
         }
+
+        dataChanged = false
     }
 
     override fun initialize(initData: Any?) {
@@ -106,6 +108,8 @@ class SACComponent : IComponent, Telegraph {
     companion object {
         fun has(entity : Entity) : Boolean = entity.components.firstOrNull{ it is SACComponent } != null
         fun getFor(entity : Entity) : SACComponent? = if (has(entity)) entity.components.first { it is SACComponent } as SACComponent else null
+
+        var dataChanged = true
 
         //TODO: allow location definitions with lat / long / alt / tz
         //TODO: allow location default set in properties file

@@ -6,6 +6,7 @@ import river.exertion.kcop.view.layout.displayViewLayout.DVTable
 import river.exertion.kcop.view.layout.displayViewLayout.DVTextPane
 import river.exertion.sac.astro.render.RenderChartState
 import river.exertion.sac.astro.render.RenderChartState.impChartLabel
+import river.exertion.sac.astro.render.RenderChartState.impConAmChartLabel
 import river.exertion.sac.astro.render.RenderValue
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.render.IConsoleRender
@@ -13,9 +14,9 @@ import river.exertion.sac.view.SACLayoutHandler
 import river.exertion.sac.view.SACLayoutHandler.fontColor
 import kotlin.math.abs
 
-object RenderSummarySumSynImp : IConsoleRender {
+object RenderSummaryConAnSumSynImp : IConsoleRender {
 
-    override val layoutTag = "summarySumSynImp"
+    override val layoutTag = "summaryConAnSumSynImp"
 
     override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, colspan = "5", panes = mutableListOf(
         DVTextPane().apply { this.tag = "${layoutTag}_chartLabel"},
@@ -29,11 +30,11 @@ object RenderSummarySumSynImp : IConsoleRender {
     ))
 
     override fun setContent() {
-        val chartValue = SACComponent.sacValueChart.getBaseValue()
-        val natalChartValue = SACComponent.synNatValueChart.getBaseValue()
+        val chartValue = SACComponent.sacValueChart.getBaseValue() + SACComponent.sacValueChart.getModValue()
+        val natalChartValue = SACComponent.synNatValueChart.getBaseValue() + SACComponent.synNatValueChart.getModValue()
         val layoutPanes = setLayout().panes
 
-        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[0].tag!!, RenderChartState.getChartSumLabel().impChartLabel(), SACLayoutHandler.synEarthLocationFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[0].tag!!, RenderChartState.getChartSumLabel().impConAmChartLabel(), SACLayoutHandler.synEarthLocationFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[1].tag!!, RenderChartState.getPosChartImpLabel(chartValue, natalChartValue).second, fontColor(RenderChartState.getPosChartImpLabel(chartValue, natalChartValue).first))
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[2].tag!!, RenderValue.labelDivider(), SACLayoutHandler.baseValuesFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[3].tag!!, RenderChartState.getNegChartImpLabel(chartValue, natalChartValue).second, fontColor(RenderChartState.getNegChartImpLabel(chartValue, natalChartValue).first))

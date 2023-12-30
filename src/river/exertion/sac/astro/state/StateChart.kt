@@ -99,7 +99,7 @@ class StateChart (val chartRows: Array<StateChartRow>, val chartState: ChartStat
             var aspect : StateAspect
 
             //extended aspects are only in the second position at current
-            for(extendedAspect in ValueRomanticAspects.getExtendedAspects()) {
+            for(extendedAspect in ValueRomanticAspects.extendedAspects) {
                 firstExtendedCelestialLongitude = firstCelestialAspectMap[extendedAspect.aspectCelestialFirst]!!
 
                 secondExtendedCelestialLongitude = when (extendedAspect.aspectCelestialSecond) {

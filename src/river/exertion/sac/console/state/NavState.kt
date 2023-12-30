@@ -9,7 +9,10 @@ import river.exertion.sac.view.SACInputProcessor
 enum class NavState : State<SACInputProcessor> {
     CURRENT {
         override fun getLabel() = "Current Time"
-        override fun updCurNavInstant() { curNavInstant = Clock.System.now() }
+        override fun updCurNavInstant() {
+            curNavInstant = Clock.System.now()
+            SACComponent.dataChanged = true
+        }
         override fun isCurrent() = true
     }
     , NAV_PAUSED {
@@ -18,31 +21,52 @@ enum class NavState : State<SACInputProcessor> {
     }
     , NAV_SECOND {
         override fun getLabel() = "Nav:Second"
-        override fun updCurNavInstant() { curNavInstant = curNavInstant.plus(SACInputProcessor.navDirStateMachine.currentState.getIncDec(), DateTimeUnit.SECOND) }
+        override fun updCurNavInstant() {
+            curNavInstant = curNavInstant.plus(SACInputProcessor.navDirStateMachine.currentState.getIncDec(), DateTimeUnit.SECOND)
+            SACComponent.dataChanged = true
+        }
     }
     , NAV_MINUTE {
         override fun getLabel() = "Nav:Minute"
-        override fun updCurNavInstant() { curNavInstant = curNavInstant.plus(SACInputProcessor.navDirStateMachine.currentState.getIncDec(), DateTimeUnit.MINUTE) }
+        override fun updCurNavInstant() {
+            curNavInstant = curNavInstant.plus(SACInputProcessor.navDirStateMachine.currentState.getIncDec(), DateTimeUnit.MINUTE)
+            SACComponent.dataChanged = true
+        }
     }
     , NAV_HOUR {
         override fun getLabel() = "Nav:Hour"
-        override fun updCurNavInstant() { curNavInstant = curNavInstant.plus(SACInputProcessor.navDirStateMachine.currentState.getIncDec(), DateTimeUnit.HOUR) }
+        override fun updCurNavInstant() {
+            curNavInstant = curNavInstant.plus(SACInputProcessor.navDirStateMachine.currentState.getIncDec(), DateTimeUnit.HOUR)
+            SACComponent.dataChanged = true
+        }
     }
     , NAV_DAY {
         override fun getLabel() = "Nav:Day"
-        override fun updCurNavInstant() { curNavInstant = curNavInstant.plus(DateTimePeriod(days = SACInputProcessor.navDirStateMachine.currentState.getIncDec()), TimeZone.UTC) }
+        override fun updCurNavInstant() {
+            curNavInstant = curNavInstant.plus(DateTimePeriod(days = SACInputProcessor.navDirStateMachine.currentState.getIncDec()), TimeZone.UTC)
+            SACComponent.dataChanged = true
+        }
     }
     , NAV_WEEK {
         override fun getLabel() = "Nav:Week"
-        override fun updCurNavInstant() { curNavInstant = curNavInstant.plus(DateTimePeriod(days = SACInputProcessor.navDirStateMachine.currentState.getIncDec() * 7), TimeZone.UTC) }
+        override fun updCurNavInstant() {
+            curNavInstant = curNavInstant.plus(DateTimePeriod(days = SACInputProcessor.navDirStateMachine.currentState.getIncDec() * 7), TimeZone.UTC)
+            SACComponent.dataChanged = true
+        }
     }
     , NAV_MONTH {
         override fun getLabel() = "Nav:Month"
-        override fun updCurNavInstant() { curNavInstant = curNavInstant.plus(DateTimePeriod(months = SACInputProcessor.navDirStateMachine.currentState.getIncDec()), TimeZone.UTC) }
+        override fun updCurNavInstant() {
+            curNavInstant = curNavInstant.plus(DateTimePeriod(months = SACInputProcessor.navDirStateMachine.currentState.getIncDec()), TimeZone.UTC)
+            SACComponent.dataChanged = true
+        }
     }
     , NAV_YEAR {
         override fun getLabel() = "Nav:Year"
-        override fun updCurNavInstant() { curNavInstant = curNavInstant.plus(DateTimePeriod(years = SACInputProcessor.navDirStateMachine.currentState.getIncDec()), TimeZone.UTC) }
+        override fun updCurNavInstant() {
+            curNavInstant = curNavInstant.plus(DateTimePeriod(years = SACInputProcessor.navDirStateMachine.currentState.getIncDec()), TimeZone.UTC)
+            SACComponent.dataChanged = true
+        }
     }
     , ENTRY_PAUSED {
         override fun getLabel() = "Entry:Paused"

@@ -27,13 +27,16 @@ class SACSystem : IntervalIteratingSystem(allOf(SACComponent::class).get(), .4f)
             } else {
                 SACInputProcessor.navStateMachine.currentState.updCurNavInstant()
 
-                sacComponent.sacRecalc()
+                if (SACComponent.dataChanged) {
+                    sacComponent.sacRecalc()
 
-                SACCelestialsHousesDVLayout.celestialSnapshot = SACComponent.sacCelestialSnapshot
-                SACCelestialsHousesDVLayout.stateChart = SACComponent.sacStateChart
-                SACCelestialsHousesDVLayout.valueChart = SACComponent.sacValueChart
+                    SACCelestialsHousesDVLayout.celestialSnapshot = SACComponent.sacCelestialSnapshot
+                    SACCelestialsHousesDVLayout.stateChart = SACComponent.sacStateChart
+                    SACCelestialsHousesDVLayout.valueChart = SACComponent.sacValueChart
 
-                ViewLayout.rebuild()
+                    ViewLayout.rebuild()
+                }
+
 
                 entryLock = false
             }

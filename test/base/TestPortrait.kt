@@ -7,7 +7,6 @@ import river.exertion.sac.Constants
 import river.exertion.sac.astro.base.EarthLocation
 
 @ExperimentalUnsignedTypes
-@OptIn(ExperimentalUnsignedTypes::class)
 class TestPortrait {
 
     @Test

@@ -6,6 +6,7 @@ import river.exertion.kcop.view.layout.displayViewLayout.DVTable
 import river.exertion.kcop.view.layout.displayViewLayout.DVTextPane
 import river.exertion.sac.console.render.IConsoleRender
 import river.exertion.sac.console.render.RenderSummaryAspects
+import river.exertion.sac.console.state.AnalysisState
 import river.exertion.sac.console.state.LocationRecallState
 import river.exertion.sac.view.SACInputProcessor
 
@@ -25,6 +26,13 @@ object RenderSummary : IConsoleRender {
 
                 4 -> this.add(RenderSummarySumRefImp.setLayout())
                 5 -> this.add(RenderSummarySumSynImp.setLayout())
+
+                7 -> this.add(RenderSummaryConAnSumChart.setLayout())
+                8 -> this.add(RenderSummaryConAnSumRefNatal.setLayout())
+                9 -> this.add(RenderSummaryConAnSumSynNatal.setLayout())
+
+                11 -> this.add(RenderSummaryConAnSumRefImp.setLayout())
+                12 -> this.add(RenderSummaryConAnSumSynImp.setLayout())
                 else -> this.add(DVTextPane().apply { this.tag = "${layoutTag}_spacer${summaryRowIdx}"})
             }
 
@@ -41,6 +49,16 @@ object RenderSummary : IConsoleRender {
 
             RenderSummarySumRefImp.setContent()
             RenderSummarySumSynImp.setContent()
+
+            if (!SACInputProcessor.analysisStateMachine.isInState(AnalysisState.NO_ANALYSIS)) {
+                RenderSummaryConAnSumChart.setContent()
+
+                RenderSummaryConAnSumRefNatal.setContent()
+                RenderSummaryConAnSumSynNatal.setContent()
+
+                RenderSummaryConAnSumRefImp.setContent()
+                RenderSummaryConAnSumSynImp.setContent()
+            }
         }
     }
 }

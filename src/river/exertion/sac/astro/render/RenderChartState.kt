@@ -2,6 +2,7 @@ package river.exertion.sac.astro.render
 
 import river.exertion.sac.Constants
 import river.exertion.sac.astro.value.Value
+import river.exertion.sac.console.state.AnalysisState
 import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.view.SACInputProcessor
 import kotlin.math.abs
@@ -9,8 +10,13 @@ import kotlin.math.abs
 object RenderChartState {
 
     fun String.impChartLabel() : String = Constants.SYM_IMPROVEMENT + this
-    fun String.romChartLabel() : String = Constants.SYM_ROMANTIC + this
-    fun String.impRomChartLabel() : String = Constants.SYM_IMPROVEMENT + Constants.SYM_ROMANTIC + this
+
+    fun String.conAmChartLabel() : String = when (SACInputProcessor.analysisStateMachine.currentState) {
+        AnalysisState.ROMANTIC_ANALYSIS -> Constants.SYM_ROMANTIC + this
+        else -> this
+    }
+
+    fun String.impConAmChartLabel() : String = this.conAmChartLabel().impChartLabel()
 
     fun getChartSumLabel(overrideState : ChartState? = null) : String = "${Constants.SYM_SIGMA}${overrideState?.getLabel() ?: SACInputProcessor.chartStateMachine.currentState.getLabel()}:"
 

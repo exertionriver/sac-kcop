@@ -19,9 +19,9 @@ data class RenderValue(val value : Value) {
     fun getStimLabel() : Pair<RenderValueType, String> =
         Pair(RenderValueType.POSITIVE, value.getStimulation().toString().padStart(4, ' '))
 
+    fun getLabel() = getPosValueLabel().second + labelDivider() + getNegValueLabel().second + getConsPercentLabel().second + labelDivider() + getDissPercentLabel().second + getStimLabel().second
+
     companion object {
-
         fun labelDivider() : String = "."
-
     }
 }

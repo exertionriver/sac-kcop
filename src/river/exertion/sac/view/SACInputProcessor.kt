@@ -40,6 +40,8 @@ object SACInputProcessor : InputProcessor {
                 locationRecallStateMachine.changeState(LocationRecallState.defaultState())
 
                 SACComponent.resetEarthLocations()
+
+                SACComponent.dataChanged = true
             }
 
             //remove modifications, leave navigation, chart
@@ -53,6 +55,7 @@ object SACInputProcessor : InputProcessor {
                 aspectsSortStateMachine.changeState(AspectsSortState.defaultState())
                 aspectsFilterStateMachine.changeState(AspectsFilterState.defaultState())
 
+                SACComponent.dataChanged = true
             }
 
             MultiKeys.SPACE.keyDown() -> {
@@ -77,19 +80,30 @@ object SACInputProcessor : InputProcessor {
                 chartStateMachine.changeState(ChartState.COMPOSITE_CHART)
 
                 locationRecallStateMachine.changeState(LocationRecallState.CUR_NAV_REF_SYNCOMP_ENTRY)
+                SACComponent.dataChanged = true
             }
 
             MultiKeys.MINUS.keyDown() -> {
                 navDirStateMachine.changeState(NavDirState.cycleState(navDirStateMachine.currentState))
 
                 if (navStateMachine.currentState.isCurrent() ) navStateMachine.changeState(NavState.NAV_SECOND)
+                SACComponent.dataChanged = true
             }
 
-            MultiKeys.a.keyDown() -> aspectsStateMachine.changeState(AspectsState.cycleState(aspectsStateMachine.currentState))
+            MultiKeys.a.keyDown() -> {
+                aspectsStateMachine.changeState(AspectsState.cycleState(aspectsStateMachine.currentState))
+                SACComponent.dataChanged = true
+            }
 
-            MultiKeys.r.keyDown() -> aspectsSortStateMachine.changeState(AspectsSortState.cycleState(aspectsSortStateMachine.currentState))
+            MultiKeys.r.keyDown() -> {
+                aspectsSortStateMachine.changeState(AspectsSortState.cycleState(aspectsSortStateMachine.currentState))
+                SACComponent.dataChanged = true
+            }
 
-            MultiKeys.f.keyDown() -> aspectsFilterStateMachine.changeState(AspectsFilterState.cycleState(aspectsFilterStateMachine.currentState))
+            MultiKeys.f.keyDown() -> {
+                aspectsFilterStateMachine.changeState(AspectsFilterState.cycleState(aspectsFilterStateMachine.currentState))
+                SACComponent.dataChanged = true
+            }
 
             MultiKeys.s.keyDown() -> navStateMachine.changeState(NavState.NAV_SECOND)
             MultiKeys.m.keyDown() -> navStateMachine.changeState(NavState.NAV_MINUTE)
@@ -99,17 +113,41 @@ object SACInputProcessor : InputProcessor {
             MultiKeys.o.keyDown() -> navStateMachine.changeState(NavState.NAV_MONTH)
             MultiKeys.y.keyDown() -> navStateMachine.changeState(NavState.NAV_YEAR)
 
-            MultiKeys.t.keyDown() -> timeAspectsStateMachine.changeState(TimeAspectsState.cycleState(timeAspectsStateMachine.currentState))
+            MultiKeys.t.keyDown() -> {
+                timeAspectsStateMachine.changeState(TimeAspectsState.cycleState(timeAspectsStateMachine.currentState))
+                SACComponent.dataChanged = true
+            }
 
-            MultiKeys.p.keyDown() -> aspectOverlayStateMachine.changeState(AspectOverlayState.cycleState(chartStateMachine.currentState, aspectOverlayStateMachine.currentState))
+            MultiKeys.p.keyDown() -> {
+                aspectOverlayStateMachine.changeState(AspectOverlayState.cycleState(chartStateMachine.currentState, aspectOverlayStateMachine.currentState))
+                SACComponent.dataChanged = true
+            }
 
-            MultiKeys.C.keysDown() -> analysisStateMachine.changeState(AnalysisState.cycleCharacterState(analysisStateMachine.currentState))
-            MultiKeys.E.keysDown() -> analysisStateMachine.changeState(AnalysisState.cycleElementState(analysisStateMachine.currentState))
-            MultiKeys.M.keysDown() -> analysisStateMachine.changeState(AnalysisState.cycleModeState(analysisStateMachine.currentState))
-            MultiKeys.P.keysDown() -> analysisStateMachine.changeState(AnalysisState.cyclePlanetState(analysisStateMachine.currentState))
-            MultiKeys.R.keysDown() -> analysisStateMachine.changeState(AnalysisState.cycleRomanticState(analysisStateMachine.currentState))
+            MultiKeys.C.keysDown() -> {
+                analysisStateMachine.changeState(AnalysisState.cycleCharacterState(analysisStateMachine.currentState))
+                SACComponent.dataChanged = true
+            }
+            MultiKeys.E.keysDown() -> {
+                analysisStateMachine.changeState(AnalysisState.cycleElementState(analysisStateMachine.currentState))
+                SACComponent.dataChanged = true
+            }
+            MultiKeys.M.keysDown() -> {
+                analysisStateMachine.changeState(AnalysisState.cycleModeState(analysisStateMachine.currentState))
+                SACComponent.dataChanged = true
+            }
+            MultiKeys.P.keysDown() -> {
+                analysisStateMachine.changeState(AnalysisState.cyclePlanetState(analysisStateMachine.currentState))
+                SACComponent.dataChanged = true
+            }
+            MultiKeys.R.keysDown() -> {
+                analysisStateMachine.changeState(AnalysisState.cycleRomanticState(analysisStateMachine.currentState))
+                SACComponent.dataChanged = true
+            }
 
-            MultiKeys.e.keyDown() -> detailsStateMachine.changeState(DetailsState.cycleState(detailsStateMachine.currentState))
+            MultiKeys.e.keyDown() -> {
+                detailsStateMachine.changeState(DetailsState.cycleState(detailsStateMachine.currentState))
+                SACComponent.dataChanged = true
+            }
 
             MultiKeys.numKeyDown() -> {
                 val recallIdx = MultiKeys.numPressed()
@@ -123,9 +161,11 @@ object SACInputProcessor : InputProcessor {
 
                     SACComponent.recallRefEarthLocationEntry(recallIdx)
                 }
+
+                SACComponent.dataChanged = true
             }
 
-            //setting numbered profiles
+            //setting numbered location
             MultiKeys.numPunctDown() -> {
                 navStateMachine.changeState(NavState.LOCATION_STORE)
 

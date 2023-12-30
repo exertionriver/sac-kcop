@@ -4,6 +4,7 @@ import com.badlogic.gdx.ai.fsm.State
 import com.badlogic.gdx.ai.msg.Telegram
 import river.exertion.sac.view.SACInputProcessor
 
+//used for?
 enum class DetailsState : State<SACInputProcessor> {
     NO_DETAILS
     , SHOW_DETAILS;

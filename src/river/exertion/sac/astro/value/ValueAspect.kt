@@ -53,7 +53,7 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
     private fun getRomanticModifier() : Int {
 
         //romMod is stored as 'orb' in baseAspect
-        return ValueRomanticAspects.getRomanticAspects().firstOrNull() {
+        return ValueRomanticAspects.romanticAspects.firstOrNull() {
             (   (   ( (it.aspectCelestialFirst == stateAspect.aspectCelestialFirst) && (it.aspectCelestialSecond == stateAspect.aspectCelestialSecond) ) ||
                     ( (it.aspectCelestialFirst == stateAspect.aspectCelestialSecond) && (it.aspectCelestialSecond == stateAspect.aspectCelestialFirst) ) )
                     && (it.aspectAngle == stateAspect.aspectAngle) )}?.orb?.toInt() ?: 0

@@ -18,8 +18,6 @@ object ValueRomanticAspects {
     At most 3 in the weight -3 category
     At least 3 but no more than 7 in the weight -2 category [Note that it IS desirable to have some challenging aspects in a relationship.]
 */
-    fun getExtendedAspects() : List<Aspect> {
-
         val extendedAspects: List<Aspect> = listOf(
 
 //Strongest Compatibility in Synastry (weight 4) // "Blue Ribbons"
@@ -89,11 +87,6 @@ object ValueRomanticAspects {
 //    Jupiter in 7th house 2
             , Aspect(Sign.SIGN_NONE, AspectCelestial.ASPECT_JUPITER, Sign.SIGN_NONE, AspectCelestial.ASPECT_SEVENTH_HOUSE, AspectAngle.CONJUNCTION_0, 2.0)
         )
-
-        return extendedAspects
-    }
-
-    fun getRomanticAspects() : List<Aspect> {
 
         val romanticAspects: List<Aspect> = listOf(
 
@@ -844,9 +837,7 @@ object ValueRomanticAspects {
             , Aspect(Sign.SIGN_NONE, AspectCelestial.ASPECT_SATURN, Sign.SIGN_NONE, AspectCelestial.ASPECT_SATURN, AspectAngle.OPPOSITION_180, -1.0)
             , Aspect(Sign.SIGN_NONE, AspectCelestial.ASPECT_SATURN, Sign.SIGN_NONE, AspectCelestial.ASPECT_SATURN, AspectAngle.SQUARE_90, -1.0)
             , Aspect(Sign.SIGN_NONE, AspectCelestial.ASPECT_SATURN, Sign.SIGN_NONE, AspectCelestial.ASPECT_SATURN, AspectAngle.SQUARE_270, -1.0)
-        )
-        return romanticAspects.plus(getExtendedAspects())
-    }
+        ).plus(extendedAspects)
 
 }
 
