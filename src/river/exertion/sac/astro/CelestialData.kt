@@ -1,4 +1,4 @@
-package river.exertion.sac.astro.base
+package river.exertion.sac.astro
 
 import river.exertion.sac.swe.CalcUtDatas
 import kotlin.math.roundToInt

@@ -2,6 +2,7 @@ package river.exertion.sac.console.state
 
 import com.badlogic.gdx.ai.fsm.State
 import com.badlogic.gdx.ai.msg.Telegram
+import river.exertion.sac.Constants
 import river.exertion.sac.Constants.SYM_NATCOMP_CHART
 import river.exertion.sac.Constants.SYM_SYNASTRY_CHART
 import river.exertion.sac.view.SACInputProcessor
@@ -25,5 +26,16 @@ enum class ChartState : State<SACInputProcessor> {
 
     companion object {
         fun defaultState() = NATAL_CHART
+
+        fun getChartSumLabel(overrideState : ChartState? = null) : String = "${Constants.SYM_SIGMA}${overrideState?.getLabel() ?: SACInputProcessor.chartStateMachine.currentState.getLabel()}:"
+
+        fun String.impChartLabel() : String = Constants.SYM_IMPROVEMENT + this
+
+        fun String.conAmChartLabel() : String = when (SACInputProcessor.analysisStateMachine.currentState) {
+            AnalysisState.ROMANTIC_ANALYSIS -> Constants.SYM_ROMANTIC + this
+            else -> this
+        }
+
+        fun String.impConAmChartLabel() : String = this.conAmChartLabel().impChartLabel()
     }
 }

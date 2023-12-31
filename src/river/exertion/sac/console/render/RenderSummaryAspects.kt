@@ -24,7 +24,7 @@ object RenderSummaryAspects : IConsoleRender {
 
     override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf<DVLayoutCell>().apply {
         var idx = 0
-        val valueAspects = SACCelestialsHousesDVLayout.valueChart.getValueAspects()
+        val valueAspects = SACCelestialsHousesDVLayout.chart.getValueAspects()
 
         this.add(DVTable(tableTag = "col1aspects", cellType = DVLayoutCell.DVLCellTypes.TABLE, height = DVPaneType.DVPDimension.FULL.tag(),
             panes = mutableListOf<DVLayoutCell>().apply {
@@ -95,7 +95,7 @@ object RenderSummaryAspects : IConsoleRender {
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("col1Summary", "summary", SACLayoutHandler.baseValuesFontColor)
 
-        SACCelestialsHousesDVLayout.valueChart.getSortedFilteredValueAspects().forEachIndexed { idx, valueAspect ->
+        SACCelestialsHousesDVLayout.chart.getSortedFilteredValueAspects().forEachIndexed { idx, valueAspect ->
 
             DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectCelestial1_$idx", RenderAspect(valueAspect).getAspectCelestial1Label(), SACLayoutHandler.refEarthLocationFontColor)
             DVLayoutHandler.currentDvLayout.setTextPaneContent("aspect_$idx", RenderAspect(valueAspect).getAspectLabel(), fontColor(RenderAspect(valueAspect).getAspectValueType()))

@@ -4,7 +4,6 @@ import river.exertion.sac.swe.CalcUt
 import river.exertion.sac.swe.Houses
 import river.exertion.sac.swe.UtcToJd
 import river.exertion.sac.Constants.normalizeDeg
-import river.exertion.sac.astro.base.CelestialData
 import java.util.*
 import kotlin.collections.LinkedHashMap
 

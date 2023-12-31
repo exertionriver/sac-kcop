@@ -1,12 +1,10 @@
 package analysis
 
 import river.exertion.sac.astro.render.RenderAspect
-import river.exertion.sac.astro.render.RenderValue
 import river.exertion.sac.astro.state.*
 import river.exertion.sac.astro.state.StateAspect.Companion.stateAspectReduceBase
 import river.exertion.sac.astro.state.StateBaseAspect.Companion.stateBaseAspects
 import river.exertion.sac.astro.value.ValueAspect
-import river.exertion.sac.astro.value.ValueChart
 import org.junit.jupiter.api.Test
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.state.TimeAspectsState
@@ -23,10 +21,10 @@ class TestCharacterAnalysis {
 
     @Test
     fun testCompareNatals() {
-        val refNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
+        val refNatalChart = Chart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val synNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
+        val synNatalChart = Chart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         val refNatalAspects = refNatalChart.getStateAspects().stateBaseAspects()
@@ -38,18 +36,18 @@ class TestCharacterAnalysis {
         println("natal1 shared with natal2")
         sharedNatalAspects.forEach { println(RenderAspect(ValueAspect(it)).getRenderLabel()) }
 
-        println("appreciation: ${RenderValue(sharedNatalAspects.stateAspectReduceBase()).getLabel()}")
+        println("appreciation: ${sharedNatalAspects.stateAspectReduceBase().getLabel()}")
     }
 
     @Test
     fun testCompareSynastry() {
-        val synChart = StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.SYNASTRY_CHART,
+        val synChart = Chart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.SYNASTRY_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT)
 
-        val refNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
+        val refNatalChart = Chart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val synNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
+        val synNatalChart = Chart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         val synAspects = synChart.getStateAspects().stateBaseAspects()
@@ -68,19 +66,19 @@ class TestCharacterAnalysis {
         println("natal2 shared with synastry chart")
         sharedNatal2Aspects.forEach { println(RenderAspect(ValueAspect(it)).getRenderLabel()) }
 
-        println("affinity: ${RenderValue(sharedNatal1Aspects.plus(sharedNatal2Aspects).stateAspectReduceBase()).getLabel()}")
+        println("affinity: ${sharedNatal1Aspects.plus(sharedNatal2Aspects).stateAspectReduceBase().getLabel()}")
 
     }
 
     @Test
     fun testCompareComposite() {
-        val compChart = StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.COMPOSITE_CHART,
+        val compChart = Chart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.COMPOSITE_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val refNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
+        val refNatalChart = Chart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val synNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
+        val synNatalChart = Chart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         val compAspects = compChart.getStateAspects().stateBaseAspects()
@@ -99,15 +97,15 @@ class TestCharacterAnalysis {
         println("natal2 shared with composite chart")
         sharedNatal2Aspects.forEach { println(RenderAspect(ValueAspect(it)).getRenderLabel()) }
 
-        println("commonality: ${RenderValue(sharedNatal1Aspects.plus(sharedNatal2Aspects).stateAspectReduceBase()).getLabel()}")
+        println("commonality: ${sharedNatal1Aspects.plus(sharedNatal2Aspects).stateAspectReduceBase().getLabel()}")
     }
 
     @Test
     fun testCompareSynastryComposite() {
-        val synChart = StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.SYNASTRY_CHART,
+        val synChart = Chart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.SYNASTRY_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT)
 
-        val compChart = StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.COMPOSITE_CHART,
+        val compChart = Chart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.COMPOSITE_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         val compAspects = compChart.getStateAspects().stateBaseAspects()
@@ -119,48 +117,48 @@ class TestCharacterAnalysis {
         println("shared between synastry and composite chart")
         sharedAspects.forEach { println(RenderAspect(ValueAspect(it)).getRenderLabel()) }
 
-        println("compatibility: ${RenderValue(sharedAspects.stateAspectReduceBase()).getLabel()}")
+        println("compatibility: ${sharedAspects.stateAspectReduceBase().getLabel()}")
 
     }
 
     @Test
     fun testCompareSynastryValueChart() {
-        val refNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
+        val refNatalChart = Chart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val synNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
+        val synNatalChart = Chart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val synChart = StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.SYNASTRY_CHART,
+        val synChart = Chart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.SYNASTRY_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT)
 
-        val compChart = StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.COMPOSITE_CHART,
+        val compChart = Chart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.COMPOSITE_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val valueChart = ValueChart(synChart.chartState, synChart, compChart, refNatalChart, synNatalChart)
+//        val valueChart = Chart(synChart.chartState, synChart, compChart, refNatalChart, synNatalChart)
 
         println("character analysis synastry value chart")
-        valueChart.getValueAspects().forEach { println(RenderAspect(it).getRenderLabel() + ":" + RenderAspect(it).getRenderCharacterModLabel()) }
+  //      valueChart.getValueAspects().forEach { println(RenderAspect(it).getRenderLabel() + ":" + RenderAspect(it).getRenderCharacterModLabel()) }
     }
 
     @Test
     fun testCompareCompositeValueChart() {
-        val refNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
+        val refNatalChart = Chart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val synNatalChart = StateChart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
+        val synNatalChart = Chart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val synChart = StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.SYNASTRY_CHART,
+        val synChart = Chart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.SYNASTRY_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT)
 
-        val compChart = StateChart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.COMPOSITE_CHART,
+        val compChart = Chart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.COMPOSITE_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val valueChart = ValueChart(compChart.chartState, synChart, compChart, refNatalChart, synNatalChart)
+//        val valueChart = ValueChart(compChart.chartState, synChart, compChart, refNatalChart, synNatalChart)
 
         println("character analysis composite value chart")
-        valueChart.getValueAspects().forEach { println(RenderAspect(it).getRenderLabel() + ":" + RenderAspect(it).getRenderCharacterModLabel()) }
+  //      valueChart.getValueAspects().forEach { println(RenderAspect(it).getRenderLabel() + ":" + RenderAspect(it).getRenderCharacterModLabel()) }
     }
 
 }

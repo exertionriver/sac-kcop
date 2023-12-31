@@ -31,8 +31,7 @@ class SACSystem : IntervalIteratingSystem(allOf(SACComponent::class).get(), .4f)
                     sacComponent.sacRecalc()
 
                     SACCelestialsHousesDVLayout.celestialSnapshot = SACComponent.sacCelestialSnapshot
-                    SACCelestialsHousesDVLayout.stateChart = SACComponent.sacStateChart
-                    SACCelestialsHousesDVLayout.valueChart = SACComponent.sacValueChart
+                    SACCelestialsHousesDVLayout.chart = SACComponent.sacChart
 
                     ViewLayout.rebuild()
                 }

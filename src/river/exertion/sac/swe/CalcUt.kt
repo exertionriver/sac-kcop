@@ -2,7 +2,7 @@ package river.exertion.sac.swe
 
 import river.exertion.sac.astro.AspectCelestial
 import river.exertion.sac.astro.Celestial
-import river.exertion.sac.astro.base.CelestialData
+import river.exertion.sac.astro.CelestialData
 import river.exertion.sac.astro.CelestialHouse
 import swisseph.SweConst.*
 

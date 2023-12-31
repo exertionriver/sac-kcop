@@ -7,10 +7,9 @@ import river.exertion.kcop.view.layout.displayViewLayout.*
 import river.exertion.kcop.view.layout.displayViewLayout.asset.DVAlign
 import river.exertion.sac.Constants
 import river.exertion.sac.astro.*
-import river.exertion.sac.astro.base.CelestialData
+import river.exertion.sac.astro.CelestialData
 import river.exertion.sac.astro.CelestialSnapshot
-import river.exertion.sac.astro.state.StateChart
-import river.exertion.sac.astro.value.ValueChart
+import river.exertion.sac.astro.state.Chart
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.render.RenderEarthLocationTags
 import river.exertion.sac.console.render.RenderSummaryAspects
@@ -200,8 +199,7 @@ object SACCelestialsHousesDVLayout {
     ))
 
     var celestialSnapshot : CelestialSnapshot = SACComponent.refNatCelestialSnapshot
-    var stateChart : StateChart = SACComponent.sacStateChart
-    var valueChart : ValueChart = SACComponent.sacValueChart
+    var chart : Chart = SACComponent.sacChart
 
     fun rebuild() {
         DVLayoutHandler.currentFontColor = SACLayoutHandler.baseFontColor
@@ -405,7 +403,7 @@ object SACCelestialsHousesDVLayout {
             }
         }
 
-        val chartAspects = stateChart.getStateAspects()
+        val chartAspects = chart.getStateAspects()
 
         if (SACInputProcessor.chartStateMachine.currentState.isNatComp()) {
             gridEntries().forEachIndexed { rowIdx, chartAspectCelestial ->

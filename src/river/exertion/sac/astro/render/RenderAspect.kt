@@ -2,9 +2,10 @@ package river.exertion.sac.astro.render
 
 import river.exertion.kcop.base.str
 import river.exertion.sac.astro.ValueType
-import river.exertion.sac.astro.render.RenderChartStateType.getChartStateTypesLabel
 import river.exertion.sac.astro.value.ValueAspect
 import river.exertion.sac.console.state.AnalysisState
+import river.exertion.sac.console.state.ChartStateType
+import river.exertion.sac.console.state.ChartStateType.Companion.decodeChartStateType
 import kotlin.math.abs
 
 data class RenderAspect(val valueAspect : ValueAspect) {
@@ -139,5 +140,33 @@ data class RenderAspect(val valueAspect : ValueAspect) {
         if (valueAspect.analysisState != AnalysisState.CHARACTER_ANALYSIS) return ":(**)"
 
         return getChartStateTypesLabel(valueAspect.getAspectModifier())
+    }
+
+    companion object {
+        fun getChartStateTypesLabel(chartStateTypeEncoding : Int) : String {
+            var returnString = ""
+
+            val chartStateTypes = chartStateTypeEncoding.decodeChartStateType()
+
+            var counter = 0
+
+            chartStateTypes.sortedDescending().filter { it.ordinal <= ChartStateType.renderMaxIdx }.forEach {
+                returnString += when (it) {
+                    ChartStateType.REF_NATAL_CHART -> ""
+                    ChartStateType.SYN_NATAL_CHART -> ""
+                    else -> ""
+                }
+
+                returnString += it.getChartState().getLabel()
+
+                counter++
+            }
+
+            (counter..2).forEach {
+                returnString += "  "
+            }
+
+            return returnString
+        }
     }
 }

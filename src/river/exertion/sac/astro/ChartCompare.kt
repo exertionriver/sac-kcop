@@ -1,9 +1,14 @@
-package river.exertion.sac.astro.value
+package river.exertion.sac.astro
 
+import river.exertion.sac.astro.state.Chart
 import kotlin.math.abs
 import kotlin.math.max
 
-data class ValueChartCompare(val modValueChart : ValueChart, val firstNatalValueChart : ValueChart, val secondNatalValueChart : ValueChart) {
+object ChartCompare {
+
+    lateinit var modValueChart : Chart
+    lateinit var firstNatalValueChart : Chart
+    lateinit var secondNatalValueChart : Chart
 
     fun getRefImprovedStim() : Double = modValueChart.getModValue().stimulation / firstNatalValueChart.getModValue().stimulation * 100.0
     fun getEvalImprovedStim() : Double = modValueChart.getModValue().stimulation / secondNatalValueChart.getModValue().stimulation * 100.0
@@ -16,17 +21,17 @@ data class ValueChartCompare(val modValueChart : ValueChart, val firstNatalValue
 
 //    fun getRefImprovedAvg() = doubleArrayOf(getRefImprovedStim(), getRefImprovedPos(), getRefImprovedCons()).average()
 
-    private fun getMaxStim() = max(getRefImprovedStim(), getEvalImprovedStim())
-    private fun getMaxPos() = max(getRefImprovedPos(), getEvalImprovedPos())
-    private fun getMaxCons() = max(getRefImprovedCons(), getEvalImprovedCons())
+    fun getMaxStim() = max(getRefImprovedStim(), getEvalImprovedStim())
+    fun getMaxPos() = max(getRefImprovedPos(), getEvalImprovedPos())
+    fun getMaxCons() = max(getRefImprovedCons(), getEvalImprovedCons())
 
-    private fun getRangeStim() = abs(getRefImprovedStim() - getEvalImprovedStim())
-    private fun getRangePos() = abs(getRefImprovedPos() - getEvalImprovedPos())
-    private fun getRangeCons() = abs(getRefImprovedCons() - getEvalImprovedCons())
+    fun getRangeStim() = abs(getRefImprovedStim() - getEvalImprovedStim())
+    fun getRangePos() = abs(getRefImprovedPos() - getEvalImprovedPos())
+    fun getRangeCons() = abs(getRefImprovedCons() - getEvalImprovedCons())
 
-    private fun getParityStimMod() = getMaxStim() / (getMaxStim() + getRangeStim())
-    private fun getParityPosMod() = getMaxPos() / (getMaxPos() + getRangePos())
-    private fun getParityConsMod() = getMaxCons() / (getMaxCons() + getRangeCons())
+    fun getParityStimMod() = getMaxStim() / (getMaxStim() + getRangeStim())
+    fun getParityPosMod() = getMaxPos() / (getMaxPos() + getRangePos())
+    fun getParityConsMod() = getMaxCons() / (getMaxCons() + getRangeCons())
 
     fun getBalanceStim() = (getRefImprovedStim() + getEvalImprovedStim()) / 2
     fun getBalancePos() = (getRefImprovedPos() + getEvalImprovedPos()) / 2

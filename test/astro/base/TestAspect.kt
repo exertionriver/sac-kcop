@@ -1,15 +1,12 @@
 package astro.base
 
+import org.junit.jupiter.api.Test
 import river.exertion.sac.Constants.InvalidOrb
-import river.exertion.sac.astro.base.Aspect
 import river.exertion.sac.astro.AspectAngle
 import river.exertion.sac.astro.AspectCelestial
-import river.exertion.sac.astro.base.Chart
-import org.junit.jupiter.api.Test
-import river.exertion.sac.component.SACComponent
+import river.exertion.sac.astro.base.Aspect
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalUnsignedTypes::class)
 class TestAspect {
 
     val emptyAspect = Aspect.getEmptyAspect()
@@ -127,17 +124,5 @@ class TestAspect {
         assertEquals(InvalidOrb, testBaseAspect.orb)
     }
 
-    @Test
-    fun testChartGetAspects() {
 
-        SACComponent.refNatCelestialSnapshot.getAspectCelestialLongitudeMap().entries.forEach {
-            println("ac:${it.key}, long:${it.value}")
-        }
-
-        val aspects = Chart.getAspects(SACComponent.refNatCelestialSnapshot)
-
-        println("aspects for ${SACComponent.refNatCelestialSnapshot.refEarthLocation.tag}")
-        aspects.forEach { println(it) }
-
-    }
 }

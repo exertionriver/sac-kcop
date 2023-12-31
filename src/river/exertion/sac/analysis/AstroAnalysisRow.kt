@@ -8,7 +8,6 @@ import river.exertion.sac.astro.CelestialSnapshot
 import river.exertion.sac.astro.EarthLocation
 import river.exertion.sac.astro.state.*
 import river.exertion.sac.astro.Value
-import river.exertion.sac.astro.value.ValueChart
 import river.exertion.sac.console.state.*
 import java.io.File
 import java.nio.file.Files
@@ -274,8 +273,8 @@ data class AstroAnalysisRow(val refUTC : LocalDateTime = Clock.System.now().toLo
             Files.createDirectory(Path.of(outpath))
 
             var pollSnapshot : CelestialSnapshot
-            var refPollChart : ValueChart
-            var synPollChart : ValueChart
+            var refPollChart : Chart
+            var synPollChart : Chart
             var pollValue : Value
 
             while (forwardPoll <= forwardMax) {
@@ -291,54 +290,54 @@ data class AstroAnalysisRow(val refUTC : LocalDateTime = Clock.System.now().toLo
                 )
 
                 pollValue = when (chartType) {
-                    ChartState.COMBINED_CHART -> ValueChart(
-                        StateChart(
+                    ChartState.COMBINED_CHART ->
+                        Chart(
                             refSnapshot,
                             pollSnapshot,
                             ChartState.COMPOSITE_CHART,
                             AspectsState.ALL_ASPECTS,
                             timeAspectsState,
                             AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT
-                        ), AnalysisState.NO_ANALYSIS
-                    ).getBaseValue().avg(ValueChart(
-                        StateChart(
+                            , AnalysisState.NO_ANALYSIS
+                    ).getBaseValue().avg(
+                        Chart(
                             refSnapshot,
                             pollSnapshot,
                             ChartState.SYNASTRY_CHART,
                             AspectsState.ALL_ASPECTS,
                             timeAspectsState,
                             AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT
-                        ), AnalysisState.NO_ANALYSIS
+                            , AnalysisState.NO_ANALYSIS
                     ).getBaseValue() )
-                    ChartState.SYNASTRY_CHART -> ValueChart(
-                        StateChart(
+                    ChartState.SYNASTRY_CHART ->
+                        Chart(
                             refSnapshot,
                             pollSnapshot,
                             chartType,
                             AspectsState.ALL_ASPECTS,
                             timeAspectsState,
                             AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT
-                        ), AnalysisState.NO_ANALYSIS
+                            , AnalysisState.NO_ANALYSIS
                     ).getBaseValue()
-                    ChartState.COMPOSITE_CHART -> ValueChart(
-                        StateChart(
+                    ChartState.COMPOSITE_CHART ->
+                        Chart(
                             refSnapshot,
                             pollSnapshot,
                             chartType,
                             AspectsState.ALL_ASPECTS,
                             timeAspectsState,
                             AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT
-                        ), AnalysisState.NO_ANALYSIS
+                            , AnalysisState.NO_ANALYSIS
                     ).getBaseValue()
                     else -> //natal
-                        ValueChart(
-                            StateChart(
+                            Chart(
+                                refSnapshot,
                                 pollSnapshot,
                                 ChartState.NATAL_CHART,
                                 AspectsState.ALL_ASPECTS,
                                 timeAspectsState,
                                 AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT
-                            ), AnalysisState.NO_ANALYSIS
+                                , AnalysisState.NO_ANALYSIS
                         ).getBaseValue()
                 }
 

@@ -2,8 +2,8 @@ package astro.base
 
 import kotlinx.datetime.LocalDateTime
 import river.exertion.sac.astro.Celestial
-import river.exertion.sac.astro.base.CelestialData
-import river.exertion.sac.astro.base.CelestialData.Companion.ROUND_PRECISION_SEC_DEC
+import river.exertion.sac.astro.CelestialData
+import river.exertion.sac.astro.CelestialData.Companion.ROUND_PRECISION_SEC_DEC
 import river.exertion.sac.swe.CalcUt
 import river.exertion.sac.swe.Houses
 import river.exertion.sac.swe.Julday

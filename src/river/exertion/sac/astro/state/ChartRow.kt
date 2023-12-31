@@ -1,6 +1,8 @@
-package river.exertion.sac.astro.base
+package river.exertion.sac.astro.state
 
-data class ChartRow(val rowAspects: Array<Aspect>) {
+data class ChartRow(val initRowAspects: Array<StateAspect>) {
+
+    val rowAspects : Array<StateAspect> = initRowAspects
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -12,7 +14,7 @@ data class ChartRow(val rowAspects: Array<Aspect>) {
     }
 
     override fun hashCode(): Int {
-        return rowAspects.contentHashCode()
+        val result = rowAspects.contentHashCode()
+        return result
     }
-
 }
