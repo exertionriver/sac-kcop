@@ -34,8 +34,7 @@ object TestValueChart {
 
         valueChart.getValueAspects().forEach { println("valueAspect: $it")}
 
-        println("base: ${valueChart.getBaseValue().positive}, ${valueChart.getBaseValue().negative}, = ${valueChart.getBaseValue().getNet()}, ${valueChart.getBaseValue().getConsonance()}, ${valueChart.getBaseValue().getStimulation()}")
-
+        println(valueChart.getBaseValue().toString())
     }
 
     @Test

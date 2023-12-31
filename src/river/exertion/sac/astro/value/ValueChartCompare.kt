@@ -5,14 +5,14 @@ import kotlin.math.max
 
 data class ValueChartCompare(val modValueChart : ValueChart, val firstNatalValueChart : ValueChart, val secondNatalValueChart : ValueChart) {
 
-    fun getRefImprovedStim() : Double = modValueChart.getModValue().getStimulation() / firstNatalValueChart.getModValue().getStimulation() * 100.0
-    fun getEvalImprovedStim() : Double = modValueChart.getModValue().getStimulation() / secondNatalValueChart.getModValue().getStimulation() * 100.0
+    fun getRefImprovedStim() : Double = modValueChart.getModValue().stimulation / firstNatalValueChart.getModValue().stimulation * 100.0
+    fun getEvalImprovedStim() : Double = modValueChart.getModValue().stimulation / secondNatalValueChart.getModValue().stimulation * 100.0
 
     fun getRefImprovedPos() : Double = modValueChart.getModValue().positive / firstNatalValueChart.getModValue().positive * 100.0
     fun getEvalImprovedPos() : Double = modValueChart.getModValue().positive / secondNatalValueChart.getModValue().positive * 100.0
 
-    fun getRefImprovedCons() : Double = modValueChart.getModValue().getConsonance() / firstNatalValueChart.getModValue().getConsonance() * 100.0
-    fun getEvalImprovedCons() : Double = modValueChart.getModValue().getConsonance() / secondNatalValueChart.getModValue().getConsonance() * 100.0
+    fun getRefImprovedCons() : Double = modValueChart.getModValue().consonance / firstNatalValueChart.getModValue().consonance * 100.0
+    fun getEvalImprovedCons() : Double = modValueChart.getModValue().consonance / secondNatalValueChart.getModValue().consonance * 100.0
 
 //    fun getRefImprovedAvg() = doubleArrayOf(getRefImprovedStim(), getRefImprovedPos(), getRefImprovedCons()).average()
 

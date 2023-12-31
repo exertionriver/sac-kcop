@@ -3,7 +3,7 @@ package river.exertion.sac.astro.value
 import river.exertion.sac.astro.AspectAngle
 import river.exertion.sac.astro.AspectCelestial
 import river.exertion.sac.astro.render.RenderAspect
-import river.exertion.sac.astro.render.ValueType
+import river.exertion.sac.astro.ValueType
 import river.exertion.sac.astro.state.StateAspect
 import river.exertion.sac.astro.state.StateBaseAspect
 import river.exertion.sac.astro.state.StateBaseAspect.Companion.stateBaseAspects

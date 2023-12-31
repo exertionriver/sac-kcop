@@ -1,9 +1,6 @@
 package river.exertion.sac.astro.value
 
-import river.exertion.sac.astro.AspectCelestial
-import river.exertion.sac.astro.AspectType
-import river.exertion.sac.astro.SignElement
-import river.exertion.sac.astro.SignMode
+import river.exertion.sac.astro.*
 import river.exertion.sac.astro.state.StateAspect
 import river.exertion.sac.console.state.AnalysisState
 import river.exertion.sac.console.state.ChartState
@@ -109,7 +106,7 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
         }
 
         modPos += when {
-            (baseValue.getNet() > 0) -> when {
+            (baseValue.net > 0) -> when {
                 (getSignFirstModifier() > 0) -> (baseValue.positive * abs(getSignFirstModifier()) * .125).toInt()
                 (getSignFirstModifier() < 0) -> (baseValue.positive * -abs(getSignFirstModifier()) * .125).toInt()
                 else -> 0
@@ -117,7 +114,7 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
             else -> 0
         }
         modPos += when {
-            (baseValue.getNet() > 0) -> when {
+            (baseValue.net > 0) -> when {
                 (getSignSecondModifier() > 0) -> (baseValue.positive * abs(getSignSecondModifier()) * .125).toInt()
                 (getSignSecondModifier() < 0) -> (baseValue.positive * -abs(getSignSecondModifier()) * .125).toInt()
                 else -> 0
@@ -125,7 +122,7 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
             else -> 0
         }
         modPos += when {
-            (baseValue.getNet() > 0) -> when {
+            (baseValue.net > 0) -> when {
                 (getAspectCelestialFirstModifier() > 0) -> (baseValue.positive * abs(getAspectCelestialFirstModifier()) * .125).toInt()
                 (getAspectCelestialFirstModifier() < 0) -> (baseValue.positive * -abs(getAspectCelestialFirstModifier()) * .125).toInt()
                 else -> 0
@@ -133,7 +130,7 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
             else -> 0
         }
         modPos += when {
-            (baseValue.getNet() > 0) -> when {
+            (baseValue.net > 0) -> when {
                 (getAspectCelestialSecondModifier() > 0) -> (baseValue.positive * abs(getAspectCelestialSecondModifier()) * .125).toInt()
                 (getAspectCelestialSecondModifier() < 0) -> (baseValue.positive * -abs(getAspectCelestialSecondModifier()) * .125).toInt()
                 else -> 0
@@ -157,7 +154,7 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
         }
 
         modNeg += when {
-            (baseValue.getNet() < 0) -> when {
+            (baseValue.net < 0) -> when {
                 (getSignFirstModifier() > 0) -> (baseValue.negative * -abs(getSignFirstModifier()) * .125).toInt()
                 (getSignFirstModifier() < 0) -> (baseValue.negative * abs(getSignFirstModifier()) * .125).toInt()
                 else -> 0
@@ -165,7 +162,7 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
             else -> 0
         }
         modNeg += when {
-            (baseValue.getNet() < 0) -> when {
+            (baseValue.net < 0) -> when {
                 (getSignSecondModifier() > 0) -> (baseValue.negative * -abs(getSignSecondModifier()) * .125).toInt()
                 (getSignSecondModifier() < 0) -> (baseValue.negative * abs(getSignSecondModifier()) * .125).toInt()
                 else -> 0
@@ -173,7 +170,7 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
             else -> 0
         }
         modNeg += when {
-            (baseValue.getNet() < 0) -> when {
+            (baseValue.net < 0) -> when {
                 (getAspectCelestialFirstModifier() > 0) -> (baseValue.negative * -abs(getAspectCelestialFirstModifier()) * .125).toInt()
                 (getAspectCelestialFirstModifier() < 0) -> (baseValue.negative * abs(getAspectCelestialFirstModifier()) * .125).toInt()
                 else -> 0
@@ -181,7 +178,7 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
             else -> 0
         }
         modNeg += when {
-            (baseValue.getNet() < 0) -> when {
+            (baseValue.net < 0) -> when {
                 (getAspectCelestialSecondModifier() > 0) -> (baseValue.negative * -abs(getAspectCelestialSecondModifier()) * .125).toInt()
                 (getAspectCelestialSecondModifier() < 0) -> (baseValue.negative * abs(getAspectCelestialSecondModifier()) * .125).toInt()
                 else -> 0

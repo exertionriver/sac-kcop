@@ -1,7 +1,7 @@
 package river.exertion.sac.astro.state
 
 import river.exertion.sac.astro.*
-import river.exertion.sac.astro.value.ValueRomanticAspects
+import river.exertion.sac.astro.ValueRomanticAspects
 import river.exertion.sac.swe.DegMidp
 import river.exertion.sac.console.state.AspectOverlayState
 import river.exertion.sac.console.state.AspectsState

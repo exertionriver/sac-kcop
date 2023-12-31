@@ -1,4 +1,4 @@
-package river.exertion.sac.astro.render
+package river.exertion.sac.astro
 
 enum class ValueType {
     POSITIVE,

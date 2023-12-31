@@ -1,6 +1,7 @@
 package river.exertion.sac.astro.render
 
 import river.exertion.sac.Constants
+import river.exertion.sac.astro.ValueType
 import river.exertion.sac.astro.value.Value
 import river.exertion.sac.console.state.AnalysisState
 import river.exertion.sac.console.state.ChartState
@@ -83,7 +84,7 @@ object RenderChartState {
     }
 
     fun getStimChartImpLabel(sharedChartValue : Value, natalChartValue : Value) : Pair<ValueType, String> {
-        val stim = sharedChartValue.getStimulation() - natalChartValue.getStimulation()
+        val stim = sharedChartValue.stimulation - natalChartValue.stimulation
 
         val valueType = when {
             (stim > 0) -> ValueType.POSITIVE

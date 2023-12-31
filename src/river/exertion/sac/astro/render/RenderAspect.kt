@@ -1,6 +1,7 @@
 package river.exertion.sac.astro.render
 
 import river.exertion.kcop.base.str
+import river.exertion.sac.astro.ValueType
 import river.exertion.sac.astro.render.RenderChartStateType.getChartStateTypesLabel
 import river.exertion.sac.astro.value.ValueAspect
 import river.exertion.sac.console.state.AnalysisState
@@ -34,7 +35,7 @@ data class RenderAspect(val valueAspect : ValueAspect) {
                 ValueType.REVERSAL_TO_POS,
                 stateAspect.aspectAngle.aspectType.label
             )
-            (valueAspect.baseValue.getNet() != 0) && (valueAspect.baseValue.getNet() == 0) -> Pair(
+            (valueAspect.baseValue.net != 0) && (valueAspect.baseValue.net == 0) -> Pair(
                 ValueType.REVERSAL_TO_NEUT,
                 stateAspect.aspectAngle.aspectType.label
             )
@@ -73,27 +74,27 @@ data class RenderAspect(val valueAspect : ValueAspect) {
         else -> when { //analysis state
             (valueAspect.getPositiveBaseValue() > 0) && (valueAspect.getAspectModifier() < 0) -> Pair(
                 ValueType.REVERSAL_TO_NEG,
-                abs(valueAspect.getBaseModNetValue().getNet())
+                abs(valueAspect.getBaseModNetValue().net)
             )
             (valueAspect.getNegativeBaseValue() < 0) && (valueAspect.getAspectModifier() > 0) -> Pair(
                 ValueType.REVERSAL_TO_POS,
-                abs(valueAspect.getBaseModNetValue().getNet())
+                abs(valueAspect.getBaseModNetValue().net)
             )
-            (valueAspect.baseValue.getNet() != 0) && (valueAspect.baseValue.getNet() == 0) -> Pair(
+            (valueAspect.baseValue.net != 0) && (valueAspect.baseValue.net == 0) -> Pair(
                 ValueType.REVERSAL_TO_NEUT,
-                abs(valueAspect.getBaseModNetValue().getNet())
+                abs(valueAspect.getBaseModNetValue().net)
             )
             (valueAspect.getPositiveBaseValue() > 0) -> Pair(
                 ValueType.POSITIVE,
-                abs(valueAspect.getBaseModNetValue().getNet())
+                abs(valueAspect.getBaseModNetValue().net)
             )
             (valueAspect.getNegativeBaseValue() < 0) -> Pair(
                 ValueType.NEGATIVE,
-                abs(valueAspect.getBaseModNetValue().getNet())
+                abs(valueAspect.getBaseModNetValue().net)
             )
             else -> Pair(
                 ValueType.NEUTRAL,
-                abs(valueAspect.getBaseModNetValue().getNet())
+                abs(valueAspect.getBaseModNetValue().net)
             )
         }
     }
@@ -120,11 +121,13 @@ data class RenderAspect(val valueAspect : ValueAspect) {
         if (valueAspect.analysisState != AnalysisState.ROMANTIC_ANALYSIS) return Pair(ValueType.NEUTRAL, "      ")
 
         return when {
-            (valueAspect.getAspectModifier() > 0) -> Pair(ValueType.POSITIVE, when {
+            (valueAspect.getAspectModifier() > 0) -> Pair(
+                ValueType.POSITIVE, when {
                 (valueAspect.getAspectModifier() == 4) -> ":(+4) "
                 else -> ":(+${valueAspect.getAspectModifier()}) "
             })
-            (valueAspect.getAspectModifier() < 0) -> Pair(ValueType.NEGATIVE, when {
+            (valueAspect.getAspectModifier() < 0) -> Pair(
+                ValueType.NEGATIVE, when {
                 (valueAspect.getAspectModifier() == -4) -> ":(-4) "
                 else -> ":(${valueAspect.getAspectModifier()}) "
             })

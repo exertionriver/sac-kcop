@@ -158,19 +158,19 @@ data class AstroAnalysisRow(val refUTC : LocalDateTime = Clock.System.now().toLo
     fun minPollUTC() : LocalDateTime = workingDataRows().minOf { it.pollUTC }
     fun maxPollUTC() : LocalDateTime = workingDataRows().maxOf { it.pollUTC }
 
-    fun maxStimulation() = workingDataRows().maxBy { it.value.getStimulation() }
+    fun maxStimulation() = workingDataRows().maxBy { it.value.stimulation }
     fun avgStimulation() : AstroDataRow {
-        val avg = workingDataRows().sumOf { it.value.getStimulation() } / workingDataRows().size
-        return workingDataRows().sortedBy { it.value.getStimulation() }.firstOrNull { it.value.getStimulation() >= avg } ?: workingDataRows().last()
+        val avg = workingDataRows().sumOf { it.value.stimulation } / workingDataRows().size
+        return workingDataRows().sortedBy { it.value.stimulation }.firstOrNull { it.value.stimulation >= avg } ?: workingDataRows().last()
     }
-    fun minStimulation() = workingDataRows().minBy { it.value.getStimulation() }
-    fun medStimulation() = workingDataRows().sortedBy { it.value.getStimulation() }[workingDataRows().size / 2]
+    fun minStimulation() = workingDataRows().minBy { it.value.stimulation }
+    fun medStimulation() = workingDataRows().sortedBy { it.value.stimulation }[workingDataRows().size / 2]
     fun rankStimulation(evalStimulation : Int) : Double {
-        val stimEntries = workingDataRows().sortedBy { it.value.getStimulation() }
-        val entry = stimEntries.firstOrNull { it.value.getStimulation() >= evalStimulation } ?: stimEntries.last()
+        val stimEntries = workingDataRows().sortedBy { it.value.stimulation }
+        val entry = stimEntries.firstOrNull { it.value.stimulation >= evalStimulation } ?: stimEntries.last()
         val stimUnder = 100.0 * (stimEntries.indexOf(entry) + 1) / stimEntries.size
         return if (stimUnder < 100.0) stimUnder else
-            100.0 * (evalStimulation - minStimulation().value.getStimulation()) / (maxStimulation().value.getStimulation() - minStimulation().value.getStimulation())
+            100.0 * (evalStimulation - minStimulation().value.stimulation) / (maxStimulation().value.stimulation - minStimulation().value.stimulation)
     }
 
     fun maxPositive() = workingDataRows().maxBy { it.value.positive }
@@ -188,19 +188,19 @@ data class AstroAnalysisRow(val refUTC : LocalDateTime = Clock.System.now().toLo
             100.0 * (evalPositive - minPositive().value.positive) / (maxPositive().value.positive - minPositive().value.positive)
     }
 
-    fun maxConsonance() = workingDataRows().maxBy { it.value.getConsonance() }
+    fun maxConsonance() = workingDataRows().maxBy { it.value.consonance }
     fun avgConsonance() : AstroDataRow {
-        val avg = workingDataRows().sumOf { it.value.getConsonance() } / workingDataRows().size
-        return workingDataRows().sortedBy { it.value.getConsonance() }.firstOrNull { it.value.getConsonance() >= avg } ?: workingDataRows().last()
+        val avg = workingDataRows().sumOf { it.value.consonance } / workingDataRows().size
+        return workingDataRows().sortedBy { it.value.consonance }.firstOrNull { it.value.consonance >= avg } ?: workingDataRows().last()
     }
-    fun minConsonance() = workingDataRows().minBy { it.value.getConsonance() }
-    fun medConsonance() = workingDataRows().sortedBy { it.value.getConsonance() }[workingDataRows().size / 2]
+    fun minConsonance() = workingDataRows().minBy { it.value.consonance }
+    fun medConsonance() = workingDataRows().sortedBy { it.value.consonance }[workingDataRows().size / 2]
     fun rankConsonance(evalConsonance : Double) : Double {
-        val consEntries = workingDataRows().sortedBy { it.value.getConsonance() }
-        val entry = consEntries.firstOrNull { it.value.getConsonance() >= evalConsonance } ?: consEntries.last()
+        val consEntries = workingDataRows().sortedBy { it.value.consonance }
+        val entry = consEntries.firstOrNull { it.value.consonance >= evalConsonance } ?: consEntries.last()
         val consUnder = 100.0 * (consEntries.indexOf(entry) + 1) / consEntries.size
         return if (consUnder < 100.0) consUnder else
-            100.0 * (evalConsonance - minConsonance().value.getConsonance()) / (maxConsonance().value.getConsonance() - minConsonance().value.getConsonance())
+            100.0 * (evalConsonance - minConsonance().value.consonance) / (maxConsonance().value.consonance - minConsonance().value.consonance)
     }
 
     fun score(astroRefValues: AstroRefValues) : Double {
@@ -222,20 +222,20 @@ data class AstroAnalysisRow(val refUTC : LocalDateTime = Clock.System.now().toLo
     fun fullReport(astroRefValues: AstroRefValues? = null) {
         println ("Report for $refUTC with $chartState")
         println ("Poll Range: min " + minPollUTC() + " / max " + maxPollUTC())
-        println ("max Stimulation: " + maxStimulation().value.getStimulation() + " @" + maxStimulation().pollUTC.toString())
-        println ("min Stimulation: " + minStimulation().value.getStimulation() + " @" + minStimulation().pollUTC.toString())
-        println ("med Stimulation: " + medStimulation().value.getStimulation() + " @" + medStimulation().pollUTC.toString())
-        println ("avg Stimulation: " + avgStimulation().value.getStimulation() + " @" + avgStimulation().pollUTC.toString())
+        println ("max Stimulation: " + maxStimulation().value.stimulation + " @" + maxStimulation().pollUTC.toString())
+        println ("min Stimulation: " + minStimulation().value.stimulation + " @" + minStimulation().pollUTC.toString())
+        println ("med Stimulation: " + medStimulation().value.stimulation + " @" + medStimulation().pollUTC.toString())
+        println ("avg Stimulation: " + avgStimulation().value.stimulation + " @" + avgStimulation().pollUTC.toString())
         if (astroRefValues != null) println ("ranking Stimulation: ${astroRefValues.stimulation} (${rankStimulation(astroRefValues.stimulation)})")
         println ("max Positive: " + maxPositive().value.positive + " @" + maxPositive().pollUTC.toString())
         println ("min Positive: " + minPositive().value.positive + " @" + minPositive().pollUTC.toString())
         println ("med Positive: " + medPositive().value.positive + " @" + medPositive().pollUTC.toString())
         println ("avg Positive: " + avgPositive().value.positive + " @" + avgPositive().pollUTC.toString())
         if (astroRefValues != null) println ("ranking Positive: ${astroRefValues.positive} (${rankPositive(astroRefValues.positive)})")
-        println ("max Consonance: " + maxConsonance().value.getConsonance() + " @" + maxConsonance().pollUTC.toString())
-        println ("min Consonance: " + minConsonance().value.getConsonance() + " @" + minConsonance().pollUTC.toString())
-        println ("med Consonance: " + medConsonance().value.getConsonance() + " @" + medConsonance().pollUTC.toString())
-        println ("avg Consonance: " + avgConsonance().value.getConsonance() + " @" + avgConsonance().pollUTC.toString())
+        println ("max Consonance: " + maxConsonance().value.consonance + " @" + maxConsonance().pollUTC.toString())
+        println ("min Consonance: " + minConsonance().value.consonance + " @" + minConsonance().pollUTC.toString())
+        println ("med Consonance: " + medConsonance().value.consonance + " @" + medConsonance().pollUTC.toString())
+        println ("avg Consonance: " + avgConsonance().value.consonance + " @" + avgConsonance().pollUTC.toString())
         if (astroRefValues != null) println ("ranking Consonance: ${astroRefValues.consonance} (${rankConsonance(astroRefValues.consonance)})")
         println ("count: ${workingDataRows().size}")
     }
@@ -291,7 +291,7 @@ data class AstroAnalysisRow(val refUTC : LocalDateTime = Clock.System.now().toLo
                 )
 
                 pollValue = when (chartType) {
-                    ChartState.COMBINED_CHART -> Value.avg(ValueChart(
+                    ChartState.COMBINED_CHART -> ValueChart(
                         StateChart(
                             refSnapshot,
                             pollSnapshot,
@@ -300,7 +300,7 @@ data class AstroAnalysisRow(val refUTC : LocalDateTime = Clock.System.now().toLo
                             timeAspectsState,
                             AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT
                         ), AnalysisState.NO_ANALYSIS
-                    ).getBaseValue(), ValueChart(
+                    ).getBaseValue().avg(ValueChart(
                         StateChart(
                             refSnapshot,
                             pollSnapshot,

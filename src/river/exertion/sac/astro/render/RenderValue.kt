@@ -1,5 +1,6 @@
 package river.exertion.sac.astro.render
 
+import river.exertion.sac.astro.ValueType
 import river.exertion.sac.astro.value.Value
 import kotlin.math.abs
 
@@ -11,13 +12,13 @@ data class RenderValue(val value : Value) {
     fun getNegValueLabel() : Pair<ValueType, String> = Pair(ValueType.NEGATIVE, abs(value.negative).toString().padStart(4, ' '))
 
     fun getConsPercentLabel() : Pair<ValueType, String> =
-        Pair(ValueType.POSITIVE, abs(100 * value.positive.toDouble() / value.getStimulation().toDouble() ).toInt().toString().padStart(3, ' '))
+        Pair(ValueType.POSITIVE, abs(100 * value.positive.toDouble() / value.stimulation.toDouble() ).toInt().toString().padStart(3, ' '))
 
     fun getDissPercentLabel() : Pair<ValueType, String> =
-        Pair(ValueType.NEGATIVE, abs(100 * value.negative.toDouble() / value.getStimulation().toDouble() ).toInt().toString().padStart(2, ' '))
+        Pair(ValueType.NEGATIVE, abs(100 * value.negative.toDouble() / value.stimulation.toDouble() ).toInt().toString().padStart(2, ' '))
 
     fun getStimLabel() : Pair<ValueType, String> =
-        Pair(ValueType.POSITIVE, value.getStimulation().toString().padStart(4, ' '))
+        Pair(ValueType.POSITIVE, value.stimulation.toString().padStart(4, ' '))
 
     fun getLabel() = getPosValueLabel().second + labelDivider() + getNegValueLabel().second + getConsPercentLabel().second + labelDivider() + getDissPercentLabel().second + getStimLabel().second
 
