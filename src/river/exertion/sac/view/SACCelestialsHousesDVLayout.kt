@@ -8,8 +8,7 @@ import river.exertion.kcop.view.layout.displayViewLayout.asset.DVAlign
 import river.exertion.sac.Constants
 import river.exertion.sac.astro.*
 import river.exertion.sac.astro.base.CelestialData
-import river.exertion.sac.astro.base.CelestialSnapshot
-import river.exertion.sac.astro.render.RenderEarthLocation
+import river.exertion.sac.astro.CelestialSnapshot
 import river.exertion.sac.astro.state.StateChart
 import river.exertion.sac.astro.value.ValueChart
 import river.exertion.sac.component.SACComponent
@@ -219,11 +218,11 @@ object SACCelestialsHousesDVLayout {
         DVLayoutHandler.currentDvLayout.setTextPaneContent("appStateAttributes",stateAttributes, SACLayoutHandler.baseValuesFontColor)
         RenderEarthLocationTags.setContent()
 
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("localTimeLabel", RenderEarthLocation.getEarthLocalTimeLabel())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localTimeLabel", EarthLocation.getEarthLocalTimeLabel())
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localTime", "${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.hour)}:${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.minute)}:${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.second)}", SACLayoutHandler.baseValuesFontColor)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("localDateLabel", RenderEarthLocation.getEarthLocalDateLabel())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localDateLabel", EarthLocation.getEarthLocalDateLabel())
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localDate", "${"%4d".format(celestialSnapshot.refEarthLocation.localDateTime.year)}-${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.monthNumber)}-${"%02d".format(celestialSnapshot.refEarthLocation.localDateTime.dayOfMonth)}", SACLayoutHandler.baseValuesFontColor)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("localTimezoneLabel", RenderEarthLocation.getEarthTimezoneLabel())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localTimezoneLabel", EarthLocation.getEarthTimezoneLabel())
         DVLayoutHandler.currentDvLayout.setTextPaneContent("LocalTimezone", celestialSnapshot.refEarthLocation.getTimezoneOffsetString(), SACLayoutHandler.baseValuesFontColor)
 
         if (SACInputProcessor.entryStateMachine.isInState(EntryState.TZ_ENTRY)) {
@@ -241,7 +240,7 @@ object SACCelestialsHousesDVLayout {
             DVLayoutHandler.currentDvLayout.setTextPaneMode("LocalTimezone", DVTextPane.DVTextPaneMode.READ)
         }
 
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("localLatitudeLabel", RenderEarthLocation.getEarthLatitudeLabel())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localLatitudeLabel", EarthLocation.getEarthLatitudeLabel())
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localLatitude", "%1.4f".format(celestialSnapshot.refEarthLocation.latitude), SACLayoutHandler.baseValuesFontColor)
 
         if (SACInputProcessor.entryStateMachine.isInState(EntryState.LAT_ENTRY)) {
@@ -259,7 +258,7 @@ object SACCelestialsHousesDVLayout {
             DVLayoutHandler.currentDvLayout.setTextPaneMode("localLatitude", DVTextPane.DVTextPaneMode.READ)
         }
 
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("localLongitudeLabel", RenderEarthLocation.getEarthLongitudeLabel())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localLongitudeLabel", EarthLocation.getEarthLongitudeLabel())
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localLongitude", "%1.4f".format(celestialSnapshot.refEarthLocation.longitude), SACLayoutHandler.baseValuesFontColor)
 
         if (SACInputProcessor.entryStateMachine.isInState(EntryState.LON_ENTRY)) {
@@ -277,7 +276,7 @@ object SACCelestialsHousesDVLayout {
             DVLayoutHandler.currentDvLayout.setTextPaneMode("localLongitude", DVTextPane.DVTextPaneMode.READ)
         }
 
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTimeLabel", RenderEarthLocation.getEarthUTCTimeLabel())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTimeLabel", EarthLocation.getEarthUTCTimeLabel())
         DVLayoutHandler.currentDvLayout.setTextPaneContent("utcTime", "${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.hour)}:${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.minute)}:${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.second)}", SACLayoutHandler.baseValuesFontColor)
 
         if (SACInputProcessor.entryStateMachine.isInState(EntryState.TIME_ENTRY)) {
@@ -297,7 +296,7 @@ object SACCelestialsHousesDVLayout {
             DVLayoutHandler.currentDvLayout.setTextPaneMode("utcTime", DVTextPane.DVTextPaneMode.READ)
         }
 
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("utcDateLabel", RenderEarthLocation.getEarthUTCDateLabel())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("utcDateLabel", EarthLocation.getEarthUTCDateLabel())
         DVLayoutHandler.currentDvLayout.setTextPaneContent("utcDate", "${"%4d".format(celestialSnapshot.refEarthLocation.utcDateTime.year)}-${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.monthNumber)}-${"%02d".format(celestialSnapshot.refEarthLocation.utcDateTime.dayOfMonth)}", SACLayoutHandler.baseValuesFontColor)
 
         if (SACInputProcessor.entryStateMachine.isInState(EntryState.DATE_ENTRY)) {
@@ -317,7 +316,7 @@ object SACCelestialsHousesDVLayout {
             DVLayoutHandler.currentDvLayout.setTextPaneMode("utcDate", DVTextPane.DVTextPaneMode.READ)
         }
 
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("localAltitudeLabel", RenderEarthLocation.getEarthAltitudeLabel())
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("localAltitudeLabel", EarthLocation.getEarthAltitudeLabel())
         DVLayoutHandler.currentDvLayout.setTextPaneContent("localAltitude", "%d".format(celestialSnapshot.refEarthLocation.altitude), SACLayoutHandler.baseValuesFontColor)
 
         if (SACInputProcessor.entryStateMachine.isInState(EntryState.ALT_ENTRY)) {

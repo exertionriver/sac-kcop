@@ -102,7 +102,7 @@ data class RenderAspect(val valueAspect : ValueAspect) {
         stateAspect.aspectCelestialFirst.label,
         getAspectRenderLabel().second,
         stateAspect.aspectCelestialSecond.label,
-        getAspectValueRenderLabel().second
+        getAspectValueRenderLabel().second,
     )
 
     fun getAspectValueType() = getAspectRenderLabel().first
@@ -116,20 +116,20 @@ data class RenderAspect(val valueAspect : ValueAspect) {
 
     fun getRenderLabel() : String = getLabels().str()
 
-    fun getRenderRomanticModLabel() : String {
-        if (valueAspect.analysisState != AnalysisState.ROMANTIC_ANALYSIS) return ":(**) "
+    fun getRenderRomanticModLabel() : Pair<ValueType, String> {
+        if (valueAspect.analysisState != AnalysisState.ROMANTIC_ANALYSIS) return Pair(ValueType.NEUTRAL, "      ")
 
         return when {
-            (valueAspect.getAspectModifier() > 0) -> when {
+            (valueAspect.getAspectModifier() > 0) -> Pair(ValueType.POSITIVE, when {
                 (valueAspect.getAspectModifier() == 4) -> ":(+4) "
                 else -> ":(+${valueAspect.getAspectModifier()}) "
-            }
-            (valueAspect.getAspectModifier() < 0) -> when {
+            })
+            (valueAspect.getAspectModifier() < 0) -> Pair(ValueType.NEGATIVE, when {
                 (valueAspect.getAspectModifier() == -4) -> ":(-4) "
                 else -> ":(${valueAspect.getAspectModifier()}) "
+            })
+            else -> Pair(ValueType.NEUTRAL, " ")
             }
-            else -> " "
-        }
     }
 
     fun getRenderCharacterModLabel() : String {

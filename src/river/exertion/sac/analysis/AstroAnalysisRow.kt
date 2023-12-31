@@ -4,8 +4,8 @@ import kotlinx.datetime.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToJsonElement
-import river.exertion.sac.astro.base.CelestialSnapshot
-import river.exertion.sac.astro.base.EarthLocation
+import river.exertion.sac.astro.CelestialSnapshot
+import river.exertion.sac.astro.EarthLocation
 import river.exertion.sac.astro.state.*
 import river.exertion.sac.astro.value.Value
 import river.exertion.sac.astro.value.ValueChart

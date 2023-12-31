@@ -47,6 +47,5 @@ enum class AspectAngle {
     companion object {
         fun fromOrdinal(ordinal: Int) = entries.firstOrNull { it.ordinal == ordinal }
         fun fromName(name: String) = entries.firstOrNull { it.name == name }
-        fun fromAngleDegree(angleDegree: Double) = entries.firstOrNull { it.angleDegree == angleDegree } ?: ASPECT_ANGLE_NONE.angleDegree
     }
 }

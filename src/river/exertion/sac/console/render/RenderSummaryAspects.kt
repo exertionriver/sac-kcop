@@ -4,6 +4,7 @@ import river.exertion.kcop.view.layout.displayViewLayout.*
 import river.exertion.kcop.view.layout.displayViewLayout.asset.DVAlign
 import river.exertion.sac.astro.render.RenderAspect
 import river.exertion.sac.console.render.summary.RenderSummary
+import river.exertion.sac.console.state.AnalysisState
 import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.view.SACCelestialsHousesDVLayout
 import river.exertion.sac.view.SACInputProcessor
@@ -33,6 +34,7 @@ object RenderSummaryAspects : IConsoleRender {
                 this.add(DVTextPane().apply { this.tag = "aspectCelestial2_$idx"; this.padLeft = ".1"; this.padRight = ".1"; this.align = DVAlign.LEFT.tag() })
                 this.add(DVTextPane().apply { this.tag = "aspectDelim_$idx"; this.align = DVAlign.CENTER.tag() })
                 this.add(DVTextPane().apply { this.tag = "aspectValue_$idx"; this.padLeft = ".1"; this.padRight = ".2"; this.align = DVAlign.RIGHT.tag() })
+                this.add(DVTextPane().apply { this.tag = "aspectModValue_$idx"; this.padLeft = ".1"; this.padRight = ".2"; this.align = DVAlign.RIGHT.tag() })
                 this.add(DVRow())
                 idx++
             }
@@ -48,6 +50,7 @@ object RenderSummaryAspects : IConsoleRender {
                     this.add(DVTextPane().apply { this.tag = "aspectCelestial2_$idx"; this.padLeft = ".1"; this.padRight = ".1"; this.align = DVAlign.LEFT.tag() })
                     this.add(DVTextPane().apply { this.tag = "aspectDelim_$idx"; this.align = DVAlign.CENTER.tag() })
                     this.add(DVTextPane().apply { this.tag = "aspectValue_$idx"; this.padLeft = ".1"; this.padRight = ".2"; this.align = DVAlign.RIGHT.tag() })
+                    this.add(DVTextPane().apply { this.tag = "aspectModValue_$idx"; this.padLeft = ".1"; this.padRight = ".2"; this.align = DVAlign.RIGHT.tag() })
                     this.add(DVRow())
                     idx++
                 }
@@ -63,6 +66,7 @@ object RenderSummaryAspects : IConsoleRender {
                         this.add(DVTextPane().apply { this.tag = "aspectCelestial2_$idx"; this.padLeft = ".1"; this.padRight = ".1"; this.align = DVAlign.LEFT.tag() })
                         this.add(DVTextPane().apply { this.tag = "aspectDelim_$idx"; this.align = DVAlign.CENTER.tag() })
                         this.add(DVTextPane().apply { this.tag = "aspectValue_$idx"; this.padLeft = ".1"; this.padRight = ".2"; this.align = DVAlign.RIGHT.tag() })
+                        this.add(DVTextPane().apply { this.tag = "aspectModValue_$idx"; this.padLeft = ".1"; this.padRight = ".2"; this.align = DVAlign.RIGHT.tag() })
                         this.add(DVRow())
                         idx++
                     }
@@ -78,6 +82,7 @@ object RenderSummaryAspects : IConsoleRender {
                         this.add(DVTextPane().apply { this.tag = "aspectCelestial2_$idx"; this.padLeft = ".1"; this.padRight = ".1"; this.align = DVAlign.LEFT.tag() })
                         this.add(DVTextPane().apply { this.tag = "aspectDelim_$idx"; this.align = DVAlign.CENTER.tag() })
                         this.add(DVTextPane().apply { this.tag = "aspectValue_$idx"; this.padLeft = ".1"; this.padRight = ".2"; this.align = DVAlign.RIGHT.tag() })
+                        this.add(DVTextPane().apply { this.tag = "aspectModValue_$idx"; this.padLeft = ".1"; this.padRight = ".2"; this.align = DVAlign.RIGHT.tag() })
                         this.add(DVRow())
                         idx++
                     }
@@ -103,6 +108,9 @@ object RenderSummaryAspects : IConsoleRender {
             )
             DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectDelim_$idx", RenderAspect(valueAspect).getAspectDelimLabel(), SACLayoutHandler.baseValuesFontColor)
             DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectValue_$idx", RenderAspect(valueAspect).getAspectValueLabel(), fontColor(RenderAspect(valueAspect).getValueValueType()))
+            if (!SACInputProcessor.analysisStateMachine.isInState(AnalysisState.NO_ANALYSIS)) {
+                DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectModValue_$idx", RenderAspect(valueAspect).getRenderRomanticModLabel().second, fontColor(RenderAspect(valueAspect).getRenderRomanticModLabel().first))
+            }
         }
 
         RenderSummary.setContent()

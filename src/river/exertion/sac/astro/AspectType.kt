@@ -14,7 +14,7 @@ import river.exertion.sac.view.SACLayoutHandler.positiveFontColor
 enum class AspectType {
     CONJUNCTION {
         override val isMajor = true
-        override val angleDegree = AspectAngle.CONJUNCTION_0.angleDegree
+        override fun angleDegree() = AspectAngle.CONJUNCTION_0.angleDegree
         override val label = Constants.SYM_CONJUNCTION
         override val isPositive = true
 
@@ -22,7 +22,7 @@ enum class AspectType {
     }
     , SEXTILE {
         override val isMajor = true
-        override val angleDegree = AspectAngle.SEXTILE_60.angleDegree
+        override fun angleDegree() = AspectAngle.SEXTILE_60.angleDegree
         override val label = Constants.SYM_SEXTILE
         override val isPositive = true
 
@@ -36,7 +36,7 @@ enum class AspectType {
     }
     , SQUARE {
         override val isMajor = true
-        override val angleDegree = AspectAngle.SQUARE_90.angleDegree
+        override fun angleDegree() = AspectAngle.SQUARE_90.angleDegree
         override val label = Constants.SYM_SQUARE
         override val isNegative = true
 
@@ -49,7 +49,7 @@ enum class AspectType {
     }
     , TRINE {
         override val isMajor = true
-        override val angleDegree = AspectAngle.TRINE_120.angleDegree
+        override fun angleDegree() = AspectAngle.TRINE_120.angleDegree
         override val label = Constants.SYM_TRINE
         override val isPositive = true
 
@@ -63,7 +63,7 @@ enum class AspectType {
     }
     , OPPOSITION {
         override val isMajor = true
-        override val angleDegree = AspectAngle.OPPOSITION_180.angleDegree
+        override fun angleDegree() = AspectAngle.OPPOSITION_180.angleDegree
         override val label = Constants.SYM_OPPOSITION
         override val isNegative = true
 
@@ -76,7 +76,7 @@ enum class AspectType {
     }
     , QUINCUNX {
         override val isMinor = true
-        override val angleDegree = AspectAngle.QUINCUNX_150.angleDegree
+        override fun angleDegree() = AspectAngle.QUINCUNX_150.angleDegree
         override val label = Constants.SYM_QUINCUNX
         override val isNeutral = true
 
@@ -90,7 +90,7 @@ enum class AspectType {
     }
     , SEMISEXTILE {
         override val isMinor = true
-        override val angleDegree = AspectAngle.SEMISEXTILE_30.angleDegree
+        override fun angleDegree() = AspectAngle.SEMISEXTILE_30.angleDegree
         override val label = Constants.SYM_SEMISEXTILE
         override val isNeutral = true
 
@@ -104,7 +104,7 @@ enum class AspectType {
     }
     , QUINTILE {
         override val isMinor = true
-        override val angleDegree = AspectAngle.QUINTILE_72.angleDegree
+        override fun angleDegree() = AspectAngle.QUINTILE_72.angleDegree
         override val label = Constants.SYM_QUINTILE
         override val isPositive = true
 
@@ -117,7 +117,7 @@ enum class AspectType {
     }
     , BIQUINTILE {
         override val isMinor = true
-        override val angleDegree = AspectAngle.BIQUINTILE_144.angleDegree
+        override fun angleDegree() = AspectAngle.BIQUINTILE_144.angleDegree
         override val label = Constants.SYM_BIQUINTILE
         override val isPositive = true
 
@@ -130,7 +130,7 @@ enum class AspectType {
     }
     , SEMISQUARE {
         override val isMinor = true
-        override val angleDegree = AspectAngle.SEMISQUARE_45.angleDegree
+        override fun angleDegree() = AspectAngle.SEMISQUARE_45.angleDegree
         override val label = Constants.SYM_SEMISQUARE
         override val isNegative = true
 
@@ -144,7 +144,7 @@ enum class AspectType {
     }
     , SESQUISQUARE {
         override val isMinor = true
-        override val angleDegree = AspectAngle.SESQUISQUARE_135.angleDegree
+        override fun angleDegree() = AspectAngle.SESQUISQUARE_135.angleDegree
         override val label = Constants.SYM_SESQUISQUARE
         override val isNegative = true
 
@@ -157,7 +157,7 @@ enum class AspectType {
         }
     }
     , SEPTILE {
-        override val angleDegree = AspectAngle.SEPTILE_51.angleDegree
+        override fun angleDegree() = AspectAngle.SEPTILE_51.angleDegree
         override val label = Constants.SYM_SEPTILE
         override val isPositive = true
 
@@ -169,7 +169,7 @@ enum class AspectType {
         }
     }
     , NOVILE {
-        override val angleDegree = AspectAngle.NOVILE_40.angleDegree
+        override fun angleDegree() = AspectAngle.NOVILE_40.angleDegree
         override val label = Constants.SYM_NOVILE
         override val isNeutral = true
 
@@ -184,7 +184,7 @@ enum class AspectType {
     ;
     open val isMajor: Boolean = false
     open val isMinor: Boolean = false
-    open val angleDegree: Double = InvalidOrb
+    open fun angleDegree(): Double = InvalidOrb
 
     open val label: String = Constants.SYM_NONE
 

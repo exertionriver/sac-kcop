@@ -1,10 +1,9 @@
 package river.exertion.sac.swe
 
 import kotlinx.datetime.LocalDateTime
-import river.exertion.sac.astro.base.EarthLocation
+import river.exertion.sac.astro.EarthLocation
 import swisseph.DblObj
 import swisseph.SweConst.*
-import java.nio.file.Paths
 
 @OptIn(ExperimentalUnsignedTypes::class)
 object RiseTrans {

@@ -1,12 +1,10 @@
-package river.exertion.sac.astro.base
+package river.exertion.sac.astro
 
 import river.exertion.sac.swe.CalcUt
 import river.exertion.sac.swe.Houses
 import river.exertion.sac.swe.UtcToJd
 import river.exertion.sac.Constants.normalizeDeg
-import river.exertion.sac.astro.AspectCelestial
-import river.exertion.sac.astro.Celestial
-import river.exertion.sac.astro.CelestialHouse
+import river.exertion.sac.astro.base.CelestialData
 import java.util.*
 import kotlin.collections.LinkedHashMap
 
@@ -17,12 +15,12 @@ data class CelestialSnapshot(var refEarthLocation: EarthLocation
     , var synCelestialHouseData : DoubleArray = Houses.getCelestialHousesData(UtcToJd.getJulianTimeDecimal(synEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), synEarthLocation.latitude, refEarthLocation.longitude) //as per documentation, "/* calculate houses with tjd_ut */"
     , var refCelestialData: Array<CelestialData> = CalcUt.getCelestialsData(UtcToJd.getJulianTimeDecimal(refEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), refCelestialHouseData, synCelestialHouseData) ) { //as per documentation, "/* calculate planet with tjd_et */"
 
-    fun partOfFortuneData() : Double = Companion.partOfFortuneData(refCelestialData[Celestial.SUN.ordinal].longitude
+    fun partOfFortuneData() : Double = partOfFortuneData(refCelestialData[Celestial.SUN.ordinal].longitude
             , refCelestialData[Celestial.MOON.ordinal].longitude
             , refCelestialHouseData[CelestialHouse.HOUSE_1_ASC.ordinal]
             , refCelestialData[Celestial.SUN.ordinal].celestialHouse)
 
-    fun partOfSpiritData() : Double = Companion.partOfSpiritData(refCelestialData[Celestial.SUN.ordinal].longitude
+    fun partOfSpiritData() : Double = partOfSpiritData(refCelestialData[Celestial.SUN.ordinal].longitude
         , refCelestialData[Celestial.MOON.ordinal].longitude
         , refCelestialHouseData[CelestialHouse.HOUSE_1_ASC.ordinal]
         , refCelestialData[Celestial.SUN.ordinal].celestialHouse)

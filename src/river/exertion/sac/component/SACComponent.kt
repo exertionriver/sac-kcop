@@ -9,8 +9,8 @@ import river.exertion.kcop.view.layout.StatusView
 import river.exertion.kcop.view.layout.ViewLayout
 import river.exertion.sac.SweetAstroConsoleKlop
 import river.exertion.sac.asset.SACDefaultAssetStore
-import river.exertion.sac.astro.base.CelestialSnapshot
-import river.exertion.sac.astro.base.EarthLocation
+import river.exertion.sac.astro.CelestialSnapshot
+import river.exertion.sac.astro.EarthLocation
 import river.exertion.sac.astro.state.StateChart
 import river.exertion.sac.astro.value.ValueChart
 import river.exertion.sac.console.state.*

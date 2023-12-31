@@ -2,6 +2,7 @@ package river.exertion.sac.astro.base
 
 import river.exertion.sac.astro.AspectAngle
 import river.exertion.sac.astro.AspectCelestial
+import river.exertion.sac.astro.CelestialSnapshot
 import river.exertion.sac.astro.Sign
 
 @ExperimentalUnsignedTypes

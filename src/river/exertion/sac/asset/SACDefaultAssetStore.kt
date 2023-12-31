@@ -3,7 +3,7 @@ package river.exertion.sac.asset
 import river.exertion.kcop.asset.AssetManagerHandler
 import river.exertion.kcop.asset.IAssetStore
 import river.exertion.kcop.asset.IAssetStoreCompanion
-import river.exertion.sac.astro.base.EarthLocation
+import river.exertion.sac.astro.EarthLocation
 
 //Used for sac default file
 enum class SACDefaultAssetStore(val path: String) : IAssetStore {

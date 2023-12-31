@@ -1,29 +1,20 @@
 package swe
 
+import TestEarthLocations
+import org.junit.jupiter.api.Test
 import river.exertion.sac.astro.Celestial
-import river.exertion.sac.astro.base.EarthLocation
-import kotlinx.datetime.*
+import river.exertion.sac.astro.EarthLocation
 import river.exertion.sac.swe.Julday
 import river.exertion.sac.swe.RiseTrans
-import org.junit.jupiter.api.Test
-import river.exertion.sac.Constants.ALT_TNM
-import river.exertion.sac.Constants.LAT_TNM
-import river.exertion.sac.Constants.LON_TNM
-import river.exertion.sac.Constants.TZ_MST
 import kotlin.test.assertEquals
 
 @ExperimentalUnsignedTypes
 class TestRiseTrans {
 
-    private val refProfile = Profile("testRiseTransProfile"
-        , EarthLocation(LON_TNM, LAT_TNM, ALT_TNM, TimeZone.of(TZ_MST)
-        , LocalDate(2021, 11,8))
-    )
-
     @Test
     fun testRiseTrans() {
 
-        println(refProfile.earthLocation.getLocalTimeString())
+        println(TestEarthLocations.atxEarthLocation.getLocalTimeString())
 
         for (celestial in Celestial.entries) {
 
@@ -35,7 +26,7 @@ class TestRiseTrans {
         }
     }
 
-    private fun pollRising(celestialIdx : Int, earthLocation : EarthLocation = refProfile.earthLocation) {
+    private fun pollRising(celestialIdx : Int, earthLocation : EarthLocation = TestEarthLocations.atxEarthLocation) {
 
         val retLDT = RiseTrans.getRiseLDTForCelestial(Julday.getJulianUTCTimeDecimal(earthLocation.utcDateTime), earthLocation, celestialIdx)
 
@@ -46,7 +37,7 @@ class TestRiseTrans {
     fun testRising() {
 
         val retLDT = RiseTrans.getRiseLDTForCelestial(
-            Julday.getJulianUTCTimeDecimal(refProfile.earthLocation.utcDateTime), refProfile.earthLocation, Celestial.SUN.ordinal)
+            Julday.getJulianUTCTimeDecimal(TestEarthLocations.atxEarthLocation.utcDateTime), TestEarthLocations.atxEarthLocation, Celestial.SUN.ordinal)
 
         assertEquals(2021, retLDT.year)
         assertEquals(11, retLDT.monthNumber)
@@ -57,7 +48,7 @@ class TestRiseTrans {
 //        assertEquals(38029789, retLDT.nanosecond)
     }
 
-    private fun pollSetting(celestialIdx : Int, earthLocation : EarthLocation = refProfile.earthLocation) {
+    private fun pollSetting(celestialIdx : Int, earthLocation : EarthLocation = TestEarthLocations.atxEarthLocation) {
 
         val retLDT = RiseTrans.getSetLDTForCelestial(Julday.getJulianUTCTimeDecimal(earthLocation.utcDateTime), earthLocation, celestialIdx)
 
@@ -68,7 +59,7 @@ class TestRiseTrans {
     fun testSetting() {
 
         val retLDT = RiseTrans.getSetLDTForCelestial(
-            Julday.getJulianUTCTimeDecimal(refProfile.earthLocation.utcDateTime), refProfile.earthLocation, Celestial.MERCURY.ordinal)
+            Julday.getJulianUTCTimeDecimal(TestEarthLocations.atxEarthLocation.utcDateTime), TestEarthLocations.atxEarthLocation, Celestial.MERCURY.ordinal)
 
         assertEquals(2021, retLDT.year)
         assertEquals(11, retLDT.monthNumber)
@@ -79,7 +70,7 @@ class TestRiseTrans {
 //        assertEquals(126128613, retLDT.nanosecond)
     }
 
-    private fun pollUpperMeridian(celestialIdx : Int, earthLocation : EarthLocation = refProfile.earthLocation) {
+    private fun pollUpperMeridian(celestialIdx : Int, earthLocation : EarthLocation = TestEarthLocations.atxEarthLocation) {
 
         val retLDT = RiseTrans.getUpperMeridLDTForCelestial(Julday.getJulianUTCTimeDecimal(earthLocation.utcDateTime), earthLocation, celestialIdx)
 
@@ -90,7 +81,7 @@ class TestRiseTrans {
     fun testUpperMeridian() {
 
         val retLDT = RiseTrans.getUpperMeridLDTForCelestial(
-            Julday.getJulianUTCTimeDecimal(refProfile.earthLocation.utcDateTime), refProfile.earthLocation, Celestial.MARS.ordinal)
+            Julday.getJulianUTCTimeDecimal(TestEarthLocations.atxEarthLocation.utcDateTime), TestEarthLocations.atxEarthLocation, Celestial.MARS.ordinal)
 
         assertEquals(2021, retLDT.year)
         assertEquals(11, retLDT.monthNumber)
@@ -101,7 +92,7 @@ class TestRiseTrans {
 //        assertEquals(967055559, retLDT.nanosecond)
     }
 
-    private fun pollLowerMeridian(celestialIdx : Int, earthLocation : EarthLocation = refProfile.earthLocation) {
+    private fun pollLowerMeridian(celestialIdx : Int, earthLocation : EarthLocation = TestEarthLocations.atxEarthLocation) {
 
         val retLDT = RiseTrans.getLowerMeridLDTForCelestial(Julday.getJulianUTCTimeDecimal(earthLocation.utcDateTime), earthLocation, celestialIdx)
 
@@ -112,7 +103,7 @@ class TestRiseTrans {
     fun testLowerMeridian() {
 
         val retLDT = RiseTrans.getLowerMeridLDTForCelestial(
-            Julday.getJulianUTCTimeDecimal(refProfile.earthLocation.utcDateTime), refProfile.earthLocation, Celestial.SATURN.ordinal)
+            Julday.getJulianUTCTimeDecimal(TestEarthLocations.atxEarthLocation.utcDateTime), TestEarthLocations.atxEarthLocation, Celestial.SATURN.ordinal)
 
         assertEquals(2021, retLDT.year)
         assertEquals(11, retLDT.monthNumber)

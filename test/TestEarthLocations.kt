@@ -1,5 +1,5 @@
-import river.exertion.sac.astro.base.CelestialSnapshot
-import river.exertion.sac.astro.base.EarthLocation
+import river.exertion.sac.astro.CelestialSnapshot
+import river.exertion.sac.astro.EarthLocation
 
 object TestEarthLocations {
 

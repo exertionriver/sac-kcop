@@ -21,13 +21,15 @@ object Houses {
         retVal = Swe.sw.swe_houses(julianUtcTimeDecimal, SEFLG_RADIANS, earthLatitude, earthLongitude, CelestialHouse.houseSystem.code, houseCusps, ascmc)
         if (retVal< 0) println("error: <populateCelestialHousePositionData>\n" ) // TODO : put this to a logger
 
-        for (house in CelestialHouse.entries ) {
+        for (house in CelestialHouse.entries) {
             houseIdx = house.ordinal
             cuspIdx = houseIdx + 1
 
             celestialHousesData[houseIdx] =
                 when (house) {
                     CelestialHouse.VERTEX -> ascmc[SE_VERTEX].degrees()
+                    CelestialHouse.PART_OF_FORTUNE -> 0.0
+                    CelestialHouse.PART_OF_SPIRIT -> 0.0
                     else -> houseCusps[cuspIdx].degrees()
                 }
         }

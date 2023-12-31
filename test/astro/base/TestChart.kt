@@ -1,7 +1,7 @@
 package astro.base
 
 import river.exertion.sac.astro.AspectCelestial
-import river.exertion.sac.astro.base.CelestialSnapshot
+import river.exertion.sac.astro.CelestialSnapshot
 import river.exertion.sac.astro.base.Chart
 import org.junit.jupiter.api.Test
 import river.exertion.sac.component.SACComponent

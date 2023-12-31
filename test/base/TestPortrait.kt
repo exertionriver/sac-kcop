@@ -3,23 +3,13 @@ package base
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import org.junit.jupiter.api.Test
-import river.exertion.sac.Constants
-import river.exertion.sac.astro.base.EarthLocation
+import river.exertion.sac.astro.EarthLocation
 
 @ExperimentalUnsignedTypes
 class TestPortrait {
 
     @Test
     fun testAvgRankingInDay() {
-
-        val refProfile = Profiles.getDefaultProfile(Profiles.PROFILE_1)
-
-        val checkLocation = EarthLocation(refProfile.earthLocation.longitude
-            , refProfile.earthLocation.latitude
-            , refProfile.earthLocation.altitude
-            , TimeZone.of("UTC-6.0") //put hour offset here
-            , LocalDate(1989, 6, 17)
-        )
 
   //      listAvgRankingNoTimeAspects(refProfile, checkLocation, ChartState.COMPOSITE_CHART, AnalysisState.NO_ANALYSIS//ROMANTIC_ANALYSIS
   //          , duration = DateTimePeriod(hours = 12), granularity = DateTimePeriod(hours = 1), timeGranularity = true, limitResults = false
@@ -29,19 +19,9 @@ class TestPortrait {
     @Test
     fun testAvgRankingOverDuration() {
 
-        val refProfile = Profiles.getDefaultProfile(Profiles.PROFILE_1)
 
         val yearRange = 1 //from pivot date, e.g. '1' == 1 year forward, 1 year back
         val yearOffset = 4
-
-        val checkLocation = EarthLocation(refProfile.earthLocation.longitude
-            , refProfile.earthLocation.latitude
-            , refProfile.earthLocation.altitude
-            , refProfile.earthLocation.timeZone //put hour offset here
-            , LocalDate(refProfile.earthLocation.utcDateTime.year + yearOffset
-                , refProfile.earthLocation.utcDateTime.monthNumber
-                , refProfile.earthLocation.utcDateTime.dayOfMonth)
-        ) // center date
 
 //        listAvgRankingNoTimeAspects(refProfile, checkLocation, ChartState.SYNASTRY_CHART, AnalysisState.NO_ANALYSIS
 //            , duration = DateTimePeriod(years = yearRange), granularity = DateTimePeriod(hours = 1), timeGranularity = true, limitResults = false
@@ -51,20 +31,6 @@ class TestPortrait {
     @Test
     fun testAvgNestedRankingInDay() {
 
-        val refLocation = EarthLocation(
-            Constants.LON_ATX
-            , Constants.LAT_ATX
-            , Constants.ALT_ATX
-            , TimeZone.of("UTC-5.0") //put hour offset here
-            , LocalDate(1971, 4, 5)
-        )
-
-        val checkLocation = EarthLocation(Constants.LON_ATX
-            , Constants.LAT_ATX
-            , Constants.ALT_ATX
-            , TimeZone.of("UTC+11.0") //put hour offset here
-            , LocalDate(1972, 4, 9)
-        )
 
 //        listAvgNestedRankingNoTimeAspects(checkLocation, refLocation, ChartState.COMPOSITE_CHART, AnalysisState.NO_ANALYSIS//ROMANTIC_ANALYSIS
 //            , duration = DateTimePeriod(hours = 12), granularity = DateTimePeriod(hours = 1), timeGranularity = true)

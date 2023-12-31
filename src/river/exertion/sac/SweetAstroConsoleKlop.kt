@@ -15,7 +15,7 @@ import river.exertion.kcop.view.MultiKeys
 import river.exertion.kcop.view.klop.IDisplayViewKlop
 import river.exertion.sac.asset.EarthLocationLoader
 import river.exertion.sac.asset.SACDefaultAssetStore
-import river.exertion.sac.astro.base.EarthLocation
+import river.exertion.sac.astro.EarthLocation
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.state.EntryState
 import river.exertion.sac.console.state.NavState

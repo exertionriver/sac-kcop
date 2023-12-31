@@ -8,10 +8,7 @@ import com.badlogic.gdx.assets.loaders.FileHandleResolver
 import com.badlogic.gdx.files.FileHandle
 import kotlinx.serialization.json.decodeFromJsonElement
 import river.exertion.kcop.asset.AssetManagerHandler
-import river.exertion.kcop.asset.AssetStatus
-import river.exertion.kcop.profile.Profile
-import river.exertion.kcop.profile.asset.ProfileAsset
-import river.exertion.sac.astro.base.EarthLocation
+import river.exertion.sac.astro.EarthLocation
 
 class EarthLocationLoader(resolver: FileHandleResolver?) :
     AsynchronousAssetLoader<EarthLocation?, EarthLocationLoader.EarthLocationParameter?>(resolver) {
