@@ -10,89 +10,89 @@ data class RenderAspect(val valueAspect : ValueAspect) {
 
     val stateAspect = valueAspect.stateAspect
 
-    fun getAspectRenderLabel() : Pair<RenderValueType, String> = when {
+    fun getAspectRenderLabel() : Pair<ValueType, String> = when {
         (valueAspect.analysisState != AnalysisState.ROMANTIC_ANALYSIS) -> when {
             (valueAspect.getPositiveBaseValue() > 0) -> Pair(
-                RenderValueType.POSITIVE,
-                RenderAspectType.fromName(stateAspect.aspectAngle.aspectType.name)!!.getLabel()
+                ValueType.POSITIVE,
+                stateAspect.aspectAngle.aspectType.label
             )
             (valueAspect.getNegativeBaseValue() < 0) -> Pair(
-                RenderValueType.NEGATIVE,
-                RenderAspectType.fromName(stateAspect.aspectAngle.aspectType.name)!!.getLabel()
+                ValueType.NEGATIVE,
+                stateAspect.aspectAngle.aspectType.label
             )
             else -> Pair(
-                RenderValueType.NEUTRAL,
-                RenderAspectType.fromName(stateAspect.aspectAngle.aspectType.name)!!.getLabel()
+                ValueType.NEUTRAL,
+                stateAspect.aspectAngle.aspectType.label
             )
         }
         else -> when { //analysis state
             (valueAspect.getPositiveBaseValue() > 0) && (valueAspect.getAspectModifier() < 0) -> Pair(
-                RenderValueType.REVERSAL_TO_NEG,
-                RenderAspectType.fromName(stateAspect.aspectAngle.aspectType.toString())!!.getLabel()
+                ValueType.REVERSAL_TO_NEG,
+                stateAspect.aspectAngle.aspectType.label
             )
             (valueAspect.getNegativeBaseValue() < 0) && (valueAspect.getAspectModifier() > 0) -> Pair(
-                RenderValueType.REVERSAL_TO_POS,
-                RenderAspectType.fromName(stateAspect.aspectAngle.aspectType.toString())!!.getLabel()
+                ValueType.REVERSAL_TO_POS,
+                stateAspect.aspectAngle.aspectType.label
             )
             (valueAspect.baseValue.getNet() != 0) && (valueAspect.baseValue.getNet() == 0) -> Pair(
-                RenderValueType.REVERSAL_TO_NEUT,
-                RenderAspectType.fromName(stateAspect.aspectAngle.aspectType.toString())!!.getLabel()
+                ValueType.REVERSAL_TO_NEUT,
+                stateAspect.aspectAngle.aspectType.label
             )
             (valueAspect.getPositiveBaseValue() > 0) -> Pair(
-                RenderValueType.POSITIVE,
-                RenderAspectType.fromName(stateAspect.aspectAngle.aspectType.name)!!.getLabel()
+                ValueType.POSITIVE,
+                stateAspect.aspectAngle.aspectType.label
             )
             (valueAspect.getNegativeBaseValue() < 0) -> Pair(
-                RenderValueType.NEGATIVE,
-                RenderAspectType.fromName(stateAspect.aspectAngle.aspectType.name)!!.getLabel()
+                ValueType.NEGATIVE,
+                stateAspect.aspectAngle.aspectType.label
             )
             else -> Pair(
-                RenderValueType.NEUTRAL,
-                RenderAspectType.fromName(stateAspect.aspectAngle.aspectType.name)!!.getLabel()
+                ValueType.NEUTRAL,
+                stateAspect.aspectAngle.aspectType.label
             )
         }
     }
 
-    fun getAspectValueRenderLabel() : Pair<RenderValueType, String> = getAspectValue().let { Pair(it.first, it.second.toString()) }
+    fun getAspectValueRenderLabel() : Pair<ValueType, String> = getAspectValue().let { Pair(it.first, it.second.toString()) }
 
-    fun getAspectValue() : Pair<RenderValueType, Int> = when {
+    fun getAspectValue() : Pair<ValueType, Int> = when {
         (valueAspect.analysisState != AnalysisState.ROMANTIC_ANALYSIS) -> when {
             (valueAspect.getPositiveBaseValue() > 0) -> Pair(
-                RenderValueType.POSITIVE,
+                ValueType.POSITIVE,
                 valueAspect.getPositiveBaseValue()
             )
             (valueAspect.getNegativeBaseValue() < 0) -> Pair(
-                RenderValueType.NEGATIVE,
+                ValueType.NEGATIVE,
                 (-valueAspect.getNegativeBaseValue())
             )
             else -> Pair(
-                RenderValueType.NEUTRAL,
+                ValueType.NEUTRAL,
                 0
             )
         }
         else -> when { //analysis state
             (valueAspect.getPositiveBaseValue() > 0) && (valueAspect.getAspectModifier() < 0) -> Pair(
-                RenderValueType.REVERSAL_TO_NEG,
+                ValueType.REVERSAL_TO_NEG,
                 abs(valueAspect.getBaseModNetValue().getNet())
             )
             (valueAspect.getNegativeBaseValue() < 0) && (valueAspect.getAspectModifier() > 0) -> Pair(
-                RenderValueType.REVERSAL_TO_POS,
+                ValueType.REVERSAL_TO_POS,
                 abs(valueAspect.getBaseModNetValue().getNet())
             )
             (valueAspect.baseValue.getNet() != 0) && (valueAspect.baseValue.getNet() == 0) -> Pair(
-                RenderValueType.REVERSAL_TO_NEUT,
+                ValueType.REVERSAL_TO_NEUT,
                 abs(valueAspect.getBaseModNetValue().getNet())
             )
             (valueAspect.getPositiveBaseValue() > 0) -> Pair(
-                RenderValueType.POSITIVE,
+                ValueType.POSITIVE,
                 abs(valueAspect.getBaseModNetValue().getNet())
             )
             (valueAspect.getNegativeBaseValue() < 0) -> Pair(
-                RenderValueType.NEGATIVE,
+                ValueType.NEGATIVE,
                 abs(valueAspect.getBaseModNetValue().getNet())
             )
             else -> Pair(
-                RenderValueType.NEUTRAL,
+                ValueType.NEUTRAL,
                 abs(valueAspect.getBaseModNetValue().getNet())
             )
         }

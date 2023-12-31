@@ -97,9 +97,9 @@ data class StateAspect(val signFirst : Sign
             , aspectCelestialSecond : AspectCelestial
             , aspectAngle : AspectAngle
         ) =
-                StateAspectType.of(aspectAngle).getAspectAngleOrb(aspectOverlayState) * minOf(
-                    StateAspectCelestial.of(aspectCelestialFirst).getAspectCelestialOrbModifier(aspectOverlayState),
-                    StateAspectCelestial.of(aspectCelestialSecond).getAspectCelestialOrbModifier(aspectOverlayState)
+                aspectAngle.aspectType.getAspectAngleOrb(aspectOverlayState) * minOf(
+                    aspectCelestialFirst.aspectOverlayOrbModifier(aspectOverlayState),
+                    aspectCelestialSecond.aspectOverlayOrbModifier(aspectOverlayState)
                 )
 
         fun findAspectAngle(aspectCelestialFirst : AspectCelestial
@@ -115,7 +115,7 @@ data class StateAspect(val signFirst : Sign
             var returnAspectAngle = AspectAngle.ASPECT_ANGLE_NONE
             var minOrb = 360.0
 
-            val maxOrbLimit = StateAspectType.of(AspectAngle.CONJUNCTION_0).getAspectAngleOrb(aspectOverlayState)
+            val maxOrbLimit = AspectAngle.CONJUNCTION_0.aspectType.getAspectAngleOrb(aspectOverlayState)
 
             val aspectCelestialAngleDiff = Aspect.calcNormAngleDiff(aspectCelestialFirstAngle, aspectCelestialSecondAngle)
 //             println("findAspectAngle() aspectCelestialAngleDiff: $aspectCelestialAngleDiff")
@@ -123,8 +123,8 @@ data class StateAspect(val signFirst : Sign
 
             //iterate through aspectAngles
             for (aspectAngle in AspectAngle.entries.filter { it.isAspectAngle() }.sortedByDescending { it.angleDegree } ) {
-                if ((aspectsState == AspectsState.MAJOR_ASPECTS) && (!aspectAngle.aspectType.isMajor() )) continue ;
-                if ((aspectsState == AspectsState.MINOR_ASPECTS) && (!aspectAngle.aspectType.isMajor() && !aspectAngle.aspectType.isMinor()) ) continue ;
+                if ((aspectsState == AspectsState.MAJOR_ASPECTS) && (!aspectAngle.aspectType.isMajor )) continue ;
+                if ((aspectsState == AspectsState.MINOR_ASPECTS) && (!aspectAngle.aspectType.isMajor && !aspectAngle.aspectType.isMinor) ) continue ;
                 if ((timeAspectsState == TimeAspectsState.TIME_ASPECTS_DISABLED) && (aspectCelestialFirst.isTimeAspect)) continue ;
                 if ((timeAspectsState == TimeAspectsState.TIME_ASPECTS_DISABLED) && (aspectCelestialSecond.isTimeAspect)) continue ;
 

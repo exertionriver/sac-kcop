@@ -1,16 +1,31 @@
-package river.exertion.sac.astro.state
+package river.exertion.sac.astro
 
-import river.exertion.sac.astro.AspectAngle
+import river.exertion.sac.Constants
+import river.exertion.sac.Constants.InvalidOrb
 import river.exertion.sac.console.state.AspectOverlayState
+import river.exertion.sac.view.SACLayoutHandler.baseFontColor
+import river.exertion.sac.view.SACLayoutHandler.negativeFontColor
+import river.exertion.sac.view.SACLayoutHandler.neutralFontColor
+import river.exertion.sac.view.SACLayoutHandler.positiveFontColor
 
 //Default Orb defn is based on https://www.astro.com/astrology/in_aspect_e.htm?nhor=432453&nho2=860236
 //Selective Orb defn is based on readings found at https://astro.cafeastrology.com/natal.php
 //Hybrid Orb defn is an original creation
-enum class StateAspectType {
+enum class AspectType {
     CONJUNCTION {
+        override val isMajor = true
+        override val angleDegree = AspectAngle.CONJUNCTION_0.angleDegree
+        override val label = Constants.SYM_CONJUNCTION
+        override val isPositive = true
+
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double = 10.0
     }
     , SEXTILE {
+        override val isMajor = true
+        override val angleDegree = AspectAngle.SEXTILE_60.angleDegree
+        override val label = Constants.SYM_SEXTILE
+        override val isPositive = true
+
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
                 aspectOverlayState.isDefault() -> 6.0
@@ -20,6 +35,11 @@ enum class StateAspectType {
         }
     }
     , SQUARE {
+        override val isMajor = true
+        override val angleDegree = AspectAngle.SQUARE_90.angleDegree
+        override val label = Constants.SYM_SQUARE
+        override val isNegative = true
+
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
                 aspectOverlayState.isDefault() -> 10.0
@@ -28,6 +48,11 @@ enum class StateAspectType {
         }
     }
     , TRINE {
+        override val isMajor = true
+        override val angleDegree = AspectAngle.TRINE_120.angleDegree
+        override val label = Constants.SYM_TRINE
+        override val isPositive = true
+
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
                 aspectOverlayState.isDefault() -> 10.0
@@ -37,6 +62,11 @@ enum class StateAspectType {
         }
     }
     , OPPOSITION {
+        override val isMajor = true
+        override val angleDegree = AspectAngle.OPPOSITION_180.angleDegree
+        override val label = Constants.SYM_OPPOSITION
+        override val isNegative = true
+
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
                 aspectOverlayState.isDefault() -> 10.0
@@ -45,6 +75,11 @@ enum class StateAspectType {
         }
     }
     , QUINCUNX {
+        override val isMinor = true
+        override val angleDegree = AspectAngle.QUINCUNX_150.angleDegree
+        override val label = Constants.SYM_QUINCUNX
+        override val isNeutral = true
+
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
                 aspectOverlayState.isDefault() -> 3.0
@@ -54,6 +89,11 @@ enum class StateAspectType {
         }
     }
     , SEMISEXTILE {
+        override val isMinor = true
+        override val angleDegree = AspectAngle.SEMISEXTILE_30.angleDegree
+        override val label = Constants.SYM_SEMISEXTILE
+        override val isNeutral = true
+
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
                 aspectOverlayState.isDefault() -> 3.0
@@ -63,6 +103,11 @@ enum class StateAspectType {
         }
     }
     , QUINTILE {
+        override val isMinor = true
+        override val angleDegree = AspectAngle.QUINTILE_72.angleDegree
+        override val label = Constants.SYM_QUINTILE
+        override val isPositive = true
+
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
                 aspectOverlayState.isDefault() || aspectOverlayState.isHybrid() -> 2.0
@@ -71,6 +116,11 @@ enum class StateAspectType {
         }
     }
     , BIQUINTILE {
+        override val isMinor = true
+        override val angleDegree = AspectAngle.BIQUINTILE_144.angleDegree
+        override val label = Constants.SYM_BIQUINTILE
+        override val isPositive = true
+
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
                 aspectOverlayState.isDefault() || aspectOverlayState.isHybrid() -> 2.0
@@ -79,6 +129,11 @@ enum class StateAspectType {
         }
     }
     , SEMISQUARE {
+        override val isMinor = true
+        override val angleDegree = AspectAngle.SEMISQUARE_45.angleDegree
+        override val label = Constants.SYM_SEMISQUARE
+        override val isNegative = true
+
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
                 aspectOverlayState.isDefault() -> 3.0
@@ -88,6 +143,11 @@ enum class StateAspectType {
         }
     }
     , SESQUISQUARE {
+        override val isMinor = true
+        override val angleDegree = AspectAngle.SESQUISQUARE_135.angleDegree
+        override val label = Constants.SYM_SESQUISQUARE
+        override val isNegative = true
+
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
                 aspectOverlayState.isDefault() -> 3.0
@@ -97,6 +157,10 @@ enum class StateAspectType {
         }
     }
     , SEPTILE {
+        override val angleDegree = AspectAngle.SEPTILE_51.angleDegree
+        override val label = Constants.SYM_SEPTILE
+        override val isPositive = true
+
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
                 aspectOverlayState.isHybrid() -> 1.0
@@ -105,6 +169,10 @@ enum class StateAspectType {
         }
     }
     , NOVILE {
+        override val angleDegree = AspectAngle.NOVILE_40.angleDegree
+        override val label = Constants.SYM_NOVILE
+        override val isNeutral = true
+
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
                 aspectOverlayState.isHybrid() -> 1.0
@@ -114,9 +182,27 @@ enum class StateAspectType {
     }
     , ASPECT_NONE
     ;
+    open val isMajor: Boolean = false
+    open val isMinor: Boolean = false
+    open val angleDegree: Double = InvalidOrb
+
+    open val label: String = Constants.SYM_NONE
+
+    open val isPositive : Boolean = false
+    open val isNegative : Boolean = false
+    open val isNeutral : Boolean = false
+
+    open val fontColor by lazy { when {
+        isPositive -> positiveFontColor
+        isNegative -> negativeFontColor
+        isNeutral -> neutralFontColor
+        else -> baseFontColor
+    } }
+
     open fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double = 0.0
 
     companion object {
-        fun of(aspectAngle: AspectAngle) = StateAspectType.entries.first { aspectAngle.aspectType.name == it.name }
+        fun fromOrdinal(ordinal: Int) = AspectCelestial.entries.firstOrNull { it.ordinal == ordinal }
+        fun fromName(name: String) = AspectCelestial.entries.firstOrNull { it.name == name }
     }
 }

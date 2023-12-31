@@ -20,31 +20,31 @@ object RenderChartState {
 
     fun getChartSumLabel(overrideState : ChartState? = null) : String = "${Constants.SYM_SIGMA}${overrideState?.getLabel() ?: SACInputProcessor.chartStateMachine.currentState.getLabel()}:"
 
-    fun getPosChartImpLabel(sharedChartValue : Value, natalChartValue : Value) : Pair<RenderValueType, String> {
+    fun getPosChartImpLabel(sharedChartValue : Value, natalChartValue : Value) : Pair<ValueType, String> {
         val pos = sharedChartValue.positive - natalChartValue.positive
 
         val valueType = when {
-            (pos > 0) -> RenderValueType.POSITIVE
-            (pos < 0) -> RenderValueType.NEGATIVE
-            else -> RenderValueType.NEUTRAL
+            (pos > 0) -> ValueType.POSITIVE
+            (pos < 0) -> ValueType.NEGATIVE
+            else -> ValueType.NEUTRAL
         }
 
         return Pair(valueType, abs(pos).toString().padStart(4, ' '))
     }
 
-    fun getNegChartImpLabel(sharedChartValue : Value, natalChartValue : Value) : Pair<RenderValueType, String> {
+    fun getNegChartImpLabel(sharedChartValue : Value, natalChartValue : Value) : Pair<ValueType, String> {
         val neg = sharedChartValue.negative - natalChartValue.negative
 
         val valueType = when {
-            (neg > 0) -> RenderValueType.POSITIVE
-            (neg < 0) -> RenderValueType.NEGATIVE
-            else -> RenderValueType.NEUTRAL
+            (neg > 0) -> ValueType.POSITIVE
+            (neg < 0) -> ValueType.NEGATIVE
+            else -> ValueType.NEUTRAL
         }
 
         return Pair(valueType, abs(neg).toString().padStart(4, ' '))
     }
 
-    fun getConsChartImpLabel(sharedChartValue : Value, natalChartValue : Value) : Pair<RenderValueType, String> {
+    fun getConsChartImpLabel(sharedChartValue : Value, natalChartValue : Value) : Pair<ValueType, String> {
         val consPosChange = (sharedChartValue.positive > natalChartValue.positive)
         val consNegChange = (sharedChartValue.positive < natalChartValue.positive)
 
@@ -55,15 +55,15 @@ object RenderChartState {
         else 0
 
         val valueType = when {
-            consPosChange -> RenderValueType.POSITIVE
-            consNegChange -> RenderValueType.NEGATIVE
-            else -> RenderValueType.NEUTRAL
+            consPosChange -> ValueType.POSITIVE
+            consNegChange -> ValueType.NEGATIVE
+            else -> ValueType.NEUTRAL
         }
 
         return Pair(valueType, abs(cons).toString().padStart(3, ' '))
     }
 
-    fun getDissChartImpLabel(sharedChartValue : Value, natalChartValue : Value) : Pair<RenderValueType, String> {
+    fun getDissChartImpLabel(sharedChartValue : Value, natalChartValue : Value) : Pair<ValueType, String> {
         val dissPosChange = (sharedChartValue.negative > natalChartValue.negative)
         val dissNegChange = (sharedChartValue.negative < natalChartValue.negative)
 
@@ -74,21 +74,21 @@ object RenderChartState {
         else 0
 
         val valueType = when {
-            dissPosChange -> RenderValueType.POSITIVE
-            dissNegChange -> RenderValueType.NEGATIVE
-            else -> RenderValueType.NEUTRAL
+            dissPosChange -> ValueType.POSITIVE
+            dissNegChange -> ValueType.NEGATIVE
+            else -> ValueType.NEUTRAL
         }
 
         return Pair(valueType, abs(diss).toString().padStart(2, ' '))
     }
 
-    fun getStimChartImpLabel(sharedChartValue : Value, natalChartValue : Value) : Pair<RenderValueType, String> {
+    fun getStimChartImpLabel(sharedChartValue : Value, natalChartValue : Value) : Pair<ValueType, String> {
         val stim = sharedChartValue.getStimulation() - natalChartValue.getStimulation()
 
         val valueType = when {
-            (stim > 0) -> RenderValueType.POSITIVE
-            (stim < 0) -> RenderValueType.NEGATIVE
-            else -> RenderValueType.NEUTRAL
+            (stim > 0) -> ValueType.POSITIVE
+            (stim < 0) -> ValueType.NEGATIVE
+            else -> ValueType.NEUTRAL
         }
 
         return Pair(valueType, abs(stim).toString().padStart(4, ' '))

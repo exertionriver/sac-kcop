@@ -1,7 +1,6 @@
 package river.exertion.sac.astro
 
 import river.exertion.sac.Constants.InvalidOrb
-import river.exertion.sac.astro.base.AspectType
 
 enum class AspectAngle {
     CONJUNCTION_0 { override val aspectType = AspectType.CONJUNCTION; override val angleDegree = 0.0 }
@@ -48,5 +47,6 @@ enum class AspectAngle {
     companion object {
         fun fromOrdinal(ordinal: Int) = entries.firstOrNull { it.ordinal == ordinal }
         fun fromName(name: String) = entries.firstOrNull { it.name == name }
+        fun fromAngleDegree(angleDegree: Double) = entries.firstOrNull { it.angleDegree == angleDegree } ?: ASPECT_ANGLE_NONE.angleDegree
     }
 }

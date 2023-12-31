@@ -1,13 +1,12 @@
 package river.exertion.sac.astro.value
 
 import river.exertion.sac.astro.AspectCelestial
-import river.exertion.sac.astro.base.AspectType
+import river.exertion.sac.astro.AspectType
 import river.exertion.sac.astro.SignElement
 import river.exertion.sac.astro.SignMode
+import river.exertion.sac.astro.state.StateAspect
 import river.exertion.sac.console.state.AnalysisState
 import river.exertion.sac.console.state.ChartState
-import river.exertion.sac.astro.state.StateAspect
-import river.exertion.sac.astro.state.StateAspectType
 import kotlin.math.abs
 
 //fourth chart aspects are for the opposite of current chartType for compSyn charts
@@ -62,8 +61,8 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
 //    private fun getCharacterModifier() = characterModifier
 
     private fun getElementModifier(signElement : SignElement) : Double {
-        val aspectCelestialFirstWeight = ValueAspectCelestial.fromName(stateAspect.aspectCelestialFirst.toString())!!.getWeight()
-        val aspectCelestialSecondWeight = ValueAspectCelestial.fromName(stateAspect.aspectCelestialSecond.toString())!!.getWeight()
+        val aspectCelestialFirstWeight = stateAspect.aspectCelestialFirst.weight
+        val aspectCelestialSecondWeight = stateAspect.aspectCelestialSecond.weight
         val aspectCelestialBothWeight = aspectCelestialFirstWeight + aspectCelestialSecondWeight
         var returnWeight = 0.0
 
@@ -74,8 +73,8 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
     }
 
     private fun getModeModifier(signMode : SignMode) : Double {
-        val aspectCelestialFirstWeight = ValueAspectCelestial.fromName(stateAspect.aspectCelestialFirst.toString())!!.getWeight()
-        val aspectCelestialSecondWeight = ValueAspectCelestial.fromName(stateAspect.aspectCelestialSecond.toString())!!.getWeight()
+        val aspectCelestialFirstWeight = stateAspect.aspectCelestialFirst.weight
+        val aspectCelestialSecondWeight = stateAspect.aspectCelestialSecond.weight
         val aspectCelestialBothWeight = aspectCelestialFirstWeight + aspectCelestialSecondWeight
         var returnWeight = 0.0
 
@@ -86,8 +85,8 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
     }
 
     private fun getCelestialModifier(aspectCelestial: AspectCelestial) : Double {
-        val aspectCelestialFirstWeight = ValueAspectCelestial.fromName(stateAspect.aspectCelestialFirst.toString())!!.getWeight()
-        val aspectCelestialSecondWeight = ValueAspectCelestial.fromName(stateAspect.aspectCelestialSecond.toString())!!.getWeight()
+        val aspectCelestialFirstWeight = stateAspect.aspectCelestialFirst.weight
+        val aspectCelestialSecondWeight = stateAspect.aspectCelestialSecond.weight
         val aspectCelestialBothWeight = aspectCelestialFirstWeight + aspectCelestialSecondWeight
         var returnWeight = 0.0
 
@@ -195,11 +194,11 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
 
     private fun getAspectBaseValue() : Value {
 
-        if (ValueAspectType.fromName(stateAspect.aspectAngle.aspectType.name)!!.isNeutral()) return Value(0, 0)
+        if (stateAspect.aspectAngle.aspectType.isNeutral) return Value(0, 0)
 
-        val weightFirst = ValueAspectCelestial.fromName(stateAspect.aspectCelestialFirst.toString())!!.getWeight()
-        val weightSecond = ValueAspectCelestial.fromName(stateAspect.aspectCelestialSecond.toString())!!.getWeight()
-        val weightAspect = StateAspectType.of(stateAspect.aspectAngle).getAspectAngleOrb(stateAspect.aspectOverlayState)
+        val weightFirst = stateAspect.aspectCelestialFirst.weight
+        val weightSecond = stateAspect.aspectCelestialSecond.weight
+        val weightAspect = stateAspect.aspectAngle.aspectType.getAspectAngleOrb(stateAspect.aspectOverlayState)
 
         //full weightAspect at orb = 0, down to 0 weightAspect at the cusp of the orb
         val weightOrbAspect = ((60 * weightAspect) - (60 * stateAspect.orb)) / (60 * weightAspect)
@@ -228,8 +227,8 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
                     (stateAspect.aspectCelestialFirst == AspectCelestial.ASPECT_MOON && (stateAspect.aspectCelestialSecond == AspectCelestial.ASPECT_MARS || stateAspect.aspectCelestialSecond == AspectCelestial.ASPECT_SATURN) )
                     || (stateAspect.aspectCelestialFirst == AspectCelestial.ASPECT_MARS && (stateAspect.aspectCelestialSecond == AspectCelestial.ASPECT_MOON || stateAspect.aspectCelestialSecond == AspectCelestial.ASPECT_SATURN) )
                     || (stateAspect.aspectCelestialFirst == AspectCelestial.ASPECT_SATURN && (stateAspect.aspectCelestialSecond == AspectCelestial.ASPECT_MOON || stateAspect.aspectCelestialSecond == AspectCelestial.ASPECT_MARS) ) ) -> Value(0, -aspectValue)
-            (ValueAspectType.fromName(stateAspect.aspectAngle.aspectType.name)!!.isPositive()) -> Value(aspectValue, 0)
-            (ValueAspectType.fromName(stateAspect.aspectAngle.aspectType.name)!!.isNegative()) -> Value(0, -aspectValue)
+            (stateAspect.aspectAngle.aspectType.isPositive) -> Value(aspectValue, 0)
+            (stateAspect.aspectAngle.aspectType.isNegative) -> Value(0, -aspectValue)
             else -> Value(0, 0)
         }
     }

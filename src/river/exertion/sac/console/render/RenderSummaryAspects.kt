@@ -3,7 +3,6 @@ package river.exertion.sac.console.render
 import river.exertion.kcop.view.layout.displayViewLayout.*
 import river.exertion.kcop.view.layout.displayViewLayout.asset.DVAlign
 import river.exertion.sac.astro.render.RenderAspect
-import river.exertion.sac.astro.render.RenderValueType
 import river.exertion.sac.console.render.summary.RenderSummary
 import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.view.SACCelestialsHousesDVLayout

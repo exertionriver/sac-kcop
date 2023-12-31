@@ -1,6 +1,6 @@
 package river.exertion.sac.astro.render
 
-enum class RenderValueType {
+enum class ValueType {
     POSITIVE,
     REVERSAL_TO_POS,
     NEUTRAL,

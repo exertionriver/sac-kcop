@@ -9,26 +9,26 @@ import river.exertion.sac.view.SACLayoutHandler.waterFontColor
 
 enum class SignElement {
     FIRE_ELEMENT {
-        override val fontColor = fireFontColor
         override val label = Constants.SYM_FIRE_ELEMENT
+        override val fontColor = fireFontColor
     }
     , EARTH_ELEMENT {
-        override val fontColor = earthFontColor
         override val label = Constants.SYM_EARTH_ELEMENT
+        override val fontColor = earthFontColor
     }
     , AIR_ELEMENT {
-        override val fontColor = airFontColor
         override val label = Constants.SYM_AIR_ELEMENT
+        override val fontColor = airFontColor
     }
     , WATER_ELEMENT {
-        override val fontColor = waterFontColor
         override val label = Constants.SYM_WATER_ELEMENT
+        override val fontColor = waterFontColor
     }
     , NONE_ELEMENT
     ;
 
-    open val fontColor = baseFontColor
     open val label : String = Constants.SYM_NONE
+    open val fontColor = baseFontColor
 
     companion object {
         fun fromOrdinal(ordinal: Int) = entries.firstOrNull { it.ordinal == ordinal }

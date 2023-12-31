@@ -1,7 +1,6 @@
 package river.exertion.sac.astro
 
 import river.exertion.sac.Constants
-import river.exertion.sac.astro.render.RenderCelestialHouse
 
 
 enum class CelestialHouse {
