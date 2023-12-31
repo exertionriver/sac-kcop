@@ -1,6 +1,6 @@
 package astro.render
 
-import river.exertion.sac.astro.base.Sign
+import river.exertion.sac.astro.Sign
 import river.exertion.sac.astro.render.RenderAspect
 import river.exertion.sac.astro.state.*
 import river.exertion.sac.astro.value.ValueAspect
@@ -24,10 +24,10 @@ class TestRenderAspect {
         val renderAspect = RenderAspect(
             ValueAspect(
                 StateAspect(
-                    Sign.getSignFromCelestialLongitude(refCelestialAspectMap.entries.first().value)
+                    Sign.signFromCelestialLongitude(refCelestialAspectMap.entries.first().value)
                 , refCelestialAspectMap.entries.first().key
                 , refCelestialAspectMap.entries.first().value
-                , Sign.getSignFromCelestialLongitude(refCelestialAspectMap.entries.last().value)
+                , Sign.signFromCelestialLongitude(refCelestialAspectMap.entries.last().value)
                 , refCelestialAspectMap.entries.last().key
                 , refCelestialAspectMap.entries.last().value
                 , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)

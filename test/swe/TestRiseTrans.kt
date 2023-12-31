@@ -1,6 +1,6 @@
 package swe
 
-import river.exertion.sac.astro.base.Celestial
+import river.exertion.sac.astro.Celestial
 import river.exertion.sac.astro.base.EarthLocation
 import kotlinx.datetime.*
 import river.exertion.sac.swe.Julday

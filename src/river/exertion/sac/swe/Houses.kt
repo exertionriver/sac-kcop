@@ -1,7 +1,7 @@
 package river.exertion.sac.swe
 
 import river.exertion.sac.Constants.degrees
-import river.exertion.sac.astro.base.CelestialHouse
+import river.exertion.sac.astro.CelestialHouse
 import swisseph.SweConst.SEFLG_RADIANS
 import swisseph.SweConst.SE_VERTEX
 
@@ -18,7 +18,7 @@ object Houses {
 
         val celestialHousesData = DoubleArray(CelestialHouse.entries.size)
 
-        retVal = Swe.sw.swe_houses(julianUtcTimeDecimal, SEFLG_RADIANS, earthLatitude, earthLongitude, CelestialHouse.getHouseSystem().code, houseCusps, ascmc)
+        retVal = Swe.sw.swe_houses(julianUtcTimeDecimal, SEFLG_RADIANS, earthLatitude, earthLongitude, CelestialHouse.houseSystem.code, houseCusps, ascmc)
         if (retVal< 0) println("error: <populateCelestialHousePositionData>\n" ) // TODO : put this to a logger
 
         for (house in CelestialHouse.entries ) {

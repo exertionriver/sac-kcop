@@ -1,7 +1,7 @@
 package river.exertion.sac.astro.render
 
 import river.exertion.sac.Constants
-import river.exertion.sac.astro.base.Eighths
+import river.exertion.sac.astro.Eighths
 
 enum class RenderCelestialHouse {
     HOUSE_1_ASC { override fun getLabel() = Constants.SYM_HOUSE_1_ASC }
@@ -43,7 +43,7 @@ enum class RenderCelestialHouse {
             val houseOut = fromOrdinal(celestialHouseNumInt - 1)!!.getLabel()
 
             val housePart = celestialHouseDecimal.mod(celestialHouseNumInt.toDouble())
-            val housePartOut: String = RenderEighths.fromName(Eighths.getEighth(housePart).toString())!!.getLabel()
+            val housePartOut: String = Eighths.fractionToEighth(housePart).label
 
             return "$houseOut $housePartOut"
         }

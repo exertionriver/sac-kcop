@@ -19,7 +19,7 @@ enum class RenderAspectType {
     , SESQUISQUARE { override fun getLabel() = Constants.SYM_SESQUISQUARE }
     , SEPTILE { override fun getLabel() = Constants.SYM_SEPTILE }
     , NOVILE { override fun getLabel() = Constants.SYM_NOVILE }
-    , ASPECT_NONE { override fun getLabel() = Constants.SYM_ASPECT_NONE }
+    , ASPECT_NONE { override fun getLabel() = Constants.SYM_NONE }
     ;
 
     abstract fun getLabel(): String

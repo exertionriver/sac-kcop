@@ -1,5 +1,9 @@
 package river.exertion.sac.astro.base
 
+import river.exertion.sac.astro.AspectAngle
+import river.exertion.sac.astro.AspectCelestial
+import river.exertion.sac.astro.Sign
+
 @ExperimentalUnsignedTypes
 class Chart (val chartRows: Array<ChartRow>) {
 
@@ -43,10 +47,10 @@ class Chart (val chartRows: Array<ChartRow>) {
                     if (isNatComp && firstCelestialAspectEntry.key.ordinal >= secondCelestialAspectEntry.key.ordinal) continue
 
                     val aspect = Aspect(
-                        Sign.getSignFromCelestialLongitude(firstCelestialAspectEntry.value)
+                        Sign.signFromCelestialLongitude(firstCelestialAspectEntry.value)
                         , firstCelestialAspectEntry.key
                         , firstCelestialAspectEntry.value
-                        , Sign.getSignFromCelestialLongitude(secondCelestialAspectEntry.value)
+                        , Sign.signFromCelestialLongitude(secondCelestialAspectEntry.value)
                         , secondCelestialAspectEntry.key
                         , secondCelestialAspectEntry.value
                     )

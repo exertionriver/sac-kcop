@@ -102,7 +102,7 @@ object Constants {
     const val SYM_SESQUISQUARE = "\u26BC"
     const val SYM_SEPTILE = "S\u2077"
     const val SYM_NOVILE = "N\u2092"
-    const val SYM_ASPECT_NONE = "\u26AC"
+    const val SYM_NONE = "\u26AC"
 
     //elements
     const val SYM_FIRE_ELEMENT = "\u2632" //fire trigram

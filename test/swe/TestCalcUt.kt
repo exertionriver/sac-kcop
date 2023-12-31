@@ -1,12 +1,11 @@
 package swe
 
-import river.exertion.sac.astro.base.Celestial
+import river.exertion.sac.astro.Celestial
 import kotlinx.datetime.LocalDateTime
 import river.exertion.sac.swe.CalcUt
 import river.exertion.sac.swe.Houses
 import river.exertion.sac.swe.Julday
 import org.junit.jupiter.api.Test
-import kotlin.math.roundToLong
 import kotlin.test.assertEquals
 
 class TestCalcUt {

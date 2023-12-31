@@ -1,9 +1,9 @@
 package river.exertion.sac.astro.value
 
-import river.exertion.sac.astro.base.AspectCelestial
+import river.exertion.sac.astro.AspectCelestial
 import river.exertion.sac.astro.base.AspectType
-import river.exertion.sac.astro.base.SignElement
-import river.exertion.sac.astro.base.SignMode
+import river.exertion.sac.astro.SignElement
+import river.exertion.sac.astro.SignMode
 import river.exertion.sac.console.state.AnalysisState
 import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.astro.state.StateAspect
@@ -32,13 +32,13 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
     }
 
     fun getSignFirstModifier() = when (analysisState) {
-        AnalysisState.ELEMENT_ANALYSIS -> getElementModifier(stateAspect.signFirst.getElement()).toInt()
-        AnalysisState.MODE_ANALYSIS -> getModeModifier(stateAspect.signFirst.getMode()).toInt()
+        AnalysisState.ELEMENT_ANALYSIS -> getElementModifier(stateAspect.signFirst.signElement).toInt()
+        AnalysisState.MODE_ANALYSIS -> getModeModifier(stateAspect.signFirst.signMode).toInt()
         else -> 0
     }
     fun getSignSecondModifier() = when (analysisState) {
-        AnalysisState.ELEMENT_ANALYSIS -> getElementModifier(stateAspect.signSecond.getElement()).toInt()
-        AnalysisState.MODE_ANALYSIS -> getModeModifier(stateAspect.signSecond.getMode()).toInt()
+        AnalysisState.ELEMENT_ANALYSIS -> getElementModifier(stateAspect.signSecond.signElement).toInt()
+        AnalysisState.MODE_ANALYSIS -> getModeModifier(stateAspect.signSecond.signMode).toInt()
         else -> 0
     }
     fun getAspectCelestialFirstModifier() = when (analysisState) {
@@ -67,8 +67,8 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
         val aspectCelestialBothWeight = aspectCelestialFirstWeight + aspectCelestialSecondWeight
         var returnWeight = 0.0
 
-        if (stateAspect.signFirst.getElement() == signElement) returnWeight += aspectCelestialFirstWeight
-        if (stateAspect.signSecond.getElement() == signElement) returnWeight += aspectCelestialSecondWeight
+        if (stateAspect.signFirst.signElement == signElement) returnWeight += aspectCelestialFirstWeight
+        if (stateAspect.signSecond.signElement == signElement) returnWeight += aspectCelestialSecondWeight
 
         return returnWeight / aspectCelestialBothWeight
     }
@@ -79,8 +79,8 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
         val aspectCelestialBothWeight = aspectCelestialFirstWeight + aspectCelestialSecondWeight
         var returnWeight = 0.0
 
-        if (stateAspect.signFirst.getMode() == signMode) returnWeight += aspectCelestialFirstWeight
-        if (stateAspect.signSecond.getMode() == signMode) returnWeight += aspectCelestialSecondWeight
+        if (stateAspect.signFirst.signMode == signMode) returnWeight += aspectCelestialFirstWeight
+        if (stateAspect.signSecond.signMode == signMode) returnWeight += aspectCelestialSecondWeight
 
         return returnWeight / aspectCelestialBothWeight
     }
@@ -195,7 +195,7 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
 
     private fun getAspectBaseValue() : Value {
 
-        if (ValueAspectType.fromName(stateAspect.aspectAngle.getAspectType().toString())!!.isNeutral()) return Value(0, 0)
+        if (ValueAspectType.fromName(stateAspect.aspectAngle.aspectType.name)!!.isNeutral()) return Value(0, 0)
 
         val weightFirst = ValueAspectCelestial.fromName(stateAspect.aspectCelestialFirst.toString())!!.getWeight()
         val weightSecond = ValueAspectCelestial.fromName(stateAspect.aspectCelestialSecond.toString())!!.getWeight()
@@ -216,20 +216,20 @@ data class ValueAspect (val stateAspect : StateAspect, val chartState: ChartStat
             //hard aspects to sun / moon midpoint are positive
             ( (stateAspect.aspectCelestialFirst == AspectCelestial.ASPECT_SUN_MOON_MIDPOINT
                     || stateAspect.aspectCelestialSecond == AspectCelestial.ASPECT_SUN_MOON_MIDPOINT) && (
-                    (stateAspect.aspectAngle.getAspectType() == AspectType.CONJUNCTION)
-                            || (stateAspect.aspectAngle.getAspectType() == AspectType.OPPOSITION)
-                            || (stateAspect.aspectAngle.getAspectType() == AspectType.SEMISQUARE)
-                            || (stateAspect.aspectAngle.getAspectType() == AspectType.SQUARE) ) ) -> Value(aspectValue, 0)
+                    (stateAspect.aspectAngle.aspectType == AspectType.CONJUNCTION)
+                            || (stateAspect.aspectAngle.aspectType == AspectType.OPPOSITION)
+                            || (stateAspect.aspectAngle.aspectType == AspectType.SEMISQUARE)
+                            || (stateAspect.aspectAngle.aspectType == AspectType.SQUARE) ) ) -> Value(aspectValue, 0)
             //      https://en.wikipedia.org/wiki/Astrological_aspect#Conjunction
             //      In particular, conjunctions involving the Sun, Venus, and/or Jupiter, in any of the three possible conjunction combinations, are
             //      considered highly favourable, while conjunctions involving the Moon, Mars, and/or Saturn, again in any of the three possible
             //      conjunction combinations, are considered highly unfavourable.
-            ( (stateAspect.aspectAngle.getAspectType() == AspectType.CONJUNCTION) &&
+            ( (stateAspect.aspectAngle.aspectType == AspectType.CONJUNCTION) &&
                     (stateAspect.aspectCelestialFirst == AspectCelestial.ASPECT_MOON && (stateAspect.aspectCelestialSecond == AspectCelestial.ASPECT_MARS || stateAspect.aspectCelestialSecond == AspectCelestial.ASPECT_SATURN) )
                     || (stateAspect.aspectCelestialFirst == AspectCelestial.ASPECT_MARS && (stateAspect.aspectCelestialSecond == AspectCelestial.ASPECT_MOON || stateAspect.aspectCelestialSecond == AspectCelestial.ASPECT_SATURN) )
                     || (stateAspect.aspectCelestialFirst == AspectCelestial.ASPECT_SATURN && (stateAspect.aspectCelestialSecond == AspectCelestial.ASPECT_MOON || stateAspect.aspectCelestialSecond == AspectCelestial.ASPECT_MARS) ) ) -> Value(0, -aspectValue)
-            (ValueAspectType.fromName(stateAspect.aspectAngle.getAspectType().toString())!!.isPositive()) -> Value(aspectValue, 0)
-            (ValueAspectType.fromName(stateAspect.aspectAngle.getAspectType().toString())!!.isNegative()) -> Value(0, -aspectValue)
+            (ValueAspectType.fromName(stateAspect.aspectAngle.aspectType.name)!!.isPositive()) -> Value(aspectValue, 0)
+            (ValueAspectType.fromName(stateAspect.aspectAngle.aspectType.name)!!.isNegative()) -> Value(0, -aspectValue)
             else -> Value(0, 0)
         }
     }

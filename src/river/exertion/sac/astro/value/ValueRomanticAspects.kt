@@ -1,9 +1,9 @@
 package river.exertion.sac.astro.value
 
 import river.exertion.sac.astro.base.Aspect
-import river.exertion.sac.astro.base.AspectAngle
-import river.exertion.sac.astro.base.AspectCelestial
-import river.exertion.sac.astro.base.Sign
+import river.exertion.sac.astro.AspectAngle
+import river.exertion.sac.astro.AspectCelestial
+import river.exertion.sac.astro.Sign
 
 //data gathered from https://cafeastrology.com/synastry-2.html
 //see: https://cafeastrology.com/termsofuse.html "Limited License"

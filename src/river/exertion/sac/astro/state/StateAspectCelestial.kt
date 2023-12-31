@@ -1,12 +1,10 @@
 package river.exertion.sac.astro.state
 
-import river.exertion.sac.astro.base.AspectCelestial
+import river.exertion.sac.astro.AspectCelestial
 import river.exertion.sac.console.state.AspectOverlayState
 import kotlin.math.pow
 
-//Default Orb defn is based on https://www.astro.com/astrology/in_aspect_e.htm?nhor=432453&nho2=860236
-//Selective Orb defn is based on readings found at https://astro.cafeastrology.com/natal.php
-//Hybrid Orb defn is an original creation
+
 enum class StateAspectCelestial {
     ASPECT_SUN
     , ASPECT_MOON

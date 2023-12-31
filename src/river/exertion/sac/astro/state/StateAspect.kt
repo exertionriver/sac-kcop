@@ -1,9 +1,9 @@
 package river.exertion.sac.astro.state
 
 import river.exertion.sac.astro.base.Aspect
-import river.exertion.sac.astro.base.AspectAngle
-import river.exertion.sac.astro.base.AspectCelestial
-import river.exertion.sac.astro.base.Sign
+import river.exertion.sac.astro.AspectAngle
+import river.exertion.sac.astro.AspectCelestial
+import river.exertion.sac.astro.Sign
 import river.exertion.sac.astro.value.Value
 import river.exertion.sac.astro.value.ValueAspect
 import river.exertion.sac.console.state.*
@@ -20,7 +20,7 @@ data class StateAspect(val signFirst : Sign
     , val aspectOverlayState : AspectOverlayState
     ) {
 
-    fun getStateBaseAspect() = StateBaseAspect(this.aspectCelestialFirst, this.aspectCelestialSecond, this.aspectAngle.getAspectType())
+    fun getStateBaseAspect() = StateBaseAspect(this.aspectCelestialFirst, this.aspectCelestialSecond, this.aspectAngle.aspectType)
 
     //calcOrb constructor
     constructor(
@@ -122,17 +122,17 @@ data class StateAspect(val signFirst : Sign
 //             println(AspectAngle.values().filter { it.isAspectAngle() }.sortedByDescending { it.getAngleDegree() })
 
             //iterate through aspectAngles
-            for (aspectAngle in AspectAngle.entries.filter { it.isAspectAngle() }.sortedByDescending { it.getAngleDegree() } ) {
-                if ((aspectsState == AspectsState.MAJOR_ASPECTS) && (!aspectAngle.getAspectType().isMajor() )) continue ;
-                if ((aspectsState == AspectsState.MINOR_ASPECTS) && (!aspectAngle.getAspectType().isMajor() && !aspectAngle.getAspectType().isMinor()) ) continue ;
-                if ((timeAspectsState == TimeAspectsState.TIME_ASPECTS_DISABLED) && (aspectCelestialFirst.isTimeAspect())) continue ;
-                if ((timeAspectsState == TimeAspectsState.TIME_ASPECTS_DISABLED) && (aspectCelestialSecond.isTimeAspect())) continue ;
+            for (aspectAngle in AspectAngle.entries.filter { it.isAspectAngle() }.sortedByDescending { it.angleDegree } ) {
+                if ((aspectsState == AspectsState.MAJOR_ASPECTS) && (!aspectAngle.aspectType.isMajor() )) continue ;
+                if ((aspectsState == AspectsState.MINOR_ASPECTS) && (!aspectAngle.aspectType.isMajor() && !aspectAngle.aspectType.isMinor()) ) continue ;
+                if ((timeAspectsState == TimeAspectsState.TIME_ASPECTS_DISABLED) && (aspectCelestialFirst.isTimeAspect)) continue ;
+                if ((timeAspectsState == TimeAspectsState.TIME_ASPECTS_DISABLED) && (aspectCelestialSecond.isTimeAspect)) continue ;
 
                 val orbLimit = calcOrbLimit(aspectOverlayState, aspectCelestialFirst, aspectCelestialSecond, aspectAngle)
 
 //                println("findAspectAngle() iteration: $aspectAngle, ${abs(aspectAngle.getAngleDegree() - aspectCelestialAngleDiff)}, ${orbLimit}")
 
-                if (abs(aspectAngle.getAngleDegree() - aspectCelestialAngleDiff) <= orbLimit) {
+                if (abs(aspectAngle.angleDegree - aspectCelestialAngleDiff) <= orbLimit) {
                     val aspectAngleOrb = Aspect.calcOrb(aspectAngle, aspectCelestialFirstAngle, aspectCelestialSecondAngle)
 
 //                     println("$aspectAngleOrb, $minOrb")

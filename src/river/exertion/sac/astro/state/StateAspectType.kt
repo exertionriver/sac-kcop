@@ -1,8 +1,6 @@
 package river.exertion.sac.astro.state
 
-import river.exertion.sac.astro.base.AspectAngle
-import river.exertion.sac.astro.base.AspectCelestial
-import river.exertion.sac.astro.base.AspectType
+import river.exertion.sac.astro.AspectAngle
 import river.exertion.sac.console.state.AspectOverlayState
 
 //Default Orb defn is based on https://www.astro.com/astrology/in_aspect_e.htm?nhor=432453&nho2=860236
@@ -119,6 +117,6 @@ enum class StateAspectType {
     open fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double = 0.0
 
     companion object {
-        fun of(aspectAngle: AspectAngle) = StateAspectType.entries.first { aspectAngle.getAspectType().name == it.name }
+        fun of(aspectAngle: AspectAngle) = StateAspectType.entries.first { aspectAngle.aspectType.name == it.name }
     }
 }

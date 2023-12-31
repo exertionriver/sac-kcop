@@ -9,6 +9,9 @@ import river.exertion.sac.Constants.SYM_SELECTIVE_ORBS
 import river.exertion.sac.Constants.SYM_SYNASTRY_CHART
 import river.exertion.sac.view.SACInputProcessor
 
+//Default Orb defn is based on https://www.astro.com/astrology/in_aspect_e.htm?nhor=432453&nho2=860236
+//Selective Orb defn is based on readings found at https://astro.cafeastrology.com/natal.php
+//Hybrid Orb defn is an original creation
 enum class AspectOverlayState : State<SACInputProcessor>  {
     ASPECT_NATCOMP_OVERLAY_DEFAULT {
         override fun getLabel() = SYM_DEFAULT_ORBS

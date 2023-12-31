@@ -1,6 +1,6 @@
 package river.exertion.sac.astro.state
 
-import river.exertion.sac.astro.base.AspectCelestial
+import river.exertion.sac.astro.AspectCelestial
 import river.exertion.sac.astro.base.AspectType
 
 data class StateBaseAspect(val aspectCelestialFirst : AspectCelestial

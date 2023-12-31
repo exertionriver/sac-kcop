@@ -1,5 +1,9 @@
 package river.exertion.sac.astro.state
 
+import river.exertion.sac.astro.AspectAngle
+import river.exertion.sac.astro.AspectCelestial
+import river.exertion.sac.astro.CelestialHouse
+import river.exertion.sac.astro.Sign
 import river.exertion.sac.astro.value.ValueRomanticAspects
 import river.exertion.sac.swe.DegMidp
 import river.exertion.sac.astro.base.*
@@ -64,10 +68,10 @@ class StateChart (val chartRows: Array<StateChartRow>, val chartState: ChartStat
                         && (secondCelestialAspectEntry.key == AspectCelestial.ASPECT_ASCENDANT)) continue
 
                     val aspect = StateAspect(
-                        Sign.getSignFromCelestialLongitude(firstCelestialAspectEntry.value)
+                        Sign.signFromCelestialLongitude(firstCelestialAspectEntry.value)
                         , firstCelestialAspectEntry.key
                         , firstCelestialAspectEntry.value
-                        , Sign.getSignFromCelestialLongitude(secondCelestialAspectEntry.value)
+                        , Sign.signFromCelestialLongitude(secondCelestialAspectEntry.value)
                         , secondCelestialAspectEntry.key
                         , secondCelestialAspectEntry.value
                         , aspectsState, timeAspectsState, aspectOverlayState
@@ -119,10 +123,10 @@ class StateChart (val chartRows: Array<StateChartRow>, val chartState: ChartStat
                 }
 
                 aspect = StateAspect(
-                        Sign.getSignFromCelestialLongitude(firstExtendedCelestialLongitude)
+                        Sign.signFromCelestialLongitude(firstExtendedCelestialLongitude)
                         , extendedAspect.aspectCelestialFirst
                         , firstExtendedCelestialLongitude
-                        , Sign.getSignFromCelestialLongitude(secondExtendedCelestialLongitude)
+                        , Sign.signFromCelestialLongitude(secondExtendedCelestialLongitude)
                         , extendedAspect.aspectCelestialSecond
                         , secondExtendedCelestialLongitude
                         , aspectsState, timeAspectsState, aspectOverlayState
@@ -154,10 +158,10 @@ class StateChart (val chartRows: Array<StateChartRow>, val chartState: ChartStat
                     secondExtendedCelestialLongitude = secondCelestialAspectMap[extendedAspect.aspectCelestialFirst]!!
 
                     aspect = StateAspect(
-                            Sign.getSignFromCelestialLongitude(firstExtendedCelestialLongitude)
+                            Sign.signFromCelestialLongitude(firstExtendedCelestialLongitude)
                             , extendedAspect.aspectCelestialSecond
                             , firstExtendedCelestialLongitude
-                            , Sign.getSignFromCelestialLongitude(secondExtendedCelestialLongitude)
+                            , Sign.signFromCelestialLongitude(secondExtendedCelestialLongitude)
                             , extendedAspect.aspectCelestialFirst
                             , secondExtendedCelestialLongitude
                             , aspectsState, timeAspectsState, aspectOverlayState
@@ -193,7 +197,7 @@ class StateChart (val chartRows: Array<StateChartRow>, val chartState: ChartStat
             }
 
             //add extended aspects as row
-            val extendedAspectsRow = StateChartRow(chartAspects.filter { it.aspectCelestialFirst.isExtendedAspect() || it.aspectCelestialSecond.isExtendedAspect() }.toMutableList().toTypedArray())
+            val extendedAspectsRow = StateChartRow(chartAspects.filter { it.aspectCelestialFirst.isExtendedAspect || it.aspectCelestialSecond.isExtendedAspect }.toMutableList().toTypedArray())
 
             returnAspectsChart.add(AspectCelestial.entries.filter { it.isChartAspectCelestial() }.size, extendedAspectsRow)
 

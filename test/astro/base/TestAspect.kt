@@ -2,8 +2,8 @@ package astro.base
 
 import river.exertion.sac.Constants.InvalidOrb
 import river.exertion.sac.astro.base.Aspect
-import river.exertion.sac.astro.base.AspectAngle
-import river.exertion.sac.astro.base.AspectCelestial
+import river.exertion.sac.astro.AspectAngle
+import river.exertion.sac.astro.AspectCelestial
 import river.exertion.sac.astro.base.Chart
 import org.junit.jupiter.api.Test
 import river.exertion.sac.component.SACComponent
@@ -90,7 +90,7 @@ class TestAspect {
             ,5.5)
 
         println("test base aspect setting orb : $testBaseAspect")
-        assertEquals(185.5,testBaseAspect.aspectAngle.getAngleDegree() + testBaseAspect.orb)
+        assertEquals(185.5,testBaseAspect.aspectAngle.angleDegree + testBaseAspect.orb)
 
         testBaseAspect = Aspect(emptyAspect.signFirst
             , AspectCelestial.ASPECT_SUN

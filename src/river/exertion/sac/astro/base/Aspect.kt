@@ -2,6 +2,9 @@ package river.exertion.sac.astro.base
 
 import river.exertion.sac.Constants.InvalidOrb
 import river.exertion.sac.Constants.normalizeDeg
+import river.exertion.sac.astro.AspectAngle
+import river.exertion.sac.astro.AspectCelestial
+import river.exertion.sac.astro.Sign
 import kotlin.math.abs
 
 data class Aspect(val signFirst : Sign
@@ -73,10 +76,10 @@ data class Aspect(val signFirst : Sign
 //            println(AspectAngle.values().filter { it.isAspectAngle() }.sortedByDescending { it.getAngleDegree() })
 
             //iterate through aspectAngles to find one within orbLimit
-            for (aspectAngle in AspectAngle.entries.filter { it.isAspectAngle() }.sortedByDescending { it.getAngleDegree() } ) {
+            for (aspectAngle in AspectAngle.entries.filter { it.isAspectAngle() }.sortedByDescending { it.angleDegree } ) {
 //                println("findAspectAngle() iteration: $aspectAngle, ${abs(aspectAngle.getAngleDegree() - aspectCelestialAngleDiff)}")
 
-                if (abs(aspectAngle.getAngleDegree() - aspectCelestialAngleDiff) <= orbLimit) {
+                if (abs(aspectAngle.angleDegree - aspectCelestialAngleDiff) <= orbLimit) {
                     val aspectAngleOrb = calcOrb(aspectAngle, aspectCelestialFirstAngle, aspectCelestialSecondAngle)
 
 //                    println("$aspectAngleOrb, $minOrb")
@@ -94,6 +97,6 @@ data class Aspect(val signFirst : Sign
 
         fun calcOrb(aspectAngle : AspectAngle, aspectCelestialFirstAngle : Double, aspectCelestialSecondAngle : Double) =
             if (aspectAngle == AspectAngle.ASPECT_ANGLE_NONE) InvalidOrb
-            else abs(aspectAngle.getAngleDegree() - calcNormAngleDiff(aspectCelestialFirstAngle, aspectCelestialSecondAngle) )
+            else abs(aspectAngle.angleDegree - calcNormAngleDiff(aspectCelestialFirstAngle, aspectCelestialSecondAngle) )
     }
 }

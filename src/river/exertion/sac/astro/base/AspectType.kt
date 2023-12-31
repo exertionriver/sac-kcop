@@ -1,6 +1,7 @@
 package river.exertion.sac.astro.base
 
 import river.exertion.sac.Constants.InvalidOrb
+import river.exertion.sac.astro.AspectCelestial
 
 enum class AspectType {
     CONJUNCTION {override fun isMajor() = true; override fun getAngleDegree() = 0.0 }

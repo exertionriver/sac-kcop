@@ -62,30 +62,5 @@ data class CelestialData(val celestialDataArray : DoubleArray) {
                 "${"%02d".format(signDeg)}°${"%02d".format(longMin)}'${"%02d".format(longSecInt)}"
         }
 
-        fun getCelestialsDataOverride(
-            celestialsData: Array<CelestialData>,
-            celestialsOverrideMap: Map<Int, Int> = mapOf(-1 to -1)
-        ): Array<CelestialData> {
-
-            return Array(celestialsData.size) { celestialIdx: Int ->
-
-                if (celestialsOverrideMap.containsKey(celestialIdx) )
-                    CelestialData(
-                        doubleArrayOf(
-                            celestialsOverrideMap[celestialIdx]!!.toDouble()
-                            , celestialsData[celestialIdx].latitude
-                            , celestialsData[celestialIdx].distance
-                            , celestialsData[celestialIdx].longitudeSpeed
-                            , celestialsData[celestialIdx].latitudeSpeed
-                            , celestialsData[celestialIdx].distanceSpeed
-                            , 0.0 //celestialsData[celestialIdx].celestialHouse
-                            , 0.0 //celestialsData[celestialIdx].transitHouse
-                        )
-                    )
-                else
-                    celestialsData[celestialIdx]
-            }
-        }
-
     }
 }
