@@ -1,4 +1,4 @@
-package river.exertion.sac.astro.value
+package river.exertion.sac.astro
 
 import kotlinx.serialization.Serializable
 import kotlin.math.abs

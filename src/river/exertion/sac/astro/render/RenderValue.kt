@@ -1,7 +1,7 @@
 package river.exertion.sac.astro.render
 
 import river.exertion.sac.astro.ValueType
-import river.exertion.sac.astro.value.Value
+import river.exertion.sac.astro.Value
 import kotlin.math.abs
 
 data class RenderValue(val value : Value) {

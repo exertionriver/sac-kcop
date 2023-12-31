@@ -7,7 +7,7 @@ import kotlinx.serialization.json.encodeToJsonElement
 import river.exertion.sac.astro.CelestialSnapshot
 import river.exertion.sac.astro.EarthLocation
 import river.exertion.sac.astro.state.*
-import river.exertion.sac.astro.value.Value
+import river.exertion.sac.astro.Value
 import river.exertion.sac.astro.value.ValueChart
 import river.exertion.sac.console.state.*
 import java.io.File

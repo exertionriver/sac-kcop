@@ -4,7 +4,7 @@ import river.exertion.sac.astro.base.Aspect
 import river.exertion.sac.astro.AspectAngle
 import river.exertion.sac.astro.AspectCelestial
 import river.exertion.sac.astro.Sign
-import river.exertion.sac.astro.value.Value
+import river.exertion.sac.astro.Value
 import river.exertion.sac.astro.value.ValueAspect
 import river.exertion.sac.console.state.*
 import kotlin.math.abs
