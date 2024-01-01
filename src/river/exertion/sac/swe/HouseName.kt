@@ -1,6 +1,6 @@
 package river.exertion.sac.swe
 
-import river.exertion.sac.astro.CelestialHouse
+import river.exertion.sac.astro.base.CelestialHouse
 
 object HouseName {
 

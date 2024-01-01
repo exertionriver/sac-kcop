@@ -1,4 +1,4 @@
-package river.exertion.sac.astro
+package river.exertion.sac.astro.base
 
 import river.exertion.sac.Constants
 import river.exertion.sac.console.state.AspectOverlayState

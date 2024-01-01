@@ -1,6 +1,7 @@
 package river.exertion.sac.astro
 
 import kotlinx.serialization.Serializable
+import river.exertion.sac.astro.base.ValueType
 import kotlin.math.abs
 
 @Suppress("PROVIDED_RUNTIME_TOO_LOW")
@@ -112,6 +113,13 @@ data class Value (val positive : Int = 0, val negative : Int = 0) {
             }
 
             return Pair(valueType, abs(stim).toString().padStart(4, ' '))
+        }
+
+        fun List<Value>.sum() : Value {
+            val pos = this.sumOf { it.positive }
+            val neg = this.sumOf { it.negative }
+
+            return Value(pos, neg)
         }
     }
 }

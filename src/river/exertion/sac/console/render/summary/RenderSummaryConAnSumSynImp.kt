@@ -28,8 +28,8 @@ object RenderSummaryConAnSumSynImp : IConsoleRender {
     ))
 
     override fun setContent() {
-        val chartValue = SACComponent.sacChart.getBaseValue() + SACComponent.sacChart.getModValue()
-        val natalChartValue = SACComponent.synNatChart.getBaseValue() + SACComponent.synNatChart.getModValue()
+        val chartValue = SACComponent.sacChart.netValue
+        val natalChartValue = SACComponent.synNatChart.netValue
         val layoutPanes = setLayout().panes
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[0].tag!!, ChartState.getChartSumLabel().impConAmChartLabel(), SACLayoutHandler.synEarthLocationFontColor)

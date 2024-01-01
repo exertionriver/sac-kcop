@@ -6,7 +6,7 @@ import river.exertion.kcop.asset.view.ColorPalette
 import river.exertion.kcop.view.KcopFont
 import river.exertion.kcop.view.klop.IDisplayViewLayoutHandler
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutHandler
-import river.exertion.sac.astro.ValueType
+import river.exertion.sac.astro.base.ValueType
 
 object SACLayoutHandler : IDisplayViewLayoutHandler {
 

@@ -9,7 +9,8 @@ import river.exertion.sac.Constants
 import river.exertion.sac.astro.*
 import river.exertion.sac.astro.CelestialData
 import river.exertion.sac.astro.CelestialSnapshot
-import river.exertion.sac.astro.state.Chart
+import river.exertion.sac.astro.Chart
+import river.exertion.sac.astro.base.*
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.render.RenderEarthLocationTags
 import river.exertion.sac.console.render.RenderSummaryAspects
@@ -332,17 +333,17 @@ object SACCelestialsHousesDVLayout {
             DVLayoutHandler.currentDvLayout.setTextPaneMode("localAltitude", DVTextPane.DVTextPaneMode.READ)
         }
 
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("celestialHeader",Celestial.celestialHeaderLabel)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("signHeader",Celestial.celestialSignHeaderLabel)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("celestialLongitude",Celestial.celestialLongitudeHeaderLabel)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("celestialHeader", Celestial.celestialHeaderLabel)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("signHeader", Celestial.celestialSignHeaderLabel)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("celestialLongitude", Celestial.celestialLongitudeHeaderLabel)
         DVLayoutHandler.currentDvLayout.setTextPaneContent("signLongitude", CelestialHouse.celestialHouseLongitudeHeaderLabel)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("celestialHouse",Celestial.celestialHouseHeaderLabel)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("celestialDistance",Celestial.celestialDistanceHeaderLabel)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("celestialSpeed",Celestial.celestialLongitudeSpeedHeaderLabel)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("celestialHouse", Celestial.celestialHouseHeaderLabel)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("celestialDistance", Celestial.celestialDistanceHeaderLabel)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("celestialSpeed", Celestial.celestialLongitudeSpeedHeaderLabel)
 
         if (SACInputProcessor.locationRecallStateMachine.isInState(LocationRecallState.CUR_NAV_REF_SYNCOMP_RECALL) ) {
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("transitHouse",Celestial.celestialTransitHouseHeaderLabel)
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("transitCelestials",Celestial.celestialTransitCelestialHeaderLabel)
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("transitHouse", Celestial.celestialTransitHouseHeaderLabel)
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("transitCelestials", Celestial.celestialTransitCelestialHeaderLabel)
         }
 
         Celestial.entries.forEachIndexed { idx, renderCelestial ->
@@ -366,9 +367,9 @@ object SACCelestialsHousesDVLayout {
         }
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("houseSystemName", HouseName.getHouseName())
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("houseLatLongHeader",CelestialHouse.celestialHouseLongLatHeaderLabel)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("houseSign",CelestialHouse.celestialHouseSignHeaderLabel)
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("houseLongitude",CelestialHouse.celestialHouseLongitudeHeaderLabel)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("houseLatLongHeader", CelestialHouse.celestialHouseLongLatHeaderLabel)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("houseSign", CelestialHouse.celestialHouseSignHeaderLabel)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("houseLongitude", CelestialHouse.celestialHouseLongitudeHeaderLabel)
         DVLayoutHandler.currentDvLayout.setTextPaneContent("houseSignLongitude", Sign.signLongitudeHeaderLabel)
 
         val pofData = celestialSnapshot.partOfFortuneData()
@@ -403,7 +404,7 @@ object SACCelestialsHousesDVLayout {
             }
         }
 
-        val chartAspects = chart.getStateAspects()
+        val chartAspects = chart.getAspects()
 
         if (SACInputProcessor.chartStateMachine.currentState.isNatComp()) {
             gridEntries().forEachIndexed { rowIdx, chartAspectCelestial ->

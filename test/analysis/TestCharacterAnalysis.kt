@@ -1,16 +1,14 @@
 package analysis
 
-import river.exertion.sac.astro.render.RenderAspect
-import river.exertion.sac.astro.state.*
-import river.exertion.sac.astro.state.StateAspect.Companion.stateAspectReduceBase
-import river.exertion.sac.astro.state.StateBaseAspect.Companion.stateBaseAspects
-import river.exertion.sac.astro.value.ValueAspect
 import org.junit.jupiter.api.Test
+import river.exertion.sac.astro.Aspect
+import river.exertion.sac.astro.Chart
+import river.exertion.sac.astro.Value.Companion.sum
 import river.exertion.sac.component.SACComponent
-import river.exertion.sac.console.state.TimeAspectsState
 import river.exertion.sac.console.state.AspectOverlayState
 import river.exertion.sac.console.state.AspectsState
 import river.exertion.sac.console.state.ChartState
+import river.exertion.sac.console.state.TimeAspectsState
 
 @ExperimentalUnsignedTypes
 class TestCharacterAnalysis {
@@ -27,16 +25,16 @@ class TestCharacterAnalysis {
         val synNatalChart = Chart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val refNatalAspects = refNatalChart.getStateAspects().stateBaseAspects()
-        val synNatalAspects = synNatalChart.getStateAspects().stateBaseAspects()
+        val refNatalAspects = refNatalChart.getAspects().map { it.celestialAspect() }
+        val synNatalAspects = synNatalChart.getAspects().map { it.celestialAspect() }
 
-        val sharedNatalAspects = synNatalChart.getStateAspects().filter { refNatalAspects.contains(it.getStateBaseAspect()) }.toMutableList()
-        sharedNatalAspects.addAll(refNatalChart.getStateAspects().filter { synNatalAspects.contains(it.getStateBaseAspect()) })
+        val sharedNatalAspects = synNatalAspects.filter { refNatalAspects.contains(it) }.toMutableList()
+        sharedNatalAspects.addAll(refNatalAspects.filter { synNatalAspects.contains(it) })
 
         println("natal1 shared with natal2")
-        sharedNatalAspects.forEach { println(RenderAspect(ValueAspect(it)).getRenderLabel()) }
+        sharedNatalAspects.forEach { println(it.toString()) }
 
-        println("appreciation: ${sharedNatalAspects.stateAspectReduceBase().getLabel()}")
+        println("appreciation: ${sharedNatalAspects.map { it.netValue }.sum().getLabel()}")
     }
 
     @Test
@@ -50,9 +48,9 @@ class TestCharacterAnalysis {
         val synNatalChart = Chart(SACComponent.refNatCelestialSnapshot, ChartState.NATAL_CHART,
             AspectsState.ALL_ASPECTS, timeAspectsState, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
-        val synAspects = synChart.getStateAspects().stateBaseAspects()
-        val refNatalAspects = refNatalChart.getStateAspects().stateBaseAspects()
-        val synNatalAspects = synNatalChart.getStateAspects().stateBaseAspects()
+        val synAspects = synChart.getAspects().map { it.celestialAspect() }
+        val refNatalAspects = refNatalChart.getAspects().map { it.celestialAspect() }
+        val synNatalAspects = synNatalChart.getAspects().map { it.celestialAspect() }
 
         val sharedNatal1Aspects = refNatalChart.getStateAspects().filter { synAspects.contains(it.getStateBaseAspect()) }.toMutableList()
         sharedNatal1Aspects.addAll(synChart.getStateAspects().filter { refNatalAspects.contains(it.getStateBaseAspect()) })
@@ -61,10 +59,10 @@ class TestCharacterAnalysis {
         sharedNatal2Aspects.addAll(synChart.getStateAspects().filter { synNatalAspects.contains(it.getStateBaseAspect()) })
 
         println("natal1 shared with synastry chart")
-        sharedNatal1Aspects.forEach { println(RenderAspect(ValueAspect(it)).getRenderLabel()) }
+        sharedNatal1Aspects.forEach { println(RenderAspect(Aspect(it)).getRenderLabel()) }
 
         println("natal2 shared with synastry chart")
-        sharedNatal2Aspects.forEach { println(RenderAspect(ValueAspect(it)).getRenderLabel()) }
+        sharedNatal2Aspects.forEach { println(RenderAspect(Aspect(it)).getRenderLabel()) }
 
         println("affinity: ${sharedNatal1Aspects.plus(sharedNatal2Aspects).stateAspectReduceBase().getLabel()}")
 
@@ -92,10 +90,10 @@ class TestCharacterAnalysis {
         sharedNatal2Aspects.addAll(compChart.getStateAspects().filter { synNatalAspects.contains(it.getStateBaseAspect()) })
 
         println("natal1 shared with composite chart")
-        sharedNatal1Aspects.forEach { println(RenderAspect(ValueAspect(it)).getRenderLabel()) }
+        sharedNatal1Aspects.forEach { println(RenderAspect(Aspect(it)).getRenderLabel()) }
 
         println("natal2 shared with composite chart")
-        sharedNatal2Aspects.forEach { println(RenderAspect(ValueAspect(it)).getRenderLabel()) }
+        sharedNatal2Aspects.forEach { println(RenderAspect(Aspect(it)).getRenderLabel()) }
 
         println("commonality: ${sharedNatal1Aspects.plus(sharedNatal2Aspects).stateAspectReduceBase().getLabel()}")
     }
@@ -115,7 +113,7 @@ class TestCharacterAnalysis {
         sharedAspects.addAll(compChart.getStateAspects().filter { synAspects.contains(it.getStateBaseAspect()) })
 
         println("shared between synastry and composite chart")
-        sharedAspects.forEach { println(RenderAspect(ValueAspect(it)).getRenderLabel()) }
+        sharedAspects.forEach { println(RenderAspect(Aspect(it)).getRenderLabel()) }
 
         println("compatibility: ${sharedAspects.stateAspectReduceBase().getLabel()}")
 

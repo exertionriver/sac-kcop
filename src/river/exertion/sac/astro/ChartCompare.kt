@@ -1,6 +1,5 @@
 package river.exertion.sac.astro
 
-import river.exertion.sac.astro.state.Chart
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -10,14 +9,14 @@ object ChartCompare {
     lateinit var firstNatalValueChart : Chart
     lateinit var secondNatalValueChart : Chart
 
-    fun getRefImprovedStim() : Double = modValueChart.getModValue().stimulation / firstNatalValueChart.getModValue().stimulation * 100.0
-    fun getEvalImprovedStim() : Double = modValueChart.getModValue().stimulation / secondNatalValueChart.getModValue().stimulation * 100.0
+    fun getRefImprovedStim() : Double = modValueChart.modValue.stimulation / firstNatalValueChart.modValue.stimulation * 100.0
+    fun getEvalImprovedStim() : Double = modValueChart.modValue.stimulation / secondNatalValueChart.modValue.stimulation * 100.0
 
-    fun getRefImprovedPos() : Double = modValueChart.getModValue().positive / firstNatalValueChart.getModValue().positive * 100.0
-    fun getEvalImprovedPos() : Double = modValueChart.getModValue().positive / secondNatalValueChart.getModValue().positive * 100.0
+    fun getRefImprovedPos() : Double = modValueChart.modValue.positive / firstNatalValueChart.modValue.positive * 100.0
+    fun getEvalImprovedPos() : Double = modValueChart.modValue.positive / secondNatalValueChart.modValue.positive * 100.0
 
-    fun getRefImprovedCons() : Double = modValueChart.getModValue().consonance / firstNatalValueChart.getModValue().consonance * 100.0
-    fun getEvalImprovedCons() : Double = modValueChart.getModValue().consonance / secondNatalValueChart.getModValue().consonance * 100.0
+    fun getRefImprovedCons() : Double = modValueChart.modValue.consonance / firstNatalValueChart.modValue.consonance * 100.0
+    fun getEvalImprovedCons() : Double = modValueChart.modValue.consonance / secondNatalValueChart.modValue.consonance * 100.0
 
 //    fun getRefImprovedAvg() = doubleArrayOf(getRefImprovedStim(), getRefImprovedPos(), getRefImprovedCons()).average()
 

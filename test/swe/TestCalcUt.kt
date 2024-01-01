@@ -1,6 +1,6 @@
 package swe
 
-import river.exertion.sac.astro.Celestial
+import river.exertion.sac.astro.base.Celestial
 import kotlinx.datetime.LocalDateTime
 import river.exertion.sac.swe.CalcUt
 import river.exertion.sac.swe.Houses

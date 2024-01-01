@@ -11,7 +11,7 @@ import river.exertion.sac.SweetAstroConsoleKlop
 import river.exertion.sac.asset.SACDefaultAssetStore
 import river.exertion.sac.astro.CelestialSnapshot
 import river.exertion.sac.astro.EarthLocation
-import river.exertion.sac.astro.state.Chart
+import river.exertion.sac.astro.Chart
 import river.exertion.sac.console.state.*
 import river.exertion.sac.view.SACInputProcessor
 
@@ -54,32 +54,38 @@ class SACComponent : IComponent, Telegraph {
         if (!compositeNoRecalc) sacCelestialSnapshot.recalc()
 
         //TODO: implement recalc for StateChart and ValueChart
-        sacChart = Chart(Chart.getAspects(
+        sacChart = Chart(
+            Chart.getAspects(
             refNatCelestialSnapshot
             , if (synEarthLocation != null) synNatCelestialSnapshot else refNatCelestialSnapshot
             , SACInputProcessor.chartStateMachine.currentState
             , SACInputProcessor.aspectsStateMachine.currentState
             , SACInputProcessor.timeAspectsStateMachine.currentState
-            , SACInputProcessor.aspectOverlayStateMachine.currentState)
+            , SACInputProcessor.aspectOverlayStateMachine.currentState
+            , SACInputProcessor.analysisStateMachine.currentState)
         , SACInputProcessor.chartStateMachine.currentState, SACInputProcessor.analysisStateMachine.currentState)
 
-        refNatChart = Chart(Chart.getAspects(
+        refNatChart = Chart(
+            Chart.getAspects(
             refNatCelestialSnapshot
             , refNatCelestialSnapshot
             , ChartState.NATAL_CHART
             , SACInputProcessor.aspectsStateMachine.currentState
             , SACInputProcessor.timeAspectsStateMachine.currentState
-            , AspectOverlayState.toggleState(ChartState.SYNASTRY_CHART, SACInputProcessor.aspectOverlayStateMachine.currentState))
+            , AspectOverlayState.toggleState(ChartState.SYNASTRY_CHART, SACInputProcessor.aspectOverlayStateMachine.currentState)
+            , SACInputProcessor.analysisStateMachine.currentState)
         , ChartState.NATAL_CHART, SACInputProcessor.analysisStateMachine.currentState)
 
         if (synEarthLocation != null) {
-            synNatChart = Chart(Chart.getAspects(
+            synNatChart = Chart(
+                Chart.getAspects(
                 synNatCelestialSnapshot
                 , synNatCelestialSnapshot
                 , ChartState.NATAL_CHART
                 , SACInputProcessor.aspectsStateMachine.currentState
                 , SACInputProcessor.timeAspectsStateMachine.currentState
-                , AspectOverlayState.toggleState(ChartState.SYNASTRY_CHART, SACInputProcessor.aspectOverlayStateMachine.currentState))
+                , AspectOverlayState.toggleState(ChartState.SYNASTRY_CHART, SACInputProcessor.aspectOverlayStateMachine.currentState)
+                , SACInputProcessor.analysisStateMachine.currentState)
             , ChartState.NATAL_CHART, SACInputProcessor.analysisStateMachine.currentState)
         }
 
@@ -131,12 +137,15 @@ class SACComponent : IComponent, Telegraph {
         var refNatCelestialSnapshot = CelestialSnapshot(sacEarthLocation)
         var synNatCelestialSnapshot = CelestialSnapshot(sacEarthLocation)
 
-        var sacChart = Chart(Chart.getAspects(sacCelestialSnapshot, sacCelestialSnapshot, ChartState.defaultState()
-            , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState()))
-        var refNatChart = Chart(Chart.getAspects(refNatCelestialSnapshot, refNatCelestialSnapshot, ChartState.defaultState()
-            , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState()))
-        var synNatChart = Chart(Chart.getAspects(synNatCelestialSnapshot, synNatCelestialSnapshot, ChartState.defaultState()
-            , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState()))
+        var sacChart = Chart(
+            Chart.getAspects(sacCelestialSnapshot, sacCelestialSnapshot, ChartState.defaultState()
+            , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState(), AnalysisState.defaultState()))
+        var refNatChart = Chart(
+            Chart.getAspects(refNatCelestialSnapshot, refNatCelestialSnapshot, ChartState.defaultState()
+            , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState(), AnalysisState.defaultState()))
+        var synNatChart = Chart(
+            Chart.getAspects(synNatCelestialSnapshot, synNatCelestialSnapshot, ChartState.defaultState()
+            , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState(), AnalysisState.defaultState()))
 
         fun recallRefEarthLocationEntry(recallIdx : Int) {
             sacEarthLocation.tag = earthLocationArray[recallIdx].tag

@@ -1,8 +1,8 @@
 package astro.state
 
 import org.junit.jupiter.api.Test
-import river.exertion.sac.astro.AspectCelestial
-import river.exertion.sac.astro.state.*
+import river.exertion.sac.astro.base.AspectCelestial
+import river.exertion.sac.astro.Chart
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.state.AspectOverlayState
 import river.exertion.sac.console.state.AspectsState

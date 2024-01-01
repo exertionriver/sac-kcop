@@ -2,7 +2,7 @@ package swe
 
 import TestEarthLocations
 import org.junit.jupiter.api.Test
-import river.exertion.sac.astro.Celestial
+import river.exertion.sac.astro.base.Celestial
 import river.exertion.sac.astro.EarthLocation
 import river.exertion.sac.swe.Julday
 import river.exertion.sac.swe.RiseTrans

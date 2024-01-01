@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToJsonElement
 import river.exertion.sac.astro.CelestialSnapshot
+import river.exertion.sac.astro.Chart
 import river.exertion.sac.astro.EarthLocation
-import river.exertion.sac.astro.state.*
 import river.exertion.sac.astro.Value
 import river.exertion.sac.console.state.*
 import java.io.File
@@ -299,7 +299,7 @@ data class AstroAnalysisRow(val refUTC : LocalDateTime = Clock.System.now().toLo
                             timeAspectsState,
                             AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT
                             , AnalysisState.NO_ANALYSIS
-                    ).getBaseValue().avg(
+                    ).baseValue.avg(
                         Chart(
                             refSnapshot,
                             pollSnapshot,
@@ -308,7 +308,7 @@ data class AstroAnalysisRow(val refUTC : LocalDateTime = Clock.System.now().toLo
                             timeAspectsState,
                             AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT
                             , AnalysisState.NO_ANALYSIS
-                    ).getBaseValue() )
+                    ).baseValue )
                     ChartState.SYNASTRY_CHART ->
                         Chart(
                             refSnapshot,
@@ -318,7 +318,7 @@ data class AstroAnalysisRow(val refUTC : LocalDateTime = Clock.System.now().toLo
                             timeAspectsState,
                             AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT
                             , AnalysisState.NO_ANALYSIS
-                    ).getBaseValue()
+                    ).baseValue
                     ChartState.COMPOSITE_CHART ->
                         Chart(
                             refSnapshot,
@@ -328,7 +328,7 @@ data class AstroAnalysisRow(val refUTC : LocalDateTime = Clock.System.now().toLo
                             timeAspectsState,
                             AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT
                             , AnalysisState.NO_ANALYSIS
-                    ).getBaseValue()
+                    ).baseValue
                     else -> //natal
                             Chart(
                                 refSnapshot,
@@ -338,7 +338,7 @@ data class AstroAnalysisRow(val refUTC : LocalDateTime = Clock.System.now().toLo
                                 timeAspectsState,
                                 AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT
                                 , AnalysisState.NO_ANALYSIS
-                        ).getBaseValue()
+                        ).baseValue
                 }
 
                 dataRows.add(

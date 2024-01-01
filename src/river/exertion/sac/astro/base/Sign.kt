@@ -1,4 +1,4 @@
-package river.exertion.sac.astro
+package river.exertion.sac.astro.base
 
 import river.exertion.kcop.asset.view.ColorPalette
 import river.exertion.sac.Constants
