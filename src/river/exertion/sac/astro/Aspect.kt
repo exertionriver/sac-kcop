@@ -116,7 +116,7 @@ data class Aspect (val signFirst : Sign
 
     private fun getRomanticModifier() : Int {
 
-        return RomanticAnalysis.romanticCelestialAspectModifiers.firstOrNull {
+        return RomanticAnalysis.celestialAspectModifiers.firstOrNull {
             (   (   ( (it.aspectCelestialFirst == aspectCelestialFirst) && (it.aspectCelestialSecond == aspectCelestialSecond) ) ||
                     ( (it.aspectCelestialFirst == aspectCelestialSecond) && (it.aspectCelestialSecond == aspectCelestialFirst) ) )
                     && (it.aspectType == aspectAngle.aspectType) )}?.modifier ?: 0
@@ -344,6 +344,8 @@ data class Aspect (val signFirst : Sign
 
         if (aspectAngle.aspectType.isNeutral) return Value(0, 0)
 
+        if (aspectCelestialFirst.isExtendedAspect || aspectCelestialSecond.isExtendedAspect) return Value(0, 0)
+
         val weightFirst = aspectCelestialFirst.weight
         val weightSecond = aspectCelestialSecond.weight
         val weightAspect = aspectAngle.aspectType.getAspectAngleOrb(aspectOverlayState)
@@ -412,35 +414,6 @@ data class Aspect (val signFirst : Sign
         private const val defaultOrbLimit = 8.0
 
         fun calcNormAngleDiff(aspectCelestialFirstAngle : Double, aspectCelestialSecondAngle : Double) = (aspectCelestialSecondAngle - aspectCelestialFirstAngle).normalizeDeg()
-
-        fun findAspectAngle(aspectCelestialFirstAngle : Double, aspectCelestialSecondAngle : Double, orbLimit : Double) : AspectAngle {
-
-            var returnAspectAngle = AspectAngle.ASPECT_ANGLE_NONE
-            var minOrb = 360.0
-
-            val aspectCelestialAngleDiff = calcNormAngleDiff(aspectCelestialFirstAngle, aspectCelestialSecondAngle)
-//            println("findAspectAngle() aspectCelestialAngleDiff: $aspectCelestialAngleDiff")
-//            println(AspectAngle.values().filter { it.isAspectAngle() }.sortedByDescending { it.getAngleDegree() })
-
-            //iterate through aspectAngles to find one within orbLimit
-            for (aspectAngle in AspectAngle.entries.filter { it.isAspectAngle() }.sortedByDescending { it.angleDegree } ) {
-//                println("findAspectAngle() iteration: $aspectAngle, ${abs(aspectAngle.getAngleDegree() - aspectCelestialAngleDiff)}")
-
-                if (abs(aspectAngle.angleDegree - aspectCelestialAngleDiff) <= orbLimit) {
-                    val aspectAngleOrb = calcOrb(aspectAngle, aspectCelestialFirstAngle, aspectCelestialSecondAngle)
-
-//                    println("$aspectAngleOrb, $minOrb")
-
-                    if (aspectAngleOrb < minOrb) {
-                        returnAspectAngle = aspectAngle
-                        minOrb = aspectAngleOrb
-                    }
-                }
-            }
-
-//            println("selected aspectAngle:$returnAspectAngle, orb: $minOrb")
-            return returnAspectAngle
-        }
 
         fun calcOrb(aspectAngle : AspectAngle, aspectCelestialFirstAngle : Double, aspectCelestialSecondAngle : Double) =
             if (aspectAngle == AspectAngle.ASPECT_ANGLE_NONE) Constants.InvalidOrb

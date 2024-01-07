@@ -7,7 +7,7 @@ import river.exertion.sac.Constants.normalizeDeg
 import river.exertion.sac.astro.base.AspectCelestial
 import river.exertion.sac.astro.base.Celestial
 import river.exertion.sac.astro.base.CelestialHouse
-import java.util.*
+import river.exertion.sac.swe.DegMidp
 import kotlin.collections.LinkedHashMap
 
 //syn info is for transits
@@ -27,6 +27,12 @@ data class CelestialSnapshot(var refEarthLocation: EarthLocation
         , refCelestialHouseData[CelestialHouse.HOUSE_1_ASC.ordinal]
         , refCelestialData[Celestial.SUN.ordinal].celestialHouse)
 
+    fun sunMoonMidpoint() : Double =
+        DegMidp.getMidpoint(
+            refCelestialData[Celestial.SUN.ordinal].longitude,
+            refCelestialData[Celestial.MOON.ordinal].longitude
+        )
+
     fun recalc() {
         refEarthLocation.recalc()
         refCelestialHouseData = Houses.getCelestialHousesData(UtcToJd.getJulianTimeDecimal(refEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), refEarthLocation.latitude, refEarthLocation.longitude)
@@ -34,21 +40,27 @@ data class CelestialSnapshot(var refEarthLocation: EarthLocation
         refCelestialData = CalcUt.getCelestialsData(UtcToJd.getJulianTimeDecimal(refEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), refCelestialHouseData, synCelestialHouseData)
     }
 
-    fun getAspectCelestialLongitudeMap() : Map<AspectCelestial, Double> {
+    fun getAspectCelestialLongitudeMap(includeExtendedAspects : Boolean = false) : Map<AspectCelestial, Double> {
 
-        val unsortedMap : MutableMap<AspectCelestial, Double> = EnumMap(AspectCelestial::class.java)
+        val unsortedMap = mutableMapOf<AspectCelestial, Double>()
 
         for(celestial in Celestial.entries) {
-            if (getAspectCelestial(celestial) != AspectCelestial.ASPECT_CELESTIAL_NONE)
+            if ( getAspectCelestial(celestial).isChartAspectCelestial() ||
+                    ( getAspectCelestial(celestial).isExtendedAspect && includeExtendedAspects ) )
                 unsortedMap[getAspectCelestial(celestial)] = refCelestialData[celestial.ordinal].longitude
         }
 
         for(celestialHouse in CelestialHouse.entries) {
-            if (getAspectCelestial(celestialHouse) != AspectCelestial.ASPECT_CELESTIAL_NONE)
+            if ( getAspectCelestial(celestialHouse).isChartAspectCelestial() ||
+                    ( getAspectCelestial(celestialHouse).isExtendedAspect && includeExtendedAspects ) )
                 unsortedMap[getAspectCelestial(celestialHouse)] = refCelestialHouseData[celestialHouse.ordinal]
         }
 
-        unsortedMap[AspectCelestial.ASPECT_PART_OF_FORTUNE] = partOfFortuneData()
+        if (!includeExtendedAspects) {
+            unsortedMap[AspectCelestial.ASPECT_PART_OF_FORTUNE] = partOfFortuneData()
+        } else {
+            unsortedMap[AspectCelestial.ASPECT_FIRST_HOUSE] = refCelestialHouseData[CelestialHouse.HOUSE_1_ASC.ordinal]
+        }
 
         val sortedMap : MutableMap<AspectCelestial, Double> = LinkedHashMap()
         unsortedMap.entries.sortedBy { it.key }.forEach { sortedMap[it.key] = it.value }
@@ -108,6 +120,7 @@ data class CelestialSnapshot(var refEarthLocation: EarthLocation
                 Celestial.NORTH_NODE -> AspectCelestial.ASPECT_NORTH_NODE
                 Celestial.BLACK_MOON_LILITH -> AspectCelestial.ASPECT_BLACK_MOON_LILITH
                 Celestial.CHIRON -> AspectCelestial.ASPECT_CHIRON
+                Celestial.SUN_MOON_MIDPOINT -> AspectCelestial.ASPECT_SUN_MOON_MIDPOINT
                 else -> AspectCelestial.ASPECT_CELESTIAL_NONE
             }
         }
@@ -115,6 +128,7 @@ data class CelestialSnapshot(var refEarthLocation: EarthLocation
         fun getAspectCelestial(celestialHouse : CelestialHouse) : AspectCelestial {
             return when (celestialHouse) {
                 CelestialHouse.HOUSE_1_ASC -> AspectCelestial.ASPECT_ASCENDANT
+                CelestialHouse.HOUSE_7 -> AspectCelestial.ASPECT_SEVENTH_HOUSE
                 CelestialHouse.HOUSE_10_MC -> AspectCelestial.ASPECT_MIDHEAVEN
                 CelestialHouse.VERTEX -> AspectCelestial.ASPECT_VERTEX
                 else -> AspectCelestial.ASPECT_CELESTIAL_NONE

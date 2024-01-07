@@ -29,36 +29,65 @@ object CalcUt {
             Celestial.PALLAS -> SE_PALLAS
             Celestial.JUNO -> SE_JUNO
             Celestial.VESTA -> SE_VESTA
+            Celestial.SUN_MOON_MIDPOINT -> SE_SUN
         }
     }
 
-    private fun getCelestialData(julianUtcTimeDecimal : Double, celestialIdx : Int, celestialHousesData : DoubleArray, synCelestialHousesData : DoubleArray, aspectCelestialOverride: AspectCelestial = AspectCelestial.ASPECT_CELESTIAL_NONE, aspectCelestialLongOverride : Double = 0.0) : CelestialData {
+    private fun getCelestialData(julianUtcTimeDecimal : Double, celestialIdx : Int, celestialHousesData : DoubleArray, synCelestialHousesData : DoubleArray) : CelestialData {
 
-        var calcUtDatas = DoubleArray(6)
         var errorOut = StringBuffer()
-        var retVal = 0
 
         val celestialData = DoubleArray(CalcUtDatas.EXT_SIZE) //for house and transitHouse data
 
-        retVal = Swe.sw.swe_calc_ut(julianUtcTimeDecimal, getSweCelestialIdx(celestialIdx), SEFLG_SPEED, calcUtDatas, errorOut)
-        if (retVal < 0) println("error: $errorOut")
+        if (celestialIdx != Celestial.SUN_MOON_MIDPOINT.ordinal) {
+            var calcUtDatas = DoubleArray(6)
+            var retVal = 0
 
-        for (data in CalcUtDatas.entries) {
-            celestialData[data.ordinal] = calcUtDatas[data.ordinal]
+            retVal = Swe.sw.swe_calc_ut(julianUtcTimeDecimal, getSweCelestialIdx(celestialIdx), SEFLG_SPEED, calcUtDatas, errorOut)
+            if (retVal < 0) println("error: $errorOut")
+
+            for (data in CalcUtDatas.entries) {
+                celestialData[data.ordinal] = calcUtDatas[data.ordinal]
 //            println (data.ordinal.toString() + ":" +calcUtDatas[data.ordinal].toString())
-        }
+            }
 
-        celestialData[CalcUtDatas.HOUSE_DATA_IDX] = CelestialHouse.getHouseData(calcUtDatas[CalcUtDatas.LONGITUDE_DATA.ordinal], celestialHousesData)
-        celestialData[CalcUtDatas.TRANSIT_HOUSE_DATA_IDX] = CelestialHouse.getHouseData(calcUtDatas[CalcUtDatas.LONGITUDE_DATA.ordinal], synCelestialHousesData)
+            celestialData[CalcUtDatas.HOUSE_DATA_IDX] = CelestialHouse.getHouseData(celestialData[CalcUtDatas.LONGITUDE_DATA.ordinal], celestialHousesData)
+            celestialData[CalcUtDatas.TRANSIT_HOUSE_DATA_IDX] = CelestialHouse.getHouseData(celestialData[CalcUtDatas.LONGITUDE_DATA.ordinal], synCelestialHousesData)
+        } else {
+            var sunCalcUtDatas = DoubleArray(6)
+            var moonCalcUtDatas = DoubleArray(6)
+
+            var sunRetVal = Swe.sw.swe_calc_ut(julianUtcTimeDecimal, SE_SUN, SEFLG_SPEED, sunCalcUtDatas, errorOut)
+            if (sunRetVal < 0) println("error: $errorOut")
+
+            var moonRetVal = Swe.sw.swe_calc_ut(julianUtcTimeDecimal, SE_MOON, SEFLG_SPEED, moonCalcUtDatas, errorOut)
+            if (moonRetVal < 0) println("error: $errorOut")
+
+            celestialData[CalcUtDatas.LONGITUDE_DATA.ordinal] = DegMidp.getMidpoint(
+                sunCalcUtDatas[CalcUtDatas.LONGITUDE_DATA.ordinal],
+                moonCalcUtDatas[CalcUtDatas.LONGITUDE_DATA.ordinal]
+            )
+
+            celestialData[CalcUtDatas.LATITUDE_DATA.ordinal] = DegMidp.getMidpoint(
+                sunCalcUtDatas[CalcUtDatas.LATITUDE_DATA.ordinal],
+                moonCalcUtDatas[CalcUtDatas.LATITUDE_DATA.ordinal]
+            )
+
+            (CalcUtDatas.DISTANCE_DATA.ordinal .. CalcUtDatas.DIST_SPEED_DATA.ordinal).forEach { idx ->
+                celestialData[idx] = sunCalcUtDatas[idx]
+            }
+            celestialData[CalcUtDatas.HOUSE_DATA_IDX] = CelestialHouse.getHouseData(celestialData[CalcUtDatas.LONGITUDE_DATA.ordinal], celestialHousesData)
+
+        }
 
 //        println("celesitalIdx: " + celestialIdx + "house: " + celestialData[CalcUtDatas.HOUSE_DATA_IDX] + "transit house: " + celestialData[CalcUtDatas.TRANSIT_HOUSE_DATA_IDX])
 
         return CelestialData(celestialData)
     }
 
-    fun getCelestialsData(julianUtcTimeDecimal : Double, celestialHousesData : DoubleArray, synCelestialHousesData : DoubleArray = celestialHousesData, aspectCelestialOverride: AspectCelestial = AspectCelestial.ASPECT_CELESTIAL_NONE, aspectCelestialLongOverride : Double = 0.0) : Array<CelestialData> {
+    fun getCelestialsData(julianUtcTimeDecimal : Double, celestialHousesData : DoubleArray, synCelestialHousesData : DoubleArray = celestialHousesData) : Array<CelestialData> {
 
-        return Array(Celestial.entries.size) { celestialIdx:Int -> getCelestialData(julianUtcTimeDecimal, celestialIdx, celestialHousesData, synCelestialHousesData, aspectCelestialOverride, aspectCelestialLongOverride) }
+        return Array(Celestial.entries.size) { celestialIdx:Int -> getCelestialData(julianUtcTimeDecimal, celestialIdx, celestialHousesData, synCelestialHousesData) }
     }
 
     private fun getCompositeCelestialData(celestialIdx : Int, compositeCelestialHousesData : DoubleArray, firstCelestialsData: Array<CelestialData>, secondCelestialsData: Array<CelestialData>) : CelestialData {

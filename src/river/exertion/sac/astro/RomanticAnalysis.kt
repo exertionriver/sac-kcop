@@ -16,7 +16,7 @@ object RomanticAnalysis {
     At most 3 in the weight -3 category
     At least 3 but no more than 7 in the weight -2 category [Note that it IS desirable to have some challenging aspects in a relationship.]
 */
-        val affinityCelestialAspectModifiers: List<CelestialAspectModifier> = listOf(
+        val extendedCelestialAspectModifiers: List<CelestialAspectModifier> = listOf(
 
 //Strongest Compatibility in Synastry (weight 4) // "Blue Ribbons"
 
@@ -26,7 +26,7 @@ object RomanticAnalysis {
             , CelestialAspectModifier(AspectCelestial.ASPECT_SUN, AspectCelestial.ASPECT_SUN_MOON_MIDPOINT, AspectType.SQUARE, 4)
             , CelestialAspectModifier(AspectCelestial.ASPECT_SUN, AspectCelestial.ASPECT_SUN_MOON_MIDPOINT, AspectType.SEMISQUARE, 4)
 //    Sun in 7th house 4
-            , CelestialAspectModifier(AspectCelestial.ASPECT_SUN, AspectCelestial.ASPECT_SEVENTH_HOUSE, AspectType.CONJUNCTION, 4)
+            , CelestialAspectModifier(AspectCelestial.ASPECT_SEVENTH_HOUSE, AspectCelestial.ASPECT_SUN, AspectType.CONTAINS, 4)
 //    Moon hard aspect (conjunct, semi-square, square, opposition) Sun/Moon midpoint 4
             , CelestialAspectModifier(AspectCelestial.ASPECT_MOON, AspectCelestial.ASPECT_SUN_MOON_MIDPOINT, AspectType.CONJUNCTION, 4)
             , CelestialAspectModifier(AspectCelestial.ASPECT_MOON, AspectCelestial.ASPECT_SUN_MOON_MIDPOINT, AspectType.OPPOSITION, 4)
@@ -36,18 +36,18 @@ object RomanticAnalysis {
 //Very Strong Compatibility Factors in Synastry (weight 3)
 
 //    Sun in 1st house 3
-            , CelestialAspectModifier(AspectCelestial.ASPECT_SUN, AspectCelestial.ASPECT_FIRST_HOUSE, AspectType.CONJUNCTION, 3)
+            , CelestialAspectModifier(AspectCelestial.ASPECT_FIRST_HOUSE, AspectCelestial.ASPECT_SUN, AspectType.CONTAINS, 3)
 //    Moon in 7th house 3
-            , CelestialAspectModifier(AspectCelestial.ASPECT_MOON, AspectCelestial.ASPECT_SEVENTH_HOUSE, AspectType.CONJUNCTION, 3)
+            , CelestialAspectModifier(AspectCelestial.ASPECT_SEVENTH_HOUSE, AspectCelestial.ASPECT_MOON, AspectType.CONTAINS, 3)
 //    Moon in 1st house 3
-            , CelestialAspectModifier(AspectCelestial.ASPECT_MOON, AspectCelestial.ASPECT_FIRST_HOUSE, AspectType.CONJUNCTION, 3)
+            , CelestialAspectModifier(AspectCelestial.ASPECT_FIRST_HOUSE, AspectCelestial.ASPECT_MOON, AspectType.CONTAINS, 3)
 //    Venus hard aspect (conjunct, semi-square, square, opposition) Sun/Moon midpoint 3
             , CelestialAspectModifier(AspectCelestial.ASPECT_VENUS, AspectCelestial.ASPECT_SUN_MOON_MIDPOINT, AspectType.CONJUNCTION, 3)
             , CelestialAspectModifier(AspectCelestial.ASPECT_VENUS, AspectCelestial.ASPECT_SUN_MOON_MIDPOINT, AspectType.OPPOSITION, 3)
             , CelestialAspectModifier(AspectCelestial.ASPECT_VENUS, AspectCelestial.ASPECT_SUN_MOON_MIDPOINT, AspectType.SQUARE, 3)
             , CelestialAspectModifier(AspectCelestial.ASPECT_VENUS, AspectCelestial.ASPECT_SUN_MOON_MIDPOINT, AspectType.SEMISQUARE, 3)
 //    Venus in 7th house 3
-            , CelestialAspectModifier(AspectCelestial.ASPECT_VENUS, AspectCelestial.ASPECT_SEVENTH_HOUSE, AspectType.CONJUNCTION, 3)
+            , CelestialAspectModifier(AspectCelestial.ASPECT_SEVENTH_HOUSE, AspectCelestial.ASPECT_VENUS, AspectType.CONTAINS, 3)
 //    Mars hard aspect (conjunct, semi-square, square, opposition) Sun/Moon midpoint 3
             , CelestialAspectModifier(AspectCelestial.ASPECT_MARS, AspectCelestial.ASPECT_SUN_MOON_MIDPOINT, AspectType.CONJUNCTION, 3)
             , CelestialAspectModifier(AspectCelestial.ASPECT_MARS, AspectCelestial.ASPECT_SUN_MOON_MIDPOINT, AspectType.OPPOSITION, 3)
@@ -59,7 +59,7 @@ object RomanticAnalysis {
             , CelestialAspectModifier(AspectCelestial.ASPECT_ASCENDANT, AspectCelestial.ASPECT_SUN_MOON_MIDPOINT, AspectType.SQUARE, 3)
             , CelestialAspectModifier(AspectCelestial.ASPECT_ASCENDANT, AspectCelestial.ASPECT_SUN_MOON_MIDPOINT, AspectType.SEMISQUARE, 3)
 //    Ascendant in 7th house 3
-            , CelestialAspectModifier(AspectCelestial.ASPECT_ASCENDANT, AspectCelestial.ASPECT_SEVENTH_HOUSE, AspectType.CONJUNCTION, 3)
+            , CelestialAspectModifier(AspectCelestial.ASPECT_ASCENDANT, AspectCelestial.ASPECT_SEVENTH_HOUSE, AspectType.CONTAINS, 3)
 //    Vertex hard aspect (conjunct, semi-square, square, opposition) Sun/Moon midpoint 3
             , CelestialAspectModifier(AspectCelestial.ASPECT_VERTEX, AspectCelestial.ASPECT_SUN_MOON_MIDPOINT, AspectType.CONJUNCTION, 3)
             , CelestialAspectModifier(AspectCelestial.ASPECT_VERTEX, AspectCelestial.ASPECT_SUN_MOON_MIDPOINT, AspectType.OPPOSITION, 3)
@@ -69,12 +69,12 @@ object RomanticAnalysis {
 //Good Compatibility Factors in Synastry (weight 2)
 
 //    Venus in 1st house 2
-            , CelestialAspectModifier(AspectCelestial.ASPECT_VENUS, AspectCelestial.ASPECT_FIRST_HOUSE, AspectType.CONJUNCTION, 2)
+            , CelestialAspectModifier(AspectCelestial.ASPECT_FIRST_HOUSE, AspectCelestial.ASPECT_VENUS, AspectType.CONTAINS, 2)
 //    Jupiter in 7th house 2
-            , CelestialAspectModifier(AspectCelestial.ASPECT_JUPITER, AspectCelestial.ASPECT_SEVENTH_HOUSE, AspectType.CONJUNCTION, 2)
+            , CelestialAspectModifier(AspectCelestial.ASPECT_SEVENTH_HOUSE, AspectCelestial.ASPECT_JUPITER,  AspectType.CONTAINS, 2)
         )
 
-        val romanticCelestialAspectModifiers: List<CelestialAspectModifier> = mutableListOf(
+        val celestialAspectModifiers: List<CelestialAspectModifier> = mutableListOf(
 
 //Strongest Compatibility in Synastry (weight 4) // "Blue Ribbons"
 
@@ -632,7 +632,7 @@ object RomanticAnalysis {
 //    Saturn square or opposition Saturn -1
             , CelestialAspectModifier(AspectCelestial.ASPECT_SATURN, AspectCelestial.ASPECT_SATURN, AspectType.OPPOSITION, -1)
             , CelestialAspectModifier(AspectCelestial.ASPECT_SATURN, AspectCelestial.ASPECT_SATURN, AspectType.SQUARE, -1)
-        ).plus(affinityCelestialAspectModifiers).toList()
+        ).plus(extendedCelestialAspectModifiers).toList()
 
 }
 

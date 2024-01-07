@@ -47,33 +47,33 @@ object TestChart {
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         println("natal Chart:")
-        for (verticalIdx in 0 until AspectCelestial.getChartSize())
+        for (verticalIdx in 0 until AspectCelestial.chartDimensionSize())
             for (horizontalIdx in 0..verticalIdx) {
                 println("[$horizontalIdx, $verticalIdx]: ${natalChart.chartRows[horizontalIdx].rowAspects[verticalIdx]}")
             }
         //extended aspects stored in last row
-        natalChart.chartRows[AspectCelestial.getChartSize()].rowAspects.forEachIndexed { idx, it -> println( "[$idx, ${AspectCelestial.getChartSize()}]: $it") }
+        natalChart.chartRows[AspectCelestial.chartDimensionSize()].rowAspects.forEachIndexed { idx, it -> println( "[$idx, ${AspectCelestial.chartDimensionSize()}]: $it") }
 
         val compChart = Chart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.COMPOSITE_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_NATCOMP_OVERLAY_DEFAULT)
 
         println("comp Chart:")
-        for (verticalIdx in 0 until AspectCelestial.getChartSize())
+        for (verticalIdx in 0 until AspectCelestial.chartDimensionSize())
             for (horizontalIdx in 0..verticalIdx) {
                 println("[$horizontalIdx, $verticalIdx]: ${compChart.chartRows[horizontalIdx].rowAspects[verticalIdx]}")
             }
         //extended aspects stored in last row
-        compChart.chartRows[AspectCelestial.getChartSize()].rowAspects.forEachIndexed { idx, it -> println( "[$idx, ${AspectCelestial.getChartSize()}]: $it") }
+        compChart.chartRows[AspectCelestial.chartDimensionSize()].rowAspects.forEachIndexed { idx, it -> println( "[$idx, ${AspectCelestial.chartDimensionSize()}]: $it") }
 
         val synChart = Chart(SACComponent.refNatCelestialSnapshot, SACComponent.refNatCelestialSnapshot, ChartState.SYNASTRY_CHART
             , AspectsState.ALL_ASPECTS, TimeAspectsState.TIME_ASPECTS_ENABLED, AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT)
 
         println("syn Chart:")
-        for (verticalIdx in 0 until AspectCelestial.getChartSize())
-            for (horizontalIdx in 0 until AspectCelestial.getChartSize()) {
+        for (verticalIdx in 0 until AspectCelestial.chartDimensionSize())
+            for (horizontalIdx in 0 until AspectCelestial.chartDimensionSize()) {
                 println("[$horizontalIdx, $verticalIdx]: ${synChart.chartRows[horizontalIdx].rowAspects[verticalIdx]}")
             }
         //extended aspects stored in last row
-        synChart.chartRows[AspectCelestial.getChartSize()].rowAspects.forEachIndexed { idx, it -> println( "[$idx, ${AspectCelestial.getChartSize()}]: $it") }
+        synChart.chartRows[AspectCelestial.chartDimensionSize()].rowAspects.forEachIndexed { idx, it -> println( "[$idx, ${AspectCelestial.chartDimensionSize()}]: $it") }
     }
 }

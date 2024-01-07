@@ -121,7 +121,7 @@ enum class AspectCelestial {
     , ASPECT_CELESTIAL_NONE
 //extended aspects are not rendered on chart but can affect detail sums, as in the case of romantic aspects
     , ASPECT_SUN_MOON_MIDPOINT {
-        override val label = Celestial.SUN.label + "/" + Celestial.MOON.label
+        override val label = Celestial.SUN_MOON_MIDPOINT.label
         override val isExtendedAspect = true
         override val weight = 10.0
     }
@@ -159,6 +159,7 @@ enum class AspectCelestial {
         fun fromOrdinal(ordinal: Int) = entries.firstOrNull { it.ordinal == ordinal }
         fun fromName(name: String) = entries.firstOrNull { it.name == name }
 
-        fun getChartSize() = entries.filter { !it.isExtendedAspect && it.isChartAspectCelestial() }.size
+        val chartAspectCelestials = entries.filter { it.isChartAspectCelestial() }
+        val chartDimensionSize = chartAspectCelestials.size
     }
 }

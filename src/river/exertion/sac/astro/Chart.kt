@@ -22,8 +22,6 @@ class Chart (val chartAspects : List<Aspect>,  val chartState: ChartState = Char
             timeAspectsState,
             aspectOverlayState,
             analysisState
-        ).plus(
-            getExtendedAspects(firstCelestialSnapshot, secondCelestialSnapshot, chartState, aspectsState, timeAspectsState, aspectOverlayState, analysisState)
         )
     , chartState, analysisState
     )
@@ -120,33 +118,44 @@ class Chart (val chartAspects : List<Aspect>,  val chartState: ChartState = Char
                 }
             }
 
-            return returnAspects
+            return if (analysisState == AnalysisState.ROMANTIC_ANALYSIS)
+                returnAspects.plus(
+                    getExtendedAspects(firstCelestialSnapshot, secondCelestialSnapshot, chartState, aspectsState, timeAspectsState, aspectOverlayState, analysisState)
+                )
+            else returnAspects
         }
 
         fun getExtendedAspects(firstCelestialSnapshot : CelestialSnapshot, secondCelestialSnapshot : CelestialSnapshot
                                , chartState: ChartState, aspectsState: AspectsState, timeAspectsState: TimeAspectsState, aspectOverlayState: AspectOverlayState, analysisState : AnalysisState
         ) : List<Aspect> {
 
-            val firstCelestialAspectMap = if (chartState != ChartState.COMPOSITE_CHART) firstCelestialSnapshot.getAspectCelestialLongitudeMap()
-            else CelestialSnapshot.getCompositeSnapshot(firstCelestialSnapshot, secondCelestialSnapshot).getAspectCelestialLongitudeMap()
-            val secondCelestialAspectMap = if (chartState != ChartState.COMPOSITE_CHART) secondCelestialSnapshot.getAspectCelestialLongitudeMap()
-            else CelestialSnapshot.getCompositeSnapshot(firstCelestialSnapshot, secondCelestialSnapshot).getAspectCelestialLongitudeMap()
+            val firstCelestialAspectMap = if (chartState != ChartState.COMPOSITE_CHART) firstCelestialSnapshot.getAspectCelestialLongitudeMap(includeExtendedAspects = true)
+            else CelestialSnapshot.getCompositeSnapshot(firstCelestialSnapshot, secondCelestialSnapshot).getAspectCelestialLongitudeMap(includeExtendedAspects = true)
+            val secondCelestialAspectMap = if (chartState != ChartState.COMPOSITE_CHART) secondCelestialSnapshot.getAspectCelestialLongitudeMap(includeExtendedAspects = true)
+            else CelestialSnapshot.getCompositeSnapshot(firstCelestialSnapshot, secondCelestialSnapshot).getAspectCelestialLongitudeMap(includeExtendedAspects = true)
 
-            val returnAspects : MutableList<Aspect> = ArrayList()
-            var returnAspectsIdx = 0
+            val returnAspects : MutableList<Aspect> = mutableListOf()
 
-            var firstExtendedCelestialLongitude : Double
-            var secondExtendedCelestialLongitude : Double
+            var firstExtendedCelestialLongitude : Double?
+            var secondExtendedCelestialLongitude : Double?
             var aspect : Aspect
 
-            for(extendedAspect in RomanticAnalysis.affinityCelestialAspectModifiers) {
-                firstExtendedCelestialLongitude = firstCelestialAspectMap[extendedAspect.aspectCelestialFirst]!!
+            for(extendedAspect in RomanticAnalysis.extendedCelestialAspectModifiers) {
+                firstExtendedCelestialLongitude = firstCelestialAspectMap[extendedAspect.aspectCelestialFirst]
+
+//                print("checking ${extendedAspect.aspectCelestialFirst}")
+                if (firstExtendedCelestialLongitude == null) {
+//                    println(": not found")
+
+                    continue
+                }
 
                 secondExtendedCelestialLongitude = when (extendedAspect.aspectCelestialSecond) {
-                    AspectCelestial.ASPECT_SUN_MOON_MIDPOINT -> DegMidp.getMidpoint(
-                        secondCelestialAspectMap[AspectCelestial.ASPECT_SUN]!!,
-                        secondCelestialAspectMap[AspectCelestial.ASPECT_MOON]!!
-                    )
+                    AspectCelestial.ASPECT_SUN_MOON_MIDPOINT ->
+                        secondCelestialAspectMap[AspectCelestial.ASPECT_SUN_MOON_MIDPOINT]
+                    AspectCelestial.ASPECT_ASCENDANT ->
+                        secondCelestialAspectMap[AspectCelestial.ASPECT_ASCENDANT]
+                    //TODO: implement separate 'contains' logic for an aspectCelestial in a house
                     AspectCelestial.ASPECT_FIRST_HOUSE -> DegMidp.getMidpoint(
                         secondCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_1_ASC.ordinal],
                         secondCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_2.ordinal]
@@ -155,7 +164,14 @@ class Chart (val chartAspects : List<Aspect>,  val chartState: ChartState = Char
                         secondCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_7.ordinal],
                         secondCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_8.ordinal]
                     )
-                    else -> secondCelestialAspectMap[extendedAspect.aspectCelestialSecond]!!
+                    else -> secondCelestialAspectMap[extendedAspect.aspectCelestialSecond]
+                }
+
+//                print(" against ${extendedAspect.aspectCelestialSecond}")
+                if (secondExtendedCelestialLongitude == null) {
+//                    println(": not found")
+
+                    continue
                 }
 
                 aspect = Aspect(
@@ -169,29 +185,46 @@ class Chart (val chartAspects : List<Aspect>,  val chartState: ChartState = Char
                     )
 
                 if (aspect.aspectAngle.aspectType == extendedAspect.aspectType) {
+//                    println(": found $aspect")
 
-                    returnAspects.add(returnAspectsIdx++, aspect)
+                    returnAspects.add(aspect)
+                } else {
+//                    println(": not found")
                 }
 
                 if (chartState == ChartState.SYNASTRY_CHART) {
                     //check the reverse
                     firstExtendedCelestialLongitude = when (extendedAspect.aspectCelestialSecond) {
-                        AspectCelestial.ASPECT_SUN_MOON_MIDPOINT -> DegMidp.getMidpoint(
-                            firstCelestialAspectMap[AspectCelestial.ASPECT_SUN]!!,
-                            firstCelestialAspectMap[AspectCelestial.ASPECT_MOON]!!
-                        )
+                        AspectCelestial.ASPECT_SUN_MOON_MIDPOINT ->
+                            secondCelestialAspectMap[AspectCelestial.ASPECT_SUN_MOON_MIDPOINT]
+                        AspectCelestial.ASPECT_ASCENDANT ->
+                            secondCelestialAspectMap[AspectCelestial.ASPECT_ASCENDANT]
                         AspectCelestial.ASPECT_FIRST_HOUSE -> DegMidp.getMidpoint(
-                            firstCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_1_ASC.ordinal],
-                            firstCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_2.ordinal]
+                            secondCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_1_ASC.ordinal],
+                            secondCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_2.ordinal]
                         )
                         AspectCelestial.ASPECT_SEVENTH_HOUSE -> DegMidp.getMidpoint(
-                            firstCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_7.ordinal],
-                            firstCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_8.ordinal]
+                            secondCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_7.ordinal],
+                            secondCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_8.ordinal]
                         )
-                        else -> firstCelestialAspectMap[extendedAspect.aspectCelestialSecond]!!
+                        else -> secondCelestialAspectMap[extendedAspect.aspectCelestialSecond]
                     }
 
-                    secondExtendedCelestialLongitude = secondCelestialAspectMap[extendedAspect.aspectCelestialFirst]!!
+//                    print("checking ${extendedAspect.aspectCelestialSecond}")
+                    if (firstExtendedCelestialLongitude == null) {
+//                        println(": not found")
+
+                        continue
+                    }
+
+                    secondExtendedCelestialLongitude = secondCelestialAspectMap[extendedAspect.aspectCelestialFirst]
+
+//                    println(" against ${extendedAspect.aspectCelestialFirst}")
+                    if (secondExtendedCelestialLongitude == null) {
+//                        println(": not found")
+
+                        continue
+                    }
 
                     aspect = Aspect(
                             Sign.signFromCelestialLongitude(firstExtendedCelestialLongitude)
@@ -204,15 +237,20 @@ class Chart (val chartAspects : List<Aspect>,  val chartState: ChartState = Char
                         )
 
                     if (aspect.aspectAngle.aspectType == extendedAspect.aspectType) {
+//                        println("found $aspect")
 
-                        returnAspects.add(returnAspectsIdx++, aspect)
+                        returnAspects.add(aspect)
                     }
                 }
 
             }
+
+//            println("aspects found:")
+//            returnAspects.forEach { println(it) }
+
             return returnAspects
         }
-
+/*
         fun getAspectsChart(chartAspects : List<Aspect>) : List<ChartRow> {
 
             val returnAspectsChart : MutableList<ChartRow> = ArrayList()
@@ -239,7 +277,7 @@ class Chart (val chartAspects : List<Aspect>,  val chartState: ChartState = Char
 
             return returnAspectsChart
         }
-
+*/
 
 /*
         fun getAspectsStateAspects(
@@ -381,26 +419,5 @@ class Chart (val chartAspects : List<Aspect>,  val chartState: ChartState = Char
             return returnAspects.toTypedArray()
         }
 */
-        fun getAspectsChart(chartAspects: Array<Aspect>): Array<ChartRow> {
-
-            val returnAspectsChart: MutableList<ChartRow> = ArrayList()
-
-            for (verticalAspectCelestial in AspectCelestial.entries.filter { it.isChartAspectCelestial() }) {
-
-                val chartRow: MutableList<Aspect> = mutableListOf()
-
-                for (horizontalAspectCelestial in AspectCelestial.entries.filter { it.isChartAspectCelestial() }) {
-
-                    val chartAspect = chartAspects.firstOrNull {
-                        (it.aspectCelestialFirst == verticalAspectCelestial) && (it.aspectCelestialSecond == horizontalAspectCelestial)
-                    } ?: Aspect.getEmptyAspect(verticalAspectCelestial, horizontalAspectCelestial)
-
-                    chartRow.add(horizontalAspectCelestial.ordinal, chartAspect)
-                }
-                returnAspectsChart.add(verticalAspectCelestial.ordinal, ChartRow(chartRow))
-            }
-
-            return returnAspectsChart.toTypedArray()
-        }
     }
 }

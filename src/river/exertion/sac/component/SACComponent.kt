@@ -53,40 +53,40 @@ class SACComponent : IComponent, Telegraph {
 
         if (!compositeNoRecalc) sacCelestialSnapshot.recalc()
 
-        //TODO: implement recalc for StateChart and ValueChart
+        //TODO: implement recalc for chart
         sacChart = Chart(
             Chart.getAspects(
-            refNatCelestialSnapshot
-            , if (synEarthLocation != null) synNatCelestialSnapshot else refNatCelestialSnapshot
-            , SACInputProcessor.chartStateMachine.currentState
-            , SACInputProcessor.aspectsStateMachine.currentState
-            , SACInputProcessor.timeAspectsStateMachine.currentState
-            , SACInputProcessor.aspectOverlayStateMachine.currentState
-            , SACInputProcessor.analysisStateMachine.currentState)
-        , SACInputProcessor.chartStateMachine.currentState, SACInputProcessor.analysisStateMachine.currentState)
+                refNatCelestialSnapshot
+                , if (synEarthLocation != null) synNatCelestialSnapshot else refNatCelestialSnapshot
+                , SACInputProcessor.chartStateMachine.currentState
+                , SACInputProcessor.aspectsStateMachine.currentState
+                , SACInputProcessor.timeAspectsStateMachine.currentState
+                , SACInputProcessor.aspectOverlayStateMachine.currentState
+                , SACInputProcessor.analysisStateMachine.currentState)
+            , SACInputProcessor.chartStateMachine.currentState, SACInputProcessor.analysisStateMachine.currentState)
 
         refNatChart = Chart(
             Chart.getAspects(
-            refNatCelestialSnapshot
-            , refNatCelestialSnapshot
-            , ChartState.NATAL_CHART
-            , SACInputProcessor.aspectsStateMachine.currentState
-            , SACInputProcessor.timeAspectsStateMachine.currentState
-            , AspectOverlayState.toggleState(ChartState.SYNASTRY_CHART, SACInputProcessor.aspectOverlayStateMachine.currentState)
-            , SACInputProcessor.analysisStateMachine.currentState)
-        , ChartState.NATAL_CHART, SACInputProcessor.analysisStateMachine.currentState)
-
-        if (synEarthLocation != null) {
-            synNatChart = Chart(
-                Chart.getAspects(
-                synNatCelestialSnapshot
-                , synNatCelestialSnapshot
+                refNatCelestialSnapshot
+                , refNatCelestialSnapshot
                 , ChartState.NATAL_CHART
                 , SACInputProcessor.aspectsStateMachine.currentState
                 , SACInputProcessor.timeAspectsStateMachine.currentState
                 , AspectOverlayState.toggleState(ChartState.SYNASTRY_CHART, SACInputProcessor.aspectOverlayStateMachine.currentState)
                 , SACInputProcessor.analysisStateMachine.currentState)
             , ChartState.NATAL_CHART, SACInputProcessor.analysisStateMachine.currentState)
+
+        if (synEarthLocation != null) {
+            synNatChart = Chart(
+                Chart.getAspects(
+                    synNatCelestialSnapshot
+                    , synNatCelestialSnapshot
+                    , ChartState.NATAL_CHART
+                    , SACInputProcessor.aspectsStateMachine.currentState
+                    , SACInputProcessor.timeAspectsStateMachine.currentState
+                    , AspectOverlayState.toggleState(ChartState.SYNASTRY_CHART, SACInputProcessor.aspectOverlayStateMachine.currentState)
+                    , SACInputProcessor.analysisStateMachine.currentState)
+                , ChartState.NATAL_CHART, SACInputProcessor.analysisStateMachine.currentState)
         }
 
         dataChanged = false

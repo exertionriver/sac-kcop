@@ -58,6 +58,9 @@ enum class Celestial {
     , VESTA {
         override val label = Constants.SYM_VESTA
     }
+    , SUN_MOON_MIDPOINT {
+        override val label = Constants.SYM_SUN + "/" + Constants.SYM_MOON
+    }
     ;
 
     abstract val label : String

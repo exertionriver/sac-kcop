@@ -181,6 +181,12 @@ enum class AspectType {
         }
     }
     , ASPECT_NONE
+    , CONTAINS { //used for houses
+        override fun angleDegree() = AspectAngle.CONJUNCTION_0.angleDegree
+        override val label = Constants.SYM_CONTAINS
+        override val isPositive = true
+        override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double = 15.0 //evaluated from house midpoint
+    }
     ;
     open val isMajor: Boolean = false
     open val isMinor: Boolean = false
