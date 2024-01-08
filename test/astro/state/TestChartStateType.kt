@@ -1,9 +1,6 @@
 package astro.state
 
 import org.junit.jupiter.api.Test
-import river.exertion.sac.console.state.ChartStateType
-import river.exertion.sac.console.state.ChartStateType.Companion.decodeChartStateType
-import river.exertion.sac.console.state.ChartStateType.Companion.encodeChartStateType
 import kotlin.test.assertEquals
 
 object TestChartStateType {

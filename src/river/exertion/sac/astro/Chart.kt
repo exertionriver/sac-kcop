@@ -39,8 +39,56 @@ class Chart (val chartAspects : List<Aspect>,  val firstCelestialSnapshot: Celes
     val modValue = Value(chartAspects.sortFilterValueAspects().map { it.modValue.positive }.reduce { acc, modPositive -> acc + modPositive },
         chartAspects.sortFilterValueAspects().map { it.modValue.negative }.reduce { acc, modNegative -> acc + modNegative } )
 
-    fun netValue() = Value(chartAspects.sortFilterValueAspects().map { it.netValue().positive }.reduce { acc, basePositive -> acc + basePositive },
-        chartAspects.sortFilterValueAspects().map { it.netValue().negative }.reduce { acc, baseNegative -> acc + baseNegative } )
+    fun netValue() = Value(chartAspects.sortFilterValueAspects().map { it.netValue().positive }.reduce { acc, netPositive -> acc + netPositive },
+        chartAspects.sortFilterValueAspects().map { it.netValue().negative }.reduce { acc, netNegative -> acc + netNegative } )
+
+    fun analysisAppreciationValue() = if (analysisState == AnalysisState.CHARACTER_ANALYSIS) {
+            Value(chartAspects.sortFilterValueAspects().filter {
+                it.aspectValueType.chartValueType == ChartValueType.APPRECIATION
+            }.map { it.baseValue.positive }.reduceOrNull { acc, basePositive -> acc + basePositive } ?: 0
+                ,chartAspects.sortFilterValueAspects().filter {
+                    it.aspectValueType.chartValueType == ChartValueType.APPRECIATION
+                }.map { it.baseValue.negative }.reduceOrNull { acc, baseNegative -> acc + baseNegative } ?: 0
+            )
+        } else {
+            Value(0, 0)
+        }
+
+    fun analysisAffinityValue() = if (analysisState == AnalysisState.CHARACTER_ANALYSIS) {
+            Value(chartAspects.sortFilterValueAspects().filter {
+                it.aspectValueType.chartValueType == ChartValueType.AFFINITY
+            }.map { it.baseValue.positive }.reduceOrNull { acc, basePositive -> acc + basePositive } ?: 0
+                ,chartAspects.sortFilterValueAspects().filter {
+                    it.aspectValueType.chartValueType == ChartValueType.AFFINITY
+                }.map { it.baseValue.negative }.reduceOrNull { acc, baseNegative -> acc + baseNegative } ?: 0
+            )
+        } else {
+            Value(0, 0)
+        }
+
+    fun analysisCommonalityValue() = if (analysisState == AnalysisState.CHARACTER_ANALYSIS) {
+            Value(chartAspects.sortFilterValueAspects().filter {
+                it.aspectValueType.chartValueType == ChartValueType.COMMONALITY
+            }.map { it.baseValue.positive }.reduceOrNull { acc, basePositive -> acc + basePositive } ?: 0
+            ,chartAspects.sortFilterValueAspects().filter {
+                it.aspectValueType.chartValueType == ChartValueType.COMMONALITY
+            }.map { it.baseValue.negative }.reduceOrNull { acc, baseNegative -> acc + baseNegative } ?: 0
+        )
+    } else {
+        Value(0, 0)
+    }
+
+    fun analysisCompatibilityValue() = if (analysisState == AnalysisState.CHARACTER_ANALYSIS) {
+            Value(chartAspects.sortFilterValueAspects().filter {
+                it.aspectValueType.chartValueType == ChartValueType.COMPATIBILITY
+            }.map { it.baseValue.positive }.reduceOrNull { acc, basePositive -> acc + basePositive } ?: 0
+                ,chartAspects.sortFilterValueAspects().filter {
+                    it.aspectValueType.chartValueType == ChartValueType.COMPATIBILITY
+                }.map { it.baseValue.negative }.reduceOrNull { acc, baseNegative -> acc + baseNegative } ?: 0
+            )
+        } else {
+            Value(0, 0)
+        }
 
     fun getAspects() : List<Aspect> =
         chartAspects.filter { it.aspectAngle != AspectAngle.ASPECT_ANGLE_NONE }.sortedBy { it.aspectCelestialSecond }.sortedBy { it.aspectCelestialFirst }
@@ -264,8 +312,10 @@ class Chart (val chartAspects : List<Aspect>,  val firstCelestialSnapshot: Celes
 
                 if (firstAspect != null && secondAspect != null) {
                     returnAspects.add(Aspect(firstAspect).apply {
-                        this.baseValue += secondAspect.baseValue
-                        this.chartValueType = ChartValueType.APPRECIATION
+                        this.aspectValueType = AspectValueType.APPRECIATION_REF
+                    })
+                    returnAspects.add(Aspect(secondAspect).apply {
+                        this.aspectValueType = AspectValueType.APPRECIATION_SYN
                     })
                 }
             }
@@ -279,8 +329,10 @@ class Chart (val chartAspects : List<Aspect>,  val firstCelestialSnapshot: Celes
 
                 if (firstAspect != null && secondAspect != null) {
                     returnAspects.add(Aspect(firstAspect).apply {
-                        this.baseValue += secondAspect.baseValue
-                        this.chartValueType = ChartValueType.FIRST_NATAL_AFFINITY
+                        this.aspectValueType = AspectValueType.REF_NATAL_AFFINITY_REF
+                    })
+                    returnAspects.add(Aspect(secondAspect).apply {
+                        this.aspectValueType = AspectValueType.REF_NATAL_AFFINITY_SYN
                     })
                 }
             }
@@ -293,8 +345,10 @@ class Chart (val chartAspects : List<Aspect>,  val firstCelestialSnapshot: Celes
 
                 if (firstAspect != null && secondAspect != null) {
                     returnAspects.add(Aspect(firstAspect).apply {
-                        this.baseValue += secondAspect.baseValue
-                        this.chartValueType = ChartValueType.SECOND_NATAL_AFFINITY
+                        this.aspectValueType = AspectValueType.SYN_NATAL_AFFINITY_REF
+                    })
+                    returnAspects.add(Aspect(secondAspect).apply {
+                        this.aspectValueType = AspectValueType.SYN_NATAL_AFFINITY_SYN
                     })
                 }
             }
@@ -308,8 +362,10 @@ class Chart (val chartAspects : List<Aspect>,  val firstCelestialSnapshot: Celes
 
                 if (firstAspect != null && secondAspect != null) {
                     returnAspects.add(Aspect(firstAspect).apply {
-                        this.baseValue += secondAspect.baseValue
-                        this.chartValueType = ChartValueType.FIRST_NATAL_COMMONALITY
+                        this.aspectValueType = AspectValueType.REF_NATAL_COMMONALITY_REF
+                    })
+                    returnAspects.add(Aspect(secondAspect).apply {
+                        this.aspectValueType = AspectValueType.REF_NATAL_COMMONALITY_SYN
                     })
                 }
             }
@@ -322,8 +378,10 @@ class Chart (val chartAspects : List<Aspect>,  val firstCelestialSnapshot: Celes
 
                 if (firstAspect != null && secondAspect != null) {
                     returnAspects.add(Aspect(firstAspect).apply {
-                        this.baseValue += secondAspect.baseValue
-                        this.chartValueType = ChartValueType.SECOND_NATAL_COMMONALITY
+                        this.aspectValueType = AspectValueType.SYN_NATAL_COMMONALITY_REF
+                    })
+                    returnAspects.add(Aspect(secondAspect).apply {
+                        this.aspectValueType = AspectValueType.SYN_NATAL_COMMONALITY_SYN
                     })
                 }
             }
@@ -337,8 +395,10 @@ class Chart (val chartAspects : List<Aspect>,  val firstCelestialSnapshot: Celes
 
                 if (firstAspect != null && secondAspect != null) {
                     returnAspects.add(Aspect(firstAspect).apply {
-                        this.baseValue += secondAspect.baseValue
-                        this.chartValueType = ChartValueType.COMPATIBILITY
+                        this.aspectValueType = AspectValueType.COMPATIBILITY_REF
+                    })
+                    returnAspects.add(Aspect(secondAspect).apply {
+                        this.aspectValueType = AspectValueType.COMPATIBILITY_SYN
                     })
                 }
             }

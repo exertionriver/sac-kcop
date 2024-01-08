@@ -12,6 +12,7 @@ enum class ChartState : State<SACInputProcessor> {
     , NATAL_CHART
     , COMPOSITE_CHART { override fun getOperatorLabel() = "=" }
     , SYNASTRY_CHART { override fun getLabel() = SYM_SYNASTRY_CHART ; override fun getOperatorLabel() = "+"; override fun isNatComp() = false }
+    , ANALYSIS_CHART
     ;
 
     open fun getLabel() : String = SYM_NATCOMP_CHART

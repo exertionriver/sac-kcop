@@ -92,6 +92,15 @@ class SACComponent : IComponent, Telegraph {
                 , ChartState.NATAL_CHART, SACInputProcessor.analysisStateMachine.currentState)
         }
 
+        if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.CHARACTER_ANALYSIS)) {
+            analysisChart = Chart(
+                Chart.getCharacterAspects(sacChart, refNatChart, synNatChart)
+                , refNatCelestialSnapshot, synNatCelestialSnapshot
+                , ChartState.ANALYSIS_CHART, SACInputProcessor.analysisStateMachine.currentState)
+        } else {
+            analysisChart = sacChart
+        }
+
         dataChanged = false
     }
 
@@ -146,6 +155,9 @@ class SACComponent : IComponent, Telegraph {
                 , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState(), AnalysisState.defaultState())
         var synNatChart = Chart(synNatCelestialSnapshot, synNatCelestialSnapshot, ChartState.defaultState()
                 , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState(), AnalysisState.defaultState())
+
+        var analysisChart = Chart(sacCelestialSnapshot, sacCelestialSnapshot, ChartState.defaultState()
+            , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState(), AnalysisState.defaultState())
 
         fun recallRefEarthLocationEntry(recallIdx : Int) {
             sacEarthLocation.tag = earthLocationArray[recallIdx].tag

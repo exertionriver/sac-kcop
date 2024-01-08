@@ -6,7 +6,9 @@ import river.exertion.kcop.asset.view.ColorPalette
 import river.exertion.kcop.view.KcopFont
 import river.exertion.kcop.view.klop.IDisplayViewLayoutHandler
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutHandler
+import river.exertion.sac.astro.base.AspectValueType
 import river.exertion.sac.astro.base.ValueType
+import river.exertion.sac.console.state.ChartState
 
 object SACLayoutHandler : IDisplayViewLayoutHandler {
 
@@ -29,6 +31,10 @@ object SACLayoutHandler : IDisplayViewLayoutHandler {
 
     var refEarthLocationFontColor = ColorPalette.of("teal")
     var synEarthLocationFontColor = ColorPalette.of("purple")
+
+    var refCelestialSnapshotFontColor = refEarthLocationFontColor
+    var synCelestialSnapshotFontColor = synEarthLocationFontColor
+    var compCelesitalSnapshotFontColor = ColorPalette.of("olive")
 
     override fun build() {
         DVLayoutHandler.currentDvLayout = SACCelestialsHousesDVLayout.dvLayout()
@@ -53,4 +59,52 @@ object SACLayoutHandler : IDisplayViewLayoutHandler {
             else -> reversalFontColor
         }
     }
+
+    fun refFontColor(chartState: ChartState, aspectValueType: AspectValueType) : ColorPalette {
+
+        return when (chartState) {
+            ChartState.COMPOSITE_CHART -> compCelesitalSnapshotFontColor
+            ChartState.ANALYSIS_CHART -> when (aspectValueType) {
+                AspectValueType.APPRECIATION_REF -> refCelestialSnapshotFontColor
+                AspectValueType.APPRECIATION_SYN -> synCelestialSnapshotFontColor
+                AspectValueType.REF_NATAL_AFFINITY_REF -> refCelestialSnapshotFontColor
+                AspectValueType.REF_NATAL_AFFINITY_SYN -> refCelestialSnapshotFontColor
+                AspectValueType.SYN_NATAL_AFFINITY_REF -> refCelestialSnapshotFontColor
+                AspectValueType.SYN_NATAL_AFFINITY_SYN -> synCelestialSnapshotFontColor
+                AspectValueType.REF_NATAL_COMMONALITY_REF -> refCelestialSnapshotFontColor
+                AspectValueType.REF_NATAL_COMMONALITY_SYN -> compCelesitalSnapshotFontColor
+                AspectValueType.SYN_NATAL_COMMONALITY_REF -> compCelesitalSnapshotFontColor
+                AspectValueType.SYN_NATAL_COMMONALITY_SYN -> synCelestialSnapshotFontColor
+                AspectValueType.COMPATIBILITY_REF -> compCelesitalSnapshotFontColor
+                AspectValueType.COMPATIBILITY_SYN -> refCelestialSnapshotFontColor
+                else -> refCelestialSnapshotFontColor
+            }
+            else -> refCelestialSnapshotFontColor
+        }
+    }
+
+    fun synFontColor(chartState: ChartState, aspectValueType: AspectValueType) : ColorPalette {
+
+        return when (chartState) {
+            ChartState.COMPOSITE_CHART -> compCelesitalSnapshotFontColor
+            ChartState.NATAL_CHART -> refCelestialSnapshotFontColor
+            ChartState.ANALYSIS_CHART -> when (aspectValueType) {
+                AspectValueType.APPRECIATION_REF -> refCelestialSnapshotFontColor
+                AspectValueType.APPRECIATION_SYN -> synCelestialSnapshotFontColor
+                AspectValueType.REF_NATAL_AFFINITY_REF -> refCelestialSnapshotFontColor
+                AspectValueType.REF_NATAL_AFFINITY_SYN -> synCelestialSnapshotFontColor
+                AspectValueType.SYN_NATAL_AFFINITY_REF -> synCelestialSnapshotFontColor
+                AspectValueType.SYN_NATAL_AFFINITY_SYN -> synCelestialSnapshotFontColor
+                AspectValueType.REF_NATAL_COMMONALITY_REF -> refCelestialSnapshotFontColor
+                AspectValueType.REF_NATAL_COMMONALITY_SYN -> compCelesitalSnapshotFontColor
+                AspectValueType.SYN_NATAL_COMMONALITY_REF -> compCelesitalSnapshotFontColor
+                AspectValueType.SYN_NATAL_COMMONALITY_SYN -> synCelestialSnapshotFontColor
+                AspectValueType.COMPATIBILITY_REF -> compCelesitalSnapshotFontColor
+                AspectValueType.COMPATIBILITY_SYN -> synCelestialSnapshotFontColor
+                else -> synCelestialSnapshotFontColor
+            }
+            else -> synCelestialSnapshotFontColor
+        }
+    }
+
 }

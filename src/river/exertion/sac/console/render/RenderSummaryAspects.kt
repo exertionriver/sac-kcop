@@ -3,17 +3,15 @@ package river.exertion.sac.console.render
 import river.exertion.kcop.view.layout.displayViewLayout.*
 import river.exertion.kcop.view.layout.displayViewLayout.asset.DVAlign
 import river.exertion.sac.astro.Aspect.Companion.sortFilterValueAspects
-import river.exertion.sac.astro.Chart
-import river.exertion.sac.astro.base.ChartValueType
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.render.summary.RenderSummary
 import river.exertion.sac.console.state.AnalysisState
 import river.exertion.sac.console.state.ChartState
-import river.exertion.sac.console.state.ChartStateType
-import river.exertion.sac.view.SACCelestialsHousesDVLayout
 import river.exertion.sac.view.SACInputProcessor
 import river.exertion.sac.view.SACLayoutHandler
 import river.exertion.sac.view.SACLayoutHandler.fontColor
+import river.exertion.sac.view.SACLayoutHandler.refFontColor
+import river.exertion.sac.view.SACLayoutHandler.synFontColor
 
 object RenderSummaryAspects : IConsoleRender {
 
@@ -99,26 +97,20 @@ object RenderSummaryAspects : IConsoleRender {
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("col1Summary", "summary", SACLayoutHandler.baseValuesFontColor)
 
-        val aspects = if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.CHARACTER_ANALYSIS)) {
-            Chart.getCharacterAspects(SACComponent.sacChart, SACComponent.refNatChart, SACComponent.synNatChart)
+        val aspectChart = if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.CHARACTER_ANALYSIS)) {
+            SACComponent.analysisChart
         }
         else {
-            SACComponent.sacChart.chartAspects
+            SACComponent.sacChart
         }
 
-            aspects.sortFilterValueAspects().forEachIndexed { idx, aspect ->
+            aspectChart.chartAspects.sortFilterValueAspects().forEachIndexed { idx, aspect ->
 
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectCelestial1_$idx", aspect.getAspectCelestial1Label(), SACLayoutHandler.refEarthLocationFontColor)
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("aspect_$idx", aspect.getAspectLabel(), fontColor(aspect.getAspectValueType()))
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectCelestial2_$idx", aspect.getAspectCelestial2Label(),
-                if (SACInputProcessor.chartStateMachine.isInState(ChartState.SYNASTRY_CHART)) {
-                    SACLayoutHandler.synEarthLocationFontColor
-                } else {
-                    SACLayoutHandler.refEarthLocationFontColor
-                }
-            )
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectCelestial1_$idx", aspect.getAspectCelestial1Label().second, refFontColor(aspectChart.chartState, aspect.getAspectCelestial1Label().first))
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("aspect_$idx", aspect.getAspectTypeLabel().second, fontColor(aspect.getAspectTypeLabel().first))
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectCelestial2_$idx", aspect.getAspectCelestial2Label().second, synFontColor(aspectChart.chartState, aspect.getAspectCelestial1Label().first))
             DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectDelim_$idx", aspect.getAspectDelimLabel(), SACLayoutHandler.baseValuesFontColor)
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectValue_$idx", aspect.getAspectValueLabel(), fontColor(aspect.getValueValueType()))
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectValue_$idx", aspect.getAspectValueRenderLabel().second, fontColor(aspect.getAspectValueRenderLabel().first))
             if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.ROMANTIC_ANALYSIS)) {
                 DVLayoutHandler.currentDvLayout.setTextPaneContent("aspectModValue_$idx", aspect.getRenderRomanticModLabel().second, fontColor(aspect.getRenderRomanticModLabel().first))
             } else if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.CHARACTER_ANALYSIS)) {

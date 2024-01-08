@@ -1,12 +1,10 @@
 package river.exertion.sac.astro
 
-import river.exertion.kcop.base.str
 import river.exertion.sac.Constants
 import river.exertion.sac.Constants.InvalidOrb
 import river.exertion.sac.Constants.normalizeDeg
 import river.exertion.sac.astro.base.*
 import river.exertion.sac.console.state.*
-import river.exertion.sac.console.state.ChartStateType.Companion.decodeChartStateType
 import river.exertion.sac.view.SACInputProcessor
 import kotlin.math.abs
 
@@ -99,11 +97,11 @@ data class Aspect (val signFirst : Sign
 
     //val stateAspect : StateAspect, val chartState: ChartState = ChartState.NATAL_CHART, val analysisState: AnalysisState = AnalysisState.NO_ANALYSIS, val characterModifier: Int = 0, val fourthChartAspect: Boolean = false) {
 
-    var baseValue = getAspectBaseValue()
+    val baseValue = getAspectBaseValue()
     val modValue = if (chartState == ChartState.SYNASTRY_CHART) Value(getPositiveModValue() / 2, getNegativeModValue() / 2) else Value(getPositiveModValue(), getNegativeModValue())
     fun netValue() = Value(baseValue.positive + modValue.positive, baseValue.negative + modValue.negative)
 
-    var chartValueType : ChartValueType = ChartValueType.VALUE_TYPE_NONE
+    var aspectValueType : AspectValueType = AspectValueType.VALUE_TYPE_NONE
 
     fun celestialAspect() = CelestialAspect(aspectCelestialFirst, aspectCelestialSecond, aspectAngle.aspectType)
 
@@ -293,7 +291,9 @@ data class Aspect (val signFirst : Sign
             }
         , aspectAngle.aspectType.label)
 
-    fun getAspectValueRenderLabel() : Pair<ValueType, String> = getAspectValue().let { Pair(it.first, it.second.toString()) }
+    fun getAspectCelestial1Label() : Pair<AspectValueType, String> = Pair(aspectValueType, aspectCelestialFirst.label)
+
+    fun getAspectCelestial2Label() : Pair<AspectValueType, String> = Pair(aspectValueType, aspectCelestialSecond.label)
 
     fun getAspectValue() : Pair<ValueType, Int> = Pair(
         when {
@@ -312,26 +312,12 @@ data class Aspect (val signFirst : Sign
                     (netValue().net < 0) -> ValueType.NEGATIVE
                     else -> ValueType.NEUTRAL
                 }
-            }
+        }
         , abs(netValue().net))
 
-    fun getLabels() : List<String> = listOf(
-        aspectCelestialFirst.label,
-        getAspectTypeLabel().second,
-        aspectCelestialSecond.label,
-        getAspectValueRenderLabel().second,
-    )
-
-    fun getAspectValueType() = getAspectTypeLabel().first
-    fun getValueValueType() = getAspectValueRenderLabel().first
-
-    fun getAspectCelestial1Label() = getLabels()[0]
-    fun getAspectLabel() = getLabels()[1]
-    fun getAspectCelestial2Label() = getLabels()[2]
     fun getAspectDelimLabel() = "="
-    fun getAspectValueLabel() = getLabels()[3]
 
-    fun getRenderLabel() : String = getLabels().str()
+    fun getAspectValueRenderLabel() : Pair<ValueType, String> = getAspectValue().let { Pair(it.first, it.second.toString()) }
 
     fun getRenderRomanticModLabel() : Pair<ValueType, String> {
         if (analysisState != AnalysisState.ROMANTIC_ANALYSIS) return Pair(ValueType.NEUTRAL, "      ")
@@ -360,7 +346,7 @@ data class Aspect (val signFirst : Sign
             else -> ValueType.NEUTRAL
         }
 
-        val label = ":(${chartValueType.label}) "
+        val label = ":(${aspectValueType.label}) "
 
         return Pair(fontColor, label)
     }
@@ -410,33 +396,6 @@ data class Aspect (val signFirst : Sign
     override fun toString() = "Aspect($signFirst $aspectCelestialFirst $signSecond $aspectCelestialSecond $aspectAngle $orb $aspectsState $timeAspectsState $aspectOverlayState $chartState $analysisState) : baseValue:${baseValue} modValue:${modValue} AspectMod:${getAspectModifier()} signFirstMod:${getSignFirstModifier()} signSecondMod:${getSignSecondModifier()} aspectCelFirstMod:${getAspectCelestialFirstModifier()} aspectCelSecondMod:${getAspectCelestialSecondModifier()}"
 
     companion object {
-
-        fun getChartStateTypesLabel(chartStateTypeEncoding : Int) : String {
-            var returnString = ""
-
-            val chartStateTypes = chartStateTypeEncoding.decodeChartStateType()
-
-            var counter = 0
-
-            chartStateTypes.sortedDescending().filter { it.ordinal <= ChartStateType.renderMaxIdx }.forEach {
-                returnString += when (it) {
-                    ChartStateType.REF_NATAL_CHART -> ""
-                    ChartStateType.SYN_NATAL_CHART -> ""
-                    else -> ""
-                }
-
-                returnString += it.getChartState().getLabel()
-
-                counter++
-            }
-
-            (counter..2).forEach {
-                returnString += "  "
-            }
-
-            return returnString
-        }
-        private const val defaultOrbLimit = 8.0
 
         fun calcNormAngleDiff(aspectCelestialFirstAngle : Double, aspectCelestialSecondAngle : Double) = (aspectCelestialSecondAngle - aspectCelestialFirstAngle).normalizeDeg()
 

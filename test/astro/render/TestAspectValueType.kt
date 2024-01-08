@@ -3,7 +3,7 @@ package astro.render
 import org.junit.jupiter.api.Test
 import river.exertion.sac.astro.render.RenderAspect
 
-object TestChartValueType {
+object TestAspectValueType {
 
     @Test
     fun testRenderChartStateTypeDecoding() {
