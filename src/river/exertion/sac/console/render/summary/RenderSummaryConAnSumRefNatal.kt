@@ -28,7 +28,7 @@ object RenderSummaryConAnSumRefNatal : IConsoleRender {
     ))
 
     override fun setContent() {
-        val chartValue = SACComponent.refNatChart.netValue
+        val chartValue = SACComponent.refNatChart.netValue()
         val layoutPanes = setLayout().panes
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[0].tag!!, ChartState.getChartSumLabel().conAmChartLabel(), SACLayoutHandler.refEarthLocationFontColor)

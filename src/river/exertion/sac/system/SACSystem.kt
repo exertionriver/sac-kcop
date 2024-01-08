@@ -30,13 +30,8 @@ class SACSystem : IntervalIteratingSystem(allOf(SACComponent::class).get(), .4f)
                 if (SACComponent.dataChanged) {
                     sacComponent.sacRecalc()
 
-                    SACCelestialsHousesDVLayout.celestialSnapshot = SACComponent.sacCelestialSnapshot
-                    SACCelestialsHousesDVLayout.chart = SACComponent.sacChart
-
                     ViewLayout.rebuild()
                 }
-
-
                 entryLock = false
             }
         }

@@ -1,11 +1,14 @@
 package river.exertion.sac.astro
 
+import river.exertion.sac.astro.Aspect.Companion.aspectFromCelestialAspect
+import river.exertion.sac.astro.Aspect.Companion.sortFilterValueAspects
 import river.exertion.sac.astro.base.*
 import river.exertion.sac.console.state.*
 import river.exertion.sac.swe.DegMidp
 import river.exertion.sac.view.SACInputProcessor
 
-class Chart (val chartAspects : List<Aspect>,  val chartState: ChartState = ChartState.NATAL_CHART, val analysisState: AnalysisState = AnalysisState.NO_ANALYSIS) {
+class Chart (val chartAspects : List<Aspect>,  val firstCelestialSnapshot: CelestialSnapshot, val secondCelestialSnapshot: CelestialSnapshot,
+             val chartState: ChartState = ChartState.NATAL_CHART, val analysisState: AnalysisState = AnalysisState.NO_ANALYSIS) {
 
 //    constructor(chartState: ChartState = ChartState.NATAL_CHART, analysisState: AnalysisState = AnalysisState.NO_ANALYSIS) : this (
 //        getAspectsChart(chartAspects), chartState, analysisState)
@@ -23,60 +26,26 @@ class Chart (val chartAspects : List<Aspect>,  val chartState: ChartState = Char
             aspectOverlayState,
             analysisState
         )
-    , chartState, analysisState
+    , firstCelestialSnapshot, secondCelestialSnapshot, chartState, analysisState
     )
 
     //natal or composite--no need for second snapshot
     constructor(firstCelestialSnapshot: CelestialSnapshot, chartState: ChartState, aspectsState: AspectsState, timeAspectsState: TimeAspectsState, aspectOverlayState: AspectOverlayState
     ) : this (firstCelestialSnapshot, firstCelestialSnapshot, chartState, aspectsState, timeAspectsState, aspectOverlayState)
 
-    val baseValue = Value(getSortedFilteredValueAspects().map { it.baseValue.positive }.reduce { acc, basePositive -> acc + basePositive },
-        getSortedFilteredValueAspects().map { it.baseValue.negative }.reduce { acc, baseNegative -> acc + baseNegative } )
+    val baseValue = Value(chartAspects.sortFilterValueAspects().map { it.baseValue.positive }.reduce { acc, basePositive -> acc + basePositive },
+        chartAspects.sortFilterValueAspects().map { it.baseValue.negative }.reduce { acc, baseNegative -> acc + baseNegative } )
 
-    val modValue = Value(getSortedFilteredValueAspects().map { it.modValue.positive }.reduce { acc, modPositive -> acc + modPositive },
-        getSortedFilteredValueAspects().map { it.modValue.negative }.reduce { acc, modNegative -> acc + modNegative } )
+    val modValue = Value(chartAspects.sortFilterValueAspects().map { it.modValue.positive }.reduce { acc, modPositive -> acc + modPositive },
+        chartAspects.sortFilterValueAspects().map { it.modValue.negative }.reduce { acc, modNegative -> acc + modNegative } )
 
-    val netValue = Value(getSortedFilteredValueAspects().map { it.netValue.positive }.reduce { acc, basePositive -> acc + basePositive },
-        getSortedFilteredValueAspects().map { it.netValue.negative }.reduce { acc, baseNegative -> acc + baseNegative } )
+    fun netValue() = Value(chartAspects.sortFilterValueAspects().map { it.netValue().positive }.reduce { acc, basePositive -> acc + basePositive },
+        chartAspects.sortFilterValueAspects().map { it.netValue().negative }.reduce { acc, baseNegative -> acc + baseNegative } )
 
     fun getAspects() : List<Aspect> =
         chartAspects.filter { it.aspectAngle != AspectAngle.ASPECT_ANGLE_NONE }.sortedBy { it.aspectCelestialSecond }.sortedBy { it.aspectCelestialFirst }
 
-    fun getSortedFilteredValueAspects() : List<Aspect> {
-
-        val valueAspects = getAspects()
-
-        val sortedValueAspects = when {
-            SACInputProcessor.aspectsSortStateMachine.isInState(AspectsSortState.ASPECT) -> valueAspects.sortedBy { it.aspectAngle.aspectType }
-            SACInputProcessor.aspectsSortStateMachine.isInState(AspectsSortState.SECOND_CELESTIAL) -> valueAspects.sortedBy { it.aspectCelestialSecond }
-            SACInputProcessor.aspectsSortStateMachine.isInState(AspectsSortState.VALUE_MAGNITUDE) -> valueAspects.sortedByDescending { it.getAspectValue().second }
-            SACInputProcessor.aspectsSortStateMachine.isInState(AspectsSortState.VALUE_POS_TO_NEG) -> {
-                valueAspects.filter { it.getAspectValue().first == ValueType.POSITIVE || it.getAspectValue().first == ValueType.REVERSAL_TO_POS }.sortedByDescending { it.getAspectValue().second }.sortedBy { it.getAspectValue().first }.plus(
-                    valueAspects.filter { it.getAspectValue().first == ValueType.NEUTRAL || it.getAspectValue().first == ValueType.REVERSAL_TO_NEUT }.sortedBy { it.aspectAngle.aspectType }.sortedBy { it.getAspectValue().first }.plus(
-                        valueAspects.filter { it.getAspectValue().first == ValueType.NEGATIVE || it.getAspectValue().first == ValueType.REVERSAL_TO_NEG }.sortedBy { it.getAspectValue().second }.sortedBy { it.getAspectValue().first }
-                    ))
-            }
-            SACInputProcessor.aspectsSortStateMachine.isInState(AspectsSortState.VALUE_NEG_TO_POS) -> {
-                valueAspects.filter { it.getAspectValue().first == ValueType.NEGATIVE || it.getAspectValue().first == ValueType.REVERSAL_TO_NEG }.sortedByDescending { it.getAspectValue().second }.sortedBy { it.getAspectValue().first }.plus(
-                    valueAspects.filter { it.getAspectValue().first == ValueType.NEUTRAL || it.getAspectValue().first == ValueType.REVERSAL_TO_NEUT }.sortedBy { it.aspectAngle.aspectType }.sortedBy { it.getAspectValue().first }.plus(
-                        valueAspects.filter { it.getAspectValue().first == ValueType.POSITIVE || it.getAspectValue().first == ValueType.REVERSAL_TO_POS }.sortedBy { it.getAspectValue().second }.sortedBy { it.getAspectValue().first }
-                    ))
-            }
-            else -> valueAspects.sortedBy { it.aspectCelestialFirst }
-        }
-
-        val filteredValueAspects = when {
-            SACInputProcessor.aspectsFilterStateMachine.isInState(AspectsFilterState.OVER_TWENTY) -> sortedValueAspects.filter { it.getAspectValue().second >= 20 }
-            SACInputProcessor.aspectsFilterStateMachine.isInState(AspectsFilterState.OVER_FIFTY) -> sortedValueAspects.filter { it.getAspectValue().second >= 50 }
-            else -> sortedValueAspects
-        }
-
-        return filteredValueAspects
-    }
-
     companion object {
-
-        fun getEmptyChart() = Chart( listOf(Aspect.getEmptyAspect()) )
 
         fun getAspects(firstCelestialSnapshot : CelestialSnapshot, secondCelestialSnapshot: CelestialSnapshot = firstCelestialSnapshot,
                        chartState: ChartState, aspectsState: AspectsState, timeAspectsState: TimeAspectsState, aspectOverlayState: AspectOverlayState, analysisState: AnalysisState
@@ -250,174 +219,131 @@ class Chart (val chartAspects : List<Aspect>,  val chartState: ChartState = Char
 
             return returnAspects
         }
-/*
-        fun getAspectsChart(chartAspects : List<Aspect>) : List<ChartRow> {
 
-            val returnAspectsChart : MutableList<ChartRow> = ArrayList()
+        fun getCharacterAspects(jointChart : Chart, firstNatalChart : Chart, secondNatalChart : Chart) : List<Aspect> {
 
-            for (verticalAspectCelestial in AspectCelestial.entries.filter { it.isChartAspectCelestial() }) {
+            val returnAspects = mutableListOf<Aspect>()
 
-                val chartRow : MutableList<Aspect> = mutableListOf()
+            //if jointChart is Synastry, create Composite; if joint is Composite, create Synastry
+            val flipChart = Chart(
+                getAspects(
+                    jointChart.firstCelestialSnapshot
+                    , jointChart.secondCelestialSnapshot
+                    , ChartState.cycleState(jointChart.chartState)
+                    , SACInputProcessor.aspectsStateMachine.currentState
+                    , SACInputProcessor.timeAspectsStateMachine.currentState
+                    , AspectOverlayState.toggleState(jointChart.chartState, SACInputProcessor.aspectOverlayStateMachine.currentState)
+                    , SACInputProcessor.analysisStateMachine.currentState)
+                , jointChart.firstCelestialSnapshot, jointChart.secondCelestialSnapshot
+                , ChartState.cycleState(jointChart.chartState), SACInputProcessor.analysisStateMachine.currentState)
 
-                for (horizontalAspectCelestial in AspectCelestial.entries.filter { it.isChartAspectCelestial() }) {
-
-                    val chartAspect = chartAspects.firstOrNull {
-                        (it.aspectCelestialFirst == verticalAspectCelestial) && (it.aspectCelestialSecond == horizontalAspectCelestial)
-                    } ?: Aspect.getEmptyAspect(verticalAspectCelestial, horizontalAspectCelestial)
-
-                    chartRow.add(horizontalAspectCelestial.ordinal, chartAspect)
-                }
-                returnAspectsChart.add(verticalAspectCelestial.ordinal, ChartRow(chartRow))
+            val firstNatalAspects = firstNatalChart.getAspects()
+            val secondNatalAspects = secondNatalChart.getAspects()
+            val compAspects = if (jointChart.chartState == ChartState.SYNASTRY_CHART) {
+                flipChart.getAspects()
+            } else {
+                jointChart.getAspects()
+            }
+            val synAspects = if (jointChart.chartState == ChartState.SYNASTRY_CHART) {
+                jointChart.getAspects()
+            } else {
+                flipChart.getAspects()
             }
 
-            //add extended aspects as row
-            val extendedAspectsRow = ChartRow(chartAspects.filter { it.aspectCelestialFirst.isExtendedAspect || it.aspectCelestialSecond.isExtendedAspect })
+            val firstNatalCelestialAspects = firstNatalAspects.map { it.celestialAspect() }
+            val secondNatalCelestialAspects = secondNatalAspects.map { it.celestialAspect() }
+            val compCelestialAspects = compAspects.map { it.celestialAspect() }
+            val synCelestialAspects = synAspects.map { it.celestialAspect() }
 
-            returnAspectsChart.add(AspectCelestial.entries.filter { it.isChartAspectCelestial() }.size, extendedAspectsRow)
+            //Appreciation
+            firstNatalCelestialAspects.filter {
+                firstNatalCelestialAspect -> secondNatalCelestialAspects.contains(firstNatalCelestialAspect)
+            }.forEach { appreciationAspect ->
+                val firstAspect = firstNatalAspects.aspectFromCelestialAspect(appreciationAspect)
+                val secondAspect = secondNatalAspects.aspectFromCelestialAspect(appreciationAspect)
 
-            return returnAspectsChart
-        }
-*/
-
-/*
-        fun getAspectsStateAspects(
-            stateChartAspects: List<Aspect>,
-            chartState: ChartState,
-            analysisState: AnalysisState
-        ): Array<Aspect> {
-
-            val returnAspects: MutableList<Aspect> = ArrayList()
-
-            stateChartAspects.forEach { returnAspects.add(Aspect(it, chartState, analysisState)) }
-
-            return returnAspects.toTypedArray()
-        }
-
-        fun getCharacterAspectsStateAspects(
-            chartState: ChartState,
-            synChart: Chart,
-            compChart: Chart,
-            refNatalChart: Chart,
-            synNatalChart: Chart
-        ): Array<Aspect> {
-
-            if (chartState == ChartState.NATAL_CHART) return getAspectsStateAspects(
-                refNatalChart.getStateAspects().toTypedArray(), chartState, AnalysisState.CHARACTER_ANALYSIS
-            )
-
-            val returnAspects: MutableList<Aspect> = ArrayList()
-
-            val synAspects = synChart.getStateAspects()
-            val compAspects = compChart.getStateAspects()
-            val refNatalBaseAspects = refNatalChart.getStateAspects().stateBaseAspects()
-            val synNatalBaseAspects = synNatalChart.getStateAspects().stateBaseAspects()
-
-            if (chartState == ChartState.COMPOSITE_CHART) {
-                val synBaseAspects = synAspects.stateBaseAspects()
-                val synSharedAspects = mutableListOf<StateBaseAspect>()
-
-                compAspects.forEach {
-                    val baseAspect = it.getStateBaseAspect()
-
-                    val commonAspectCharts = mutableListOf<ChartStateType>()
-
-                    /*                    when {
-                                            refNatalBaseAspects.contains(baseAspect) && synBaseAspects.contains(baseAspect) -> {
-                                                commonAspectCharts.add(ChartStateType.REF_NATAL_CHART)
-                    //                            commonAspectCharts.add(ChartStateType.REF_NATAL_OPP_CHART)
-                                                synSharedAspects.add(baseAspect)
-                                            }
-                                            synNatalBaseAspects.contains(baseAspect) && synBaseAspects.contains(baseAspect) -> {
-                                                commonAspectCharts.add(ChartStateType.SYN_NATAL_CHART)
-                    //                            commonAspectCharts.add(ChartStateType.SYN_NATAL_OPP_CHART)
-                                                synSharedAspects.add(baseAspect)
-                                            }
-                    */
-                    if (refNatalBaseAspects.contains(baseAspect)) commonAspectCharts.add(ChartStateType.REF_NATAL_CHART)
-                    if (synNatalBaseAspects.contains(baseAspect)) commonAspectCharts.add(ChartStateType.SYN_NATAL_CHART)
-                    if (synBaseAspects.contains(baseAspect)) commonAspectCharts.add(ChartStateType.SYNASTRY_CHART)
-
-                    returnAspects.add(
-                        Aspect(
-                            it,
-                            chartState,
-                            AnalysisState.CHARACTER_ANALYSIS,
-                            commonAspectCharts.encodeChartStateType()
-                        )
-                    )
+                if (firstAspect != null && secondAspect != null) {
+                    returnAspects.add(Aspect(firstAspect).apply {
+                        this.baseValue += secondAspect.baseValue
+                        this.chartValueType = ChartValueType.APPRECIATION
+                    })
                 }
-
-                /* TODO: implement fourth chart rendering for character analysis
-
-                                synAspects.forEach {
-                                    val baseAspect = it.getStateBaseAspect()
-
-                                    if ( !synSharedAspects.contains(baseAspect) ) {
-
-                                        val commonAspectCharts = mutableListOf<ChartStateType>()
-
-                                        if ( refNatalBaseAspects.contains(baseAspect) ) commonAspectCharts.add(ChartStateType.REF_NATAL_OPP_CHART)
-                                        if ( synNatalBaseAspects.contains(baseAspect) ) commonAspectCharts.add(ChartStateType.SYN_NATAL_OPP_CHART)
-
-                                        returnAspects.add(ValueAspect(it, chartState, AnalysisState.CHARACTER_ANALYSIS, commonAspectCharts.encodeChartStateType()))
-                                    }
-                                }
-                */
-            } else { // (chartState == ChartState.SYNASTRY_CHART)
-                val compBaseAspects = compAspects.stateBaseAspects()
-                val compSharedAspects = mutableListOf<StateBaseAspect>()
-
-                synAspects.forEach {
-                    val baseAspect = it.getStateBaseAspect()
-
-                    val commonAspectCharts = mutableListOf<ChartStateType>()
-
-                    /*                    when {
-                                            refNatalBaseAspects.contains(baseAspect) && compBaseAspects.contains(baseAspect) -> {
-                                                commonAspectCharts.add(ChartStateType.REF_NATAL_CHART)
-                    //                            commonAspectCharts.add(ChartStateType.REF_NATAL_OPP_CHART)
-                                                compSharedAspects.add(baseAspect)
-                                            }
-                                            synNatalBaseAspects.contains(baseAspect) && compBaseAspects.contains(baseAspect) -> {
-                                                commonAspectCharts.add(ChartStateType.SYN_NATAL_CHART)
-                    //                            commonAspectCharts.add(ChartStateType.SYN_NATAL_OPP_CHART)
-                                                compSharedAspects.add(baseAspect)
-                                            }
-                    */
-                    if (refNatalBaseAspects.contains(baseAspect)) commonAspectCharts.add(ChartStateType.REF_NATAL_CHART)
-                    if (synNatalBaseAspects.contains(baseAspect)) commonAspectCharts.add(ChartStateType.SYN_NATAL_CHART)
-                    if (compBaseAspects.contains(baseAspect)) commonAspectCharts.add(ChartStateType.COMPOSITE_CHART)
-
-                    returnAspects.add(
-                        Aspect(
-                            it,
-                            chartState,
-                            AnalysisState.CHARACTER_ANALYSIS,
-                            commonAspectCharts.encodeChartStateType()
-                        )
-                    )
-                }
-
-                /* TODO: implement fourth chart rendering for character analysis
-
-                                compAspects.forEach {
-                                    val baseAspect = it.getStateBaseAspect()
-
-                                    if ( !compSharedAspects.contains(baseAspect) ) {
-
-                                        val commonAspectCharts = mutableListOf<ChartStateType>()
-
-                                        if ( refNatalBaseAspects.contains(baseAspect) ) commonAspectCharts.add(ChartStateType.REF_NATAL_OPP_CHART)
-                                        if ( synNatalBaseAspects.contains(baseAspect) ) commonAspectCharts.add(ChartStateType.SYN_NATAL_OPP_CHART)
-
-                                        returnAspects.add(ValueAspect(it, chartState, AnalysisState.CHARACTER_ANALYSIS, commonAspectCharts.encodeChartStateType()))
-                                    }
-                                }
-                */
             }
 
-            return returnAspects.toTypedArray()
+            //Affinity
+            firstNatalCelestialAspects.filter {
+                firstNatalCelestialAspect -> synCelestialAspects.contains(firstNatalCelestialAspect)
+            }.forEach { affinityAspect ->
+                val firstAspect = firstNatalAspects.aspectFromCelestialAspect(affinityAspect)
+                val secondAspect = synAspects.aspectFromCelestialAspect(affinityAspect)
+
+                if (firstAspect != null && secondAspect != null) {
+                    returnAspects.add(Aspect(firstAspect).apply {
+                        this.baseValue += secondAspect.baseValue
+                        this.chartValueType = ChartValueType.FIRST_NATAL_AFFINITY
+                    })
+                }
+            }
+
+            secondNatalCelestialAspects.filter {
+                secondNatalCelestialAspect -> synCelestialAspects.contains(secondNatalCelestialAspect)
+            }.forEach { affinityAspect ->
+                val firstAspect = secondNatalAspects.aspectFromCelestialAspect(affinityAspect)
+                val secondAspect = synAspects.aspectFromCelestialAspect(affinityAspect)
+
+                if (firstAspect != null && secondAspect != null) {
+                    returnAspects.add(Aspect(firstAspect).apply {
+                        this.baseValue += secondAspect.baseValue
+                        this.chartValueType = ChartValueType.SECOND_NATAL_AFFINITY
+                    })
+                }
+            }
+
+            //Commonality
+            firstNatalCelestialAspects.filter {
+                    firstNatalCelestialAspect -> compCelestialAspects.contains(firstNatalCelestialAspect)
+            }.forEach { commonalityAspect ->
+                val firstAspect = firstNatalAspects.aspectFromCelestialAspect(commonalityAspect)
+                val secondAspect = compAspects.aspectFromCelestialAspect(commonalityAspect)
+
+                if (firstAspect != null && secondAspect != null) {
+                    returnAspects.add(Aspect(firstAspect).apply {
+                        this.baseValue += secondAspect.baseValue
+                        this.chartValueType = ChartValueType.FIRST_NATAL_COMMONALITY
+                    })
+                }
+            }
+
+            secondNatalCelestialAspects.filter {
+                    secondNatalCelestialAspect -> compCelestialAspects.contains(secondNatalCelestialAspect)
+            }.forEach { commonalityAspect ->
+                val firstAspect = secondNatalAspects.aspectFromCelestialAspect(commonalityAspect)
+                val secondAspect = compAspects.aspectFromCelestialAspect(commonalityAspect)
+
+                if (firstAspect != null && secondAspect != null) {
+                    returnAspects.add(Aspect(firstAspect).apply {
+                        this.baseValue += secondAspect.baseValue
+                        this.chartValueType = ChartValueType.SECOND_NATAL_COMMONALITY
+                    })
+                }
+            }
+
+            //Compatibility
+            compCelestialAspects.filter {
+                    compCelestialAspect -> synCelestialAspects.contains(compCelestialAspect)
+            }.forEach { compatibilityAspect ->
+                val firstAspect = compAspects.aspectFromCelestialAspect(compatibilityAspect)
+                val secondAspect = synAspects.aspectFromCelestialAspect(compatibilityAspect)
+
+                if (firstAspect != null && secondAspect != null) {
+                    returnAspects.add(Aspect(firstAspect).apply {
+                        this.baseValue += secondAspect.baseValue
+                        this.chartValueType = ChartValueType.COMPATIBILITY
+                    })
+                }
+            }
+
+            return returnAspects
         }
-*/
     }
 }

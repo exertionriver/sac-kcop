@@ -290,7 +290,7 @@ data class AstroAnalysisRow(val refUTC : LocalDateTime = Clock.System.now().toLo
                 )
 
                 pollValue = when (chartType) {
-                    ChartState.COMBINED_CHART ->
+/*                    ChartState.COMBINED_CHART ->
                         Chart(
                             refSnapshot,
                             pollSnapshot,
@@ -309,7 +309,7 @@ data class AstroAnalysisRow(val refUTC : LocalDateTime = Clock.System.now().toLo
                             AspectOverlayState.ASPECT_SYNASTRY_OVERLAY_DEFAULT
                             , AnalysisState.NO_ANALYSIS
                     ).baseValue )
-                    ChartState.SYNASTRY_CHART ->
+  */                  ChartState.SYNASTRY_CHART ->
                         Chart(
                             refSnapshot,
                             pollSnapshot,

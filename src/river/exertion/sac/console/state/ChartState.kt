@@ -12,7 +12,6 @@ enum class ChartState : State<SACInputProcessor> {
     , NATAL_CHART
     , COMPOSITE_CHART { override fun getOperatorLabel() = "=" }
     , SYNASTRY_CHART { override fun getLabel() = SYM_SYNASTRY_CHART ; override fun getOperatorLabel() = "+"; override fun isNatComp() = false }
-    , COMBINED_CHART //for values analysis only
     ;
 
     open fun getLabel() : String = SYM_NATCOMP_CHART
@@ -37,5 +36,14 @@ enum class ChartState : State<SACInputProcessor> {
         }
 
         fun String.impConAmChartLabel() : String = this.conAmChartLabel().impChartLabel()
+
+        fun cycleState(chartState : ChartState) : ChartState {
+            return when (chartState) {
+                SYNASTRY_CHART -> COMPOSITE_CHART
+                COMPOSITE_CHART -> SYNASTRY_CHART
+                else -> NATAL_CHART
+            }
+        }
+
     }
 }

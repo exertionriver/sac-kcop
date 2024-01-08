@@ -34,7 +34,7 @@ class TestCharacterAnalysis {
         println("natal1 shared with natal2")
         sharedNatalAspects.forEach { println(it.toString()) }
 
-        println("appreciation: ${sharedNatalAspects.map { it.netValue }.sum().getLabel()}")
+        println("appreciation: ${sharedNatalAspects.map { it.netValue() }.sum().getLabel()}")
     }
 
     @Test

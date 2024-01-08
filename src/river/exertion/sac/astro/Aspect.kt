@@ -7,6 +7,7 @@ import river.exertion.sac.Constants.normalizeDeg
 import river.exertion.sac.astro.base.*
 import river.exertion.sac.console.state.*
 import river.exertion.sac.console.state.ChartStateType.Companion.decodeChartStateType
+import river.exertion.sac.view.SACInputProcessor
 import kotlin.math.abs
 
 //fourth chart aspects are for the opposite of current chartType for compSyn charts
@@ -81,17 +82,33 @@ data class Aspect (val signFirst : Sign
         , analysisState
     )
 
+    //copy constructor
+    constructor(aspect : Aspect) : this (
+        signFirst = aspect.signFirst
+        , aspectCelestialFirst = aspect.aspectCelestialFirst
+        , signSecond = aspect.signSecond
+        , aspectCelestialSecond = aspect.aspectCelestialSecond
+        , aspectAngle = aspect.aspectAngle
+        , orb = aspect.orb
+        , aspectsState = aspect.aspectsState
+        , timeAspectsState = aspect.timeAspectsState
+        , aspectOverlayState = aspect.aspectOverlayState
+        , chartState = aspect.chartState
+        , analysisState = aspect.analysisState
+    )
+
     //val stateAspect : StateAspect, val chartState: ChartState = ChartState.NATAL_CHART, val analysisState: AnalysisState = AnalysisState.NO_ANALYSIS, val characterModifier: Int = 0, val fourthChartAspect: Boolean = false) {
 
-    val baseValue = getAspectBaseValue()
+    var baseValue = getAspectBaseValue()
     val modValue = if (chartState == ChartState.SYNASTRY_CHART) Value(getPositiveModValue() / 2, getNegativeModValue() / 2) else Value(getPositiveModValue(), getNegativeModValue())
-    val netValue = Value(baseValue.positive + modValue.positive, baseValue.negative + modValue.negative)
+    fun netValue() = Value(baseValue.positive + modValue.positive, baseValue.negative + modValue.negative)
 
-    fun celestialAspect() = CelestialAspect(aspectCelestialFirst, aspectCelestialSecond, aspectAngle.aspectType, netValue)
+    var chartValueType : ChartValueType = ChartValueType.VALUE_TYPE_NONE
+
+    fun celestialAspect() = CelestialAspect(aspectCelestialFirst, aspectCelestialSecond, aspectAngle.aspectType)
 
     fun getAspectModifier() = when (analysisState) {
         AnalysisState.ROMANTIC_ANALYSIS -> getRomanticModifier()
-//        AnalysisState.CHARACTER_ANALYSIS -> characterModifier
         else -> 0
     }
 
@@ -268,9 +285,9 @@ data class Aspect (val signFirst : Sign
                 when { //analysis state
                     (baseValue.net >= 0) && (modValue.net < 0) -> ValueType.REVERSAL_TO_NEG
                     (baseValue.net <= 0) && (modValue.net > 0) -> ValueType.REVERSAL_TO_POS
-                    (baseValue.net != 0) && (netValue.net == 0) -> ValueType.REVERSAL_TO_NEUT
-                    (netValue.net > 0) -> ValueType.POSITIVE
-                    (netValue.net < 0) -> ValueType.NEGATIVE
+                    (baseValue.net != 0) && (netValue().net == 0) -> ValueType.REVERSAL_TO_NEUT
+                    (netValue().net > 0) -> ValueType.POSITIVE
+                    (netValue().net < 0) -> ValueType.NEGATIVE
                     else -> ValueType.NEUTRAL
                 }
             }
@@ -288,15 +305,15 @@ data class Aspect (val signFirst : Sign
                 }
             else ->
                 when { //analysis state
-                    (baseValue.net >= 0) && (netValue.net < 0) -> ValueType.REVERSAL_TO_NEG
-                    (baseValue.net <= 0) && (netValue.net > 0) -> ValueType.REVERSAL_TO_POS
-                    (baseValue.net != 0) && (netValue.net == 0) -> ValueType.REVERSAL_TO_NEUT
-                    (netValue.net > 0) -> ValueType.POSITIVE
-                    (netValue.net < 0) -> ValueType.NEGATIVE
+                    (baseValue.net >= 0) && (netValue().net < 0) -> ValueType.REVERSAL_TO_NEG
+                    (baseValue.net <= 0) && (netValue().net > 0) -> ValueType.REVERSAL_TO_POS
+                    (baseValue.net != 0) && (netValue().net == 0) -> ValueType.REVERSAL_TO_NEUT
+                    (netValue().net > 0) -> ValueType.POSITIVE
+                    (netValue().net < 0) -> ValueType.NEGATIVE
                     else -> ValueType.NEUTRAL
                 }
             }
-        , abs(netValue.net))
+        , abs(netValue().net))
 
     fun getLabels() : List<String> = listOf(
         aspectCelestialFirst.label,
@@ -334,10 +351,18 @@ data class Aspect (val signFirst : Sign
         }
     }
 
-    fun getRenderCharacterModLabel() : String {
-        if (analysisState != AnalysisState.CHARACTER_ANALYSIS) return ":(**)"
+    fun getRenderCharacterModLabel() : Pair<ValueType, String> {
+        if (analysisState != AnalysisState.CHARACTER_ANALYSIS) return Pair(ValueType.NEUTRAL, ":(***)")
 
-        return getChartStateTypesLabel(getAspectModifier())
+        val fontColor = when {
+            (netValue().net > 0) -> ValueType.POSITIVE
+            (netValue().net < 0) -> ValueType.NEGATIVE
+            else -> ValueType.NEUTRAL
+        }
+
+        val label = ":(${chartValueType.label}) "
+
+        return Pair(fontColor, label)
     }
 
     private fun getAspectBaseValue() : Value {
@@ -492,6 +517,42 @@ data class Aspect (val signFirst : Sign
 
 //             println("selected aspectAngle:$returnAspectAngle, orb: $minOrb")
             return returnAspectAngle
+        }
+
+        fun List<Aspect>.aspectFromCelestialAspect(celestialAspect: CelestialAspect) = this.firstOrNull { it.celestialAspect() == celestialAspect }
+
+        fun List<Aspect>.sortFilterValueAspects() : List<Aspect> {
+
+            val returnList = this
+
+            //filter
+            val filterList = when {
+                SACInputProcessor.aspectsFilterStateMachine.isInState(AspectsFilterState.OVER_TWENTY) -> returnList.filter { it.getAspectValue().second >= 20 }
+                SACInputProcessor.aspectsFilterStateMachine.isInState(AspectsFilterState.OVER_FIFTY) -> returnList.filter { it.getAspectValue().second >= 50 }
+                else -> returnList
+            }
+
+            //then sort
+            val sortList = when {
+                SACInputProcessor.aspectsSortStateMachine.isInState(AspectsSortState.ASPECT) -> filterList.sortedBy { it.aspectAngle.aspectType }
+                SACInputProcessor.aspectsSortStateMachine.isInState(AspectsSortState.SECOND_CELESTIAL) -> filterList.sortedBy { it.aspectCelestialSecond }
+                SACInputProcessor.aspectsSortStateMachine.isInState(AspectsSortState.VALUE_MAGNITUDE) -> filterList.sortedByDescending { it.getAspectValue().second }
+                SACInputProcessor.aspectsSortStateMachine.isInState(AspectsSortState.VALUE_POS_TO_NEG) -> {
+                    filterList.filter { it.getAspectValue().first == ValueType.POSITIVE || it.getAspectValue().first == ValueType.REVERSAL_TO_POS }.sortedByDescending { it.getAspectValue().second }.sortedBy { it.getAspectValue().first }.plus(
+                        filterList.filter { it.getAspectValue().first == ValueType.NEUTRAL || it.getAspectValue().first == ValueType.REVERSAL_TO_NEUT }.sortedBy { it.aspectAngle.aspectType }.sortedBy { it.getAspectValue().first }.plus(
+                            filterList.filter { it.getAspectValue().first == ValueType.NEGATIVE || it.getAspectValue().first == ValueType.REVERSAL_TO_NEG }.sortedBy { it.getAspectValue().second }.sortedBy { it.getAspectValue().first }
+                        ))
+                }
+                SACInputProcessor.aspectsSortStateMachine.isInState(AspectsSortState.VALUE_NEG_TO_POS) -> {
+                    filterList.filter { it.getAspectValue().first == ValueType.NEGATIVE || it.getAspectValue().first == ValueType.REVERSAL_TO_NEG }.sortedByDescending { it.getAspectValue().second }.sortedBy { it.getAspectValue().first }.plus(
+                        filterList.filter { it.getAspectValue().first == ValueType.NEUTRAL || it.getAspectValue().first == ValueType.REVERSAL_TO_NEUT }.sortedBy { it.aspectAngle.aspectType }.sortedBy { it.getAspectValue().first }.plus(
+                            filterList.filter { it.getAspectValue().first == ValueType.POSITIVE || it.getAspectValue().first == ValueType.REVERSAL_TO_POS }.sortedBy { it.getAspectValue().second }.sortedBy { it.getAspectValue().first }
+                        ))
+                }
+                else -> filterList.sortedBy { it.aspectCelestialFirst }
+            }
+
+            return sortList
         }
     }
 }
