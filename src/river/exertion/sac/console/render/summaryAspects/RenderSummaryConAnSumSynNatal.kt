@@ -1,4 +1,4 @@
-package river.exertion.sac.console.render.summary
+package river.exertion.sac.console.render.summaryAspects
 
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutCell
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutHandler
@@ -12,9 +12,9 @@ import river.exertion.sac.console.state.ChartState.Companion.conAmChartLabel
 import river.exertion.sac.view.SACLayoutHandler
 import river.exertion.sac.view.SACLayoutHandler.fontColor
 
-object RenderSummaryConAnSumCompatibility : IConsoleRender {
+object RenderSummaryConAnSumSynNatal : IConsoleRender {
 
-    override val layoutTag = "summaryConAnSumCompatibility"
+    override val layoutTag = "summaryConAnSumSynNatal"
 
     override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, colspan = "5", panes = mutableListOf(
         DVTextPane().apply { this.tag = "${layoutTag}_chartLabel"},
@@ -28,10 +28,10 @@ object RenderSummaryConAnSumCompatibility : IConsoleRender {
     ))
 
     override fun setContent() {
-        val chartValue = SACComponent.analysisChart.analysisCompatibilityValue()
+        val chartValue = SACComponent.synNatChart.netValue()
         val layoutPanes = setLayout().panes
 
-        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[0].tag!!, ChartState.getChartSumLabel().conAmChartLabel(), SACLayoutHandler.baseValuesFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[0].tag!!, ChartState.getChartSumLabel().conAmChartLabel(), SACLayoutHandler.synEarthLocationFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[1].tag!!, chartValue.getPosValueLabel().second, fontColor(chartValue.getPosValueLabel().first))
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[2].tag!!, Value.labelDivider, SACLayoutHandler.baseValuesFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[3].tag!!, chartValue.getNegValueLabel().second, fontColor(chartValue.getNegValueLabel().first))

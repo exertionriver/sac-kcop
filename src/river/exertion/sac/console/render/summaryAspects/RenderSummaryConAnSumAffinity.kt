@@ -1,4 +1,4 @@
-package river.exertion.sac.console.render.summary
+package river.exertion.sac.console.render.summaryAspects
 
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutCell
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutHandler
@@ -12,9 +12,9 @@ import river.exertion.sac.console.state.ChartState.Companion.conAmChartLabel
 import river.exertion.sac.view.SACLayoutHandler
 import river.exertion.sac.view.SACLayoutHandler.fontColor
 
-object RenderSummaryConAnSumAppreciation : IConsoleRender {
+object RenderSummaryConAnSumAffinity : IConsoleRender {
 
-    override val layoutTag = "summaryConAnSumAppreciation"
+    override val layoutTag = "summaryConAnSumAffinity"
 
     override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, colspan = "5", panes = mutableListOf(
         DVTextPane().apply { this.tag = "${layoutTag}_chartLabel"},
@@ -28,7 +28,7 @@ object RenderSummaryConAnSumAppreciation : IConsoleRender {
     ))
 
     override fun setContent() {
-        val chartValue = SACComponent.analysisChart.analysisAppreciationValue()
+        val chartValue = SACComponent.analysisChart.analysisAffinityValue()
         val layoutPanes = setLayout().panes
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[0].tag!!, ChartState.getChartSumLabel().conAmChartLabel(), SACLayoutHandler.baseValuesFontColor)

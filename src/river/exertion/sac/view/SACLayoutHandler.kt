@@ -37,12 +37,12 @@ object SACLayoutHandler : IDisplayViewLayoutHandler {
     var compCelesitalSnapshotFontColor = ColorPalette.of("olive")
 
     override fun build() {
-        DVLayoutHandler.currentDvLayout = SACCelestialsHousesDVLayout.dvLayout()
+        DVLayoutHandler.currentDvLayout = SACCelestialsHousesDVLayout.setLayout()
         DVLayoutHandler.currentFontSize = KcopFont.TEXT
 
         KcopFont.TEXT.font = AssetManagerHandler.getAssets<BitmapFont>().firstOrNull { it.data.name.contains("CODE2000") }.apply { this?.data?.setScale(KcopFont.TEXT.fontScale) }
 
-        SACCelestialsHousesDVLayout.rebuild()
+        SACCelestialsHousesDVLayout.setContent()
         DVLayoutHandler.build()
 
     }

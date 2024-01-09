@@ -1,4 +1,4 @@
-package river.exertion.sac.console.render.summary
+package river.exertion.sac.console.render.summaryAspects
 
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutCell
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutHandler
@@ -12,9 +12,9 @@ import river.exertion.sac.console.state.ChartState.Companion.conAmChartLabel
 import river.exertion.sac.view.SACLayoutHandler
 import river.exertion.sac.view.SACLayoutHandler.fontColor
 
-object RenderSummaryConAnSumRefNatal : IConsoleRender {
+object RenderSummaryConAnSumCommonality : IConsoleRender {
 
-    override val layoutTag = "summaryConAnSumRefNatal"
+    override val layoutTag = "summaryConAnSumCommonality"
 
     override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, colspan = "5", panes = mutableListOf(
         DVTextPane().apply { this.tag = "${layoutTag}_chartLabel"},
@@ -28,10 +28,10 @@ object RenderSummaryConAnSumRefNatal : IConsoleRender {
     ))
 
     override fun setContent() {
-        val chartValue = SACComponent.refNatChart.netValue()
+        val chartValue = SACComponent.analysisChart.analysisCommonalityValue()
         val layoutPanes = setLayout().panes
 
-        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[0].tag!!, ChartState.getChartSumLabel().conAmChartLabel(), SACLayoutHandler.refEarthLocationFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[0].tag!!, ChartState.getChartSumLabel().conAmChartLabel(), SACLayoutHandler.baseValuesFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[1].tag!!, chartValue.getPosValueLabel().second, fontColor(chartValue.getPosValueLabel().first))
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[2].tag!!, Value.labelDivider, SACLayoutHandler.baseValuesFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[3].tag!!, chartValue.getNegValueLabel().second, fontColor(chartValue.getNegValueLabel().first))

@@ -1,4 +1,4 @@
-package river.exertion.sac.console.render.summary
+package river.exertion.sac.console.render.summaryAspects
 
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutCell
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutHandler
@@ -11,9 +11,9 @@ import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.view.SACLayoutHandler
 import river.exertion.sac.view.SACLayoutHandler.fontColor
 
-object RenderSummarySumRefNatal : IConsoleRender {
+object RenderSummarySumSynNatal : IConsoleRender {
 
-    override val layoutTag = "summarySumRefNatal"
+    override val layoutTag = "summarySumSynNatal"
 
     override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, colspan = "5", panes = mutableListOf(
         DVTextPane().apply { this.tag = "${layoutTag}_chartLabel"},
@@ -27,10 +27,10 @@ object RenderSummarySumRefNatal : IConsoleRender {
     ))
 
     override fun setContent() {
-        val chartValue = SACComponent.refNatChart.baseValue
+        val chartValue = SACComponent.synNatChart.baseValue
         val layoutPanes = setLayout().panes
 
-        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[0].tag!!, ChartState.getChartSumLabel(), SACLayoutHandler.refEarthLocationFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[0].tag!!, ChartState.getChartSumLabel(), SACLayoutHandler.synEarthLocationFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[1].tag!!, chartValue.getPosValueLabel().second, fontColor(chartValue.getPosValueLabel().first))
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[2].tag!!, Value.labelDivider, SACLayoutHandler.baseValuesFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[3].tag!!, chartValue.getNegValueLabel().second, fontColor(chartValue.getNegValueLabel().first))

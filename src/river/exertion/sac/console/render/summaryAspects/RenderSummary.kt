@@ -1,12 +1,10 @@
-package river.exertion.sac.console.render.summary
+package river.exertion.sac.console.render.summaryAspects
 
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutCell
 import river.exertion.kcop.view.layout.displayViewLayout.DVRow
 import river.exertion.kcop.view.layout.displayViewLayout.DVTable
 import river.exertion.kcop.view.layout.displayViewLayout.DVTextPane
-import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.render.IConsoleRender
-import river.exertion.sac.console.render.RenderSummaryAspects
 import river.exertion.sac.console.state.AnalysisState
 import river.exertion.sac.console.state.LocationRecallState
 import river.exertion.sac.view.SACInputProcessor

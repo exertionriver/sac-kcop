@@ -1,12 +1,11 @@
-package river.exertion.sac.console.render
+package river.exertion.sac.console.render.summaryAspects
 
 import river.exertion.kcop.view.layout.displayViewLayout.*
 import river.exertion.kcop.view.layout.displayViewLayout.asset.DVAlign
 import river.exertion.sac.astro.Aspect.Companion.sortFilterValueAspects
 import river.exertion.sac.component.SACComponent
-import river.exertion.sac.console.render.summary.RenderSummary
+import river.exertion.sac.console.render.IConsoleRender
 import river.exertion.sac.console.state.AnalysisState
-import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.view.SACInputProcessor
 import river.exertion.sac.view.SACLayoutHandler
 import river.exertion.sac.view.SACLayoutHandler.fontColor

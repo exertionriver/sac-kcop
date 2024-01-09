@@ -1,13 +1,14 @@
-package river.exertion.sac.console.render
+package river.exertion.sac.console.render.header
 
 import river.exertion.kcop.view.layout.displayViewLayout.*
+import river.exertion.sac.console.render.IConsoleRender
 import river.exertion.sac.console.state.LocationRecallState
 import river.exertion.sac.view.SACInputProcessor
 import river.exertion.sac.view.SACLayoutHandler
 
-object RenderEarthLocationTags : IConsoleRender {
+object RenderHeaderEarthLocationTags : IConsoleRender {
 
-    override val layoutTag = "earthLocationTags"
+    override val layoutTag = "headerEarthLocationTags"
 
     override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf<DVLayoutCell>().apply {
 
