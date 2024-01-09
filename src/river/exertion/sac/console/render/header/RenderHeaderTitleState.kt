@@ -13,14 +13,14 @@ object RenderHeaderTitleState : IConsoleRender {
     override val layoutTag = "headerTitleState"
 
     override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf<DVLayoutCell>().apply {
-        this.add(DVTextPane().apply { this.tag = "appTitleVersion"; this.width = DVPaneType.DVPDimension.MEDIUM.tag(); this.align = DVAlign.LEFT.tag() })
-        this.add(DVTextPane().apply { this.tag = "appState"; this.width = DVPaneType.DVPDimension.MEDIUM.tag(); this.align = DVAlign.LEFT.tag() })
-        this.add(DVTextPane().apply { this.tag = "appStateAttributes"; this.width = DVPaneType.DVPDimension.SMALL.tag(); this.align = DVAlign.LEFT.tag() })
+        this.add(DVTextPane().apply { this.tag = "${layoutTag}_appTitleVersion"; this.width = DVPaneType.DVPDimension.MEDIUM.tag(); this.align = DVAlign.LEFT.tag() })
+        this.add(DVTextPane().apply { this.tag = "${layoutTag}_appState"; this.width = DVPaneType.DVPDimension.MEDIUM.tag(); this.align = DVAlign.LEFT.tag() })
+        this.add(DVTextPane().apply { this.tag = "${layoutTag}_appStateAttributes"; this.width = DVPaneType.DVPDimension.SMALL.tag(); this.align = DVAlign.LEFT.tag() })
     } )
 
     override fun setContent() {
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("appTitleVersion","${Constants.APP_NAME} v${Constants.APP_VERSION}")
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("appState",SACInputProcessor.navStateMachine.currentState.getLabel()+SACInputProcessor.navDirStateMachine.currentState.getLabel(), SACLayoutHandler.baseValuesFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_appTitleVersion","${Constants.APP_NAME} v${Constants.APP_VERSION}")
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_appState",SACInputProcessor.navStateMachine.currentState.getLabel()+SACInputProcessor.navDirStateMachine.currentState.getLabel(), SACLayoutHandler.baseValuesFontColor)
 
         val stateAttributes =
             SACInputProcessor.aspectOverlayStateMachine.currentState.getLabel() +
@@ -28,7 +28,7 @@ object RenderHeaderTitleState : IConsoleRender {
                     SACInputProcessor.aspectsStateMachine.currentState.getLabel() +
                     SACInputProcessor.timeAspectsStateMachine.currentState.getLabel()
 
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("appStateAttributes",stateAttributes, SACLayoutHandler.baseValuesFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_appStateAttributes",stateAttributes, SACLayoutHandler.baseValuesFontColor)
         RenderHeaderEarthLocationTags.setContent()
     }
 }

@@ -24,7 +24,7 @@ object CalcUt {
             Celestial.NORTH_NODE -> SE_TRUE_NODE
             Celestial.BLACK_MOON_LILITH -> SE_MEAN_APOG
             Celestial.CHIRON -> SE_CHIRON
-            Celestial.PHOLUS -> SE_PHOLUS
+//            Celestial.PHOLUS -> SE_PHOLUS
             Celestial.CERES -> SE_CERES
             Celestial.PALLAS -> SE_PALLAS
             Celestial.JUNO -> SE_JUNO

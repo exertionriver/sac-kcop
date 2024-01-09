@@ -19,43 +19,45 @@ object RenderCelestialsRows : IConsoleRender {
 
     override fun setLayout() = DVTable(tableTag = layoutTag)
 
-    fun MutableList<DVLayoutCell>.celestialsRows() = Celestial.entries.forEach { renderCelestial ->
-        this.add(DVTextPane().apply { this.tag = renderCelestial.name; this.align = DVAlign.CENTER.tag() })
-        this.add(DVTextPane().apply { this.tag = "${renderCelestial.name}_sign"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.LEFT.tag(); this.padLeft = ".3" })
-        this.add(DVTextPane().apply { this.tag = "${renderCelestial.name}_long"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.RIGHT.tag(); this.padRight = ".16" })
-        this.add(DVTextPane().apply { this.tag = "${renderCelestial.name}_signLong"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.RIGHT.tag(); this.padRight = ".16" })
-        this.add(DVTextPane().apply { this.tag = "${renderCelestial.name}_house"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.LEFT.tag(); this.padLeft = ".32" })
-        this.add(DVTextPane().apply { this.tag = "${renderCelestial.name}_dist"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.RIGHT.tag(); this.padRight = ".22" })
-        this.add(DVTextPane().apply { this.tag = "${renderCelestial.name}_speed"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.RIGHT.tag(); this.padRight = ".22" })
-        this.add(DVTextPane().apply { this.tag = "${renderCelestial.name}_transitHouse"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.CENTER.tag() })
-        this.add(DVTextPane().apply { this.tag = "${renderCelestial.name}_transitCelestials"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.CENTER.tag() })
-        this.add(DVRow())
-    }
+    fun celestialsRows() = buildList { Celestial.entries.forEach { celestial ->
+        this.addAll( mutableListOf(
+            DVTextPane().apply { this.tag = "${layoutTag}_${celestial.name}"; this.align = DVAlign.CENTER.tag() },
+            DVTextPane().apply { this.tag = "${layoutTag}_${celestial.name}_sign"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.LEFT.tag(); this.padLeft = ".3" },
+            DVTextPane().apply { this.tag = "${layoutTag}_${celestial.name}_long"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.RIGHT.tag(); this.padRight = ".16" },
+            DVTextPane().apply { this.tag = "${layoutTag}_${celestial.name}_signLong"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.RIGHT.tag(); this.padRight = ".16" },
+            DVTextPane().apply { this.tag = "${layoutTag}_${celestial.name}_house"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.LEFT.tag(); this.padLeft = ".32" },
+            DVTextPane().apply { this.tag = "${layoutTag}_${celestial.name}_dist"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.RIGHT.tag(); this.padRight = ".22" },
+            DVTextPane().apply { this.tag = "${layoutTag}_${celestial.name}_speed"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.RIGHT.tag(); this.padRight = ".22" },
+            DVTextPane().apply { this.tag = "${layoutTag}_${celestial.name}_transitHouse"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.CENTER.tag() },
+            DVTextPane().apply { this.tag = "${layoutTag}_${celestial.name}_transitCelestials"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.CENTER.tag() },
+            DVRow()
+        ) )
+    } }
 
     override fun setContent() {
-        Celestial.entries.forEachIndexed { idx, renderCelestial ->
-            DVLayoutHandler.currentDvLayout.setTextPaneContent(renderCelestial.name, renderCelestial.label, SACLayoutHandler.baseValuesFontColor)
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_sign",
+        Celestial.entries.forEachIndexed { idx, celestial ->
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}", celestial.label, SACLayoutHandler.baseValuesFontColor)
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}_sign",
                 Sign.signLabelFromCelestialLongitude(
                     SACComponent.refNatCelestialSnapshot.refCelestialData[idx].longitude,
                     SACComponent.refNatCelestialSnapshot.refCelestialData[idx].longitudeSpeed
                 ), Sign.signColor(SACComponent.refNatCelestialSnapshot.refCelestialData[idx].longitude)
             )
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_long", "%1.4f".format(
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}_long", "%1.4f".format(
                 SACComponent.refNatCelestialSnapshot.refCelestialData[idx].longitude), SACLayoutHandler.baseValuesFontColor )
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_signLong", CelestialData.getFormattedSignLongitude(
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}_signLong", CelestialData.getFormattedSignLongitude(
                 SACComponent.refNatCelestialSnapshot.refCelestialData[idx].longitude), SACLayoutHandler.baseValuesFontColor )
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_house", CelestialHouse.celestialHouseLabel(
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}_house", CelestialHouse.celestialHouseLabel(
                 SACComponent.refNatCelestialSnapshot.refCelestialData[idx].celestialHouse), SACLayoutHandler.baseValuesFontColor )
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_dist", "%1.4f".format(
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}_dist", "%1.4f".format(
                 SACComponent.refNatCelestialSnapshot.refCelestialData[idx].distance), SACLayoutHandler.baseValuesFontColor )
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_speed", "%1.4f".format(
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}_speed", "%1.4f".format(
                 SACComponent.refNatCelestialSnapshot.refCelestialData[idx].longitudeSpeed), SACLayoutHandler.baseValuesFontColor )
 
             if (SACInputProcessor.locationRecallStateMachine.isInState(LocationRecallState.CUR_NAV_REF_SYNCOMP_RECALL) && idx <= Celestial.transitMax.ordinal) {
-                DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_transitHouse", CelestialHouse.celestialHouseLabel(
+                DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}_transitHouse", CelestialHouse.celestialHouseLabel(
                     SACComponent.refNatCelestialSnapshot.refCelestialData[idx].transitHouse), SACLayoutHandler.baseValuesFontColor )
-                DVLayoutHandler.currentDvLayout.setTextPaneContent("${renderCelestial.name}_transitCelestials", Celestial.getTransitCelestialsLabel(
+                DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}_transitCelestials", Celestial.getTransitCelestialsLabel(
                     SACComponent.refNatCelestialSnapshot.refCelestialData[idx].transitHouse.toInt(), SACComponent.synNatCelestialSnapshot.refCelestialData), SACLayoutHandler.baseValuesFontColor )
             }
         }

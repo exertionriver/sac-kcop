@@ -9,12 +9,12 @@ object RenderCelestials : IConsoleRender {
 
     override val layoutTag = "celestials"
 
-    override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf<DVLayoutCell>().apply {
-        this.add(RenderCelestialsHeader.setLayout())
+    override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf(
+        RenderCelestialsHeader.setLayout()
 //      rows are added with header to maintain columns
 //        this.add(DVRow())
 //        this.add(RenderCelestialsRows.setLayout())
-    })
+    ))
 
     override fun setContent() {
         RenderCelestialsHeader.setContent()
