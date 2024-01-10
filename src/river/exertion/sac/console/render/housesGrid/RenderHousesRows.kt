@@ -3,15 +3,11 @@ package river.exertion.sac.console.render.housesGrid
 import river.exertion.kcop.view.layout.displayViewLayout.*
 import river.exertion.kcop.view.layout.displayViewLayout.asset.DVAlign
 import river.exertion.sac.astro.CelestialData
-import river.exertion.sac.astro.base.Celestial
 import river.exertion.sac.astro.base.CelestialHouse
 import river.exertion.sac.astro.base.Sign
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.render.IConsoleRender
 import river.exertion.sac.console.render.celestials.RenderCelestialsRows
-import river.exertion.sac.console.state.LocationRecallState
-import river.exertion.sac.view.SACCelestialsHousesDVLayout
-import river.exertion.sac.view.SACInputProcessor
 import river.exertion.sac.view.SACLayoutHandler
 
 object RenderHousesRows : IConsoleRender {

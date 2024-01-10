@@ -16,7 +16,7 @@ object RenderSummarySumSynImp : IConsoleRender {
 
     override val layoutTag = "summarySumSynImp"
 
-    override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, colspan = "5", panes = mutableListOf(
+    override fun setLayout() = DVTable(tableTag = layoutTag, colspan = "5", panes = mutableListOf(
         DVTextPane().apply { this.tag = "${layoutTag}_chartLabel"},
         DVTextPane().apply { this.tag = "${layoutTag}_values_pos"},
         DVTextPane().apply { this.tag = "${layoutTag}_values_divider"},

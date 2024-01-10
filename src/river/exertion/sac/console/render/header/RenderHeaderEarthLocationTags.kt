@@ -10,7 +10,7 @@ object RenderHeaderEarthLocationTags : IConsoleRender {
 
     override val layoutTag = "headerEarthLocationTags"
 
-    override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf<DVLayoutCell>().apply {
+    override fun setLayout() = DVTable(tableTag = layoutTag, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf<DVLayoutCell>().apply {
 
         this.add(DVTextPane().apply { this.tag = "${layoutTag}_eltLeftSquare" })
         this.add(DVTextPane().apply { this.tag = "${layoutTag}_eltLeftTag" })

@@ -12,7 +12,7 @@ object RenderHeaderTitleState : IConsoleRender {
 
     override val layoutTag = "headerTitleState"
 
-    override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf<DVLayoutCell>().apply {
+    override fun setLayout() = DVTable(tableTag = layoutTag, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf<DVLayoutCell>().apply {
         this.add(DVTextPane().apply { this.tag = "${layoutTag}_appTitleVersion"; this.width = DVPaneType.DVPDimension.MEDIUM.tag(); this.align = DVAlign.LEFT.tag() })
         this.add(DVTextPane().apply { this.tag = "${layoutTag}_appState"; this.width = DVPaneType.DVPDimension.MEDIUM.tag(); this.align = DVAlign.LEFT.tag() })
         this.add(DVTextPane().apply { this.tag = "${layoutTag}_appStateAttributes"; this.width = DVPaneType.DVPDimension.SMALL.tag(); this.align = DVAlign.LEFT.tag() })

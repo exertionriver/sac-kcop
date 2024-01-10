@@ -7,7 +7,7 @@ object RenderHeader : IConsoleRender {
 
     override val layoutTag = "header"
 
-    override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf<DVLayoutCell>().apply {
+    override fun setLayout() = DVTable(tableTag = layoutTag, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf<DVLayoutCell>().apply {
         this.add(RenderHeaderTitleState.setLayout())
         this.add(RenderHeaderEarthLocationTags.setLayout())
         this.add(DVRow())

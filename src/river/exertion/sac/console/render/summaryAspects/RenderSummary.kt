@@ -13,7 +13,7 @@ object RenderSummary : IConsoleRender {
 
     override val layoutTag = "summary"
 
-    override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, colspan = "5", panes = mutableListOf<DVLayoutCell>().apply {
+    override fun setLayout() = DVTable(tableTag = layoutTag, colspan = "5", panes = mutableListOf<DVLayoutCell>().apply {
         var summaryRowIdx = 0
 
         while (summaryRowIdx < RenderSummaryAspects.summaryMaxEntries) {

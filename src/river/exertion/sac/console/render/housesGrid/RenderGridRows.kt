@@ -14,7 +14,7 @@ object RenderGridRows : IConsoleRender {
     override val layoutTag = "gridRows"
     private val gridEntries = AspectCelestial.entries.filter { it.isChartAspectCelestial() }
 
-    override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf<DVLayoutCell>().apply {
+    override fun setLayout() = DVTable(tableTag = layoutTag, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf<DVLayoutCell>().apply {
 
         if (SACInputProcessor.chartStateMachine.currentState.isNatComp()) {
             gridEntries.forEachIndexed { rowIdx, chartAspectCelestial ->

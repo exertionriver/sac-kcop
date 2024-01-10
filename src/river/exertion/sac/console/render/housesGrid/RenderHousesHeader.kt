@@ -12,8 +12,8 @@ object RenderHousesHeader : IConsoleRender {
 
     override val layoutTag = "housesHeader"
 
-    override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf(
-        DVTable(tableTag = "${layoutTag}_houseSystem", colspan = "4", cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf(
+    override fun setLayout() = DVTable(tableTag = layoutTag, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf(
+        DVTable(tableTag = "${layoutTag}_houseSystem", colspan = "4", panes = mutableListOf(
             DVTextPane().apply { this.tag = "${layoutTag}_houseSystemName" },
         )),
         DVRow(),

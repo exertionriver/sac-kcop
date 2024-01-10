@@ -18,7 +18,7 @@ object RenderHeaderEarthLocationRows : IConsoleRender {
 
     override val layoutTag = "headerEarthLocationRows"
 
-    override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf<DVLayoutCell>().apply {
+    override fun setLayout() = DVTable(tableTag = layoutTag, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf<DVLayoutCell>().apply {
             this.add(DVTextPane().apply { this.tag = "${layoutTag}_localTimeLabel"; this.width = DVPaneType.DVPDimension.UNIT.tag(); this.align = DVAlign.RIGHT.tag(); this.padRight = ".2" })
             this.add(DVTextPane().apply { this.tag = "${layoutTag}_localTime"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.LEFT.tag() })
             this.add(DVTextPane().apply { this.tag = "${layoutTag}_localDateLabel"; this.width = DVPaneType.DVPDimension.UNIT.tag(); this.align = DVAlign.RIGHT.tag(); this.padRight = ".2" })

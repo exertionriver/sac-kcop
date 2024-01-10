@@ -24,11 +24,11 @@ object RenderSummaryAspects : IConsoleRender {
 
     const val summaryMaxEntries = (col3AspectsMaxEntries - col2AspectsMaxEntries) - col1AspectsMaxEntries - 3
 
-    override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, panes = mutableListOf<DVLayoutCell>().apply {
+    override fun setLayout() = DVTable(tableTag = layoutTag, panes = mutableListOf<DVLayoutCell>().apply {
         var idx = 0
         val valueAspects = SACComponent.sacChart.getAspects()
 
-        this.add(DVTable(tableTag = "col1aspects", cellType = DVLayoutCell.DVLCellTypes.TABLE, height = DVPaneType.DVPDimension.FULL.tag(),
+        this.add(DVTable(tableTag = "col1aspects", height = DVPaneType.DVPDimension.FULL.tag(),
             panes = mutableListOf<DVLayoutCell>().apply {
             while (idx <= col1AspectsMaxEntries) {
                 this.add(DVTextPane().apply { this.tag = "${layoutTag}_aspectCelestial1_$idx"; this.padLeft = ".2"; this.padRight = ".2"; this.align = DVAlign.CENTER.tag() })
@@ -43,7 +43,7 @@ object RenderSummaryAspects : IConsoleRender {
             this.add(RenderSummary.setLayout())
         }))
 
-        this.add(DVTable(tableTag = "col2aspects", cellType = DVLayoutCell.DVLCellTypes.TABLE, height = DVPaneType.DVPDimension.FULL.tag(),
+        this.add(DVTable(tableTag = "col2aspects", height = DVPaneType.DVPDimension.FULL.tag(),
             panes = mutableListOf<DVLayoutCell>().apply {
             if (valueAspects.size > col1AspectsMaxEntries) {
                 while (idx <= col2AspectsMaxEntries) {
@@ -59,7 +59,7 @@ object RenderSummaryAspects : IConsoleRender {
             }
         }))
 
-        this.add(DVTable(tableTag = "col3aspects", cellType = DVLayoutCell.DVLCellTypes.TABLE, height = DVPaneType.DVPDimension.FULL.tag(),
+        this.add(DVTable(tableTag = "col3aspects", height = DVPaneType.DVPDimension.FULL.tag(),
             panes = mutableListOf<DVLayoutCell>().apply {
                 if (valueAspects.size > col2AspectsMaxEntries) {
                     while (idx <= col3AspectsMaxEntries) {
@@ -75,7 +75,7 @@ object RenderSummaryAspects : IConsoleRender {
                 }
             }))
 
-        this.add(DVTable(tableTag = "col4aspects", cellType = DVLayoutCell.DVLCellTypes.TABLE, height = DVPaneType.DVPDimension.FULL.tag(),
+        this.add(DVTable(tableTag = "col4aspects", height = DVPaneType.DVPDimension.FULL.tag(),
             panes = mutableListOf<DVLayoutCell>().apply {
                 if (valueAspects.size > col3AspectsMaxEntries) {
                     while (idx <= col4AspectsMaxEntries) {

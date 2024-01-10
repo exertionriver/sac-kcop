@@ -7,7 +7,6 @@ import river.exertion.kcop.view.layout.DisplayView
 import river.exertion.kcop.view.layout.ViewLayout
 import river.exertion.sac.console.state.NavState
 import river.exertion.sac.component.SACComponent
-import river.exertion.sac.view.SACCelestialsHousesDVLayout
 import river.exertion.sac.view.SACInputProcessor
 
 class SACSystem : IntervalIteratingSystem(allOf(SACComponent::class).get(), .4f) {

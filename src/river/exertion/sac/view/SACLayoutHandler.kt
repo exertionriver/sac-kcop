@@ -5,9 +5,12 @@ import river.exertion.kcop.asset.AssetManagerHandler
 import river.exertion.kcop.asset.view.ColorPalette
 import river.exertion.kcop.view.KcopFont
 import river.exertion.kcop.view.klop.IDisplayViewLayoutHandler
+import river.exertion.kcop.view.layout.displayViewLayout.DVLayout
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutHandler
 import river.exertion.sac.astro.base.AspectValueType
 import river.exertion.sac.astro.base.ValueType
+import river.exertion.sac.console.render.RenderDAVRoot
+import river.exertion.sac.console.render.RenderDVRoot
 import river.exertion.sac.console.state.ChartState
 
 object SACLayoutHandler : IDisplayViewLayoutHandler {
@@ -37,14 +40,16 @@ object SACLayoutHandler : IDisplayViewLayoutHandler {
     var compCelesitalSnapshotFontColor = ColorPalette.of("olive")
 
     override fun build() {
-        DVLayoutHandler.currentDvLayout = SACCelestialsHousesDVLayout.setLayout()
+        DVLayoutHandler.currentDvLayout = DVLayout(name = "SACDVLayout", layout = mutableListOf(RenderDVRoot.setLayout(), RenderDAVRoot.setLayout()))
         DVLayoutHandler.currentFontSize = KcopFont.TEXT
+        DVLayoutHandler.currentFontColor = baseFontColor
 
         KcopFont.TEXT.font = AssetManagerHandler.getAssets<BitmapFont>().firstOrNull { it.data.name.contains("CODE2000") }.apply { this?.data?.setScale(KcopFont.TEXT.fontScale) }
 
-        SACCelestialsHousesDVLayout.setContent()
-        DVLayoutHandler.build()
+        RenderDVRoot.setContent()
+        RenderDAVRoot.setContent()
 
+        DVLayoutHandler.build()
     }
 
     override fun clearContent() {

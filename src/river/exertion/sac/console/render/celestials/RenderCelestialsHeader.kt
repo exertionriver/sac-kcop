@@ -13,7 +13,7 @@ object RenderCelestialsHeader : IConsoleRender {
 
     override val layoutTag = "celestialsHeader"
 
-    override fun setLayout() = DVTable(tableTag = layoutTag, cellType = DVLayoutCell.DVLCellTypes.TABLE, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf(
+    override fun setLayout() = DVTable(tableTag = layoutTag, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf(
         DVTextPane().apply { this.tag = "${layoutTag}_celestialHeader"; this.align = DVAlign.CENTER.tag() },
         DVTextPane().apply { this.tag = "${layoutTag}_signHeader"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.CENTER.tag() },
         DVTextPane().apply { this.tag = "${layoutTag}_celestialLongitude"; this.width = DVPaneType.DVPDimension.TINY.tag(); this.align = DVAlign.CENTER.tag() },
