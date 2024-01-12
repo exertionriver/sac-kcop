@@ -6,6 +6,7 @@ import river.exertion.kcop.view.layout.displayViewLayout.DVTable
 import river.exertion.kcop.view.layout.displayViewLayout.DVTextPane
 import river.exertion.sac.console.render.IConsoleRender
 import river.exertion.sac.console.state.AnalysisState
+import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.console.state.LocationRecallState
 import river.exertion.sac.view.SACInputProcessor
 
@@ -18,61 +19,45 @@ object RenderSummary : IConsoleRender {
 
         while (summaryRowIdx < RenderSummaryAspects.summaryMaxEntries) {
 
-            when (summaryRowIdx) {
-                0 -> this.add(RenderSummarySumChart.setLayout())
-                1 -> this.add(RenderSummarySumRefNatal.setLayout())
-                2 -> this.add(RenderSummarySumSynNatal.setLayout())
-
-                4 -> if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.CHARACTER_ANALYSIS)) {
-                    this.add(RenderSummaryConAnSumAppreciation.setLayout())
-                } else {
-                    this.add(RenderSummarySumRefImp.setLayout())
+            if ( SACInputProcessor.chartStateMachine.isInState(ChartState.NATAL_CHART) ) {
+                //spacers if no second location
+                when (summaryRowIdx) {
+                    0 -> this.add(RenderSummarySumChart.setLayout())
+                    else -> this.add(DVTextPane().apply { this.tag = "${layoutTag}_spacer${summaryRowIdx}" })
+                }
+            } else {
+                when (summaryRowIdx) {
+                    0 -> this.add(RenderSummarySumChart.setLayout())
+                    1 -> this.add(RenderSummarySumRefNatal.setLayout())
+                    2 -> this.add(RenderSummarySumSynNatal.setLayout())
                 }
 
-                5 -> if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.CHARACTER_ANALYSIS)) {
-                    this.add(RenderSummaryConAnSumAffinity.setLayout())
-                }
-                else {
-                    this.add(RenderSummarySumSynImp.setLayout())
-                }
+                if (SACInputProcessor.chartStateMachine.isInState(ChartState.COMBINED_CHART)) {
+                    when (summaryRowIdx) {
+                        4 -> this.add(RenderSummaryConAnSumAppreciation.setLayout())
+                        5 -> this.add(RenderSummaryConAnSumAffinity.setLayout())
+                        6 -> this.add(RenderSummaryConAnSumCommonality.setLayout())
+                        7 -> this.add(RenderSummaryConAnSumCompatibility.setLayout())
 
-                6 -> if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.CHARACTER_ANALYSIS)) {
-                    this.add(RenderSummaryConAnSumCommonality.setLayout())
+                        else -> this.add(DVTextPane().apply { this.tag = "${layoutTag}_spacer${summaryRowIdx}"})
+                    }
+                } else if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.ROMANTIC_ANALYSIS)) {
+                    when (summaryRowIdx) {
+                        4 -> this.add(RenderSummarySumRefImp.setLayout())
+                        5 -> this.add(RenderSummarySumSynImp.setLayout())
+
+                        7 -> this.add(RenderSummaryConAnSumChart.setLayout())
+                        8 -> this.add(RenderSummaryConAnSumRefNatal.setLayout())
+                        9 -> this.add(RenderSummaryConAnSumSynNatal.setLayout())
+
+                        11 -> this.add(RenderSummaryConAnSumRefImp.setLayout())
+                        12 -> this.add(RenderSummaryConAnSumSynImp.setLayout())
+
+                        else -> this.add(DVTextPane().apply { this.tag = "${layoutTag}_spacer${summaryRowIdx}"})
+                    }
                 } else {
                     this.add(DVTextPane().apply { this.tag = "${layoutTag}_spacer${summaryRowIdx}"})
                 }
-
-                7 -> if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.CHARACTER_ANALYSIS)) {
-                    this.add(RenderSummaryConAnSumCompatibility.setLayout())
-                } else {
-                    this.add(RenderSummaryConAnSumChart.setLayout())
-                }
-
-                8 -> if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.CHARACTER_ANALYSIS)) {
-                    this.add(DVTextPane().apply { this.tag = "${layoutTag}_spacer${summaryRowIdx}"})
-                } else {
-                    this.add(RenderSummaryConAnSumRefNatal.setLayout())
-                }
-
-                9 -> if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.CHARACTER_ANALYSIS)) {
-                    this.add(DVTextPane().apply { this.tag = "${layoutTag}_spacer${summaryRowIdx}"})
-                } else {
-                    this.add(RenderSummaryConAnSumSynNatal.setLayout())
-                }
-
-                11 -> if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.CHARACTER_ANALYSIS)) {
-                    this.add(DVTextPane().apply { this.tag = "${layoutTag}_spacer${summaryRowIdx}"})
-                } else {
-                    this.add(RenderSummaryConAnSumRefImp.setLayout())
-                }
-
-                12 -> if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.CHARACTER_ANALYSIS)) {
-                    this.add(DVTextPane().apply { this.tag = "${layoutTag}_spacer${summaryRowIdx}"})
-                } else {
-                    this.add(RenderSummaryConAnSumSynImp.setLayout())
-                }
-
-                else -> this.add(DVTextPane().apply { this.tag = "${layoutTag}_spacer${summaryRowIdx}"})
             }
 
             this.add(DVRow())
@@ -82,6 +67,7 @@ object RenderSummary : IConsoleRender {
 
     override fun setContent() {
         RenderSummarySumChart.setContent()
+
         if (!SACInputProcessor.locationRecallStateMachine.isInState(LocationRecallState.CUR_NAV_REF)) {
             RenderSummarySumRefNatal.setContent()
             RenderSummarySumSynNatal.setContent()
@@ -89,7 +75,12 @@ object RenderSummary : IConsoleRender {
             RenderSummarySumRefImp.setContent()
             RenderSummarySumSynImp.setContent()
 
-            if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.ROMANTIC_ANALYSIS)) {
+            if (SACInputProcessor.chartStateMachine.isInState(ChartState.COMBINED_CHART)) {
+                RenderSummaryConAnSumAppreciation.setContent()
+                RenderSummaryConAnSumAffinity.setContent()
+                RenderSummaryConAnSumCommonality.setContent()
+                RenderSummaryConAnSumCompatibility.setContent()
+            } else if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.ROMANTIC_ANALYSIS)) {
                 RenderSummaryConAnSumChart.setContent()
 
                 RenderSummaryConAnSumRefNatal.setContent()
@@ -97,11 +88,6 @@ object RenderSummary : IConsoleRender {
 
                 RenderSummaryConAnSumRefImp.setContent()
                 RenderSummaryConAnSumSynImp.setContent()
-            } else if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.CHARACTER_ANALYSIS)) {
-                    RenderSummaryConAnSumAppreciation.setContent()
-                    RenderSummaryConAnSumAffinity.setContent()
-                    RenderSummaryConAnSumCommonality.setContent()
-                    RenderSummaryConAnSumCompatibility.setContent()
             }
         }
     }

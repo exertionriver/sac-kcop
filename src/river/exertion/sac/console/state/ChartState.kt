@@ -3,6 +3,7 @@ package river.exertion.sac.console.state
 import com.badlogic.gdx.ai.fsm.State
 import com.badlogic.gdx.ai.msg.Telegram
 import river.exertion.sac.Constants
+import river.exertion.sac.Constants.SYM_COMBINED_CHART
 import river.exertion.sac.Constants.SYM_NATCOMP_CHART
 import river.exertion.sac.Constants.SYM_SYNASTRY_CHART
 import river.exertion.sac.view.SACInputProcessor
@@ -12,7 +13,7 @@ enum class ChartState : State<SACInputProcessor> {
     , NATAL_CHART
     , COMPOSITE_CHART { override fun getOperatorLabel() = "=" }
     , SYNASTRY_CHART { override fun getLabel() = SYM_SYNASTRY_CHART ; override fun getOperatorLabel() = "+"; override fun isNatComp() = false }
-    , ANALYSIS_CHART
+    , COMBINED_CHART { override fun getLabel() = SYM_COMBINED_CHART ; override fun getOperatorLabel() = "."; override fun isNatComp() = true }
     ;
 
     open fun getLabel() : String = SYM_NATCOMP_CHART

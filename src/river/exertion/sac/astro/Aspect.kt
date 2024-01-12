@@ -179,8 +179,6 @@ data class Aspect (val signFirst : Sign
 
         var modPos = 0
 
-        if (analysisState == AnalysisState.CHARACTER_ANALYSIS) return modPos
-
         modPos += when {
             (getAspectModifier() > 0) -> (baseValue.positive * abs(getAspectModifier()) * .25).toInt()
             (getAspectModifier() < 0) -> (baseValue.positive * -abs(getAspectModifier()) * .25).toInt()
@@ -226,8 +224,6 @@ data class Aspect (val signFirst : Sign
     fun getNegativeModValue() : Int {
 
         var modNeg = 0
-
-        if (analysisState == AnalysisState.CHARACTER_ANALYSIS) return modNeg
 
         modNeg += when {
             (getAspectModifier() > 0) -> (baseValue.negative * -abs(getAspectModifier()) * .25).toInt()
@@ -338,7 +334,7 @@ data class Aspect (val signFirst : Sign
     }
 
     fun getRenderCharacterModLabel() : Pair<ValueType, String> {
-        if (analysisState != AnalysisState.CHARACTER_ANALYSIS) return Pair(ValueType.NEUTRAL, ":(***)")
+        if (aspectValueType == AspectValueType.VALUE_TYPE_NONE) return Pair(ValueType.NEUTRAL, ":(***)")
 
         val fontColor = when {
             (netValue().net > 0) -> ValueType.POSITIVE

@@ -26,6 +26,14 @@ class SACSystem : IntervalIteratingSystem(allOf(SACComponent::class).get(), .4f)
             } else {
                 SACInputProcessor.navStateMachine.currentState.updCurNavInstant()
 
+                if (SACComponent.headerChanged) {
+                    sacComponent.headerRecalc()
+
+                    if (!SACComponent.dataChanged) {
+                        ViewLayout.rebuild()
+                    }
+                }
+
                 if (SACComponent.dataChanged) {
                     sacComponent.sacRecalc()
 

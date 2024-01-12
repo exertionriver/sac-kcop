@@ -117,7 +117,8 @@ object Constants {
     const val SYM_MUTABLE_MODE = "\u263F" //mercury
 
     const val SYM_NATCOMP_CHART = "\u25A7" //diagonal box
-    const val SYM_SYNASTRY_CHART = "\u25A6" //crosshatch box
+    const val SYM_SYNASTRY_CHART = "\u25A6" //ortho crosshatch box
+    const val SYM_COMBINED_CHART = "\u25A9" //diagonal crosshatch box
     const val SYM_GREG_CALENDAR = "\u25A4" //square with horizontal fill
     const val SYM_DIAMOND_DOUBLE_ORNAMENT = "\u25C8"
     const val SYM_CIRCLE_DOUBLE_ORNAMENT = "\u25C9"

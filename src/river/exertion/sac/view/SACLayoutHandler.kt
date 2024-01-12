@@ -11,6 +11,7 @@ import river.exertion.sac.astro.base.AspectValueType
 import river.exertion.sac.astro.base.ValueType
 import river.exertion.sac.console.render.RenderDAVRoot
 import river.exertion.sac.console.render.RenderDVRoot
+import river.exertion.sac.console.render.header.RenderHeaderTitleState
 import river.exertion.sac.console.state.ChartState
 
 object SACLayoutHandler : IDisplayViewLayoutHandler {
@@ -56,6 +57,10 @@ object SACLayoutHandler : IDisplayViewLayoutHandler {
         DVLayoutHandler.currentDvLayout.clearContent()
     }
 
+    fun resetTitleState() {
+        RenderHeaderTitleState.setContent()
+    }
+
     fun fontColor(valueType : ValueType) : ColorPalette {
         return when (valueType) {
             ValueType.POSITIVE -> positiveFontColor
@@ -65,11 +70,11 @@ object SACLayoutHandler : IDisplayViewLayoutHandler {
         }
     }
 
-    fun refFontColor(chartState: ChartState, aspectValueType: AspectValueType) : ColorPalette {
+    fun refFontColor(aspectValueType: AspectValueType) : ColorPalette {
 
-        return when (chartState) {
+        return when (SACInputProcessor.chartStateMachine.currentState) {
             ChartState.COMPOSITE_CHART -> compCelesitalSnapshotFontColor
-            ChartState.ANALYSIS_CHART -> when (aspectValueType) {
+            ChartState.COMBINED_CHART -> when (aspectValueType) {
                 AspectValueType.APPRECIATION_REF -> refCelestialSnapshotFontColor
                 AspectValueType.APPRECIATION_SYN -> synCelestialSnapshotFontColor
                 AspectValueType.REF_NATAL_AFFINITY_REF -> refCelestialSnapshotFontColor
@@ -88,12 +93,12 @@ object SACLayoutHandler : IDisplayViewLayoutHandler {
         }
     }
 
-    fun synFontColor(chartState: ChartState, aspectValueType: AspectValueType) : ColorPalette {
+    fun synFontColor(aspectValueType: AspectValueType) : ColorPalette {
 
-        return when (chartState) {
+        return when (SACInputProcessor.chartStateMachine.currentState) {
             ChartState.COMPOSITE_CHART -> compCelesitalSnapshotFontColor
             ChartState.NATAL_CHART -> refCelestialSnapshotFontColor
-            ChartState.ANALYSIS_CHART -> when (aspectValueType) {
+            ChartState.COMBINED_CHART -> when (aspectValueType) {
                 AspectValueType.APPRECIATION_REF -> refCelestialSnapshotFontColor
                 AspectValueType.APPRECIATION_SYN -> synCelestialSnapshotFontColor
                 AspectValueType.REF_NATAL_AFFINITY_REF -> refCelestialSnapshotFontColor

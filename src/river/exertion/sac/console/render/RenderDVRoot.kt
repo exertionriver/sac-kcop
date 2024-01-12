@@ -23,8 +23,4 @@ object RenderDVRoot : IConsoleRender {
         RenderCelestials.setContent()
         RenderHousesGrid.setContent()
     }
-
-    fun resetTitleState() {
-        RenderHeaderTitleState.setContent()
-    }
 }

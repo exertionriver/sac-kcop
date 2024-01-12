@@ -27,35 +27,45 @@ object RenderHousesRows : IConsoleRender {
     } }
 
     override fun setContent() {
+        val celestialSnapshot = SACComponent.sacChart.firstCelestialSnapshot
+        val celestialHouseData = celestialSnapshot.refCelestialHouseData
 
-        val pofData = SACComponent.refNatCelestialSnapshot.partOfFortuneData()
-        val posData = SACComponent.refNatCelestialSnapshot.partOfSpiritData()
+        val pofData = celestialSnapshot.partOfFortuneData()
+        val posData = celestialSnapshot.partOfSpiritData()
 
         CelestialHouse.entries.forEachIndexed { idx, celestialHouse ->
             when {
                 (celestialHouse.name == "PART_OF_SPIRIT") -> {
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}", celestialHouse.label, SACLayoutHandler.baseValuesFontColor)
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_sign",
-                        Sign.signLabelFromCelestialLongitude(posData), Sign.signColor(posData)
-                    )
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_long", "%1.4f".format(posData), SACLayoutHandler.baseValuesFontColor )
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_signLong", CelestialData.getFormattedSignLongitude(posData), SACLayoutHandler.baseValuesFontColor )
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}"
+                        , celestialHouse.label, SACLayoutHandler.baseValuesFontColor )
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_sign"
+                        , Sign.signLabelFromCelestialLongitude(posData), Sign.signColor(posData) )
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_long"
+                        , "%1.4f".format(posData), SACLayoutHandler.baseValuesFontColor )
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_signLong"
+                        , CelestialData.getFormattedSignLongitude(posData), SACLayoutHandler.baseValuesFontColor )
                 }
                 (celestialHouse.name == "PART_OF_FORTUNE") -> {
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}", celestialHouse.label, SACLayoutHandler.baseValuesFontColor)
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_sign",
-                        Sign.signLabelFromCelestialLongitude(pofData), Sign.signColor(pofData)
-                    )
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_long", "%1.4f".format(pofData), SACLayoutHandler.baseValuesFontColor )
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_signLong", CelestialData.getFormattedSignLongitude(pofData), SACLayoutHandler.baseValuesFontColor )
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}"
+                        , celestialHouse.label, SACLayoutHandler.baseValuesFontColor )
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_sign"
+                        , Sign.signLabelFromCelestialLongitude(pofData), Sign.signColor(pofData) )
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_long"
+                        , "%1.4f".format(pofData), SACLayoutHandler.baseValuesFontColor )
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_signLong"
+                        , CelestialData.getFormattedSignLongitude(pofData), SACLayoutHandler.baseValuesFontColor )
                 }
                 else -> {
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}", celestialHouse.label, SACLayoutHandler.baseValuesFontColor)
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_sign",
-                        Sign.signLabelFromCelestialLongitude(SACComponent.refNatCelestialSnapshot.refCelestialHouseData[idx]), Sign.signColor(SACComponent.refNatCelestialSnapshot.refCelestialHouseData[idx])
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}"
+                        , celestialHouse.label, SACLayoutHandler.baseValuesFontColor)
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_sign"
+                        , Sign.signLabelFromCelestialLongitude(celestialHouseData[idx])
+                        , Sign.signColor(celestialHouseData[idx])
                     )
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_long", "%1.4f".format(SACComponent.refNatCelestialSnapshot.refCelestialHouseData[idx]), SACLayoutHandler.baseValuesFontColor )
-                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_signLong", CelestialData.getFormattedSignLongitude(SACComponent.refNatCelestialSnapshot.refCelestialHouseData[idx]), SACLayoutHandler.baseValuesFontColor )
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_long"
+                        , "%1.4f".format(celestialHouseData[idx]), SACLayoutHandler.baseValuesFontColor )
+                    DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_signLong"
+                        , CelestialData.getFormattedSignLongitude(celestialHouseData[idx]), SACLayoutHandler.baseValuesFontColor )
                 }
             }
         }

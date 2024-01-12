@@ -28,7 +28,7 @@ object RenderSummaryConAnSumAffinity : IConsoleRender {
     ))
 
     override fun setContent() {
-        val chartValue = SACComponent.analysisChart.analysisAffinityValue()
+        val chartValue = SACComponent.sacChart.analysisAffinityValue()
         val layoutPanes = setLayout().panes
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[0].tag!!, ChartState.getChartSumLabel().conAmChartLabel(), SACLayoutHandler.baseValuesFontColor)

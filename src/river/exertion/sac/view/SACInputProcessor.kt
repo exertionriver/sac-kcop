@@ -69,7 +69,11 @@ object SACInputProcessor : InputProcessor {
 
                 chartStateMachine.changeState(ChartState.SYNASTRY_CHART)
 
-                locationRecallStateMachine.changeState(LocationRecallState.CUR_NAV_REF_SYNCOMP_ENTRY)
+                if (locationRecallStateMachine.isInState(LocationRecallState.CUR_NAV_REF)) {
+                    locationRecallStateMachine.changeState(LocationRecallState.CUR_NAV_REF_SYNCOMP_ENTRY)
+                }
+
+                SACComponent.headerChanged = true
             }
 
             MultiKeys.EQUALS.keysDown() -> {
@@ -79,8 +83,25 @@ object SACInputProcessor : InputProcessor {
 
                 chartStateMachine.changeState(ChartState.COMPOSITE_CHART)
 
-                locationRecallStateMachine.changeState(LocationRecallState.CUR_NAV_REF_SYNCOMP_ENTRY)
-                SACComponent.dataChanged = true
+                if (locationRecallStateMachine.isInState(LocationRecallState.CUR_NAV_REF)) {
+                    locationRecallStateMachine.changeState(LocationRecallState.CUR_NAV_REF_SYNCOMP_ENTRY)
+                }
+
+                SACComponent.headerChanged = true
+            }
+
+            MultiKeys.PERIOD.keysDown() -> {
+                if (chartStateMachine.isInState(ChartState.SYNASTRY_CHART)) {
+                    aspectOverlayStateMachine.changeState(AspectOverlayState.toggleState(chartStateMachine.currentState, aspectOverlayStateMachine.currentState))
+                }
+
+                chartStateMachine.changeState(ChartState.COMBINED_CHART)
+
+                if (locationRecallStateMachine.isInState(LocationRecallState.CUR_NAV_REF)) {
+                    locationRecallStateMachine.changeState(LocationRecallState.CUR_NAV_REF_SYNCOMP_ENTRY)
+                }
+
+                SACComponent.headerChanged = true
             }
 
             MultiKeys.MINUS.keyDown() -> {
@@ -123,10 +144,6 @@ object SACInputProcessor : InputProcessor {
                 SACComponent.dataChanged = true
             }
 
-            MultiKeys.C.keysDown() -> {
-                analysisStateMachine.changeState(AnalysisState.cycleCharacterState(analysisStateMachine.currentState))
-                SACComponent.dataChanged = true
-            }
             MultiKeys.E.keysDown() -> {
                 analysisStateMachine.changeState(AnalysisState.cycleElementState(analysisStateMachine.currentState))
                 SACComponent.dataChanged = true

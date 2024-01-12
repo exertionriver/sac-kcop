@@ -7,31 +7,44 @@ import river.exertion.sac.console.state.*
 import river.exertion.sac.swe.DegMidp
 import river.exertion.sac.view.SACInputProcessor
 
-class Chart (val chartAspects : List<Aspect>,  val firstCelestialSnapshot: CelestialSnapshot, val secondCelestialSnapshot: CelestialSnapshot,
-             val chartState: ChartState = ChartState.NATAL_CHART, val analysisState: AnalysisState = AnalysisState.NO_ANALYSIS) {
-
-//    constructor(chartState: ChartState = ChartState.NATAL_CHART, analysisState: AnalysisState = AnalysisState.NO_ANALYSIS) : this (
-//        getAspectsChart(chartAspects), chartState, analysisState)
+class Chart (val chartAspects : List<Aspect>, var firstCelestialSnapshot: CelestialSnapshot, val chartState: ChartState = ChartState.NATAL_CHART) {
 
     constructor(firstCelestialSnapshot: CelestialSnapshot, secondCelestialSnapshot: CelestialSnapshot
                 , chartState: ChartState, aspectsState: AspectsState, timeAspectsState: TimeAspectsState, aspectOverlayState: AspectOverlayState
-                , analysisState: AnalysisState = AnalysisState.NO_ANALYSIS
+                , analysisState: AnalysisState
     ) : this (
         getAspects(
-            firstCelestialSnapshot,
-            secondCelestialSnapshot,
+            if (chartState == ChartState.COMPOSITE_CHART) {
+                CelestialSnapshot.getCompositeSnapshot(firstCelestialSnapshot, secondCelestialSnapshot)
+            } else {
+                firstCelestialSnapshot
+            },
+            if (chartState == ChartState.COMPOSITE_CHART) {
+                CelestialSnapshot.getCompositeSnapshot(firstCelestialSnapshot, secondCelestialSnapshot)
+            } else {
+                secondCelestialSnapshot
+            },
             chartState,
             aspectsState,
             timeAspectsState,
             aspectOverlayState,
             analysisState
-        )
-    , firstCelestialSnapshot, secondCelestialSnapshot, chartState, analysisState
+        ), if (chartState == ChartState.COMPOSITE_CHART) {
+            CelestialSnapshot.getCompositeSnapshot(firstCelestialSnapshot, secondCelestialSnapshot)
+        } else {
+            firstCelestialSnapshot
+        },
+        chartState
     )
 
-    //natal or composite--no need for second snapshot
-    constructor(firstCelestialSnapshot: CelestialSnapshot, chartState: ChartState, aspectsState: AspectsState, timeAspectsState: TimeAspectsState, aspectOverlayState: AspectOverlayState
-    ) : this (firstCelestialSnapshot, firstCelestialSnapshot, chartState, aspectsState, timeAspectsState, aspectOverlayState)
+    //natal--no need for second snapshot
+    constructor(firstCelestialSnapshot: CelestialSnapshot
+            , chartState: ChartState
+            , aspectsState: AspectsState
+            , timeAspectsState: TimeAspectsState
+            , aspectOverlayState: AspectOverlayState
+        , analysisState: AnalysisState
+    ) : this (firstCelestialSnapshot, firstCelestialSnapshot, chartState, aspectsState, timeAspectsState, aspectOverlayState, analysisState)
 
     val baseValue = Value(chartAspects.sortFilterValueAspects().map { it.baseValue.positive }.reduce { acc, basePositive -> acc + basePositive },
         chartAspects.sortFilterValueAspects().map { it.baseValue.negative }.reduce { acc, baseNegative -> acc + baseNegative } )
@@ -42,7 +55,7 @@ class Chart (val chartAspects : List<Aspect>,  val firstCelestialSnapshot: Celes
     fun netValue() = Value(chartAspects.sortFilterValueAspects().map { it.netValue().positive }.reduce { acc, netPositive -> acc + netPositive },
         chartAspects.sortFilterValueAspects().map { it.netValue().negative }.reduce { acc, netNegative -> acc + netNegative } )
 
-    fun analysisAppreciationValue() = if (analysisState == AnalysisState.CHARACTER_ANALYSIS) {
+    fun analysisAppreciationValue() = if (chartState == ChartState.COMBINED_CHART) {
             Value(chartAspects.sortFilterValueAspects().filter {
                 it.aspectValueType.chartValueType == ChartValueType.APPRECIATION
             }.map { it.baseValue.positive }.reduceOrNull { acc, basePositive -> acc + basePositive } ?: 0
@@ -54,7 +67,7 @@ class Chart (val chartAspects : List<Aspect>,  val firstCelestialSnapshot: Celes
             Value(0, 0)
         }
 
-    fun analysisAffinityValue() = if (analysisState == AnalysisState.CHARACTER_ANALYSIS) {
+    fun analysisAffinityValue() = if (chartState == ChartState.COMBINED_CHART) {
             Value(chartAspects.sortFilterValueAspects().filter {
                 it.aspectValueType.chartValueType == ChartValueType.AFFINITY
             }.map { it.baseValue.positive }.reduceOrNull { acc, basePositive -> acc + basePositive } ?: 0
@@ -66,7 +79,7 @@ class Chart (val chartAspects : List<Aspect>,  val firstCelestialSnapshot: Celes
             Value(0, 0)
         }
 
-    fun analysisCommonalityValue() = if (analysisState == AnalysisState.CHARACTER_ANALYSIS) {
+    fun analysisCommonalityValue() = if (chartState == ChartState.COMBINED_CHART) {
             Value(chartAspects.sortFilterValueAspects().filter {
                 it.aspectValueType.chartValueType == ChartValueType.COMMONALITY
             }.map { it.baseValue.positive }.reduceOrNull { acc, basePositive -> acc + basePositive } ?: 0
@@ -78,7 +91,7 @@ class Chart (val chartAspects : List<Aspect>,  val firstCelestialSnapshot: Celes
         Value(0, 0)
     }
 
-    fun analysisCompatibilityValue() = if (analysisState == AnalysisState.CHARACTER_ANALYSIS) {
+    fun analysisCompatibilityValue() = if (chartState == ChartState.COMBINED_CHART) {
             Value(chartAspects.sortFilterValueAspects().filter {
                 it.aspectValueType.chartValueType == ChartValueType.COMPATIBILITY
             }.map { it.baseValue.positive }.reduceOrNull { acc, basePositive -> acc + basePositive } ?: 0
@@ -99,10 +112,8 @@ class Chart (val chartAspects : List<Aspect>,  val firstCelestialSnapshot: Celes
                        chartState: ChartState, aspectsState: AspectsState, timeAspectsState: TimeAspectsState, aspectOverlayState: AspectOverlayState, analysisState: AnalysisState
         ) : List<Aspect> {
 
-            val firstCelestialAspectMap = if (chartState != ChartState.COMPOSITE_CHART) firstCelestialSnapshot.getAspectCelestialLongitudeMap()
-            else CelestialSnapshot.getCompositeSnapshot(firstCelestialSnapshot, secondCelestialSnapshot).getAspectCelestialLongitudeMap()
-            val secondCelestialAspectMap = if (chartState != ChartState.COMPOSITE_CHART) secondCelestialSnapshot.getAspectCelestialLongitudeMap()
-            else CelestialSnapshot.getCompositeSnapshot(firstCelestialSnapshot, secondCelestialSnapshot).getAspectCelestialLongitudeMap()
+            val firstCelestialAspectMap = firstCelestialSnapshot.getAspectCelestialLongitudeMap()
+            val secondCelestialAspectMap = secondCelestialSnapshot.getAspectCelestialLongitudeMap()
 
             val returnAspects : MutableList<Aspect> = ArrayList()
             var returnAspectsIdx = 0
@@ -146,10 +157,8 @@ class Chart (val chartAspects : List<Aspect>,  val firstCelestialSnapshot: Celes
                                , chartState: ChartState, aspectsState: AspectsState, timeAspectsState: TimeAspectsState, aspectOverlayState: AspectOverlayState, analysisState : AnalysisState
         ) : List<Aspect> {
 
-            val firstCelestialAspectMap = if (chartState != ChartState.COMPOSITE_CHART) firstCelestialSnapshot.getAspectCelestialLongitudeMap(includeExtendedAspects = true)
-            else CelestialSnapshot.getCompositeSnapshot(firstCelestialSnapshot, secondCelestialSnapshot).getAspectCelestialLongitudeMap(includeExtendedAspects = true)
-            val secondCelestialAspectMap = if (chartState != ChartState.COMPOSITE_CHART) secondCelestialSnapshot.getAspectCelestialLongitudeMap(includeExtendedAspects = true)
-            else CelestialSnapshot.getCompositeSnapshot(firstCelestialSnapshot, secondCelestialSnapshot).getAspectCelestialLongitudeMap(includeExtendedAspects = true)
+            val firstCelestialAspectMap = firstCelestialSnapshot.getAspectCelestialLongitudeMap(includeExtendedAspects = true)
+            val secondCelestialAspectMap = secondCelestialSnapshot.getAspectCelestialLongitudeMap(includeExtendedAspects = true)
 
             val returnAspects : MutableList<Aspect> = mutableListOf()
 
@@ -268,35 +277,34 @@ class Chart (val chartAspects : List<Aspect>,  val firstCelestialSnapshot: Celes
             return returnAspects
         }
 
-        fun getCharacterAspects(jointChart : Chart, firstNatalChart : Chart, secondNatalChart : Chart) : List<Aspect> {
+        fun getCharacterAspects(firstNatalChart : Chart, secondNatalChart : Chart) : List<Aspect> {
 
             val returnAspects = mutableListOf<Aspect>()
 
-            //if jointChart is Synastry, create Composite; if joint is Composite, create Synastry
-            val flipChart = Chart(
-                getAspects(
-                    jointChart.firstCelestialSnapshot
-                    , jointChart.secondCelestialSnapshot
-                    , ChartState.cycleState(jointChart.chartState)
-                    , SACInputProcessor.aspectsStateMachine.currentState
-                    , SACInputProcessor.timeAspectsStateMachine.currentState
-                    , AspectOverlayState.toggleState(jointChart.chartState, SACInputProcessor.aspectOverlayStateMachine.currentState)
-                    , SACInputProcessor.analysisStateMachine.currentState)
-                , jointChart.firstCelestialSnapshot, jointChart.secondCelestialSnapshot
-                , ChartState.cycleState(jointChart.chartState), SACInputProcessor.analysisStateMachine.currentState)
+            val synChart = Chart(
+                firstNatalChart.firstCelestialSnapshot
+                , secondNatalChart.firstCelestialSnapshot
+                , ChartState.SYNASTRY_CHART
+                , SACInputProcessor.aspectsStateMachine.currentState
+                , SACInputProcessor.timeAspectsStateMachine.currentState
+                , AspectOverlayState.toggleState(ChartState.COMPOSITE_CHART, SACInputProcessor.aspectOverlayStateMachine.currentState)
+                , SACInputProcessor.analysisStateMachine.currentState
+            )
+
+            val compChart = Chart(
+                firstNatalChart.firstCelestialSnapshot
+                , secondNatalChart.firstCelestialSnapshot
+                , ChartState.COMPOSITE_CHART
+                , SACInputProcessor.aspectsStateMachine.currentState
+                , SACInputProcessor.timeAspectsStateMachine.currentState
+                , AspectOverlayState.toggleState(ChartState.SYNASTRY_CHART, SACInputProcessor.aspectOverlayStateMachine.currentState)
+                , SACInputProcessor.analysisStateMachine.currentState
+            )
 
             val firstNatalAspects = firstNatalChart.getAspects()
             val secondNatalAspects = secondNatalChart.getAspects()
-            val compAspects = if (jointChart.chartState == ChartState.SYNASTRY_CHART) {
-                flipChart.getAspects()
-            } else {
-                jointChart.getAspects()
-            }
-            val synAspects = if (jointChart.chartState == ChartState.SYNASTRY_CHART) {
-                jointChart.getAspects()
-            } else {
-                flipChart.getAspects()
-            }
+            val compAspects = compChart.getAspects()
+            val synAspects = synChart.getAspects()
 
             val firstNatalCelestialAspects = firstNatalAspects.map { it.celestialAspect() }
             val secondNatalCelestialAspects = secondNatalAspects.map { it.celestialAspect() }

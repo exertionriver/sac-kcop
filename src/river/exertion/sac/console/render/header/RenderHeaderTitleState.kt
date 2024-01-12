@@ -29,6 +29,7 @@ object RenderHeaderTitleState : IConsoleRender {
                     SACInputProcessor.timeAspectsStateMachine.currentState.getLabel()
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_appStateAttributes",stateAttributes, SACLayoutHandler.baseValuesFontColor)
+
         RenderHeaderEarthLocationTags.setContent()
     }
 }

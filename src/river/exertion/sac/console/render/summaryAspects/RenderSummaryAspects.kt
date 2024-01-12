@@ -7,6 +7,7 @@ import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.render.IConsoleRender
 import river.exertion.sac.console.render.header.RenderHeaderTitleState
 import river.exertion.sac.console.state.AnalysisState
+import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.view.SACInputProcessor
 import river.exertion.sac.view.SACLayoutHandler
 import river.exertion.sac.view.SACLayoutHandler.fontColor
@@ -95,24 +96,17 @@ object RenderSummaryAspects : IConsoleRender {
 
     override fun setContent() {
 
-        val aspectChart = if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.CHARACTER_ANALYSIS)) {
-            SACComponent.analysisChart
-        }
-        else {
-            SACComponent.sacChart
-        }
+        SACComponent.sacChart.chartAspects.sortFilterValueAspects().forEachIndexed { idx, aspect ->
 
-            aspectChart.chartAspects.sortFilterValueAspects().forEachIndexed { idx, aspect ->
-
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_aspectCelestial1_$idx", aspect.getAspectCelestial1Label().second, refFontColor(aspectChart.chartState, aspect.getAspectCelestial1Label().first))
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_aspectCelestial1_$idx", aspect.getAspectCelestial1Label().second, refFontColor(aspect.getAspectCelestial1Label().first))
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_aspect_$idx", aspect.getAspectTypeLabel().second, fontColor(aspect.getAspectTypeLabel().first))
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_aspectCelestial2_$idx", aspect.getAspectCelestial2Label().second, synFontColor(aspectChart.chartState, aspect.getAspectCelestial1Label().first))
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_aspectCelestial2_$idx", aspect.getAspectCelestial2Label().second, synFontColor(aspect.getAspectCelestial1Label().first))
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_aspectDelim_$idx", aspect.getAspectDelimLabel(), SACLayoutHandler.baseValuesFontColor)
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_aspectValue_$idx", aspect.getAspectValueRenderLabel().second, fontColor(aspect.getAspectValueRenderLabel().first))
-            if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.ROMANTIC_ANALYSIS)) {
-                DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_aspectModValue_$idx", aspect.getRenderRomanticModLabel().second, fontColor(aspect.getRenderRomanticModLabel().first))
-            } else if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.CHARACTER_ANALYSIS)) {
+            if (SACInputProcessor.chartStateMachine.isInState(ChartState.COMBINED_CHART)) {
                 DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_aspectModValue_$idx", aspect.getRenderCharacterModLabel().second, fontColor(aspect.getRenderCharacterModLabel().first))
+            } else if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.ROMANTIC_ANALYSIS)) {
+                DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_aspectModValue_$idx", aspect.getRenderRomanticModLabel().second, fontColor(aspect.getRenderRomanticModLabel().first))
             }
         }
 

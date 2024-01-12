@@ -11,7 +11,7 @@ import river.exertion.sac.view.SACInputProcessor
 
 enum class AnalysisState : State<SACInputProcessor> {
     NO_ANALYSIS
-    , CHARACTER_ANALYSIS { override fun getLabel() = SYM_CHARACTER }
+//    , CHARACTER_ANALYSIS { override fun getLabel() = SYM_CHARACTER }
     , ROMANTIC_ANALYSIS { override fun getLabel() = SYM_ROMANTIC }
     , PLANET_ANALYSIS { override fun getLabel() = SYM_PLANET }
     , ELEMENT_ANALYSIS { override fun getLabel() = SYM_ELEMENT }
@@ -27,14 +27,14 @@ enum class AnalysisState : State<SACInputProcessor> {
 
     companion object {
         fun defaultState() = NO_ANALYSIS
-
+/*
         fun cycleCharacterState(analysisState: AnalysisState) : AnalysisState {
             return when (analysisState) {
                 CHARACTER_ANALYSIS -> NO_ANALYSIS
                 else -> CHARACTER_ANALYSIS
             }
         }
-
+*/
         fun cycleElementState(analysisState: AnalysisState) : AnalysisState {
             return when (analysisState) {
                 ELEMENT_ANALYSIS -> NO_ANALYSIS

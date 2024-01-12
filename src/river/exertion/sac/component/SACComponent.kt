@@ -14,19 +14,30 @@ import river.exertion.sac.astro.EarthLocation
 import river.exertion.sac.astro.Chart
 import river.exertion.sac.console.state.*
 import river.exertion.sac.view.SACInputProcessor
+import river.exertion.sac.view.SACLayoutHandler
 
 class SACComponent : IComponent, Telegraph {
 
     override var componentId = Id.randomId()
     override var isInitialized = false
 
-    var compositeNoRecalc = false
+    var noRecalc = false
+
+    fun headerRecalc() {
+        SACLayoutHandler.resetTitleState()
+
+        if (synEarthLocation != null) {
+            dataChanged = true
+        }
+
+        headerChanged = false
+    }
 
     fun sacRecalc() {
         sacEarthLocation.utcDateTime = NavState.curNavDateTimeUTC()
         sacEarthLocation.recalc()
 
-        compositeNoRecalc = false
+        noRecalc = false
 
         if (refEarthLocation != null) {
             refNatCelestialSnapshot.refEarthLocation = refEarthLocation!!
@@ -37,68 +48,48 @@ class SACComponent : IComponent, Telegraph {
         refNatCelestialSnapshot.recalc()
 
         if (synEarthLocation != null) {
-            sacCelestialSnapshot.refEarthLocation = sacEarthLocation
-            sacCelestialSnapshot.synEarthLocation = synEarthLocation!!
-
             synNatCelestialSnapshot.refEarthLocation = synEarthLocation!!
 
-            sacCelestialSnapshot.recalc()
             synNatCelestialSnapshot.recalc()
-
-            if (SACInputProcessor.chartStateMachine.isInState(ChartState.COMPOSITE_CHART)) {
-                sacCelestialSnapshot = CelestialSnapshot.getCompositeSnapshot(sacCelestialSnapshot, synNatCelestialSnapshot, sacEarthLocation, synEarthLocation!!)
-                compositeNoRecalc = true
-            }
         }
 
-        if (!compositeNoRecalc) sacCelestialSnapshot.recalc()
-
         //TODO: implement recalc for chart
-        sacChart = Chart(
-            Chart.getAspects(
-                refNatCelestialSnapshot
-                , if (synEarthLocation != null) synNatCelestialSnapshot else refNatCelestialSnapshot
-                , SACInputProcessor.chartStateMachine.currentState
-                , SACInputProcessor.aspectsStateMachine.currentState
-                , SACInputProcessor.timeAspectsStateMachine.currentState
-                , SACInputProcessor.aspectOverlayStateMachine.currentState
-                , SACInputProcessor.analysisStateMachine.currentState)
-            , refNatCelestialSnapshot, if (synEarthLocation != null) synNatCelestialSnapshot else refNatCelestialSnapshot
-            , SACInputProcessor.chartStateMachine.currentState, SACInputProcessor.analysisStateMachine.currentState)
-
         refNatChart = Chart(
-            Chart.getAspects(
-                refNatCelestialSnapshot
-                , refNatCelestialSnapshot
+            refNatCelestialSnapshot
+            , ChartState.NATAL_CHART
+            , SACInputProcessor.aspectsStateMachine.currentState
+            , SACInputProcessor.timeAspectsStateMachine.currentState
+            , AspectOverlayState.toggleState(ChartState.SYNASTRY_CHART, SACInputProcessor.aspectOverlayStateMachine.currentState)
+            , SACInputProcessor.analysisStateMachine.currentState
+        )
+
+        if (synEarthLocation != null) {
+            synNatChart = Chart(
+                synNatCelestialSnapshot
                 , ChartState.NATAL_CHART
                 , SACInputProcessor.aspectsStateMachine.currentState
                 , SACInputProcessor.timeAspectsStateMachine.currentState
                 , AspectOverlayState.toggleState(ChartState.SYNASTRY_CHART, SACInputProcessor.aspectOverlayStateMachine.currentState)
-                , SACInputProcessor.analysisStateMachine.currentState)
-            , refNatCelestialSnapshot, refNatCelestialSnapshot
-            , ChartState.NATAL_CHART, SACInputProcessor.analysisStateMachine.currentState)
-
-        if (synEarthLocation != null) {
-            synNatChart = Chart(
-                Chart.getAspects(
-                    synNatCelestialSnapshot
-                    , synNatCelestialSnapshot
-                    , ChartState.NATAL_CHART
-                    , SACInputProcessor.aspectsStateMachine.currentState
-                    , SACInputProcessor.timeAspectsStateMachine.currentState
-                    , AspectOverlayState.toggleState(ChartState.SYNASTRY_CHART, SACInputProcessor.aspectOverlayStateMachine.currentState)
-                    , SACInputProcessor.analysisStateMachine.currentState)
-                , synNatCelestialSnapshot, synNatCelestialSnapshot
-                , ChartState.NATAL_CHART, SACInputProcessor.analysisStateMachine.currentState)
+                , SACInputProcessor.analysisStateMachine.currentState
+            )
         }
 
-        if (SACInputProcessor.analysisStateMachine.isInState(AnalysisState.CHARACTER_ANALYSIS)) {
-            analysisChart = Chart(
-                Chart.getCharacterAspects(sacChart, refNatChart, synNatChart)
-                , refNatCelestialSnapshot, synNatCelestialSnapshot
-                , ChartState.ANALYSIS_CHART, SACInputProcessor.analysisStateMachine.currentState)
+        sacChart = if (SACInputProcessor.chartStateMachine.currentState == ChartState.COMBINED_CHART) {
+            Chart(
+                Chart.getCharacterAspects(refNatChart, synNatChart)
+                , refNatCelestialSnapshot
+                , ChartState.COMBINED_CHART
+            )
         } else {
-            analysisChart = sacChart
+            Chart(
+                refNatCelestialSnapshot,
+                if (synEarthLocation != null) synNatCelestialSnapshot else refNatCelestialSnapshot,
+                SACInputProcessor.chartStateMachine.currentState,
+                SACInputProcessor.aspectsStateMachine.currentState,
+                SACInputProcessor.timeAspectsStateMachine.currentState,
+                SACInputProcessor.aspectOverlayStateMachine.currentState,
+                SACInputProcessor.analysisStateMachine.currentState
+            )
         }
 
         dataChanged = false
@@ -122,6 +113,7 @@ class SACComponent : IComponent, Telegraph {
         fun getFor(entity : Entity) : SACComponent? = if (has(entity)) entity.components.first { it is SACComponent } as SACComponent else null
 
         var dataChanged = true
+        var headerChanged = true
 
         //TODO: allow location definitions with lat / long / alt / tz
         //TODO: allow location default set in properties file
@@ -155,9 +147,6 @@ class SACComponent : IComponent, Telegraph {
                 , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState(), AnalysisState.defaultState())
         var synNatChart = Chart(synNatCelestialSnapshot, synNatCelestialSnapshot, ChartState.defaultState()
                 , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState(), AnalysisState.defaultState())
-
-        var analysisChart = Chart(sacCelestialSnapshot, sacCelestialSnapshot, ChartState.defaultState()
-            , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState(), AnalysisState.defaultState())
 
         fun recallRefEarthLocationEntry(recallIdx : Int) {
             sacEarthLocation.tag = earthLocationArray[recallIdx].tag

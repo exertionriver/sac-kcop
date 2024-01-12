@@ -28,7 +28,7 @@ object RenderSummaryConAnSumCommonality : IConsoleRender {
     ))
 
     override fun setContent() {
-        val chartValue = SACComponent.analysisChart.analysisCommonalityValue()
+        val chartValue = SACComponent.sacChart.analysisCommonalityValue()
         val layoutPanes = setLayout().panes
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent(layoutPanes[0].tag!!, ChartState.getChartSumLabel().conAmChartLabel(), SACLayoutHandler.baseValuesFontColor)
