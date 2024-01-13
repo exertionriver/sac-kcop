@@ -8,9 +8,9 @@ import river.exertion.sac.Constants.SYM_MINOR_BOX
 import river.exertion.sac.view.SACInputProcessor
 
 enum class AspectsFilterState : State<SACInputProcessor>  {
-    ALL_VALUES { override fun getLabel() = SYM_ALL_BOX }
-    , OVER_TWENTY { override fun getLabel() = SYM_MAJOR_BOX }
-    , OVER_FIFTY { override fun getLabel() = SYM_MINOR_BOX };
+    ALL_VALUES { override fun getLabel() = " All V " }
+    , OVER_TWENTY { override fun getLabel() = "|V|>=20" }
+    , OVER_FIFTY { override fun getLabel() = "|V|>=50" };
 
     abstract fun getLabel() : String
 

@@ -6,6 +6,7 @@ import river.exertion.sac.astro.base.Celestial
 import river.exertion.sac.astro.base.CelestialHouse
 import river.exertion.sac.console.render.IConsoleRender
 import river.exertion.sac.console.render.celestials.RenderCelestialsRows.celestialsRows
+import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.console.state.LocationRecallState
 import river.exertion.sac.view.SACInputProcessor
 
@@ -35,7 +36,8 @@ object RenderCelestialsHeader : IConsoleRender {
         DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_celestialDistance", Celestial.celestialDistanceHeaderLabel)
         DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_celestialSpeed", Celestial.celestialLongitudeSpeedHeaderLabel)
 
-        if (SACInputProcessor.locationRecallStateMachine.isInState(LocationRecallState.CUR_NAV_REF_SYNCOMP_RECALL) ) {
+        if (SACInputProcessor.locationRecallStateMachine.isInState(LocationRecallState.CUR_NAV_REF_SYNCOMP_RECALL) &&
+            SACInputProcessor.chartStateMachine.isInState(ChartState.SYNASTRY_CHART) ) {
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_transitHouse", Celestial.celestialTransitHouseHeaderLabel)
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_transitCelestials", Celestial.celestialTransitCelestialHeaderLabel)
         }

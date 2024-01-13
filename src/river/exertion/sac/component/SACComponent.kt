@@ -45,13 +45,14 @@ class SACComponent : IComponent, Telegraph {
             refNatCelestialSnapshot.refEarthLocation = sacEarthLocation
         }
 
-        refNatCelestialSnapshot.recalc()
-
         if (synEarthLocation != null) {
             synNatCelestialSnapshot.refEarthLocation = synEarthLocation!!
+            refNatCelestialSnapshot.synEarthLocation = synEarthLocation!!
 
             synNatCelestialSnapshot.recalc()
         }
+
+        refNatCelestialSnapshot.recalc()
 
         //TODO: implement recalc for chart
         refNatChart = Chart(

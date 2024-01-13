@@ -168,6 +168,10 @@ object Constants {
     const val SYM_ELEMENT = "\u2697" //alembic
     const val SYM_MODE = "\u229B" //circled-asterisk
 
+    const val SYM_UP_ARROW = "\u2191"
+    const val SYM_DOWN_ARROW = "\u2193"
+
+
     const val SYM_PEACE = "\u262E" //peace symbol
     const val SYM_LOVE = "\u2665" //full heart
     const val SYM_HARMONY = "\u262F" //yin-yang

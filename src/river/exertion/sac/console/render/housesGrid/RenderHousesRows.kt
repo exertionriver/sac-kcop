@@ -8,6 +8,8 @@ import river.exertion.sac.astro.base.Sign
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.render.IConsoleRender
 import river.exertion.sac.console.render.celestials.RenderCelestialsRows
+import river.exertion.sac.console.state.ChartState
+import river.exertion.sac.view.SACInputProcessor
 import river.exertion.sac.view.SACLayoutHandler
 
 object RenderHousesRows : IConsoleRender {
@@ -37,7 +39,12 @@ object RenderHousesRows : IConsoleRender {
             when {
                 (celestialHouse.name == "PART_OF_SPIRIT") -> {
                     DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}"
-                        , celestialHouse.label, SACLayoutHandler.baseValuesFontColor )
+                        , celestialHouse.label, if (SACInputProcessor.chartStateMachine.isInState(
+                                ChartState.COMPOSITE_CHART) )
+                            SACLayoutHandler.compCelesitalSnapshotFontColor
+                        else
+                            SACLayoutHandler.refEarthLocationFontColor
+                    )
                     DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_sign"
                         , Sign.signLabelFromCelestialLongitude(posData), Sign.signColor(posData) )
                     DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_long"
@@ -47,7 +54,12 @@ object RenderHousesRows : IConsoleRender {
                 }
                 (celestialHouse.name == "PART_OF_FORTUNE") -> {
                     DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}"
-                        , celestialHouse.label, SACLayoutHandler.baseValuesFontColor )
+                        , celestialHouse.label, if (SACInputProcessor.chartStateMachine.isInState(
+                                ChartState.COMPOSITE_CHART) )
+                            SACLayoutHandler.compCelesitalSnapshotFontColor
+                        else
+                            SACLayoutHandler.refEarthLocationFontColor
+                    )
                     DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_sign"
                         , Sign.signLabelFromCelestialLongitude(pofData), Sign.signColor(pofData) )
                     DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_long"
@@ -57,7 +69,12 @@ object RenderHousesRows : IConsoleRender {
                 }
                 else -> {
                     DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}"
-                        , celestialHouse.label, SACLayoutHandler.baseValuesFontColor)
+                        , celestialHouse.label, if (SACInputProcessor.chartStateMachine.isInState(
+                                ChartState.COMPOSITE_CHART) )
+                            SACLayoutHandler.compCelesitalSnapshotFontColor
+                        else
+                            SACLayoutHandler.refEarthLocationFontColor
+                    )
                     DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestialHouse}_sign"
                         , Sign.signLabelFromCelestialLongitude(celestialHouseData[idx])
                         , Sign.signColor(celestialHouseData[idx])

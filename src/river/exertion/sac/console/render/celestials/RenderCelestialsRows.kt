@@ -8,6 +8,7 @@ import river.exertion.sac.astro.base.CelestialHouse
 import river.exertion.sac.astro.base.Sign
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.render.IConsoleRender
+import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.console.state.LocationRecallState
 import river.exertion.sac.view.SACInputProcessor
 import river.exertion.sac.view.SACLayoutHandler
@@ -34,30 +35,38 @@ object RenderCelestialsRows : IConsoleRender {
     } }
 
     override fun setContent() {
-        val celestialData = SACComponent.sacChart.firstCelestialSnapshot.refCelestialData
-        
+        val refCelestialData = SACComponent.sacChart.firstCelestialSnapshot.refCelestialData
+
         Celestial.entries.forEachIndexed { idx, celestial ->
-            DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}", celestial.label, SACLayoutHandler.baseValuesFontColor)
+            DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}", celestial.label
+                , if (SACInputProcessor.chartStateMachine.isInState(ChartState.COMPOSITE_CHART) )
+                        SACLayoutHandler.compCelesitalSnapshotFontColor
+                    else
+                        SACLayoutHandler.refEarthLocationFontColor
+            )
+
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}_sign",
-                Sign.signLabelFromCelestialLongitude(celestialData[idx].longitude, celestialData[idx].longitudeSpeed
-                ), Sign.signColor(celestialData[idx].longitude)
+                Sign.signLabelFromCelestialLongitude(refCelestialData[idx].longitude, refCelestialData[idx].longitudeSpeed
+                ), Sign.signColor(refCelestialData[idx].longitude)
             )
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}_long"
-                , "%1.4f".format(celestialData[idx].longitude), SACLayoutHandler.baseValuesFontColor )
+                , "%1.4f".format(refCelestialData[idx].longitude), SACLayoutHandler.baseValuesFontColor )
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}_signLong"
-                , CelestialData.getFormattedSignLongitude(celestialData[idx].longitude), SACLayoutHandler.baseValuesFontColor )
+                , CelestialData.getFormattedSignLongitude(refCelestialData[idx].longitude), SACLayoutHandler.baseValuesFontColor )
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}_house"
-                , CelestialHouse.celestialHouseLabel(celestialData[idx].celestialHouse), SACLayoutHandler.baseValuesFontColor )
+                , CelestialHouse.celestialHouseLabel(refCelestialData[idx].celestialHouse), SACLayoutHandler.refCelestialSnapshotFontColor )
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}_dist"
-                , "%1.4f".format(celestialData[idx].distance), SACLayoutHandler.baseValuesFontColor )
+                , "%1.4f".format(refCelestialData[idx].distance), SACLayoutHandler.baseValuesFontColor )
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}_speed"
-                , "%1.4f".format(celestialData[idx].longitudeSpeed), SACLayoutHandler.baseValuesFontColor )
+                , "%1.4f".format(refCelestialData[idx].longitudeSpeed), SACLayoutHandler.baseValuesFontColor )
 
-            if (SACInputProcessor.locationRecallStateMachine.isInState(LocationRecallState.CUR_NAV_REF_SYNCOMP_RECALL) && idx <= Celestial.transitMax.ordinal) {
+            if ( SACInputProcessor.locationRecallStateMachine.isInState(LocationRecallState.CUR_NAV_REF_SYNCOMP_RECALL) &&
+                    SACInputProcessor.chartStateMachine.isInState(ChartState.SYNASTRY_CHART) &&
+                    (idx <= Celestial.transitMax.ordinal) ) {
                 DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}_transitHouse"
-                    , CelestialHouse.celestialHouseLabel(celestialData[idx].transitHouse), SACLayoutHandler.baseValuesFontColor )
+                    , CelestialHouse.celestialHouseLabel(refCelestialData[idx].transitHouse), SACLayoutHandler.synCelestialSnapshotFontColor )
                 DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${celestial.name}_transitCelestials"
-                    , Celestial.getTransitCelestialsLabel(celestialData[idx].transitHouse.toInt(), SACComponent.synNatCelestialSnapshot.refCelestialData), SACLayoutHandler.baseValuesFontColor )
+                    , Celestial.getTransitCelestialsLabel(refCelestialData[idx].transitHouse.toInt(), SACComponent.synNatCelestialSnapshot.refCelestialData), SACLayoutHandler.synCelestialSnapshotFontColor )
             }
         }
     }
