@@ -11,14 +11,14 @@ import river.exertion.sac.view.SACInputProcessor
 enum class ChartState : State<SACInputProcessor> {
     NONE_CHART //for values analysis only
     , NATAL_CHART
-    , COMPOSITE_CHART { override fun getOperatorLabel() = "=" }
-    , SYNASTRY_CHART { override fun getLabel() = SYM_SYNASTRY_CHART ; override fun getOperatorLabel() = "+"; override fun isNatComp() = false }
-    , COMBINED_CHART { override fun getLabel() = SYM_COMBINED_CHART ; override fun getOperatorLabel() = "."; override fun isNatComp() = true }
+    , COMPOSITE_CHART { override val operatorLabel = "=" }
+    , SYNASTRY_CHART { override val label = SYM_SYNASTRY_CHART ; override val operatorLabel = "+"; override val isNatComp = false }
+    , COMBINED_CHART { override val label = SYM_COMBINED_CHART ; override val operatorLabel = "."; override val isNatComp = true }
     ;
 
-    open fun getLabel() : String = SYM_NATCOMP_CHART
-    open fun getOperatorLabel() : String = ""
-    open fun isNatComp() : Boolean = true
+    open val label : String = SYM_NATCOMP_CHART
+    open val operatorLabel : String = ""
+    open val isNatComp : Boolean = true
 
     override fun update(sacInputProcessor: SACInputProcessor) { }
     override fun enter(sacInputProcessor: SACInputProcessor?) { }
@@ -26,9 +26,9 @@ enum class ChartState : State<SACInputProcessor> {
     override fun onMessage(sacInputProcessor: SACInputProcessor?, telegram: Telegram?): Boolean = true
 
     companion object {
-        fun defaultState() = NATAL_CHART
+        val defaultState = NATAL_CHART
 
-        fun getChartSumLabel(overrideState : ChartState? = null) : String = "${Constants.SYM_SIGMA}${overrideState?.getLabel() ?: SACInputProcessor.chartStateMachine.currentState.getLabel()}:"
+        fun getChartSumLabel(overrideState : ChartState? = null) : String = "${Constants.SYM_SIGMA}${overrideState?.label ?: (SACInputProcessor.chartStateMachine.currentState as ChartState).label}:"
 
         fun String.impChartLabel() : String = Constants.SYM_IMPROVEMENT + this
 

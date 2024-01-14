@@ -8,18 +8,18 @@ import river.exertion.sac.console.state.*
 
 object SACInputProcessor : InputProcessor {
 
-    val navStateMachine = DefaultStateMachine(this, NavState.defaultState())
-    val navDirStateMachine = DefaultStateMachine(this, NavDirState.defaultState())
-    val entryStateMachine = DefaultStateMachine(this, EntryState.defaultState())
-    val timeAspectsStateMachine = DefaultStateMachine(this, TimeAspectsState.defaultState())
-    val analysisStateMachine = DefaultStateMachine(this, AnalysisState.defaultState())
-    val detailsStateMachine = DefaultStateMachine(this, DetailsState.defaultState())
-    val chartStateMachine = DefaultStateMachine(this, ChartState.defaultState())
-    val aspectsStateMachine = DefaultStateMachine(this, AspectsState.defaultState())
-    val aspectOverlayStateMachine = DefaultStateMachine(this, AspectOverlayState.defaultState())
-    val locationRecallStateMachine = DefaultStateMachine(this, LocationRecallState.defaultState())
-    val aspectsSortStateMachine = DefaultStateMachine(this, AspectsSortState.defaultState())
-    val aspectsFilterStateMachine = DefaultStateMachine(this, AspectsFilterState.defaultState())
+    val navStateMachine = DefaultStateMachine(this, NavState.defaultState)
+    val navDirStateMachine = DefaultStateMachine(this, NavDirState.defaultState)
+    val entryStateMachine = DefaultStateMachine(this, EntryState.defaultState)
+    val timeAspectsStateMachine = DefaultStateMachine(this, TimeAspectsState.defaultState)
+    val analysisStateMachine = DefaultStateMachine(this, AnalysisState.defaultState)
+    val detailsStateMachine = DefaultStateMachine(this, DetailsState.defaultState)
+    val chartStateMachine = DefaultStateMachine(this, ChartState.defaultState)
+    val aspectsStateMachine = DefaultStateMachine(this, AspectsState.defaultState)
+    val aspectOverlayStateMachine = DefaultStateMachine(this, AspectOverlayState.defaultState)
+    val locationRecallStateMachine = DefaultStateMachine(this, LocationRecallState.defaultState)
+    val aspectsSortStateMachine = DefaultStateMachine(this, AspectsSortState.defaultState)
+    val aspectsFilterStateMachine = DefaultStateMachine(this, AspectsFilterState.defaultState)
 
     override fun keyDown(keycode: Int): Boolean {
 
@@ -28,16 +28,16 @@ object SACInputProcessor : InputProcessor {
         when {
             //escape to console starting state
             MultiKeys.ESCAPE.keyDown() -> {
-                navStateMachine.changeState(NavState.defaultState())
-                navDirStateMachine.changeState(NavDirState.defaultState())
-                entryStateMachine.changeState(EntryState.defaultState())
-                timeAspectsStateMachine.changeState(TimeAspectsState.defaultState())
-                analysisStateMachine.changeState(AnalysisState.defaultState())
-                detailsStateMachine.changeState(DetailsState.defaultState())
-                chartStateMachine.changeState(ChartState.defaultState())
-                aspectsStateMachine.changeState(AspectsState.defaultState())
-                aspectOverlayStateMachine.changeState(AspectOverlayState.defaultState())
-                locationRecallStateMachine.changeState(LocationRecallState.defaultState())
+                navStateMachine.changeState(NavState.defaultState)
+                navDirStateMachine.changeState(NavDirState.defaultState)
+                entryStateMachine.changeState(EntryState.defaultState)
+                timeAspectsStateMachine.changeState(TimeAspectsState.defaultState)
+                analysisStateMachine.changeState(AnalysisState.defaultState)
+                detailsStateMachine.changeState(DetailsState.defaultState)
+                chartStateMachine.changeState(ChartState.defaultState)
+                aspectsStateMachine.changeState(AspectsState.defaultState)
+                aspectOverlayStateMachine.changeState(AspectOverlayState.defaultState)
+                locationRecallStateMachine.changeState(LocationRecallState.defaultState)
 
                 SACComponent.resetEarthLocations()
 
@@ -46,14 +46,14 @@ object SACInputProcessor : InputProcessor {
 
             //remove modifications, leave navigation, chart
             MultiKeys.USCORE.keysDown() -> {
-                entryStateMachine.changeState(EntryState.defaultState())
-                timeAspectsStateMachine.changeState(TimeAspectsState.defaultState())
-                analysisStateMachine.changeState(AnalysisState.defaultState())
-                detailsStateMachine.changeState(DetailsState.defaultState())
-                aspectsStateMachine.changeState(AspectsState.defaultState())
-                aspectOverlayStateMachine.changeState(AspectOverlayState.defaultState())
-                aspectsSortStateMachine.changeState(AspectsSortState.defaultState())
-                aspectsFilterStateMachine.changeState(AspectsFilterState.defaultState())
+                entryStateMachine.changeState(EntryState.defaultState)
+                timeAspectsStateMachine.changeState(TimeAspectsState.defaultState)
+                analysisStateMachine.changeState(AnalysisState.defaultState)
+                detailsStateMachine.changeState(DetailsState.defaultState)
+                aspectsStateMachine.changeState(AspectsState.defaultState)
+                aspectOverlayStateMachine.changeState(AspectOverlayState.defaultState)
+                aspectsSortStateMachine.changeState(AspectsSortState.defaultState)
+                aspectsFilterStateMachine.changeState(AspectsFilterState.defaultState)
 
                 SACComponent.dataChanged = true
             }
@@ -107,7 +107,7 @@ object SACInputProcessor : InputProcessor {
             MultiKeys.MINUS.keyDown() -> {
                 navDirStateMachine.changeState(NavDirState.cycleState(navDirStateMachine.currentState))
 
-                if (navStateMachine.currentState.isCurrent() ) navStateMachine.changeState(NavState.NAV_SECOND)
+                if (navStateMachine.currentState.isCurrent ) navStateMachine.changeState(NavState.NAV_SECOND)
                 SACComponent.dataChanged = true
             }
 

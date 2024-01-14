@@ -28,8 +28,8 @@ enum class AspectType {
 
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
-                aspectOverlayState.isDefault() -> 6.0
-                aspectOverlayState.isSelective() && !aspectOverlayState.isNatComp() -> 5.0
+                aspectOverlayState.isDefault -> 6.0
+                aspectOverlayState.isSelective && !aspectOverlayState.isNatComp -> 5.0
                 else -> 5.0
             }
         }
@@ -42,7 +42,7 @@ enum class AspectType {
 
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
-                aspectOverlayState.isDefault() -> 10.0
+                aspectOverlayState.isDefault -> 10.0
                 else -> 6.0
             }
         }
@@ -55,8 +55,8 @@ enum class AspectType {
 
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
-                aspectOverlayState.isDefault() -> 10.0
-                aspectOverlayState.isSelective() && !aspectOverlayState.isNatComp() -> 7.0
+                aspectOverlayState.isDefault -> 10.0
+                aspectOverlayState.isSelective && !aspectOverlayState.isNatComp -> 7.0
                 else -> 8.0
             }
         }
@@ -69,7 +69,7 @@ enum class AspectType {
 
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
-                aspectOverlayState.isDefault() -> 10.0
+                aspectOverlayState.isDefault -> 10.0
                 else -> 9.0
             }
         }
@@ -82,7 +82,7 @@ enum class AspectType {
 
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
-                aspectOverlayState.isDefault() -> 3.0
+                aspectOverlayState.isDefault -> 3.0
                 aspectOverlayState.isHybrid() -> 2.5
                 else -> super.getAspectAngleOrb(aspectOverlayState)
             }
@@ -96,7 +96,7 @@ enum class AspectType {
 
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
-                aspectOverlayState.isDefault() -> 3.0
+                aspectOverlayState.isDefault -> 3.0
                 aspectOverlayState.isHybrid() -> 2.5
                 else -> super.getAspectAngleOrb(aspectOverlayState)
             }
@@ -110,7 +110,7 @@ enum class AspectType {
 
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
-                aspectOverlayState.isDefault() || aspectOverlayState.isHybrid() -> 2.0
+                aspectOverlayState.isDefault || aspectOverlayState.isHybrid() -> 2.0
                 else -> super.getAspectAngleOrb(aspectOverlayState)
             }
         }
@@ -123,7 +123,7 @@ enum class AspectType {
 
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
-                aspectOverlayState.isDefault() || aspectOverlayState.isHybrid() -> 2.0
+                aspectOverlayState.isDefault || aspectOverlayState.isHybrid() -> 2.0
                 else -> super.getAspectAngleOrb(aspectOverlayState)
             }
         }
@@ -136,7 +136,7 @@ enum class AspectType {
 
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
-                aspectOverlayState.isDefault() -> 3.0
+                aspectOverlayState.isDefault -> 3.0
                 aspectOverlayState.isHybrid() -> 2.5
                 else -> super.getAspectAngleOrb(aspectOverlayState)
             }
@@ -150,7 +150,7 @@ enum class AspectType {
 
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double {
             return when {
-                aspectOverlayState.isDefault() -> 3.0
+                aspectOverlayState.isDefault -> 3.0
                 aspectOverlayState.isHybrid() -> 2.5
                 else -> super.getAspectAngleOrb(aspectOverlayState)
             }

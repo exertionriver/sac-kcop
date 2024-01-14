@@ -33,7 +33,7 @@ allprojects {
         compilerOptions.languageVersion.set(KotlinVersion.KOTLIN_1_9)
     }
 
-    version = '0.4'
+    version = '0.5'
     ext {
         appName = "Sweet Astro Console"
         gdxVersion = '1.12.0'

@@ -6,6 +6,7 @@ import river.exertion.sac.astro.base.AspectCelestial
 import river.exertion.sac.astro.base.AspectType
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.render.IConsoleRender
+import river.exertion.sac.console.state.ChartState
 import river.exertion.sac.view.SACInputProcessor
 import river.exertion.sac.view.SACLayoutHandler
 
@@ -16,7 +17,7 @@ object RenderGridRows : IConsoleRender {
 
     override fun setLayout() = DVTable(tableTag = layoutTag, width = DVPaneType.DVPDimension.SMALL.tag(), panes = mutableListOf<DVLayoutCell>().apply {
 
-        if (SACInputProcessor.chartStateMachine.currentState.isNatComp()) {
+        if ((SACInputProcessor.chartStateMachine.currentState as ChartState).isNatComp) {
             gridEntries.forEachIndexed { rowIdx, chartAspectCelestial ->
                 var colIdx = 0
 
@@ -58,7 +59,7 @@ object RenderGridRows : IConsoleRender {
 
         val chartAspects = SACComponent.sacChart.getAspects()
 
-        if (SACInputProcessor.chartStateMachine.currentState.isNatComp()) {
+        if ((SACInputProcessor.chartStateMachine.currentState as ChartState).isNatComp) {
             gridEntries.forEachIndexed { rowIdx, chartAspectCelestial ->
                 var colIdx = 0
 

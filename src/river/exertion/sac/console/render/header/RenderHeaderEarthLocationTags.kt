@@ -24,9 +24,9 @@ object RenderHeaderEarthLocationTags : IConsoleRender {
     } )
 
     override fun setContent() {
-        val locationRecallState = SACInputProcessor.locationRecallStateMachine.currentState
+        val locationRecallState = SACInputProcessor.locationRecallStateMachine.currentState as LocationRecallState
 
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_eltLeftSquare", locationRecallState.eltLeftSquareLabel(), SACLayoutHandler.baseValuesFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_eltLeftSquare", locationRecallState.eltLeftSquareLabel, SACLayoutHandler.baseValuesFontColor)
         DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_eltLeftTag", locationRecallState.eltLeftTag(), SACLayoutHandler.refEarthLocationFontColor)
 
         if (!SACInputProcessor.locationRecallStateMachine.isInState(LocationRecallState.CUR_NAV_REF)) {
@@ -34,6 +34,6 @@ object RenderHeaderEarthLocationTags : IConsoleRender {
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_eltRightTag", locationRecallState.eltRightTag(), SACLayoutHandler.synEarthLocationFontColor)
         }
 
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_eltRightSquare", locationRecallState.eltRightSquareLabel(), SACLayoutHandler.baseValuesFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_eltRightSquare", locationRecallState.eltRightSquareLabel, SACLayoutHandler.baseValuesFontColor)
     }
 }

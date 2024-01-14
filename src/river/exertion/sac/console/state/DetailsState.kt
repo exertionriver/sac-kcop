@@ -15,7 +15,7 @@ enum class DetailsState : State<SACInputProcessor> {
     override fun onMessage(sacInputProcessor: SACInputProcessor?, telegram: Telegram?): Boolean = true
 
     companion object {
-        fun defaultState() = SHOW_DETAILS
+        val defaultState = SHOW_DETAILS
 
         fun cycleState(detailsState: DetailsState) : DetailsState {
             return when (detailsState) {

@@ -6,18 +6,17 @@ import river.exertion.sac.view.SACInputProcessor
 
 enum class EntryState : State<SACInputProcessor> {
     NO_ENTRY
-    , DATE_ENTRY { override fun getLabel() = "Date Entry (UTC)"; override fun getPrompt() = "yyyy.mm.dd (UTC) : "; override fun getDelim() = "." }
-    , TIME_ENTRY { override fun getLabel() = "Time Entry (UTC)"; override fun getPrompt() = "hh:mm:ss (UTC) : "; override fun getDelim() = ":" }
-    , LAT_ENTRY { override fun getLabel() = "Latitude Entry"; override fun getPrompt() = "(-S)xy.z123 : " }
-    , LON_ENTRY { override fun getLabel() = "Longitude Entry"; override fun getPrompt() = "(-W)xy.z123 : " }
-    , ALT_ENTRY { override fun getLabel() = "Altitude Entry"; override fun getPrompt() = "0.123m : " }
-    , TZ_ENTRY { override fun getLabel() = "Timezone Entry"; override fun getPrompt() = "(-W)hh : " }
-    , LOCATION_NUMBER_ENTRY { override fun getLabel() = "Location Number Entry"; override fun getPrompt() = "location number: " }
+    , DATE_ENTRY { override val label = "Date Entry (UTC)"; override val prompt = "yyyy.mm.dd (UTC) : "; override val delim = "." }
+    , TIME_ENTRY { override val label = "Time Entry (UTC)"; override val prompt = "hh:mm:ss (UTC) : "; override val delim = ":" }
+    , LAT_ENTRY { override val label = "Latitude Entry"; override val prompt = "(-S)xy.z123 : " }
+    , LON_ENTRY { override val label = "Longitude Entry"; override val prompt = "(-W)xy.z123 : " }
+    , ALT_ENTRY { override val label = "Altitude Entry"; override val prompt = "0.123m : " }
+    , TZ_ENTRY { override val label = "Timezone Entry"; override val prompt = "(-W)hh : " }
     ;
 
-    open fun getLabel(): String = ""
-    open fun getPrompt(): String = ""
-    open fun getDelim(): String = ""
+    open val label: String = ""
+    open val prompt: String = ""
+    open val delim: String = ""
 
     override fun update(sacInputProcessor: SACInputProcessor) { }
     override fun enter(sacInputProcessor: SACInputProcessor?) { }
@@ -25,6 +24,6 @@ enum class EntryState : State<SACInputProcessor> {
     override fun onMessage(sacInputProcessor: SACInputProcessor?, telegram: Telegram?): Boolean = true
 
     companion object {
-        fun defaultState() = NO_ENTRY
+        val defaultState = NO_ENTRY
     }
 }

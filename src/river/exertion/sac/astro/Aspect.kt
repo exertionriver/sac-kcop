@@ -410,11 +410,11 @@ data class Aspect (val signFirst : Sign
                 secondAspectCelestialOverride,
                 AspectAngle.ASPECT_ANGLE_NONE,
                 InvalidOrb,
-                AspectsState.defaultState(),
-                TimeAspectsState.defaultState(),
-                AspectOverlayState.defaultState(),
-                ChartState.defaultState(),
-                AnalysisState.defaultState()
+                AspectsState.defaultState,
+                TimeAspectsState.defaultState,
+                AspectOverlayState.defaultState,
+                ChartState.defaultState,
+                AnalysisState.defaultState
             )
         }
 

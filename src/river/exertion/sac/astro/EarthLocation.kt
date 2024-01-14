@@ -49,18 +49,18 @@ data class EarthLocation(
     companion object {
         fun getDateTimeString(dateTime : LocalDateTime) : String {
 
-            return dateTime.year.toString() + EntryState.DATE_ENTRY.getDelim() + dateTime.monthNumber.toString().padStart(2, '0') + EntryState.DATE_ENTRY.getDelim() + dateTime.dayOfMonth.toString().padStart(2, '0') + "@" +
-                    dateTime.hour.toString().padStart(2, '0') + EntryState.TIME_ENTRY.getDelim() + dateTime.minute.toString().padStart(2, '0') + EntryState.TIME_ENTRY.getDelim() + dateTime.second.toString().padStart(2, '0') + "." + dateTime.nanosecond.toString()
+            return dateTime.year.toString() + EntryState.DATE_ENTRY.delim + dateTime.monthNumber.toString().padStart(2, '0') + EntryState.DATE_ENTRY.delim + dateTime.dayOfMonth.toString().padStart(2, '0') + "@" +
+                    dateTime.hour.toString().padStart(2, '0') + EntryState.TIME_ENTRY.delim + dateTime.minute.toString().padStart(2, '0') + EntryState.TIME_ENTRY.delim + dateTime.second.toString().padStart(2, '0') + "." + dateTime.nanosecond.toString()
         }
 
         fun getDateString(dateTime : LocalDateTime) : String {
 
-            return dateTime.year.toString() + EntryState.DATE_ENTRY.getDelim() + dateTime.monthNumber.toString().padStart(2, '0') + EntryState.DATE_ENTRY.getDelim() + dateTime.dayOfMonth.toString().padStart(2, '0')
+            return dateTime.year.toString() + EntryState.DATE_ENTRY.delim + dateTime.monthNumber.toString().padStart(2, '0') + EntryState.DATE_ENTRY.delim + dateTime.dayOfMonth.toString().padStart(2, '0')
         }
 
         fun getTimeString(dateTime : LocalDateTime) : String {
 
-            return dateTime.hour.toString().padStart(2, '0') + EntryState.TIME_ENTRY.getDelim() + dateTime.minute.toString().padStart(2, '0') + EntryState.TIME_ENTRY.getDelim() + dateTime.second.toString().padStart(2, '0')
+            return dateTime.hour.toString().padStart(2, '0') + EntryState.TIME_ENTRY.delim + dateTime.minute.toString().padStart(2, '0') + EntryState.TIME_ENTRY.delim + dateTime.second.toString().padStart(2, '0')
         }
 
         fun getDefaultEarthLocation(utcDate : LocalDate) = EarthLocation().apply { this.utcDateTime = utcDate.atTime(Clock.System.now().toLocalDateTime(
@@ -99,8 +99,8 @@ data class EarthLocation(
         fun getEarthLocalDateLabel() = Constants.SYM_GREG_CALENDAR + "(" + Constants.SYM_TZ + ")"
 
         fun getRenderTimeLabel(dateTime : LocalDateTime, dateTimeLabel : String) = dateTimeLabel + ": " +
-                dateTime.hour.toString().padStart(2, '0') + EntryState.TIME_ENTRY.getDelim() +
-                dateTime.minute.toString().padStart(2, '0') + EntryState.TIME_ENTRY.getDelim() +
+                dateTime.hour.toString().padStart(2, '0') + EntryState.TIME_ENTRY.delim +
+                dateTime.minute.toString().padStart(2, '0') + EntryState.TIME_ENTRY.delim +
                 dateTime.second.toString().padStart(2, '0')
 
         fun getRenderLocalTimeLabel(localDateTime : LocalDateTime) = getRenderTimeLabel(localDateTime, getEarthLocalTimeLabel())
@@ -108,8 +108,8 @@ data class EarthLocation(
         fun getRenderUTCTimeLabel(utcDateTime : LocalDateTime) = getRenderTimeLabel(utcDateTime, getEarthUTCTimeLabel())
 
         fun getRenderDateLabel(dateTime : LocalDateTime, dateTimeLabel : String) = dateTimeLabel + ": " +
-                dateTime.year.toString().padStart(4, '0') + EntryState.DATE_ENTRY.getDelim() +
-                dateTime.monthNumber.toString().padStart(2, '0') + EntryState.DATE_ENTRY.getDelim() +
+                dateTime.year.toString().padStart(4, '0') + EntryState.DATE_ENTRY.delim +
+                dateTime.monthNumber.toString().padStart(2, '0') + EntryState.DATE_ENTRY.delim +
                 dateTime.dayOfMonth.toString().padStart(2, '0')
 
         fun getRenderLocalDateLabel(localDateTime : LocalDateTime) = getRenderDateLabel(localDateTime, getEarthLocalDateLabel())

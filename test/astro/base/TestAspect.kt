@@ -2,8 +2,12 @@ package astro.base
 
 import org.junit.jupiter.api.Test
 import river.exertion.sac.Constants.InvalidOrb
+import river.exertion.sac.astro.Aspect
 import river.exertion.sac.astro.base.AspectAngle
 import river.exertion.sac.astro.base.AspectCelestial
+import river.exertion.sac.console.state.AspectOverlayState
+import river.exertion.sac.console.state.AspectsState
+import river.exertion.sac.console.state.TimeAspectsState
 import kotlin.test.assertEquals
 
 class TestAspect {
@@ -59,7 +63,8 @@ class TestAspect {
     @Test
     fun testFindAspectAngle() {
 
-        var testCalc = Aspect.findAspectAngle(120.0, 90.0, 31.0)
+        var testCalc = Aspect.findAspectAngle(AspectCelestial.ASPECT_SUN, 120.0, AspectCelestial.ASPECT_MOON, 90.0
+            , AspectsState.defaultState(), TimeAspectsState.defaultState(), AspectOverlayState.defaultState())
 
         println("findAspectAngle (orb ok, desc): $testCalc")
         assertEquals(AspectAngle.SEMISEXTILE_330, testCalc)

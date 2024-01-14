@@ -6,11 +6,11 @@ import river.exertion.sac.Constants.SYM_RETRO
 import river.exertion.sac.view.SACInputProcessor
 
 enum class NavDirState : State<SACInputProcessor> {
-    NAV_FORWARD { override fun getIncDec() = 1 }
-    , NAV_REVERSE { override fun getLabel() = ":Rev"; override fun getIncDec() = -1 }
+    NAV_FORWARD { override val incDec = 1 }
+    , NAV_REVERSE { override val label = ":Rev"; override val incDec = -1 }
     ;
-    open fun getLabel(): String = ""
-    abstract fun getIncDec(): Int
+    open val label: String = ""
+    abstract val incDec: Int
 
     override fun update(sacInputProcessor: SACInputProcessor) { }
     override fun enter(sacInputProcessor: SACInputProcessor?) { }
@@ -18,7 +18,7 @@ enum class NavDirState : State<SACInputProcessor> {
     override fun onMessage(sacInputProcessor: SACInputProcessor?, telegram: Telegram?): Boolean = true
 
     companion object {
-        fun defaultState() = NAV_FORWARD
+        val defaultState = NAV_FORWARD
 
         fun cycleState(navDirState: NavDirState) : NavDirState {
             return when (navDirState) {

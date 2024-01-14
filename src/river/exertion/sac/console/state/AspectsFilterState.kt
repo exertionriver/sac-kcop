@@ -8,11 +8,11 @@ import river.exertion.sac.Constants.SYM_MINOR_BOX
 import river.exertion.sac.view.SACInputProcessor
 
 enum class AspectsFilterState : State<SACInputProcessor>  {
-    ALL_VALUES { override fun getLabel() = " All V " }
-    , OVER_TWENTY { override fun getLabel() = "|V|>=20" }
-    , OVER_FIFTY { override fun getLabel() = "|V|>=50" };
+    ALL_VALUES { override val label = " All V " }
+    , OVER_TWENTY { override val label = "|V|>=20" }
+    , OVER_FIFTY { override val label = "|V|>=50" };
 
-    abstract fun getLabel() : String
+    abstract val label : String
 
     override fun update(sacInputProcessor: SACInputProcessor) { }
     override fun enter(sacInputProcessor: SACInputProcessor?) { }
@@ -21,7 +21,7 @@ enum class AspectsFilterState : State<SACInputProcessor>  {
 
 
     companion object {
-        fun defaultState() = ALL_VALUES
+        val defaultState = ALL_VALUES
 
         fun cycleState(aspectsState: AspectsFilterState) : AspectsFilterState {
             return when (aspectsState) {

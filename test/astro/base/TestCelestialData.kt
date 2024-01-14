@@ -1,5 +1,6 @@
 package astro.base
 
+import TestEarthLocations
 import kotlinx.datetime.LocalDateTime
 import river.exertion.sac.astro.base.Celestial
 import river.exertion.sac.astro.CelestialData
@@ -14,15 +15,10 @@ class TestCelestialData {
 
     @Test
     fun testGetFormattedSignLongitude() {
-        val testLDT = LocalDateTime(1978,11,16,18,39,0,0)
-        val testLat = 30.2667
-        val testLong = -97.75
+        println ("test earthlocation:" + TestEarthLocations.atxEarthLocation)
 
-        println("test localdatetime: $testLDT")
-        println("test lat/long: $testLat / $testLong")
-
-        val uniTimeDec = Julday.getJulianUTCTimeDecimal(testLDT, Julday.UNIVERSAL_TIME)
-        val uniTimeHouses = Houses.getCelestialHousesData(uniTimeDec, testLat, testLong)
+        val uniTimeDec = Julday.getJulianUTCTimeDecimal(TestEarthLocations.atxEarthLocation.utcDateTime, Julday.UNIVERSAL_TIME)
+        val uniTimeHouses = Houses.getCelestialHousesData(uniTimeDec, TestEarthLocations.atxEarthLocation.latitude, TestEarthLocations.atxEarthLocation.longitude )
         val uniCelestials = CalcUt.getCelestialsData(uniTimeDec, uniTimeHouses)
 
         println("Universal Time Celestials (raw-long)")

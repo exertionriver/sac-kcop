@@ -7,10 +7,10 @@ import river.exertion.sac.Constants.SYM_NEGATION
 import river.exertion.sac.view.SACInputProcessor
 
 enum class TimeAspectsState : State<SACInputProcessor> {
-    TIME_ASPECTS_ENABLED { override fun getLabel() = SYM_FULL_HGLASS }
-    , TIME_ASPECTS_DISABLED { override fun getLabel() = " " } ;
+    TIME_ASPECTS_ENABLED { override val label = SYM_FULL_HGLASS }
+    , TIME_ASPECTS_DISABLED { override val label = " " } ;
 
-    abstract fun getLabel(): String
+    abstract val label: String
 
     override fun update(sacInputProcessor: SACInputProcessor) { }
     override fun enter(sacInputProcessor: SACInputProcessor?) { }
@@ -18,7 +18,7 @@ enum class TimeAspectsState : State<SACInputProcessor> {
     override fun onMessage(sacInputProcessor: SACInputProcessor?, telegram: Telegram?): Boolean = true
 
     companion object {
-        fun defaultState() = TIME_ASPECTS_ENABLED
+        val defaultState = TIME_ASPECTS_ENABLED
 
         fun cycleState(timeAspectsState: TimeAspectsState) : TimeAspectsState {
             return when (timeAspectsState) {

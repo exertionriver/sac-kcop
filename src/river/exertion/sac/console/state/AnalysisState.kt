@@ -11,14 +11,13 @@ import river.exertion.sac.view.SACInputProcessor
 
 enum class AnalysisState : State<SACInputProcessor> {
     NO_ANALYSIS
-//    , CHARACTER_ANALYSIS { override fun getLabel() = SYM_CHARACTER }
-    , ROMANTIC_ANALYSIS { override fun getLabel() = SYM_ROMANTIC }
-    , PLANET_ANALYSIS { override fun getLabel() = SYM_PLANET }
-    , ELEMENT_ANALYSIS { override fun getLabel() = SYM_ELEMENT }
-    , MODE_ANALYSIS { override fun getLabel() = SYM_MODE }
+    , ROMANTIC_ANALYSIS { override val label = SYM_ROMANTIC }
+    , PLANET_ANALYSIS { override val label = SYM_PLANET }
+    , ELEMENT_ANALYSIS { override val label = SYM_ELEMENT }
+    , MODE_ANALYSIS { override val label = SYM_MODE }
     ;
 
-    open fun getLabel() : String = " "
+    open val label : String = " "
 
     override fun update(sacInputProcessor: SACInputProcessor) { }
     override fun enter(sacInputProcessor: SACInputProcessor?) { }
@@ -26,7 +25,7 @@ enum class AnalysisState : State<SACInputProcessor> {
     override fun onMessage(sacInputProcessor: SACInputProcessor?, telegram: Telegram?): Boolean = true
 
     companion object {
-        fun defaultState() = NO_ANALYSIS
+        val defaultState = NO_ANALYSIS
 /*
         fun cycleCharacterState(analysisState: AnalysisState) : AnalysisState {
             return when (analysisState) {

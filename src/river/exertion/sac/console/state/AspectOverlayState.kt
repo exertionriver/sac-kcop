@@ -14,36 +14,37 @@ import river.exertion.sac.view.SACInputProcessor
 //Hybrid Orb defn is an original creation
 enum class AspectOverlayState : State<SACInputProcessor>  {
     ASPECT_NATCOMP_OVERLAY_DEFAULT {
-        override fun getLabel() = SYM_DEFAULT_ORBS
-        override fun isDefault() = true
+        override val label = SYM_DEFAULT_ORBS
+        override val isDefault = true
     },
     ASPECT_NATCOMP_OVERLAY_SELECTIVE {
-        override fun getLabel() = SYM_SELECTIVE_ORBS
-        override fun isSelective() = true
+        override val label = SYM_SELECTIVE_ORBS
+        override val isSelective = true
     },
     ASPECT_NATCOMP_OVERLAY_HYBRID {
-        override fun getLabel() = SYM_HYBRID_ORBS
+        override val label = SYM_HYBRID_ORBS
     },
     ASPECT_SYNASTRY_OVERLAY_DEFAULT {
-        override fun getLabel() = SYM_DEFAULT_ORBS
-        override fun isNatComp() = false
-        override fun isDefault() = true
+        override val label = SYM_DEFAULT_ORBS
+        override val isNatComp = false
+        override val isDefault = true
     },
     ASPECT_SYNASTRY_OVERLAY_SELECTIVE {
-        override fun getLabel() = SYM_SELECTIVE_ORBS
-        override fun isNatComp() = false
-        override fun isSelective() = true
+        override val label = SYM_SELECTIVE_ORBS
+        override val isNatComp = false
+        override val isSelective = true
     },
     ASPECT_SYNASTRY_OVERLAY_HYBRID {
-        override fun getLabel() = SYM_HYBRID_ORBS
-        override fun isNatComp() = false
+        override val label = SYM_HYBRID_ORBS
+        override val isNatComp = false
     };
 
-    abstract fun getLabel(): String
-    open fun isNatComp(): Boolean = true
-    open fun isDefault(): Boolean = false
-    open fun isSelective(): Boolean = false
-    fun isHybrid() = !isDefault() && !isSelective()
+    abstract val label: String
+    open val isNatComp: Boolean = true
+    open val isDefault: Boolean = false
+    open val isSelective: Boolean = false
+
+    fun isHybrid() = !isDefault && !isSelective
 
     override fun update(sacInputProcessor: SACInputProcessor) { }
     override fun enter(sacInputProcessor: SACInputProcessor?) { }
@@ -51,13 +52,13 @@ enum class AspectOverlayState : State<SACInputProcessor>  {
     override fun onMessage(sacInputProcessor: SACInputProcessor?, telegram: Telegram?): Boolean = true
 
     companion object {
-        fun defaultState() = ASPECT_NATCOMP_OVERLAY_DEFAULT
+        val defaultState = ASPECT_NATCOMP_OVERLAY_DEFAULT
 
         //used when chartState changes
         fun toggleState(chartState: ChartState, aspectOverlayState: AspectOverlayState): AspectOverlayState {
 
             return when {
-                chartState.isNatComp() ->
+                chartState.isNatComp ->
                     when (aspectOverlayState) {
                         ASPECT_NATCOMP_OVERLAY_DEFAULT -> ASPECT_SYNASTRY_OVERLAY_DEFAULT
                         ASPECT_NATCOMP_OVERLAY_SELECTIVE -> ASPECT_SYNASTRY_OVERLAY_SELECTIVE
@@ -78,7 +79,7 @@ enum class AspectOverlayState : State<SACInputProcessor>  {
         fun cycleState(chartState: ChartState, aspectOverlayState: AspectOverlayState): AspectOverlayState {
 
             return when {
-                chartState.isNatComp() ->
+                chartState.isNatComp ->
                     when (aspectOverlayState) {
                         ASPECT_NATCOMP_OVERLAY_DEFAULT -> ASPECT_NATCOMP_OVERLAY_SELECTIVE
                         ASPECT_NATCOMP_OVERLAY_SELECTIVE -> ASPECT_NATCOMP_OVERLAY_HYBRID

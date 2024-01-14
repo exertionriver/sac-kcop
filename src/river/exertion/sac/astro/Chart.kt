@@ -285,20 +285,20 @@ class Chart (val chartAspects : List<Aspect>, var firstCelestialSnapshot: Celest
                 firstNatalChart.firstCelestialSnapshot
                 , secondNatalChart.firstCelestialSnapshot
                 , ChartState.SYNASTRY_CHART
-                , SACInputProcessor.aspectsStateMachine.currentState
-                , SACInputProcessor.timeAspectsStateMachine.currentState
-                , AspectOverlayState.toggleState(ChartState.COMPOSITE_CHART, SACInputProcessor.aspectOverlayStateMachine.currentState)
-                , SACInputProcessor.analysisStateMachine.currentState
+                , (SACInputProcessor.aspectsStateMachine.currentState as AspectsState)
+                , (SACInputProcessor.timeAspectsStateMachine.currentState as TimeAspectsState)
+                , AspectOverlayState.toggleState(ChartState.COMPOSITE_CHART, (SACInputProcessor.aspectOverlayStateMachine.currentState as AspectOverlayState) )
+                , (SACInputProcessor.analysisStateMachine.currentState as AnalysisState)
             )
 
             val compChart = Chart(
                 firstNatalChart.firstCelestialSnapshot
                 , secondNatalChart.firstCelestialSnapshot
                 , ChartState.COMPOSITE_CHART
-                , SACInputProcessor.aspectsStateMachine.currentState
-                , SACInputProcessor.timeAspectsStateMachine.currentState
-                , AspectOverlayState.toggleState(ChartState.SYNASTRY_CHART, SACInputProcessor.aspectOverlayStateMachine.currentState)
-                , SACInputProcessor.analysisStateMachine.currentState
+                , (SACInputProcessor.aspectsStateMachine.currentState as AspectsState)
+                , (SACInputProcessor.timeAspectsStateMachine.currentState as TimeAspectsState)
+                , AspectOverlayState.toggleState(ChartState.SYNASTRY_CHART, (SACInputProcessor.aspectOverlayStateMachine.currentState as AspectOverlayState) )
+                , (SACInputProcessor.analysisStateMachine.currentState as AnalysisState)
             )
 
             val firstNatalAspects = firstNatalChart.getAspects()

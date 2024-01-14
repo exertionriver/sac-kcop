@@ -4,7 +4,7 @@ import river.exertion.kcop.view.layout.displayViewLayout.*
 import river.exertion.kcop.view.layout.displayViewLayout.asset.DVAlign
 import river.exertion.sac.Constants
 import river.exertion.sac.console.render.IConsoleRender
-import river.exertion.sac.console.state.LocationRecallState
+import river.exertion.sac.console.state.*
 import river.exertion.sac.view.SACInputProcessor
 import river.exertion.sac.view.SACLayoutHandler
 
@@ -19,16 +19,18 @@ object RenderHeaderTitleState : IConsoleRender {
     } )
 
     override fun setContent() {
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_appTitleVersion","${Constants.APP_NAME} v${Constants.APP_VERSION}")
-        DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_appNavState",SACInputProcessor.navStateMachine.currentState.getLabel()+SACInputProcessor.navDirStateMachine.currentState.getLabel(), SACLayoutHandler.baseValuesFontColor)
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_appTitleVersion"
+            ,"${Constants.APP_NAME} v${Constants.APP_VERSION}")
+        DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_appNavState"
+            ,"${(SACInputProcessor.navStateMachine.currentState as NavState).label}+${(SACInputProcessor.navDirStateMachine.currentState as NavDirState).label}", SACLayoutHandler.baseValuesFontColor)
 
         val stateAttributes =
-            SACInputProcessor.aspectOverlayStateMachine.currentState.getLabel() +
-                    SACInputProcessor.chartStateMachine.currentState.getLabel() +
-                    SACInputProcessor.aspectsStateMachine.currentState.getLabel() +
-                    SACInputProcessor.timeAspectsStateMachine.currentState.getLabel() +
-                    SACInputProcessor.aspectsSortStateMachine.currentState.getLabel() +
-                    SACInputProcessor.aspectsFilterStateMachine.currentState.getLabel()
+            (SACInputProcessor.aspectOverlayStateMachine.currentState as AspectOverlayState).label +
+            (SACInputProcessor.chartStateMachine.currentState as ChartState).label +
+            (SACInputProcessor.aspectsStateMachine.currentState as AspectsState).label +
+            (SACInputProcessor.timeAspectsStateMachine.currentState as TimeAspectsState).label +
+            (SACInputProcessor.aspectsSortStateMachine.currentState as AspectsSortState).label +
+            (SACInputProcessor.aspectsFilterStateMachine.currentState as AspectsFilterState).label
 
         DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_appStateAttributes",stateAttributes, SACLayoutHandler.baseValuesFontColor)
 

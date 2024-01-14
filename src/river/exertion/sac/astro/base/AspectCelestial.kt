@@ -52,7 +52,7 @@ enum class AspectCelestial {
         override fun aspectOverlayOrbModifier(aspectOverlayState: AspectOverlayState): Double {
             return when {
                 // 0.5 if isNatComp, 0.25 if is synastry
-                aspectOverlayState.isDefault() -> (1).toDouble() / (2.0).pow(2 - aspectOverlayState.isNatComp().compareTo(false))
+                aspectOverlayState.isDefault -> (1).toDouble() / (2.0).pow(2 - aspectOverlayState.isNatComp.compareTo(false))
                 else -> super.aspectOverlayOrbModifier(aspectOverlayState)
             }
         }
@@ -63,7 +63,7 @@ enum class AspectCelestial {
 
         override fun aspectOverlayOrbModifier(aspectOverlayState: AspectOverlayState): Double {
             return when {
-                aspectOverlayState.isSelective() -> 0.0
+                aspectOverlayState.isSelective -> 0.0
                 else -> super.aspectOverlayOrbModifier(aspectOverlayState)
             }
         }
@@ -76,8 +76,8 @@ enum class AspectCelestial {
         override fun aspectOverlayOrbModifier(aspectOverlayState: AspectOverlayState): Double {
             return when {
                 // 0.5 if isNatComp, 0.25 if is synastry
-                aspectOverlayState.isDefault() -> (1).toDouble() / (2.0).pow(2 - aspectOverlayState.isNatComp().compareTo(false))
-                aspectOverlayState.isSelective() -> 0.0
+                aspectOverlayState.isDefault -> (1).toDouble() / (2.0).pow(2 - aspectOverlayState.isNatComp.compareTo(false))
+                aspectOverlayState.isSelective -> 0.0
                 else -> super.aspectOverlayOrbModifier(aspectOverlayState)
             }
         }
@@ -90,8 +90,8 @@ enum class AspectCelestial {
         override fun aspectOverlayOrbModifier(aspectOverlayState: AspectOverlayState): Double {
             return when {
                 // 0.5 if isNatComp, 0.25 if is synastry
-                aspectOverlayState.isDefault() -> (1).toDouble() / (2.0).pow(2 - aspectOverlayState.isNatComp().compareTo(false))
-                aspectOverlayState.isSelective() -> 0.0
+                aspectOverlayState.isDefault -> (1).toDouble() / (2.0).pow(2 - aspectOverlayState.isNatComp.compareTo(false))
+                aspectOverlayState.isSelective -> 0.0
                 else -> super.aspectOverlayOrbModifier(aspectOverlayState)
             }
         }
@@ -103,7 +103,7 @@ enum class AspectCelestial {
         override fun aspectOverlayOrbModifier(aspectOverlayState: AspectOverlayState): Double {
             return when {
                 // 0.5 if isNatComp, 0.25 if is synastry
-                aspectOverlayState.isDefault() -> (1).toDouble() / (2.0).pow(2 - aspectOverlayState.isNatComp().compareTo(false))
+                aspectOverlayState.isDefault -> (1).toDouble() / (2.0).pow(2 - aspectOverlayState.isNatComp.compareTo(false))
                 else -> super.aspectOverlayOrbModifier(aspectOverlayState)
             }
         }
@@ -152,7 +152,7 @@ enum class AspectCelestial {
 
     open fun aspectOverlayOrbModifier(aspectOverlayState: AspectOverlayState): Double {
         // 1 if isNatComp, .5 if synastry
-        return (2 + aspectOverlayState.isNatComp().compareTo(true) ) / (2).toDouble()
+        return (2 + aspectOverlayState.isNatComp.compareTo(true) ) / (2).toDouble()
     }
 
     companion object {
