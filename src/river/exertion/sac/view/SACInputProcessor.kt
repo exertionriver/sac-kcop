@@ -13,7 +13,6 @@ object SACInputProcessor : InputProcessor {
     val entryStateMachine = DefaultStateMachine(this, EntryState.defaultState)
     val timeAspectsStateMachine = DefaultStateMachine(this, TimeAspectsState.defaultState)
     val analysisStateMachine = DefaultStateMachine(this, AnalysisState.defaultState)
-    val detailsStateMachine = DefaultStateMachine(this, DetailsState.defaultState)
     val chartStateMachine = DefaultStateMachine(this, ChartState.defaultState)
     val aspectsStateMachine = DefaultStateMachine(this, AspectsState.defaultState)
     val aspectOverlayStateMachine = DefaultStateMachine(this, AspectOverlayState.defaultState)
@@ -33,7 +32,6 @@ object SACInputProcessor : InputProcessor {
                 entryStateMachine.changeState(EntryState.defaultState)
                 timeAspectsStateMachine.changeState(TimeAspectsState.defaultState)
                 analysisStateMachine.changeState(AnalysisState.defaultState)
-                detailsStateMachine.changeState(DetailsState.defaultState)
                 chartStateMachine.changeState(ChartState.defaultState)
                 aspectsStateMachine.changeState(AspectsState.defaultState)
                 aspectOverlayStateMachine.changeState(AspectOverlayState.defaultState)
@@ -49,7 +47,6 @@ object SACInputProcessor : InputProcessor {
                 entryStateMachine.changeState(EntryState.defaultState)
                 timeAspectsStateMachine.changeState(TimeAspectsState.defaultState)
                 analysisStateMachine.changeState(AnalysisState.defaultState)
-                detailsStateMachine.changeState(DetailsState.defaultState)
                 aspectsStateMachine.changeState(AspectsState.defaultState)
                 aspectOverlayStateMachine.changeState(AspectOverlayState.defaultState)
                 aspectsSortStateMachine.changeState(AspectsSortState.defaultState)
@@ -161,10 +158,6 @@ object SACInputProcessor : InputProcessor {
                 SACComponent.dataChanged = true
             }
 
-            MultiKeys.e.keyDown() -> {
-                detailsStateMachine.changeState(DetailsState.cycleState(detailsStateMachine.currentState))
-                SACComponent.dataChanged = true
-            }
 
             MultiKeys.numKeyDown() -> {
                 val recallIdx = MultiKeys.numPressed()

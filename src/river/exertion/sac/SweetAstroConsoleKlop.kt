@@ -29,9 +29,6 @@ object SweetAstroConsoleKlop : IDisplayViewKlop, IAssetKlop, IECSKlop {
 
     override var tag = "sac"
 
-    /*    , HELP_ENABLED { override fun getRenderHelpFirstLine() = "Navigate by: [s]econds, [m]inutes, [h]ours, [d]ays, [w]eeks, m[o]nths, [y]ears, [-]reverse nav; [ESC]return to current time; change [p]resets, [a]spects toggle, [t]ime toggle"
-                    override fun getRenderHelpSecondLine() = "Pause actions: [SPC]pause; set [D]ate, set [T]ime, set l[A]titude, set l[O]ngitude, set time [Z]one; [0-9]recall profile, [)-(]set profile, [x]return to defaults"
-*/
     override fun load() {
         loadAssets()
         loadSystems()

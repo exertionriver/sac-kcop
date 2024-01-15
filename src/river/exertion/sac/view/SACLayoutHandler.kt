@@ -5,12 +5,14 @@ import river.exertion.kcop.asset.AssetManagerHandler
 import river.exertion.kcop.asset.view.ColorPalette
 import river.exertion.kcop.view.KcopFont
 import river.exertion.kcop.view.klop.IDisplayViewLayoutHandler
+import river.exertion.kcop.view.layout.TextView
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayout
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutHandler
 import river.exertion.sac.astro.base.AspectValueType
 import river.exertion.sac.astro.base.ValueType
 import river.exertion.sac.console.render.RenderDAVRoot
 import river.exertion.sac.console.render.RenderDVRoot
+import river.exertion.sac.console.render.TextHelp
 import river.exertion.sac.console.render.header.RenderHeaderTitleState
 import river.exertion.sac.console.state.ChartState
 
@@ -49,6 +51,8 @@ object SACLayoutHandler : IDisplayViewLayoutHandler {
 
         RenderDVRoot.setContent()
         RenderDAVRoot.setContent()
+
+        TextView.currentText = TextHelp.helpText
 
         DVLayoutHandler.build()
     }

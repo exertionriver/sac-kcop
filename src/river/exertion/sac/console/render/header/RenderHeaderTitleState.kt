@@ -22,7 +22,7 @@ object RenderHeaderTitleState : IConsoleRender {
         DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_appTitleVersion"
             ,"${Constants.APP_NAME} v${Constants.APP_VERSION}")
         DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_appNavState"
-            ,"${(SACInputProcessor.navStateMachine.currentState as NavState).label}+${(SACInputProcessor.navDirStateMachine.currentState as NavDirState).label}", SACLayoutHandler.baseValuesFontColor)
+            ,"${(SACInputProcessor.navStateMachine.currentState as NavState).label} ${(SACInputProcessor.navDirStateMachine.currentState as NavDirState).label}", SACLayoutHandler.baseValuesFontColor)
 
         val stateAttributes =
             (SACInputProcessor.aspectOverlayStateMachine.currentState as AspectOverlayState).label +
