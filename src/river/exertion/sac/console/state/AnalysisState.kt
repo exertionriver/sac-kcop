@@ -26,14 +26,7 @@ enum class AnalysisState : State<SACInputProcessor> {
 
     companion object {
         val defaultState = NO_ANALYSIS
-/*
-        fun cycleCharacterState(analysisState: AnalysisState) : AnalysisState {
-            return when (analysisState) {
-                CHARACTER_ANALYSIS -> NO_ANALYSIS
-                else -> CHARACTER_ANALYSIS
-            }
-        }
-*/
+
         fun cycleElementState(analysisState: AnalysisState) : AnalysisState {
             return when (analysisState) {
                 ELEMENT_ANALYSIS -> NO_ANALYSIS

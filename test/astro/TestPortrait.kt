@@ -1,4 +1,4 @@
-package base
+package astro
 
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone

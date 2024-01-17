@@ -1,7 +1,10 @@
 package river.exertion.sac.view
 
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
 import river.exertion.kcop.view.MultiKeys
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.state.*
@@ -19,6 +22,19 @@ object SACInputProcessor : InputProcessor {
     val locationRecallStateMachine = DefaultStateMachine(this, LocationRecallState.defaultState)
     val aspectsSortStateMachine = DefaultStateMachine(this, AspectsSortState.defaultState)
     val aspectsFilterStateMachine = DefaultStateMachine(this, AspectsFilterState.defaultState)
+
+    val inputBreakListener = object : InputListener() {
+        override fun keyDown(event : InputEvent, keycode : Int) : Boolean {
+            //used to escape from text entry
+            if ( (keycode == Input.Keys.ESCAPE) && (navStateMachine.isInState(NavState.ENTRY_PAUSED) ) )  {
+                entryStateMachine.changeState(EntryState.NO_ENTRY)
+                navStateMachine.changeState(NavState.NAV_PAUSED)
+                MultiKeys.keysDown.clear()
+            }
+            return false
+        }
+    }
+
 
     override fun keyDown(keycode: Int): Boolean {
 

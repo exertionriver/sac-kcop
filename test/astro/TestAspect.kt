@@ -1,4 +1,4 @@
-package astro.base
+package astro
 
 import org.junit.jupiter.api.Test
 import river.exertion.sac.Constants.InvalidOrb

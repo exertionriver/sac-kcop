@@ -1,4 +1,4 @@
-package astro.base
+package astro
 
 import TestEarthLocations
 import kotlinx.datetime.LocalDateTime

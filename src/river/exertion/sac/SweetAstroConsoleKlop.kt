@@ -33,17 +33,7 @@ object SweetAstroConsoleKlop : IDisplayViewKlop, IAssetKlop, IECSKlop {
         loadAssets()
         loadSystems()
 
-        KcopBase.stage.addListener(object : InputListener() {
-            override fun keyDown(event : InputEvent, keycode : Int) : Boolean {
-                //used to escape from text entry
-                if ( (keycode == Input.Keys.ESCAPE) && (SACInputProcessor.navStateMachine.isInState(NavState.ENTRY_PAUSED) ) )  {
-                    SACInputProcessor.entryStateMachine.changeState(EntryState.NO_ENTRY)
-                    SACInputProcessor.navStateMachine.changeState(NavState.NAV_PAUSED)
-                    MultiKeys.keysDown.clear()
-                }
-                return false
-            }
-        })
+        KcopBase.stage.addListener(SACInputProcessor.inputBreakListener)
     }
 
     override fun loadAssets() {
@@ -55,6 +45,8 @@ object SweetAstroConsoleKlop : IDisplayViewKlop, IAssetKlop, IECSKlop {
     override fun unload() {
         hideView()
         unloadSystems()
+
+        KcopBase.stage.removeListener(SACInputProcessor.inputBreakListener)
     }
 
     override fun inputProcessor() = SACInputProcessor
