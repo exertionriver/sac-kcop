@@ -58,7 +58,7 @@ object SACLayoutHandler : IDisplayViewLayoutHandler {
     }
 
     override fun clearContent() {
-        DVLayoutHandler.currentDvLayout.clearContent()
+        DVLayoutHandler.clearContent()
     }
 
     fun resetTitleState() {
