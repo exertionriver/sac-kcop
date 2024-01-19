@@ -5,6 +5,7 @@ import river.exertion.sac.astro.base.Celestial
 import river.exertion.sac.astro.base.CelestialHouse
 import swisseph.SweConst.*
 
+
 object CalcUt {
 
     fun getSweCelestialIdx(celestialIdx: Int) : Int {
@@ -27,11 +28,12 @@ object CalcUt {
             Celestial.PALLAS -> SE_PALLAS
             Celestial.JUNO -> SE_JUNO
             Celestial.VESTA -> SE_VESTA
-            Celestial.SUN_MOON_MIDPOINT -> SE_SUN
+            Celestial.SUN_MOON_MIDPOINT -> SE_SUN //no SE entry for midpoint
         }
     }
 
-    private fun getCelestialData(julianUtTimeDecimal : Double, celestialIdx : Int, celestialHousesData : DoubleArray, synCelestialHousesData : DoubleArray) : CelestialData {
+    // TESTED-BY TestCalcUt::testGetCelestialData()
+    fun getCelestialData(julianUtTimeDecimal : Double, celestialIdx : Int, celestialHousesData : DoubleArray, synCelestialHousesData : DoubleArray) : CelestialData {
 
         val errorOut = StringBuffer()
 
@@ -73,7 +75,9 @@ object CalcUt {
             (CalcUtDatas.DISTANCE_DATA.ordinal .. CalcUtDatas.DIST_SPEED_DATA.ordinal).forEach { idx ->
                 celestialData[idx] = sunCalcUtDatas[idx]
             }
+
             celestialData[CalcUtDatas.HOUSE_DATA_IDX] = CelestialHouse.getHouseData(celestialData[CalcUtDatas.LONGITUDE_DATA.ordinal], celestialHousesData)
+            celestialData[CalcUtDatas.TRANSIT_HOUSE_DATA_IDX] = CelestialHouse.getHouseData(celestialData[CalcUtDatas.LONGITUDE_DATA.ordinal], synCelestialHousesData)
 
         }
 
