@@ -14,8 +14,8 @@ class TestRevJul {
     fun testLDTUTC() {
         val curMoment = Clock.System.now()
 
-        val retLDT = RevJul.getLDT(Julday.getJulianUTCTimeDecimal(curMoment))
-        val retInstant = RevJul.getInstant(Julday.getJulianUTCTimeDecimal(curMoment))
+        val retLDT = RevJul.getLDT(Julday.getJulianTimeDecimal(curMoment))
+        val retInstant = RevJul.getInstant(Julday.getJulianTimeDecimal(curMoment))
 
         println("retInstant: $retInstant")
 
@@ -32,8 +32,8 @@ class TestRevJul {
     fun testLDTLocalTime() {
         val curMoment = Clock.System.now()
 
-        val retLDT = RevJul.getLDT(Julday.getJulianUTCTimeDecimal(curMoment), TimeZone.currentSystemDefault())
-        val retInstant = RevJul.getInstant(Julday.getJulianUTCTimeDecimal(curMoment), TimeZone.currentSystemDefault())
+        val retLDT = RevJul.getLDT(Julday.getJulianTimeDecimal(curMoment), TimeZone.currentSystemDefault())
+        val retInstant = RevJul.getInstant(Julday.getJulianTimeDecimal(curMoment), TimeZone.currentSystemDefault())
 
         println("retInstant: $retInstant")
 
@@ -51,11 +51,11 @@ class TestRevJul {
     fun testLDTTimezone() {
         val curMoment = Clock.System.now()
 
-        val retLDT = RevJul.getLDT(Julday.getJulianUTCTimeDecimal(curMoment), TimeZone.of("America/Denver"))
-        val retInstant = RevJul.getInstant(Julday.getJulianUTCTimeDecimal(curMoment), TimeZone.of("America/Denver"))
+        val retLDT = RevJul.getLDT(Julday.getJulianTimeDecimal(curMoment), TimeZone.of("America/Denver"))
+        val retInstant = RevJul.getInstant(Julday.getJulianTimeDecimal(curMoment), TimeZone.of("America/Denver"))
 
-        val retLDTOffset = RevJul.getLDT(Julday.getJulianUTCTimeDecimal(curMoment), EarthLocation.getTimeZoneFromOffsetInt(-6))
-        val retInstantOffset = RevJul.getInstant(Julday.getJulianUTCTimeDecimal(curMoment), EarthLocation.getTimeZoneFromOffsetInt(-6))
+        val retLDTOffset = RevJul.getLDT(Julday.getJulianTimeDecimal(curMoment), EarthLocation.getTimeZoneFromOffsetInt(-6))
+        val retInstantOffset = RevJul.getInstant(Julday.getJulianTimeDecimal(curMoment), EarthLocation.getTimeZoneFromOffsetInt(-6))
 
         println("retInstant: $retInstant")
 

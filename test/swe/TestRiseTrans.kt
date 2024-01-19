@@ -28,7 +28,7 @@ class TestRiseTrans {
 
     private fun pollRising(celestialIdx : Int, earthLocation : EarthLocation = TestEarthLocations.atxEarthLocation) {
 
-        val retLDT = RiseTrans.getRiseLDTForCelestial(Julday.getJulianUTCTimeDecimal(earthLocation.utcDateTime), earthLocation, celestialIdx)
+        val retLDT = RiseTrans.getRiseLDTForCelestial(Julday.getJulianTimeDecimal(earthLocation.utcDateTime), earthLocation, celestialIdx)
 
         println(EarthLocation.getTimeString(retLDT))
     }
@@ -37,7 +37,7 @@ class TestRiseTrans {
     fun testRising() {
 
         val retLDT = RiseTrans.getRiseLDTForCelestial(
-            Julday.getJulianUTCTimeDecimal(TestEarthLocations.atxEarthLocation.utcDateTime), TestEarthLocations.atxEarthLocation, Celestial.SUN.ordinal)
+            Julday.getJulianTimeDecimal(TestEarthLocations.atxEarthLocation.utcDateTime), TestEarthLocations.atxEarthLocation, Celestial.SUN.ordinal)
 
         assertEquals(2021, retLDT.year)
         assertEquals(11, retLDT.monthNumber)
@@ -50,7 +50,7 @@ class TestRiseTrans {
 
     private fun pollSetting(celestialIdx : Int, earthLocation : EarthLocation = TestEarthLocations.atxEarthLocation) {
 
-        val retLDT = RiseTrans.getSetLDTForCelestial(Julday.getJulianUTCTimeDecimal(earthLocation.utcDateTime), earthLocation, celestialIdx)
+        val retLDT = RiseTrans.getSetLDTForCelestial(Julday.getJulianTimeDecimal(earthLocation.utcDateTime), earthLocation, celestialIdx)
 
         println(EarthLocation.getTimeString(retLDT))
     }
@@ -59,7 +59,7 @@ class TestRiseTrans {
     fun testSetting() {
 
         val retLDT = RiseTrans.getSetLDTForCelestial(
-            Julday.getJulianUTCTimeDecimal(TestEarthLocations.atxEarthLocation.utcDateTime), TestEarthLocations.atxEarthLocation, Celestial.MERCURY.ordinal)
+            Julday.getJulianTimeDecimal(TestEarthLocations.atxEarthLocation.utcDateTime), TestEarthLocations.atxEarthLocation, Celestial.MERCURY.ordinal)
 
         assertEquals(2021, retLDT.year)
         assertEquals(11, retLDT.monthNumber)
@@ -72,7 +72,7 @@ class TestRiseTrans {
 
     private fun pollUpperMeridian(celestialIdx : Int, earthLocation : EarthLocation = TestEarthLocations.atxEarthLocation) {
 
-        val retLDT = RiseTrans.getUpperMeridLDTForCelestial(Julday.getJulianUTCTimeDecimal(earthLocation.utcDateTime), earthLocation, celestialIdx)
+        val retLDT = RiseTrans.getUpperMeridLDTForCelestial(Julday.getJulianTimeDecimal(earthLocation.utcDateTime), earthLocation, celestialIdx)
 
         println(EarthLocation.getTimeString(retLDT))
     }
@@ -81,7 +81,7 @@ class TestRiseTrans {
     fun testUpperMeridian() {
 
         val retLDT = RiseTrans.getUpperMeridLDTForCelestial(
-            Julday.getJulianUTCTimeDecimal(TestEarthLocations.atxEarthLocation.utcDateTime), TestEarthLocations.atxEarthLocation, Celestial.MARS.ordinal)
+            Julday.getJulianTimeDecimal(TestEarthLocations.atxEarthLocation.utcDateTime), TestEarthLocations.atxEarthLocation, Celestial.MARS.ordinal)
 
         assertEquals(2021, retLDT.year)
         assertEquals(11, retLDT.monthNumber)
@@ -94,7 +94,7 @@ class TestRiseTrans {
 
     private fun pollLowerMeridian(celestialIdx : Int, earthLocation : EarthLocation = TestEarthLocations.atxEarthLocation) {
 
-        val retLDT = RiseTrans.getLowerMeridLDTForCelestial(Julday.getJulianUTCTimeDecimal(earthLocation.utcDateTime), earthLocation, celestialIdx)
+        val retLDT = RiseTrans.getLowerMeridLDTForCelestial(Julday.getJulianTimeDecimal(earthLocation.utcDateTime), earthLocation, celestialIdx)
 
         println(EarthLocation.getTimeString(retLDT))
     }
@@ -103,7 +103,7 @@ class TestRiseTrans {
     fun testLowerMeridian() {
 
         val retLDT = RiseTrans.getLowerMeridLDTForCelestial(
-            Julday.getJulianUTCTimeDecimal(TestEarthLocations.atxEarthLocation.utcDateTime), TestEarthLocations.atxEarthLocation, Celestial.SATURN.ordinal)
+            Julday.getJulianTimeDecimal(TestEarthLocations.atxEarthLocation.utcDateTime), TestEarthLocations.atxEarthLocation, Celestial.SATURN.ordinal)
 
         assertEquals(2021, retLDT.year)
         assertEquals(11, retLDT.monthNumber)

@@ -16,13 +16,13 @@ object RevJul {
         val retHour = sd.hour.toInt()
         val retHourRemainder = sd.hour - retHour
 
-        val retMin = (retHourRemainder * Julday.minInHour).toInt()
-        val retMinRemainder = (retMin.toDouble() / Julday.minInHour)
+        val retMin = (retHourRemainder * Julday.MIN_IN_HOUR).toInt()
+        val retMinRemainder = (retMin.toDouble() / Julday.MIN_IN_HOUR)
 
-        val retSec = ((retHourRemainder - retMinRemainder) * Julday.secInHour).toInt()
-        val retSecRemainder = (retSec.toDouble() / Julday.secInHour)
+        val retSec = ((retHourRemainder - retMinRemainder) * Julday.SEC_IN_HOUR).toInt()
+        val retSecRemainder = (retSec.toDouble() / Julday.SEC_IN_HOUR)
 
-        val retNSec = ((retHourRemainder - retMinRemainder - retSecRemainder) * Julday.nSecInHour).toInt()
+        val retNSec = ((retHourRemainder - retMinRemainder - retSecRemainder) * Julday.NSEC_IN_HOUR).toInt()
 
         return LocalDateTime(sd.year, sd.month, sd.day, retHour, retMin, retSec, retNSec).toInstant(TimeZone.UTC).toLocalDateTime(timeZone)
     }

@@ -1,7 +1,6 @@
 package astro
 
 import TestEarthLocations
-import kotlinx.datetime.LocalDateTime
 import river.exertion.sac.astro.base.Celestial
 import river.exertion.sac.astro.CelestialData
 import river.exertion.sac.astro.CelestialData.Companion.ROUND_PRECISION_SEC_DEC
@@ -17,7 +16,7 @@ class TestCelestialData {
     fun testGetFormattedSignLongitude() {
         println ("test earthlocation:" + TestEarthLocations.atxEarthLocation)
 
-        val uniTimeDec = Julday.getJulianUTCTimeDecimal(TestEarthLocations.atxEarthLocation.utcDateTime, Julday.UNIVERSAL_TIME)
+        val uniTimeDec = Julday.getJulianTimeDecimal(TestEarthLocations.atxEarthLocation.utcDateTime, Julday.UNIVERSAL_TIME)
         val uniTimeHouses = Houses.getCelestialHousesData(uniTimeDec, TestEarthLocations.atxEarthLocation.latitude, TestEarthLocations.atxEarthLocation.longitude )
         val uniCelestials = CalcUt.getCelestialsData(uniTimeDec, uniTimeHouses)
 

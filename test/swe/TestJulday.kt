@@ -1,24 +1,24 @@
 package swe
 
-import kotlinx.datetime.LocalDateTime
-import river.exertion.sac.swe.Julday
+import TestEarthLocations
 import org.junit.jupiter.api.Test
+import river.exertion.sac.swe.Julday
 import kotlin.test.assertEquals
 
 class TestJulday {
 
     @Test
-    fun testGetJulianUTCTimeDecimal() {
-        val testLDT = LocalDateTime(1978,11,16,18,39,0,0)
+    fun testGetJulianTimeDecimal() {
+        val testUTC = TestEarthLocations.sfeEarthLocation.utcDateTime
 
-        println("test localdatetime: $testLDT")
+        println("test localdatetime: $testUTC")
 
-        val uniTimeDec = Julday.getJulianUTCTimeDecimal(testLDT, Julday.UNIVERSAL_TIME)
+        val uniTimeDec = Julday.getJulianTimeDecimal(testUTC, Julday.UNIVERSAL_TIME)
         println("julian date universal time: $uniTimeDec")
-        assertEquals("2443829.2771", "%1.4f".format(uniTimeDec))
+        assertEquals("2459497.2570", "%1.4f".format(uniTimeDec))
 
-        val terTimeDec = Julday.getJulianUTCTimeDecimal(testLDT, Julday.TERRESTRIAL_TIME)
+        val terTimeDec = Julday.getJulianTimeDecimal(testUTC, Julday.TERRESTRIAL_TIME)
         println("julian date terrestrial time: $terTimeDec")
-        assertEquals("2443829.2777", "%1.4f".format(terTimeDec))
+        assertEquals("2459497.2579", "%1.4f".format(terTimeDec))
     }
 }

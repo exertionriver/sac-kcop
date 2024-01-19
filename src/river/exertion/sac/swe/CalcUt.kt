@@ -1,8 +1,7 @@
 package river.exertion.sac.swe
 
-import river.exertion.sac.astro.base.AspectCelestial
-import river.exertion.sac.astro.base.Celestial
 import river.exertion.sac.astro.CelestialData
+import river.exertion.sac.astro.base.Celestial
 import river.exertion.sac.astro.base.CelestialHouse
 import swisseph.SweConst.*
 
@@ -24,7 +23,6 @@ object CalcUt {
             Celestial.NORTH_NODE -> SE_TRUE_NODE
             Celestial.BLACK_MOON_LILITH -> SE_MEAN_APOG
             Celestial.CHIRON -> SE_CHIRON
-//            Celestial.PHOLUS -> SE_PHOLUS
             Celestial.CERES -> SE_CERES
             Celestial.PALLAS -> SE_PALLAS
             Celestial.JUNO -> SE_JUNO
@@ -33,17 +31,16 @@ object CalcUt {
         }
     }
 
-    private fun getCelestialData(julianUtcTimeDecimal : Double, celestialIdx : Int, celestialHousesData : DoubleArray, synCelestialHousesData : DoubleArray) : CelestialData {
+    private fun getCelestialData(julianUtTimeDecimal : Double, celestialIdx : Int, celestialHousesData : DoubleArray, synCelestialHousesData : DoubleArray) : CelestialData {
 
-        var errorOut = StringBuffer()
+        val errorOut = StringBuffer()
 
         val celestialData = DoubleArray(CalcUtDatas.EXT_SIZE) //for house and transitHouse data
 
         if (celestialIdx != Celestial.SUN_MOON_MIDPOINT.ordinal) {
-            var calcUtDatas = DoubleArray(6)
-            var retVal = 0
+            val calcUtDatas = DoubleArray(6)
 
-            retVal = Swe.sw.swe_calc_ut(julianUtcTimeDecimal, getSweCelestialIdx(celestialIdx), SEFLG_SPEED, calcUtDatas, errorOut)
+            val retVal = Swe.sw.swe_calc_ut(julianUtTimeDecimal, getSweCelestialIdx(celestialIdx), SEFLG_SPEED, calcUtDatas, errorOut)
             if (retVal < 0) println("error: $errorOut")
 
             for (data in CalcUtDatas.entries) {
@@ -54,13 +51,13 @@ object CalcUt {
             celestialData[CalcUtDatas.HOUSE_DATA_IDX] = CelestialHouse.getHouseData(celestialData[CalcUtDatas.LONGITUDE_DATA.ordinal], celestialHousesData)
             celestialData[CalcUtDatas.TRANSIT_HOUSE_DATA_IDX] = CelestialHouse.getHouseData(celestialData[CalcUtDatas.LONGITUDE_DATA.ordinal], synCelestialHousesData)
         } else {
-            var sunCalcUtDatas = DoubleArray(6)
-            var moonCalcUtDatas = DoubleArray(6)
+            val sunCalcUtDatas = DoubleArray(6)
+            val moonCalcUtDatas = DoubleArray(6)
 
-            var sunRetVal = Swe.sw.swe_calc_ut(julianUtcTimeDecimal, SE_SUN, SEFLG_SPEED, sunCalcUtDatas, errorOut)
+            val sunRetVal = Swe.sw.swe_calc_ut(julianUtTimeDecimal, SE_SUN, SEFLG_SPEED, sunCalcUtDatas, errorOut)
             if (sunRetVal < 0) println("error: $errorOut")
 
-            var moonRetVal = Swe.sw.swe_calc_ut(julianUtcTimeDecimal, SE_MOON, SEFLG_SPEED, moonCalcUtDatas, errorOut)
+            val moonRetVal = Swe.sw.swe_calc_ut(julianUtTimeDecimal, SE_MOON, SEFLG_SPEED, moonCalcUtDatas, errorOut)
             if (moonRetVal < 0) println("error: $errorOut")
 
             celestialData[CalcUtDatas.LONGITUDE_DATA.ordinal] = DegMidp.getMidpoint(
@@ -85,6 +82,7 @@ object CalcUt {
         return CelestialData(celestialData)
     }
 
+    // TESTED-BY TestCalcUt::testGetCelestialsData()
     fun getCelestialsData(julianUtcTimeDecimal : Double, celestialHousesData : DoubleArray, synCelestialHousesData : DoubleArray = celestialHousesData) : Array<CelestialData> {
 
         return Array(Celestial.entries.size) { celestialIdx:Int -> getCelestialData(julianUtcTimeDecimal, celestialIdx, celestialHousesData, synCelestialHousesData) }
@@ -119,7 +117,7 @@ object CalcUt {
 
     fun getCompositeCelestialsData(compositeCelestialHousesData : DoubleArray, firstCelestialsData: Array<CelestialData>, secondCelestialsData: Array<CelestialData>) : Array<CelestialData> {
 
-        return Array(Celestial.values().size) { celestialIdx:Int -> getCompositeCelestialData(celestialIdx, compositeCelestialHousesData, firstCelestialsData, secondCelestialsData) }
+        return Array(Celestial.entries.size) { celestialIdx:Int -> getCompositeCelestialData(celestialIdx, compositeCelestialHousesData, firstCelestialsData, secondCelestialsData) }
 
     }
 

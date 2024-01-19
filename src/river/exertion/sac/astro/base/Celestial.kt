@@ -43,9 +43,6 @@ enum class Celestial {
     , CHIRON {
         override val label = Constants.SYM_CHIRON
     }
-//    , PHOLUS {
-//        override val label = Constants.SYM_PHOLUS
-//    }
     , CERES {
         override val label = Constants.SYM_CERES
     }

@@ -1,21 +1,18 @@
 package river.exertion.sac.astro
 
-import river.exertion.sac.swe.CalcUt
-import river.exertion.sac.swe.Houses
-import river.exertion.sac.swe.UtcToJd
 import river.exertion.sac.Constants.normalizeDeg
 import river.exertion.sac.astro.base.AspectCelestial
 import river.exertion.sac.astro.base.Celestial
 import river.exertion.sac.astro.base.CelestialHouse
-import river.exertion.sac.swe.DegMidp
+import river.exertion.sac.swe.*
 import kotlin.collections.LinkedHashMap
 
 //syn info is for transits
 data class CelestialSnapshot(var refEarthLocation: EarthLocation
     , var synEarthLocation: EarthLocation = refEarthLocation
-    , var refCelestialHouseData : DoubleArray = Houses.getCelestialHousesData(UtcToJd.getJulianTimeDecimal(refEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), refEarthLocation.latitude, refEarthLocation.longitude) //as per documentation, "/* calculate houses with tjd_ut */"
-    , var synCelestialHouseData : DoubleArray = Houses.getCelestialHousesData(UtcToJd.getJulianTimeDecimal(synEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), synEarthLocation.latitude, refEarthLocation.longitude) //as per documentation, "/* calculate houses with tjd_ut */"
-    , var refCelestialData: Array<CelestialData> = CalcUt.getCelestialsData(UtcToJd.getJulianTimeDecimal(refEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), refCelestialHouseData, synCelestialHouseData) ) { //as per documentation, "/* calculate planet with tjd_et */"
+    , var refCelestialHouseData : DoubleArray = Houses.getCelestialHousesData(Julday.getJulianTimeDecimal(refEarthLocation.utcDateTime), refEarthLocation.latitude, refEarthLocation.longitude) //as per documentation, "/* calculate houses with tjd_ut */"
+    , var synCelestialHouseData : DoubleArray = Houses.getCelestialHousesData(Julday.getJulianTimeDecimal(synEarthLocation.utcDateTime), synEarthLocation.latitude, refEarthLocation.longitude) //as per documentation, "/* calculate houses with tjd_ut */"
+    , var refCelestialData: Array<CelestialData> = CalcUt.getCelestialsData(Julday.getJulianTimeDecimal(refEarthLocation.utcDateTime), refCelestialHouseData, synCelestialHouseData) ) { //as per documentation, "/* calculate planet with tjd_et */"
 
     fun partOfFortuneData() : Double = partOfFortuneData(refCelestialData[Celestial.SUN.ordinal].longitude
             , refCelestialData[Celestial.MOON.ordinal].longitude
@@ -35,9 +32,9 @@ data class CelestialSnapshot(var refEarthLocation: EarthLocation
 
     fun recalc() {
         refEarthLocation.recalc()
-        refCelestialHouseData = Houses.getCelestialHousesData(UtcToJd.getJulianTimeDecimal(refEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), refEarthLocation.latitude, refEarthLocation.longitude)
-        synCelestialHouseData = Houses.getCelestialHousesData(UtcToJd.getJulianTimeDecimal(synEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), synEarthLocation.latitude, refEarthLocation.longitude)
-        refCelestialData = CalcUt.getCelestialsData(UtcToJd.getJulianTimeDecimal(refEarthLocation.utcDateTime, UtcToJd.UNIVERSAL_TIME), refCelestialHouseData, synCelestialHouseData)
+        refCelestialHouseData = Houses.getCelestialHousesData(Julday.getJulianTimeDecimal(refEarthLocation.utcDateTime), refEarthLocation.latitude, refEarthLocation.longitude)
+        synCelestialHouseData = Houses.getCelestialHousesData(Julday.getJulianTimeDecimal(synEarthLocation.utcDateTime), synEarthLocation.latitude, refEarthLocation.longitude)
+        refCelestialData = CalcUt.getCelestialsData(Julday.getJulianTimeDecimal(refEarthLocation.utcDateTime), refCelestialHouseData, synCelestialHouseData)
     }
 
     fun getAspectCelestialLongitudeMap(includeExtendedAspects : Boolean = false) : Map<AspectCelestial, Double> {
