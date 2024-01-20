@@ -6,88 +6,89 @@ import river.exertion.sac.swe.CalcUt
 import river.exertion.sac.swe.Houses
 import river.exertion.sac.swe.Julday
 import org.junit.jupiter.api.Test
+import river.exertion.sac.astro.base.CelestialHouse
 import kotlin.test.assertEquals
 
 class TestCalcUt {
 
-    /*slight celestial variations from online swetest, e.g. with JulDate 2458735.881250000 swetest shows:
+    /*slight celestial variations from online swetest, e.g. with JulDate 2458735.881250000 swetest 2024-01 shows:
         Sun : 166.4102357
         Moon : 293.8492244
         Mercury : 171.2312683
-    with JulDate 2458735.881250000 getCelestialsData() shows:
-        SUN, 166.41025540926918
-        MOON, 293.8494684770537
-        MERCURY, 171.2313052937299
+    with JulDate 2458735.881250000 getCelestialsData() 2.01.00-02 shows:
+        SUN, 166.41024982851437
+        MOON, 293.8493989606262
+        MERCURY, 171.2312947832916
     Houses tie out ok with online swetest.
     */
     @Test
     fun testGetCelestialsData() {
-        val testUTC = TestEarthLocations.sfeEarthLocation.utcDateTime
-        val testLat = TestEarthLocations.sfeEarthLocation.latitude
-        val testLong = TestEarthLocations.sfeEarthLocation.longitude
+        val utc = TestEarthLocations.sfeEarthLocation.utcDateTime
+        val lat = TestEarthLocations.sfeEarthLocation.latitude
+        val long = TestEarthLocations.sfeEarthLocation.longitude
 
-        println("test localdatetime: $testUTC")
-        println("test lat/long: $testLat / $testLong")
+        println("utc: $utc")
+        println("lat/long: $lat / $long")
 
-        val uniTimeDec = Julday.getJulianTimeDecimal(testUTC)
-        val uniTimeHouses = Houses.getCelestialHousesData(uniTimeDec, testLat, testLong)
-        val uniCelestials = CalcUt.getCelestialsData(uniTimeDec, uniTimeHouses)
+        val julday = Julday.getJulianTimeDecimal(utc)
+        val houses = Houses.getCelestialHousesData(julday, lat, long)
+        val celestials = CalcUt.getCelestialsData(julday, houses)
 
-        println ("Julday: $uniTimeDec")
+        println ("julday: $julday")
 
-        println("Universal Time Celestials (raw-long)")
-        uniCelestials.forEachIndexed { idx, celestial -> println ("${Celestial.fromOrdinal(idx)}, ${celestial.longitude}") }
-        assertEquals("166.4103", "%1.4f".format(uniCelestials[0].longitude))
-        assertEquals("164.1089", "%1.4f".format(uniCelestials[4].longitude))
-        assertEquals("347.3360", "%1.4f".format(uniCelestials[8].longitude))
+        println("celestials (dec)")
+        celestials.forEachIndexed { idx, celestial -> println ("${Celestial.fromOrdinal(idx)}, ${celestial.longitude}") }
+        assertEquals("166.4102", "%1.4f".format(celestials[0].longitude))
+        assertEquals("164.1089", "%1.4f".format(celestials[4].longitude))
+        assertEquals("347.3360", "%1.4f".format(celestials[8].longitude))
 
-        val uniCelestialsDeg = uniCelestials.map{ it.longitude.toInt() }
-        val uniCelestialsMin = uniCelestials.mapIndexed { idx, celestial -> ((celestial.longitude - uniCelestialsDeg[idx]) * 60).toInt() }
-        val uniCelestialsSec = uniCelestials.mapIndexed { idx, celestial -> ((celestial.longitude - uniCelestialsDeg[idx] - uniCelestialsMin[idx].toDouble() / 60) * 3600) }
+        val celestialsDeg = celestials.map{ it.longitude.toInt() }
+        val celestialsMin = celestials.mapIndexed { idx, celestial -> ((celestial.longitude - celestialsDeg[idx]) * 60).toInt() }
+        val celestialsSec = celestials.mapIndexed { idx, celestial -> ((celestial.longitude - celestialsDeg[idx] - celestialsMin[idx].toDouble() / 60) * 3600) }
 
-        println("Universal Time Celestials (calc'd-long)")
-        uniCelestialsDeg.forEachIndexed { idx, celestialDeg -> println ("${Celestial.fromOrdinal(idx)}, $celestialDeg ${uniCelestialsMin[idx]}'${uniCelestialsSec[idx]}") }
-        assertEquals(293, uniCelestialsDeg[1])
-        assertEquals(255, uniCelestialsDeg[5])
-        assertEquals(290, uniCelestialsDeg[9])
+        println("celestials (deg)")
+        celestialsDeg.forEachIndexed { idx, celestialDeg -> println ("${Celestial.fromOrdinal(idx)}, $celestialDeg ${celestialsMin[idx]}'${celestialsSec[idx]}") }
+        assertEquals(293, celestialsDeg[1])
+        assertEquals(255, celestialsDeg[5])
+        assertEquals(290, celestialsDeg[9])
 
-        assertEquals(13, uniCelestialsMin[2])
-        assertEquals(58, uniCelestialsMin[6])
-        assertEquals(58, uniCelestialsMin[10])
+        assertEquals(13, celestialsMin[2])
+        assertEquals(58, celestialsMin[6])
+        assertEquals(58, celestialsMin[10])
 
-        assertEquals("25.1779", "%1.4f".format(uniCelestialsSec[3]))
-        assertEquals("42.5052", "%1.4f".format(uniCelestialsSec[7]))
-        assertEquals("16.8798", "%1.4f".format(uniCelestialsSec[11]))
+        assertEquals("25.1522", "%1.4f".format(celestialsSec[3]))
+        assertEquals("42.5056", "%1.4f".format(celestialsSec[7]))
+        assertEquals("16.8775", "%1.4f".format(celestialsSec[11]))
     }
 
     @Test
     fun testGetCelestialData() {
-        val testJulday = 2458735.881250000 // julday for sfeEarthLocation
-        val testLat = TestEarthLocations.sfeEarthLocation.latitude
-        val testLong = TestEarthLocations.sfeEarthLocation.longitude
+        val julday = 2458735.881250000 // julday for sfeEarthLocation
+        val lat = TestEarthLocations.sfeEarthLocation.latitude
+        val long = TestEarthLocations.sfeEarthLocation.longitude
 
-        val testTransJulday = Julday.getJulianTimeDecimal(TestEarthLocations.tnmEarthLocation.utcDateTime)
-        val testTransLat = TestEarthLocations.tnmEarthLocation.latitude
-        val testTransLong = TestEarthLocations.tnmEarthLocation.longitude
+        val transitJulday = Julday.getJulianTimeDecimal(TestEarthLocations.tnmEarthLocation.utcDateTime)
+        val transitLat = TestEarthLocations.tnmEarthLocation.latitude
+        val transitLong = TestEarthLocations.tnmEarthLocation.longitude
 
-        println("test julday: $testJulday")
-        println("test lat/long: $testLat / $testLong")
+        println("julday: $julday")
+        println("lat/long: $lat / $long")
 
-        val uniTimeHouses = Houses.getCelestialHousesData(testJulday, testLat, testLong)
-        val transTimeHouses = Houses.getCelestialHousesData(testTransJulday, testTransLat, testTransLong)
+        val houses = Houses.getCelestialHousesData(julday, lat, long)
+        val transitHouses = Houses.getCelestialHousesData(transitJulday, transitLat, transitLong)
 
-        val sunCelestial = CalcUt.getCelestialData(testJulday, Celestial.SUN.ordinal, uniTimeHouses, transTimeHouses)
-        val moonCelestial = CalcUt.getCelestialData(testJulday, Celestial.MOON.ordinal, uniTimeHouses, transTimeHouses)
-        val sunMoonCelestial = CalcUt.getCelestialData(testJulday, Celestial.SUN_MOON_MIDPOINT.ordinal, uniTimeHouses, transTimeHouses)
+        val sunCelestial = CalcUt.getCelestialData(julday, Celestial.SUN.ordinal, houses, transitHouses)
+        val moonCelestial = CalcUt.getCelestialData(julday, Celestial.MOON.ordinal, houses, transitHouses)
+        val sunMoonCelestial = CalcUt.getCelestialData(julday, Celestial.SUN_MOON_MIDPOINT.ordinal, houses, transitHouses)
 
-        println("Universal Time Celestials (raw-long)")
+        println("celestials (dec)")
         println ("${Celestial.SUN.name}: ${sunCelestial.longitude}, ${sunCelestial.longitudeSpeed}, ${sunCelestial.celestialHouse}, ${sunCelestial.transitHouse}")
         println ("${Celestial.MOON.name}: ${moonCelestial.longitude}, ${moonCelestial.longitudeSpeed}, ${moonCelestial.celestialHouse}, ${moonCelestial.transitHouse}")
         println ("${Celestial.SUN_MOON_MIDPOINT.name}: ${sunMoonCelestial.longitude}, ${sunMoonCelestial.longitudeSpeed}, ${sunMoonCelestial.celestialHouse}, ${sunMoonCelestial.transitHouse}")
 
-        assertEquals("166.4103", "%1.4f".format(sunCelestial.longitude))
-        assertEquals("293.8495", "%1.4f".format(moonCelestial.longitude))
-        assertEquals("230.1299", "%1.4f".format(sunMoonCelestial.longitude))
+        assertEquals("166.4102", "%1.4f".format(sunCelestial.longitude))
+        assertEquals("293.8494", "%1.4f".format(moonCelestial.longitude))
+        assertEquals("230.1298", "%1.4f".format(sunMoonCelestial.longitude))
 
         assertEquals("0.9710", "%1.4f".format(sunCelestial.longitudeSpeed))
         assertEquals("12.0947", "%1.4f".format(moonCelestial.longitudeSpeed))
@@ -130,6 +131,125 @@ class TestCalcUt {
             house 11         214°31'51.7234  342°26' 8.2757
             house 12         237°38'52.3052  310°36' 9.9968
         */
+    }
 
+    @Test
+    fun testGetCompositeCelestialsData() {
+        val firstUTC = TestEarthLocations.sfeEarthLocation.utcDateTime
+        val firstLat = TestEarthLocations.sfeEarthLocation.latitude
+        val firstLong = TestEarthLocations.sfeEarthLocation.longitude
+
+        println("first utc: $firstUTC")
+        println("first lat/long: $firstLat / $firstLong")
+
+        val firstJulday = Julday.getJulianTimeDecimal(firstUTC)
+        val firstHouses = Houses.getCelestialHousesData(firstJulday, firstLat, firstLong)
+        val firstCelestials = CalcUt.getCelestialsData(firstJulday, firstHouses)
+
+        println("first julday: $firstJulday")
+        println("first celestials (dec)")
+        firstCelestials.forEachIndexed { idx, celestial -> println ("${Celestial.fromOrdinal(idx)}, ${celestial.longitude}") }
+
+        val secondUTC = TestEarthLocations.tnmEarthLocation.utcDateTime
+        val secondLat = TestEarthLocations.tnmEarthLocation.latitude
+        val secondLong = TestEarthLocations.tnmEarthLocation.longitude
+
+        println("second utc: $secondUTC")
+        println("second lat/long: $secondLat / $secondLong")
+
+        val secondJulday = Julday.getJulianTimeDecimal(secondUTC)
+        val secondHouses = Houses.getCelestialHousesData(secondJulday, secondLat, secondLong)
+        val secondCelestials = CalcUt.getCelestialsData(secondJulday, secondHouses)
+
+        println("second julday: $secondJulday")
+        println("second celestials (dec)")
+        secondCelestials.forEachIndexed { idx, celestial -> println ("${Celestial.fromOrdinal(idx)}, ${celestial.longitude}") }
+
+        val compositeHouses = Houses.getCompositeCelestialHousesData(firstHouses, secondHouses)
+        val compositeCelestials = CalcUt.getCompositeCelestialsData(compositeHouses, firstCelestials, secondCelestials)
+
+        println("composite celestials (dec)")
+        compositeCelestials.forEachIndexed { idx, celestial -> println ("${Celestial.fromOrdinal(idx)}, ${celestial.longitude}") }
+
+        assertEquals("181.5390", "%1.4f".format(compositeCelestials[0].longitude))
+        assertEquals("180.1266", "%1.4f".format(compositeCelestials[4].longitude))
+        assertEquals("349.2252", "%1.4f".format(compositeCelestials[8].longitude))
+
+        val compositeCelestialsDeg = compositeCelestials.map{ it.longitude.toInt() }
+        val compositeCelestialsMin = compositeCelestials.mapIndexed { idx, celestial -> ((celestial.longitude - compositeCelestialsDeg[idx]) * 60).toInt() }
+        val compositeCelestialsSec = compositeCelestials.mapIndexed { idx, celestial -> ((celestial.longitude - compositeCelestialsDeg[idx] - compositeCelestialsMin[idx].toDouble() / 60) * 3600) }
+
+        println("composite celestials (deg)")
+        compositeCelestialsDeg.forEachIndexed { idx, celestialDeg -> println ("${Celestial.fromOrdinal(idx)}, ${compositeCelestialsDeg[idx]} ${compositeCelestialsMin[idx]}'${compositeCelestialsSec[idx]}") }
+        assertEquals(267, compositeCelestialsDeg[1])
+        assertEquals(289, compositeCelestialsDeg[5])
+        assertEquals(292, compositeCelestialsDeg[9])
+
+        assertEquals(51, compositeCelestialsMin[2])
+        assertEquals(25, compositeCelestialsMin[6])
+        assertEquals(15, compositeCelestialsMin[10])
+
+        assertEquals("36.5701", "%1.4f".format(compositeCelestialsSec[3]))
+        assertEquals("17.1815", "%1.4f".format(compositeCelestialsSec[7]))
+        assertEquals("13.9635", "%1.4f".format(compositeCelestialsSec[11]))
+    }
+
+    @Test
+    fun testGetCompositeCelestialData() {
+        val firstUTC = TestEarthLocations.sfeEarthLocation.utcDateTime
+        val firstLat = TestEarthLocations.sfeEarthLocation.latitude
+        val firstLong = TestEarthLocations.sfeEarthLocation.longitude
+
+        println("first utc: $firstUTC")
+        println("first lat/long: $firstLat / $firstLong")
+
+        val firstJulday = Julday.getJulianTimeDecimal(firstUTC)
+        val firstHouses = Houses.getCelestialHousesData(firstJulday, firstLat, firstLong)
+        val firstCelestials = CalcUt.getCelestialsData(firstJulday, firstHouses)
+
+        println("first julday: $firstJulday")
+        println("first celestials (dec)")
+        firstCelestials.forEachIndexed { idx, celestial -> println ("${Celestial.fromOrdinal(idx)}, ${celestial.longitude}") }
+
+        val secondUTC = TestEarthLocations.tnmEarthLocation.utcDateTime
+        val secondLat = TestEarthLocations.tnmEarthLocation.latitude
+        val secondLong = TestEarthLocations.tnmEarthLocation.longitude
+
+        println("second utc: $secondUTC")
+        println("second lat/long: $secondLat / $secondLong")
+
+        val secondJulday = Julday.getJulianTimeDecimal(secondUTC)
+        val secondHouses = Houses.getCelestialHousesData(secondJulday, secondLat, secondLong)
+        val secondCelestials = CalcUt.getCelestialsData(secondJulday, secondHouses)
+
+        println("second julday: $secondJulday")
+        println("second celestials (dec)")
+        secondCelestials.forEachIndexed { idx, celestial -> println ("${Celestial.fromOrdinal(idx)}, ${celestial.longitude}") }
+
+        val compositeHouses = Houses.getCompositeCelestialHousesData(firstHouses, secondHouses)
+
+        println("composite houses (dec)")
+        compositeHouses.forEachIndexed { idx, house -> println ("${CelestialHouse.fromOrdinal(idx)}, $house") }
+
+        val marsCelestial = CalcUt.getCompositeCelestialData(Celestial.SUN.ordinal, compositeHouses, firstCelestials, secondCelestials)
+        val jupiterCelestial = CalcUt.getCompositeCelestialData(Celestial.MOON.ordinal, compositeHouses, firstCelestials, secondCelestials)
+        val neptuneCelestial = CalcUt.getCompositeCelestialData(Celestial.SUN_MOON_MIDPOINT.ordinal, compositeHouses, firstCelestials, secondCelestials)
+
+        println("composite celestials (dec)")
+        println ("${Celestial.MARS.name}: ${marsCelestial.longitude}, ${marsCelestial.longitudeSpeed}, ${marsCelestial.celestialHouse}, ${marsCelestial.transitHouse}")
+        println ("${Celestial.JUPITER.name}: ${jupiterCelestial.longitude}, ${jupiterCelestial.longitudeSpeed}, ${jupiterCelestial.celestialHouse}, ${jupiterCelestial.transitHouse}")
+        println ("${Celestial.NEPTUNE.name}: ${neptuneCelestial.longitude}, ${neptuneCelestial.longitudeSpeed}, ${neptuneCelestial.celestialHouse}, ${neptuneCelestial.transitHouse}")
+
+        assertEquals("181.5390", "%1.4f".format(marsCelestial.longitude))
+        assertEquals("267.7675", "%1.4f".format(jupiterCelestial.longitude))
+        assertEquals("224.6532", "%1.4f".format(neptuneCelestial.longitude))
+
+        assertEquals("0.9796", "%1.4f".format(marsCelestial.longitudeSpeed))
+        assertEquals("13.3509", "%1.4f".format(jupiterCelestial.longitudeSpeed))
+        assertEquals("0.9796", "%1.4f".format(neptuneCelestial.longitudeSpeed))
+
+        assertEquals("12.6622", "%1.4f".format(marsCelestial.celestialHouse))
+        assertEquals("3.5283", "%1.4f".format(jupiterCelestial.celestialHouse))
+        assertEquals("2.2044", "%1.4f".format(neptuneCelestial.celestialHouse))
     }
 }

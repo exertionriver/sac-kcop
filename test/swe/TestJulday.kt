@@ -11,14 +11,14 @@ class TestJulday {
     fun testGetJulianTimeDecimal() {
         val testUTC = TestEarthLocations.sfeEarthLocation.utcDateTime
 
-        println("test localdatetime: $testUTC")
+        println("test utc: $testUTC")
 
         val uniTimeDec = Julday.getJulianTimeDecimal(testUTC, Julday.UNIVERSAL_TIME)
-        println("julian date universal time: $uniTimeDec")
+        println("julday universal time: $uniTimeDec")
         assertEquals("2459497.2570", "%1.4f".format(uniTimeDec))
 
         val terTimeDec = Julday.getJulianTimeDecimal(testUTC, Julday.TERRESTRIAL_TIME)
-        println("julian date terrestrial time: $terTimeDec")
+        println("julday terrestrial time: $terTimeDec")
         assertEquals("2459497.2579", "%1.4f".format(terTimeDec))
     }
 }

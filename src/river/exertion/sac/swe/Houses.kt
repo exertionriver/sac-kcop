@@ -1,6 +1,5 @@
 package river.exertion.sac.swe
 
-import org.junit.jupiter.api.Test
 import river.exertion.sac.Constants.degrees
 import river.exertion.sac.astro.base.CelestialHouse
 import swisseph.SweConst.SEFLG_RADIANS
@@ -38,6 +37,7 @@ object Houses {
         return celestialHousesData
     }
 
+    //TESTED-BY TestHouses::testGetCompositeCelestialHousesData()
     fun getCompositeCelestialHousesData(firstCelestialHousesData: DoubleArray, secondCelestialHouses: DoubleArray) : DoubleArray {
 
         val compositeCelestialHousesData = DoubleArray(CelestialHouse.entries.size)

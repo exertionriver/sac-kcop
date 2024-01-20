@@ -8,6 +8,7 @@ import swisseph.SweConst.*
 
 object CalcUt {
 
+    // NOT-TESTED
     fun getSweCelestialIdx(celestialIdx: Int) : Int {
 
         return when (Celestial.fromOrdinal(celestialIdx)!!) {
@@ -47,7 +48,6 @@ object CalcUt {
 
             for (data in CalcUtDatas.entries) {
                 celestialData[data.ordinal] = calcUtDatas[data.ordinal]
-//            println (data.ordinal.toString() + ":" +calcUtDatas[data.ordinal].toString())
             }
 
             celestialData[CalcUtDatas.HOUSE_DATA_IDX] = CelestialHouse.getHouseData(celestialData[CalcUtDatas.LONGITUDE_DATA.ordinal], celestialHousesData)
@@ -81,8 +81,6 @@ object CalcUt {
 
         }
 
-//        println("celesitalIdx: " + celestialIdx + "house: " + celestialData[CalcUtDatas.HOUSE_DATA_IDX] + "transit house: " + celestialData[CalcUtDatas.TRANSIT_HOUSE_DATA_IDX])
-
         return CelestialData(celestialData)
     }
 
@@ -92,7 +90,8 @@ object CalcUt {
         return Array(Celestial.entries.size) { celestialIdx:Int -> getCelestialData(julianUtcTimeDecimal, celestialIdx, celestialHousesData, synCelestialHousesData) }
     }
 
-    private fun getCompositeCelestialData(celestialIdx : Int, compositeCelestialHousesData : DoubleArray, firstCelestialsData: Array<CelestialData>, secondCelestialsData: Array<CelestialData>) : CelestialData {
+    // TESTED-BY TestCalcUt::testGetCompositeCelestialData()
+    fun getCompositeCelestialData(celestialIdx : Int, compositeCelestialHousesData : DoubleArray, firstCelestialsData: Array<CelestialData>, secondCelestialsData: Array<CelestialData>) : CelestialData {
 
         val compositeCelestialData = DoubleArray(CalcUtDatas.EXT_SIZE)
         val calcUtDatasExtSizeIdx = CalcUtDatas.EXT_SIZE - 1
@@ -113,12 +112,13 @@ object CalcUt {
                 CalcUtDatas.DIST_SPEED_DATA.ordinal -> compositeCelestialData[datasIdx] = (firstCelestialsData[celestialIdx].distanceSpeed + secondCelestialsData[celestialIdx].distanceSpeed) / 2
                 CalcUtDatas.HOUSE_DATA_IDX -> compositeCelestialData[datasIdx] = CelestialHouse.getHouseData(compositeCelestialData[CalcUtDatas.LONGITUDE_DATA.ordinal], compositeCelestialHousesData)
                 //transit_house_data doesn't have a value on a composite chart
-                CalcUtDatas.TRANSIT_HOUSE_DATA_IDX -> compositeCelestialData[datasIdx] = CelestialHouse.getHouseData(compositeCelestialData[CalcUtDatas.LONGITUDE_DATA.ordinal], compositeCelestialHousesData)
+                CalcUtDatas.TRANSIT_HOUSE_DATA_IDX -> compositeCelestialData[datasIdx] = 0.0
             }
 
         return CelestialData(compositeCelestialData)
     }
 
+    // TESTED-BY TestCalcUt::testGetCompositeCelestialsData()
     fun getCompositeCelestialsData(compositeCelestialHousesData : DoubleArray, firstCelestialsData: Array<CelestialData>, secondCelestialsData: Array<CelestialData>) : Array<CelestialData> {
 
         return Array(Celestial.entries.size) { celestialIdx:Int -> getCompositeCelestialData(celestialIdx, compositeCelestialHousesData, firstCelestialsData, secondCelestialsData) }
