@@ -54,7 +54,6 @@ class SACComponent : IComponent, Telegraph {
 
         refNatCelestialSnapshot.recalc()
 
-        //TODO: implement recalc for chart
         refNatChart = Chart(
             refNatCelestialSnapshot
             , ChartState.NATAL_CHART
@@ -116,8 +115,6 @@ class SACComponent : IComponent, Telegraph {
         var dataChanged = true
         var headerChanged = true
 
-        //TODO: allow location definitions with lat / long / alt / tz
-        //TODO: allow location default set in properties file
         var earthLocationArray = Array(10) { idx ->
             SACDefaultAssetStore.entries.filter { it.name != "Default"}[idx].get()
         }

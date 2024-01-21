@@ -202,27 +202,4 @@ object Constants {
             else -> false
         }
     }
-
-    const val InvalidOrb = -1.0
-
-    fun Double.normalizeDeg() : Double {
-        var returnAngle = this
-
-        while ( returnAngle >= 360.0 ) returnAngle -= 360.0
-        while ( returnAngle < 0.0 ) returnAngle += 360.0
-
-        return returnAngle
-    }
-
-    fun Double.normalizeRad() : Double {
-        var returnAngle = this
-
-        while ( returnAngle >= 2 * PI ) returnAngle -= 2 * PI
-        while ( returnAngle < 0 ) returnAngle += 2 * PI
-
-        return returnAngle
-    }
-
-    fun Double.radians(): Double = (this * PI / 180F).normalizeRad()
-    fun Double.degrees(): Double = (this * 180F / PI).normalizeDeg()
 }

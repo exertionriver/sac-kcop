@@ -1,7 +1,6 @@
 package river.exertion.sac.swe
 
 import river.exertion.kcop.base.Log
-import river.exertion.sac.Constants.degrees
 import river.exertion.sac.astro.base.CelestialHouse
 import swisseph.SweConst.SEFLG_RADIANS
 import swisseph.SweConst.SE_VERTEX
@@ -30,10 +29,10 @@ object Houses {
 
             celestialHousesData[houseIdx] =
                 when (house) {
-                    CelestialHouse.VERTEX -> ascmc[SE_VERTEX].degrees()
+                    CelestialHouse.VERTEX -> SwiLib.radToDeg(ascmc[SE_VERTEX])
                     CelestialHouse.PART_OF_FORTUNE -> 0.0
                     CelestialHouse.PART_OF_SPIRIT -> 0.0
-                    else -> houseCusps[cuspIdx].degrees()
+                    else -> SwiLib.radToDeg(houseCusps[cuspIdx])
                 }
         }
 
@@ -47,7 +46,7 @@ object Houses {
 
         for (house in CelestialHouse.entries ) {
             compositeCelestialHousesData[house.ordinal] =
-                DegMidp.getMidpoint(firstCelestialHousesData[house.ordinal], secondCelestialHouses[house.ordinal])
+                SwiLib.midpoint(firstCelestialHousesData[house.ordinal], secondCelestialHouses[house.ordinal])
         }
 
         return compositeCelestialHousesData

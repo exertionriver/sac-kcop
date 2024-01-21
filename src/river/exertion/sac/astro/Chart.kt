@@ -4,7 +4,7 @@ import river.exertion.sac.astro.Aspect.Companion.aspectFromCelestialAspect
 import river.exertion.sac.astro.Aspect.Companion.sortFilterValueAspects
 import river.exertion.sac.astro.base.*
 import river.exertion.sac.console.state.*
-import river.exertion.sac.swe.DegMidp
+import river.exertion.sac.swe.SwiLib
 import river.exertion.sac.view.SACInputProcessor
 
 class Chart (val chartAspects : List<Aspect>, var firstCelestialSnapshot: CelestialSnapshot, val chartState: ChartState = ChartState.NATAL_CHART) {
@@ -104,7 +104,7 @@ class Chart (val chartAspects : List<Aspect>, var firstCelestialSnapshot: Celest
         }
 
     fun getAspects() : List<Aspect> =
-        chartAspects.filter { it.aspectAngle != AspectAngle.ASPECT_ANGLE_NONE }.sortedBy { it.aspectCelestialSecond }.sortedBy { it.aspectCelestialFirst }
+        chartAspects.filter { it.aspectType != AspectType.ASPECT_NONE }.sortedBy { it.aspectCelestialSecond }.sortedBy { it.aspectCelestialFirst }
 
     companion object {
 
@@ -112,8 +112,8 @@ class Chart (val chartAspects : List<Aspect>, var firstCelestialSnapshot: Celest
                        chartState: ChartState, aspectsState: AspectsState, timeAspectsState: TimeAspectsState, aspectOverlayState: AspectOverlayState, analysisState: AnalysisState
         ) : List<Aspect> {
 
-            val firstCelestialAspectMap = firstCelestialSnapshot.getAspectCelestialLongitudeMap()
-            val secondCelestialAspectMap = secondCelestialSnapshot.getAspectCelestialLongitudeMap()
+            val firstCelestialAspectMap = firstCelestialSnapshot.getAspectCelestialLongitudeMap().filterKeys { !it.isTimeAspect || (timeAspectsState == TimeAspectsState.TIME_ASPECTS_ENABLED) }
+            val secondCelestialAspectMap = secondCelestialSnapshot.getAspectCelestialLongitudeMap().filterKeys { !it.isTimeAspect || (timeAspectsState == TimeAspectsState.TIME_ASPECTS_ENABLED) }
 
             val returnAspects : MutableList<Aspect> = ArrayList()
             var returnAspectsIdx = 0
@@ -131,16 +131,14 @@ class Chart (val chartAspects : List<Aspect>, var firstCelestialSnapshot: Celest
                         && (secondCelestialAspectEntry.key == AspectCelestial.ASPECT_ASCENDANT)) continue
 
                     val aspect = Aspect(
-                        Sign.signFromCelestialLongitude(firstCelestialAspectEntry.value)
-                        , firstCelestialAspectEntry.key
+                        firstCelestialAspectEntry.key
                         , firstCelestialAspectEntry.value
-                        , Sign.signFromCelestialLongitude(secondCelestialAspectEntry.value)
                         , secondCelestialAspectEntry.key
                         , secondCelestialAspectEntry.value
-                        , aspectsState, timeAspectsState, aspectOverlayState, chartState, analysisState
+                        , aspectsState, aspectOverlayState, chartState, analysisState
                     )
 
-                    if (aspect.aspectAngle != AspectAngle.ASPECT_ANGLE_NONE)
+                    if (aspect.aspectType != AspectType.ASPECT_NONE)
                         returnAspects.add(returnAspectsIdx++, aspect)
 
                 }
@@ -157,8 +155,8 @@ class Chart (val chartAspects : List<Aspect>, var firstCelestialSnapshot: Celest
                                , chartState: ChartState, aspectsState: AspectsState, timeAspectsState: TimeAspectsState, aspectOverlayState: AspectOverlayState, analysisState : AnalysisState
         ) : List<Aspect> {
 
-            val firstCelestialAspectMap = firstCelestialSnapshot.getAspectCelestialLongitudeMap(includeExtendedAspects = true)
-            val secondCelestialAspectMap = secondCelestialSnapshot.getAspectCelestialLongitudeMap(includeExtendedAspects = true)
+            val firstCelestialAspectMap = firstCelestialSnapshot.getAspectCelestialLongitudeMap(includeExtendedAspects = true).filterKeys { !it.isTimeAspect || (timeAspectsState == TimeAspectsState.TIME_ASPECTS_ENABLED) }
+            val secondCelestialAspectMap = secondCelestialSnapshot.getAspectCelestialLongitudeMap(includeExtendedAspects = true).filterKeys { !it.isTimeAspect || (timeAspectsState == TimeAspectsState.TIME_ASPECTS_ENABLED) }
 
             val returnAspects : MutableList<Aspect> = mutableListOf()
 
@@ -182,11 +180,11 @@ class Chart (val chartAspects : List<Aspect>, var firstCelestialSnapshot: Celest
                     AspectCelestial.ASPECT_ASCENDANT ->
                         secondCelestialAspectMap[AspectCelestial.ASPECT_ASCENDANT]
                     //TODO: implement separate 'contains' logic for an aspectCelestial in a house
-                    AspectCelestial.ASPECT_FIRST_HOUSE -> DegMidp.getMidpoint(
+                    AspectCelestial.ASPECT_FIRST_HOUSE -> SwiLib.midpoint(
                         secondCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_1_ASC.ordinal],
                         secondCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_2.ordinal]
                     )
-                    AspectCelestial.ASPECT_SEVENTH_HOUSE -> DegMidp.getMidpoint(
+                    AspectCelestial.ASPECT_SEVENTH_HOUSE -> SwiLib.midpoint(
                         secondCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_7.ordinal],
                         secondCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_8.ordinal]
                     )
@@ -201,16 +199,14 @@ class Chart (val chartAspects : List<Aspect>, var firstCelestialSnapshot: Celest
                 }
 
                 aspect = Aspect(
-                        Sign.signFromCelestialLongitude(firstExtendedCelestialLongitude)
-                        , extendedAspect.aspectCelestialFirst
+                        extendedAspect.aspectCelestialFirst
                         , firstExtendedCelestialLongitude
-                        , Sign.signFromCelestialLongitude(secondExtendedCelestialLongitude)
                         , extendedAspect.aspectCelestialSecond
                         , secondExtendedCelestialLongitude
-                        , aspectsState, timeAspectsState, aspectOverlayState, chartState, analysisState
+                        , aspectsState, aspectOverlayState, chartState, analysisState
                     )
 
-                if (aspect.aspectAngle.aspectType == extendedAspect.aspectType) {
+                if (aspect.aspectType == extendedAspect.aspectType) {
 //                    println(": found $aspect")
 
                     returnAspects.add(aspect)
@@ -225,11 +221,11 @@ class Chart (val chartAspects : List<Aspect>, var firstCelestialSnapshot: Celest
                             secondCelestialAspectMap[AspectCelestial.ASPECT_SUN_MOON_MIDPOINT]
                         AspectCelestial.ASPECT_ASCENDANT ->
                             secondCelestialAspectMap[AspectCelestial.ASPECT_ASCENDANT]
-                        AspectCelestial.ASPECT_FIRST_HOUSE -> DegMidp.getMidpoint(
+                        AspectCelestial.ASPECT_FIRST_HOUSE -> SwiLib.midpoint(
                             secondCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_1_ASC.ordinal],
                             secondCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_2.ordinal]
                         )
-                        AspectCelestial.ASPECT_SEVENTH_HOUSE -> DegMidp.getMidpoint(
+                        AspectCelestial.ASPECT_SEVENTH_HOUSE -> SwiLib.midpoint(
                             secondCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_7.ordinal],
                             secondCelestialSnapshot.refCelestialHouseData[CelestialHouse.HOUSE_8.ordinal]
                         )
@@ -253,16 +249,14 @@ class Chart (val chartAspects : List<Aspect>, var firstCelestialSnapshot: Celest
                     }
 
                     aspect = Aspect(
-                            Sign.signFromCelestialLongitude(firstExtendedCelestialLongitude)
-                            , extendedAspect.aspectCelestialSecond
+                            extendedAspect.aspectCelestialSecond
                             , firstExtendedCelestialLongitude
-                            , Sign.signFromCelestialLongitude(secondExtendedCelestialLongitude)
                             , extendedAspect.aspectCelestialFirst
                             , secondExtendedCelestialLongitude
-                            , aspectsState, timeAspectsState, aspectOverlayState, chartState, analysisState
+                            , aspectsState, aspectOverlayState, chartState, analysisState
                         )
 
-                    if (aspect.aspectAngle.aspectType == extendedAspect.aspectType) {
+                    if (aspect.aspectType == extendedAspect.aspectType) {
 //                        println("found $aspect")
 
                         returnAspects.add(aspect)

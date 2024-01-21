@@ -68,7 +68,7 @@ object RenderGridRows : IConsoleRender {
                         DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${chartAspectCelestial.name}", chartAspectCelestial.label, SACLayoutHandler.refEarthLocationFontColor)
                     } else {
                         val renderAspectType =
-                            chartAspects.firstOrNull { it.aspectCelestialFirst == AspectCelestial.fromOrdinal(colIdx) && it.aspectCelestialSecond == chartAspectCelestial }?.aspectAngle?.aspectType ?: AspectType.ASPECT_NONE
+                            chartAspects.firstOrNull { it.aspectCelestialFirst == AspectCelestial.fromOrdinal(colIdx) && it.aspectCelestialSecond == chartAspectCelestial }?.aspectType ?: AspectType.ASPECT_NONE
                         DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${chartAspectCelestial.name}_${AspectCelestial.fromOrdinal(colIdx)}",
                             renderAspectType.label, renderAspectType.fontColor )
                     }
@@ -87,7 +87,7 @@ object RenderGridRows : IConsoleRender {
                         DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${AspectCelestial.fromOrdinal(rowIdx)!!.name}_y", chartAspectCelestialRow.label, SACLayoutHandler.synEarthLocationFontColor)
                     } else {
                         val renderAspectType =
-                            chartAspects.firstOrNull { it.aspectCelestialFirst == AspectCelestial.fromOrdinal(colIdx) && it.aspectCelestialSecond == chartAspectCelestialRow }?.aspectAngle?.aspectType ?: AspectType.ASPECT_NONE
+                            chartAspects.firstOrNull { it.aspectCelestialFirst == AspectCelestial.fromOrdinal(colIdx) && it.aspectCelestialSecond == chartAspectCelestialRow }?.aspectType ?: AspectType.ASPECT_NONE
 
                         DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_${chartAspectCelestialRow.name}_${AspectCelestial.fromOrdinal(colIdx)}",
                             renderAspectType.label, renderAspectType.fontColor )

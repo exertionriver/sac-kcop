@@ -1,8 +1,8 @@
 package river.exertion.sac.astro.base
 
 import river.exertion.sac.Constants
-import river.exertion.sac.Constants.InvalidOrb
 import river.exertion.sac.console.state.AspectOverlayState
+import river.exertion.sac.console.state.AspectsState
 import river.exertion.sac.view.SACLayoutHandler.baseFontColor
 import river.exertion.sac.view.SACLayoutHandler.negativeFontColor
 import river.exertion.sac.view.SACLayoutHandler.neutralFontColor
@@ -14,7 +14,7 @@ import river.exertion.sac.view.SACLayoutHandler.positiveFontColor
 enum class AspectType {
     CONJUNCTION {
         override val isMajor = true
-        override fun angleDegree() = AspectAngle.CONJUNCTION_0.angleDegree
+        override val angleDegree = 360.0
         override val label = Constants.SYM_CONJUNCTION
         override val isPositive = true
 
@@ -22,7 +22,7 @@ enum class AspectType {
     }
     , SEXTILE {
         override val isMajor = true
-        override fun angleDegree() = AspectAngle.SEXTILE_60.angleDegree
+        override val angleDegree = 60.0
         override val label = Constants.SYM_SEXTILE
         override val isPositive = true
 
@@ -36,7 +36,7 @@ enum class AspectType {
     }
     , SQUARE {
         override val isMajor = true
-        override fun angleDegree() = AspectAngle.SQUARE_90.angleDegree
+        override val angleDegree = 90.0
         override val label = Constants.SYM_SQUARE
         override val isNegative = true
 
@@ -49,7 +49,7 @@ enum class AspectType {
     }
     , TRINE {
         override val isMajor = true
-        override fun angleDegree() = AspectAngle.TRINE_120.angleDegree
+        override val angleDegree = 120.0
         override val label = Constants.SYM_TRINE
         override val isPositive = true
 
@@ -63,7 +63,7 @@ enum class AspectType {
     }
     , OPPOSITION {
         override val isMajor = true
-        override fun angleDegree() = AspectAngle.OPPOSITION_180.angleDegree
+        override val angleDegree = 180.0
         override val label = Constants.SYM_OPPOSITION
         override val isNegative = true
 
@@ -76,7 +76,7 @@ enum class AspectType {
     }
     , QUINCUNX {
         override val isMinor = true
-        override fun angleDegree() = AspectAngle.QUINCUNX_150.angleDegree
+        override val angleDegree = 150.0
         override val label = Constants.SYM_QUINCUNX
         override val isNeutral = true
 
@@ -90,7 +90,7 @@ enum class AspectType {
     }
     , SEMISEXTILE {
         override val isMinor = true
-        override fun angleDegree() = AspectAngle.SEMISEXTILE_30.angleDegree
+        override val angleDegree = 30.0
         override val label = Constants.SYM_SEMISEXTILE
         override val isNeutral = true
 
@@ -104,7 +104,7 @@ enum class AspectType {
     }
     , QUINTILE {
         override val isMinor = true
-        override fun angleDegree() = AspectAngle.QUINTILE_72.angleDegree
+        override val angleDegree = 72.0
         override val label = Constants.SYM_QUINTILE
         override val isPositive = true
 
@@ -117,7 +117,7 @@ enum class AspectType {
     }
     , BIQUINTILE {
         override val isMinor = true
-        override fun angleDegree() = AspectAngle.BIQUINTILE_144.angleDegree
+        override val angleDegree = 144.0
         override val label = Constants.SYM_BIQUINTILE
         override val isPositive = true
 
@@ -130,7 +130,7 @@ enum class AspectType {
     }
     , SEMISQUARE {
         override val isMinor = true
-        override fun angleDegree() = AspectAngle.SEMISQUARE_45.angleDegree
+        override val angleDegree = 45.0
         override val label = Constants.SYM_SEMISQUARE
         override val isNegative = true
 
@@ -144,7 +144,7 @@ enum class AspectType {
     }
     , SESQUISQUARE {
         override val isMinor = true
-        override fun angleDegree() = AspectAngle.SESQUISQUARE_135.angleDegree
+        override val angleDegree = 135.0
         override val label = Constants.SYM_SESQUISQUARE
         override val isNegative = true
 
@@ -157,7 +157,7 @@ enum class AspectType {
         }
     }
     , SEPTILE {
-        override fun angleDegree() = AspectAngle.SEPTILE_51.angleDegree
+        override val angleDegree = 360.0 / 7
         override val label = Constants.SYM_SEPTILE
         override val isPositive = true
 
@@ -169,7 +169,7 @@ enum class AspectType {
         }
     }
     , NOVILE {
-        override fun angleDegree() = AspectAngle.NOVILE_40.angleDegree
+        override val angleDegree = 40.0
         override val label = Constants.SYM_NOVILE
         override val isNeutral = true
 
@@ -182,7 +182,6 @@ enum class AspectType {
     }
     , ASPECT_NONE
     , CONTAINS { //used for houses
-        override fun angleDegree() = AspectAngle.CONJUNCTION_0.angleDegree
         override val label = Constants.SYM_CONTAINS
         override val isPositive = true
         override fun getAspectAngleOrb(aspectOverlayState: AspectOverlayState): Double = 15.0 //evaluated from house midpoint
@@ -190,13 +189,15 @@ enum class AspectType {
     ;
     open val isMajor: Boolean = false
     open val isMinor: Boolean = false
-    open fun angleDegree(): Double = InvalidOrb
+    open val angleDegree: Double = 0.0
 
     open val label: String = Constants.SYM_NONE
 
     open val isPositive : Boolean = false
     open val isNegative : Boolean = false
     open val isNeutral : Boolean = false
+
+    fun isChartAspectType() = !(this == ASPECT_NONE || this == CONTAINS)
 
     open val fontColor by lazy { when {
         isPositive -> positiveFontColor
@@ -210,5 +211,13 @@ enum class AspectType {
     companion object {
         fun fromOrdinal(ordinal: Int) = AspectCelestial.entries.firstOrNull { it.ordinal == ordinal }
         fun fromName(name: String) = AspectCelestial.entries.firstOrNull { it.name == name }
+
+        fun filterState(aspectsState: AspectsState) : List<AspectType> {
+            return when (aspectsState) {
+                AspectsState.MAJOR_ASPECTS -> AspectType.entries.filter { it.isMajor }
+                AspectsState.MINOR_ASPECTS -> AspectType.entries.filter { it.isMajor || it.isMinor }
+                else -> AspectType.entries.filter { it.isChartAspectType() }
+            }
+        }
     }
 }

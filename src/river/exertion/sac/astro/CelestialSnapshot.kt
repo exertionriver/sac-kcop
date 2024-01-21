@@ -1,11 +1,12 @@
 package river.exertion.sac.astro
 
-import river.exertion.sac.Constants.normalizeDeg
 import river.exertion.sac.astro.base.AspectCelestial
 import river.exertion.sac.astro.base.Celestial
 import river.exertion.sac.astro.base.CelestialHouse
-import river.exertion.sac.swe.*
-import kotlin.collections.LinkedHashMap
+import river.exertion.sac.swe.CalcUt
+import river.exertion.sac.swe.Houses
+import river.exertion.sac.swe.Julday
+import river.exertion.sac.swe.SwiLib
 
 //syn info is for transits
 data class CelestialSnapshot(var refEarthLocation: EarthLocation
@@ -25,7 +26,7 @@ data class CelestialSnapshot(var refEarthLocation: EarthLocation
         , refCelestialData[Celestial.SUN.ordinal].celestialHouse)
 
     fun sunMoonMidpoint() : Double =
-        DegMidp.getMidpoint(
+        SwiLib.midpoint(
             refCelestialData[Celestial.SUN.ordinal].longitude,
             refCelestialData[Celestial.MOON.ordinal].longitude
         )
@@ -92,14 +93,14 @@ data class CelestialSnapshot(var refEarthLocation: EarthLocation
 
             val sunMoonDiff : Double = if (isNightChart(sunHouse)) (sunLongitude - moonLongitude) else (moonLongitude - sunLongitude)
 
-            return (ascLongitude + sunMoonDiff).normalizeDeg()
+            return SwiLib.normDeg(ascLongitude + sunMoonDiff)
         }
 
         fun partOfSpiritData(sunLongitude : Double, moonLongitude : Double, ascLongitude : Double, sunHouse : Double) : Double {
 
             val sunMoonDiff : Double = if (isNightChart(sunHouse)) (moonLongitude - sunLongitude) else (sunLongitude - moonLongitude)
 
-            return (ascLongitude + sunMoonDiff).normalizeDeg()
+            return SwiLib.normDeg(ascLongitude + sunMoonDiff)
         }
 
         fun getAspectCelestial(celestial : Celestial) : AspectCelestial {

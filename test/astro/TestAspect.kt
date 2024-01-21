@@ -1,64 +1,27 @@
 package astro
 
 import org.junit.jupiter.api.Test
-import river.exertion.sac.Constants.InvalidOrb
 import river.exertion.sac.astro.Aspect
-import river.exertion.sac.astro.base.AspectAngle
 import river.exertion.sac.astro.base.AspectCelestial
+import river.exertion.sac.astro.base.AspectType
+import river.exertion.sac.console.state.AnalysisState
 import river.exertion.sac.console.state.AspectOverlayState
 import river.exertion.sac.console.state.AspectsState
-import river.exertion.sac.console.state.TimeAspectsState
+import river.exertion.sac.console.state.ChartState
 import kotlin.test.assertEquals
 
 class TestAspect {
 
-    val emptyAspect = Aspect.getEmptyAspect()
-
-    @Test
-    fun testEmptyAspect() {
-        println("empty aspect: ${Aspect.getEmptyAspect()}")
-        assertEquals(AspectAngle.ASPECT_ANGLE_NONE, emptyAspect.aspectAngle)
-    }
-
-    @Test
-    fun testCalcNormAngleDiff() {
-
-        var testCalc = Aspect.calcNormAngleDiff(90.0, 120.0)
-
-        println("calcNormAngleDiff (asc): $testCalc")
-        assertEquals(30.0, testCalc)
-
-        testCalc = Aspect.calcNormAngleDiff(144.0, 120.0)
-
-        println("calcNormAngleDiff (desc): $testCalc")
-        assertEquals(336.0, testCalc)
-    }
-
     @Test
     fun testCalcOrb() {
 
-        var testCalc = Aspect.calcOrb(AspectAngle.TRINE_120, 30.0, 151.0)
+        var testAspect = Aspect(AspectCelestial.ASPECT_SUN, 65.0, AspectCelestial.ASPECT_MOON, 118.0
+            , AspectsState.defaultState, AspectOverlayState.defaultState, ChartState.defaultState, AnalysisState.defaultState )
 
-        println("calcOrb (asc): $testCalc")
-        assertEquals(1.0, testCalc)
-
-        testCalc = Aspect.calcOrb(AspectAngle.SQUARE_90, 90.0, 179.0)
-
-        println("calcOrb (asc): $testCalc")
-        assertEquals(1.0, testCalc)
-
-        testCalc = Aspect.calcOrb(AspectAngle.TRINE_240, 144.0, 25.0)
-
-        println("calcOrb (desc): $testCalc")
-        assertEquals(1.0, testCalc)
-
-        testCalc = Aspect.calcOrb(AspectAngle.SEMISEXTILE_30, 350.0, 22.0)
-
-        println("calcOrb (desc): $testCalc")
-        assertEquals(2.0, testCalc)
-
+        println("testAspect: $testAspect")
+        assertEquals(7.0, testAspect.orb)
+        assertEquals(AspectType.SEXTILE, testAspect.aspectType)
     }
-
 /*
     @Test
     fun testFindAspectAngle() {

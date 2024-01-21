@@ -69,12 +69,12 @@ object CalcUt {
                 Log.debug("getCelestialData", "julday: $julday, celestialIdx: $celestialIdx, celestialHousesData: $celestialHousesData, synCelestialHousesData: $synCelestialHousesData" )
             }
 
-            celestialData[CalcUtDatas.LONGITUDE_DATA.ordinal] = DegMidp.getMidpoint(
+            celestialData[CalcUtDatas.LONGITUDE_DATA.ordinal] = SwiLib.midpoint(
                 sunCalcUtDatas[CalcUtDatas.LONGITUDE_DATA.ordinal],
                 moonCalcUtDatas[CalcUtDatas.LONGITUDE_DATA.ordinal]
             )
 
-            celestialData[CalcUtDatas.LATITUDE_DATA.ordinal] = DegMidp.getMidpoint(
+            celestialData[CalcUtDatas.LATITUDE_DATA.ordinal] = SwiLib.midpoint(
                 sunCalcUtDatas[CalcUtDatas.LATITUDE_DATA.ordinal],
                 moonCalcUtDatas[CalcUtDatas.LATITUDE_DATA.ordinal]
             )
@@ -105,11 +105,11 @@ object CalcUt {
 
         for (datasIdx in 0..calcUtDatasExtSizeIdx)
             when(datasIdx) {
-                CalcUtDatas.LONGITUDE_DATA.ordinal -> compositeCelestialData[datasIdx] = DegMidp.getMidpoint(
+                CalcUtDatas.LONGITUDE_DATA.ordinal -> compositeCelestialData[datasIdx] = SwiLib.midpoint(
                     firstCelestialsData[celestialIdx].longitude,
                     secondCelestialsData[celestialIdx].longitude
                 )
-                CalcUtDatas.LATITUDE_DATA.ordinal -> compositeCelestialData[datasIdx] = DegMidp.getMidpoint(
+                CalcUtDatas.LATITUDE_DATA.ordinal -> compositeCelestialData[datasIdx] = SwiLib.midpoint(
                     firstCelestialsData[celestialIdx].latitude,
                     secondCelestialsData[celestialIdx].latitude
                 )
