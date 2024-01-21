@@ -1,73 +1,51 @@
 package swe
 
-import river.exertion.sac.astro.EarthLocation
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import river.exertion.sac.swe.Julday
-import river.exertion.sac.swe.RevJul
 import org.junit.jupiter.api.Test
+import river.exertion.sac.swe.RevJul
 import kotlin.test.assertEquals
 
 class TestRevJul {
 
     @Test
-    fun testLDTUTC() {
-        val curMoment = Clock.System.now()
+    fun testGetUTC() {
 
-        val retLDT = RevJul.getLDT(Julday.getJulianTimeDecimal(curMoment))
-        val retInstant = RevJul.getInstant(Julday.getJulianTimeDecimal(curMoment))
+        //atxEarthLocation julday
+        var julday = 2456904.006284722
+        var retUTC = RevJul.getUTC(julday)
 
-        println("retInstant: $retInstant")
+        println("retUTC for julday $julday: $retUTC")
+        assertEquals("2014", "%4d".format(retUTC.year))
+        assertEquals("09", "%02d".format(retUTC.monthNumber))
+        assertEquals("03", "%02d".format(retUTC.dayOfMonth))
+        assertEquals("12", "%02d".format(retUTC.hour))
+        assertEquals("09", "%02d".format(retUTC.minute))
+        assertEquals("02", "%02d".format(retUTC.second))
+        assertEquals("999991774", "%04d".format(retUTC.nanosecond))
 
-        println("retYear: ${retLDT.year}")
-        println("retMin: ${retLDT.monthNumber}")
-        println("retDay: ${retLDT.dayOfMonth}")
-        println("retHour: ${retLDT.hour}")
-        println("retMin: ${retLDT.minute}")
-        println("retSec: ${retLDT.second}")
-        println("retNSec: ${retLDT.nanosecond}")
-    }
+        //sfeEarthLocation julday
+        julday = 2458735.881250000
+        retUTC = RevJul.getUTC(julday)
 
-    @Test
-    fun testLDTLocalTime() {
-        val curMoment = Clock.System.now()
+        println("retUTC for julday $julday: $retUTC")
+        assertEquals("2019", "%4d".format(retUTC.year))
+        assertEquals("09", "%02d".format(retUTC.monthNumber))
+        assertEquals("09", "%02d".format(retUTC.dayOfMonth))
+        assertEquals("09", "%02d".format(retUTC.hour))
+        assertEquals("09", "%02d".format(retUTC.minute))
+        assertEquals("00", "%02d".format(retUTC.second))
+        assertEquals("8046", "%04d".format(retUTC.nanosecond))
 
-        val retLDT = RevJul.getLDT(Julday.getJulianTimeDecimal(curMoment), TimeZone.currentSystemDefault())
-        val retInstant = RevJul.getInstant(Julday.getJulianTimeDecimal(curMoment), TimeZone.currentSystemDefault())
+        //tnmEarthLocation julday
+        julday = 2459497.257048611
+        retUTC = RevJul.getUTC(julday)
 
-        println("retInstant: $retInstant")
-
-        println("retYear: ${retLDT.year}")
-        println("retMin: ${retLDT.monthNumber}")
-        println("retDay: ${retLDT.dayOfMonth}")
-        println("retHour: ${retLDT.hour}")
-        println("retMin: ${retLDT.minute}")
-        println("retSec: ${retLDT.second}")
-        println("retNSec: ${retLDT.nanosecond}")
-    }
-
-    @ExperimentalUnsignedTypes
-    @Test
-    fun testLDTTimezone() {
-        val curMoment = Clock.System.now()
-
-        val retLDT = RevJul.getLDT(Julday.getJulianTimeDecimal(curMoment), TimeZone.of("America/Denver"))
-        val retInstant = RevJul.getInstant(Julday.getJulianTimeDecimal(curMoment), TimeZone.of("America/Denver"))
-
-        val retLDTOffset = RevJul.getLDT(Julday.getJulianTimeDecimal(curMoment), EarthLocation.getTimeZoneFromOffsetInt(-6))
-        val retInstantOffset = RevJul.getInstant(Julday.getJulianTimeDecimal(curMoment), EarthLocation.getTimeZoneFromOffsetInt(-6))
-
-        println("retInstant: $retInstant")
-
-        println("retYear: ${retLDT.year}")
-        println("retMin: ${retLDT.monthNumber}")
-        println("retDay: ${retLDT.dayOfMonth}")
-        println("retHour: ${retLDT.hour}")
-        println("retMin: ${retLDT.minute}")
-        println("retSec: ${retLDT.second}")
-        println("retNSec: ${retLDT.nanosecond}")
-
-        assertEquals(retLDTOffset, retLDT)
-        assertEquals(retInstantOffset, retInstant)
+        println("retUTC for julday $julday: $retUTC")
+        assertEquals("2021", "%4d".format(retUTC.year))
+        assertEquals("10", "%02d".format(retUTC.monthNumber))
+        assertEquals("09", "%02d".format(retUTC.dayOfMonth))
+        assertEquals("18", "%02d".format(retUTC.hour))
+        assertEquals("10", "%02d".format(retUTC.minute))
+        assertEquals("08", "%02d".format(retUTC.second))
+        assertEquals("999995887", "%04d".format(retUTC.nanosecond))
     }
 }

@@ -1,5 +1,6 @@
 package river.exertion.sac.swe
 
+import river.exertion.kcop.base.Log
 import river.exertion.sac.astro.CelestialData
 import river.exertion.sac.astro.base.Celestial
 import river.exertion.sac.astro.base.CelestialHouse
@@ -34,7 +35,7 @@ object CalcUt {
     }
 
     // TESTED-BY TestCalcUt::testGetCelestialData()
-    fun getCelestialData(julianUtTimeDecimal : Double, celestialIdx : Int, celestialHousesData : DoubleArray, synCelestialHousesData : DoubleArray) : CelestialData {
+    fun getCelestialData(julday : Double, celestialIdx : Int, celestialHousesData : DoubleArray, synCelestialHousesData : DoubleArray) : CelestialData {
 
         val errorOut = StringBuffer()
 
@@ -43,8 +44,10 @@ object CalcUt {
         if (celestialIdx != Celestial.SUN_MOON_MIDPOINT.ordinal) {
             val calcUtDatas = DoubleArray(6)
 
-            val retVal = Swe.sw.swe_calc_ut(julianUtTimeDecimal, getSweCelestialIdx(celestialIdx), SEFLG_SPEED, calcUtDatas, errorOut)
-            if (retVal < 0) println("error: $errorOut")
+            val retVal = Swe.sw.swe_calc_ut(julday, getSweCelestialIdx(celestialIdx), SEFLG_SPEED, calcUtDatas, errorOut)
+            if (retVal < 0) {
+                Log.debug("getCelestialData", "julday: $julday, celestialIdx: $celestialIdx, celestialHousesData: $celestialHousesData, synCelestialHousesData: $synCelestialHousesData" )
+            }
 
             for (data in CalcUtDatas.entries) {
                 celestialData[data.ordinal] = calcUtDatas[data.ordinal]
@@ -56,11 +59,15 @@ object CalcUt {
             val sunCalcUtDatas = DoubleArray(6)
             val moonCalcUtDatas = DoubleArray(6)
 
-            val sunRetVal = Swe.sw.swe_calc_ut(julianUtTimeDecimal, SE_SUN, SEFLG_SPEED, sunCalcUtDatas, errorOut)
-            if (sunRetVal < 0) println("error: $errorOut")
+            val sunRetVal = Swe.sw.swe_calc_ut(julday, SE_SUN, SEFLG_SPEED, sunCalcUtDatas, errorOut)
+            if (sunRetVal < 0) {
+                Log.debug("getCelestialData", "julday: $julday, celestialIdx: $celestialIdx, celestialHousesData: $celestialHousesData, synCelestialHousesData: $synCelestialHousesData" )
+            }
 
-            val moonRetVal = Swe.sw.swe_calc_ut(julianUtTimeDecimal, SE_MOON, SEFLG_SPEED, moonCalcUtDatas, errorOut)
-            if (moonRetVal < 0) println("error: $errorOut")
+            val moonRetVal = Swe.sw.swe_calc_ut(julday, SE_MOON, SEFLG_SPEED, moonCalcUtDatas, errorOut)
+            if (moonRetVal < 0) {
+                Log.debug("getCelestialData", "julday: $julday, celestialIdx: $celestialIdx, celestialHousesData: $celestialHousesData, synCelestialHousesData: $synCelestialHousesData" )
+            }
 
             celestialData[CalcUtDatas.LONGITUDE_DATA.ordinal] = DegMidp.getMidpoint(
                 sunCalcUtDatas[CalcUtDatas.LONGITUDE_DATA.ordinal],

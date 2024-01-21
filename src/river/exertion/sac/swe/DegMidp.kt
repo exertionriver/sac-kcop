@@ -3,10 +3,10 @@ package river.exertion.sac.swe
 import swisseph.SwissLib
 
 object DegMidp {
-    @Suppress("NewApi")
-    fun getMidpoint(firstDegree : Double, secondDegree : Double) : Double {
 
-        val sl = SwissLib()
+    private val sl = SwissLib()
+
+    fun getMidpoint(firstDegree : Double, secondDegree : Double) : Double {
 
         return sl.swe_deg_midp(firstDegree, secondDegree)
     }

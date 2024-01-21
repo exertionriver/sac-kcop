@@ -1,5 +1,6 @@
 package river.exertion.sac.swe
 
+import river.exertion.kcop.base.Log
 import river.exertion.sac.Constants.degrees
 import river.exertion.sac.astro.base.CelestialHouse
 import swisseph.SweConst.SEFLG_RADIANS
@@ -8,7 +9,7 @@ import swisseph.SweConst.SE_VERTEX
 object Houses {
 
     //TESTED-BY TestHouses::testGetCelestialHousesData()
-    fun getCelestialHousesData(julianUtTimeDecimal : Double, earthLatitude : Double, earthLongitude : Double) : DoubleArray {
+    fun getCelestialHousesData(julday : Double, earthLatitude : Double, earthLongitude : Double) : DoubleArray {
 
         var houseIdx : Int
         var cuspIdx : Int
@@ -18,8 +19,10 @@ object Houses {
 
         val celestialHousesData = DoubleArray(CelestialHouse.entries.size)
 
-        val retVal = Swe.sw.swe_houses(julianUtTimeDecimal, SEFLG_RADIANS, earthLatitude, earthLongitude, CelestialHouse.houseSystem.code, houseCusps, ascmc)
-        if (retVal< 0) println("error: <populateCelestialHousePositionData>\n" ) // TODO : put this to a logger
+        val retVal = Swe.sw.swe_houses(julday, SEFLG_RADIANS, earthLatitude, earthLongitude, CelestialHouse.houseSystem.code, houseCusps, ascmc)
+        if (retVal < 0) {
+            Log.debug("getCelestialHousesData", "julday: $julday, earthLatitude: $earthLatitude, earthLongitude: $earthLongitude" )
+        }
 
         for (house in CelestialHouse.entries) {
             houseIdx = house.ordinal

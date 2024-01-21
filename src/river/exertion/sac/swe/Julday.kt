@@ -1,9 +1,6 @@
 package river.exertion.sac.swe
 
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import swisseph.SweDate
 import swisseph.SweDate.SE_GREG_CAL
 
@@ -27,7 +24,4 @@ object Julday {
 
         return if (timeFlag == TERRESTRIAL_TIME) ttmJulDay else sd.julDay
     }
-
-    fun getJulianTimeDecimal(timeUTC : Instant, timeFlag : Int = UNIVERSAL_TIME) : Double =
-        getJulianTimeDecimal(timeUTC.toLocalDateTime(TimeZone.UTC), timeFlag)
 }
