@@ -6,6 +6,7 @@ import river.exertion.sac.console.state.*
 import river.exertion.sac.swe.SwiLib
 import river.exertion.sac.view.SACInputProcessor
 import kotlin.math.abs
+import kotlin.math.min
 
 data class Aspect (val aspectCelestialFirst : AspectCelestial
                     , val aspectCelestialFirstLong : Double
@@ -33,9 +34,9 @@ data class Aspect (val aspectCelestialFirst : AspectCelestial
     val signSecond = Sign.signFromCelestialLongitude(aspectCelestialSecondLong)
 
     var aspectType = AspectType.ASPECT_NONE //needs to precede calcOrb()
-    val orb = calcOrb()
+    val orb = this.calcOrb()
 
-    val baseValue = getAspectBaseValue()
+    val baseValue = this.getAspectBaseValue()
     val modValue = if (chartState == ChartState.SYNASTRY_CHART) Value(getPositiveModValue() / 2, getNegativeModValue() / 2) else Value(getPositiveModValue(), getNegativeModValue())
     fun netValue() = Value(baseValue.positive + modValue.positive, baseValue.negative + modValue.negative)
 
@@ -74,9 +75,7 @@ data class Aspect (val aspectCelestialFirst : AspectCelestial
                     ( (it.aspectCelestialFirst == aspectCelestialSecond) && (it.aspectCelestialSecond == aspectCelestialFirst) ) )
                     && (it.aspectType == aspectType) )}?.modifier ?: 0
     }
-
-//    private fun getCharacterModifier() = characterModifier
-
+    
     private fun getElementModifier(signElement : SignElement) : Double {
         val aspectCelestialFirstWeight = aspectCelestialFirst.weight
         val aspectCelestialSecondWeight = aspectCelestialSecond.weight
@@ -285,82 +284,88 @@ data class Aspect (val aspectCelestialFirst : AspectCelestial
         return Pair(fontColor, label)
     }
 
-    private fun getAspectBaseValue() : Value {
 
-        if (aspectType.isNeutral) return Value(0, 0)
+    override fun toString() = "Aspect($signFirst $aspectCelestialFirst $aspectType $orb $signSecond $aspectCelestialSecond $aspectsState $aspectOverlayState $chartState $analysisState) : baseValue:${baseValue} modValue:${modValue} AspectMod:${getAspectModifier()} signFirstMod:${getSignFirstModifier()} signSecondMod:${getSignSecondModifier()} aspectCelFirstMod:${getAspectCelestialFirstModifier()} aspectCelSecondMod:${getAspectCelestialSecondModifier()}"
 
-        if (aspectCelestialFirst.isExtendedAspect || aspectCelestialSecond.isExtendedAspect) return Value(0, 0)
+    companion object {
+        
+        fun Aspect.getAspectBaseValue() : Value {
 
-        val weightFirst = aspectCelestialFirst.weight
-        val weightSecond = aspectCelestialSecond.weight
-        val weightAspect = aspectType.getAspectAngleOrb(aspectOverlayState)
+            if (this.aspectType.isNeutral || (this.aspectType == AspectType.ASPECT_NONE) ) {
+                return Value(0, 0)
+            }
 
-        //full weightAspect at orb = 0, down to 0 weightAspect at the cusp of the orb
-        val weightOrbAspect = ((60 * weightAspect) - (60 * orb)) / (60 * weightAspect)
+            if (this.aspectCelestialFirst.isExtendedAspect || this.aspectCelestialSecond.isExtendedAspect) {
+                return Value(0, 0)
+            }
 
-        //      debugging with lldb shows rounding error between AstroSWE and SAC -- e.g. aspectWeight for 4.9 in SAC is 4.89999999998 in AstroSWE, leading to rounding diffs
-        var aspectValue = ( (weightFirst * weightSecond) / 2 * weightAspect * weightOrbAspect).toInt()
+            val weightFirst = this.aspectCelestialFirst.weight
+            val weightSecond = this.aspectCelestialSecond.weight
+            val weightAspect = this.aspectType.getAspectAngleOrb(this.aspectOverlayState)
 
-        //  halve for synastry chart
-        if (chartState == ChartState.SYNASTRY_CHART) aspectValue /= 2
+            //full weightAspect at orb = 0, down to 0 weightAspect at the cusp of the orb
+            val weightOrbAspect = (weightAspect - this.orb) / weightAspect
+
+            var aspectValue = ( (weightFirst * weightSecond) / 2 * weightAspect * weightOrbAspect).toInt()
+
+            //  halve for synastry chart
+            if (this.chartState == ChartState.SYNASTRY_CHART) aspectValue /= 2
 
 //        println (" orb)" + orb + ": 1W)" + weightFirst + " 2W)" + weightSecond + " aspectW)" + weightAspect + " orbAspectW)" + weightOrbAspect + " value)" + aspectValue )
 
-        return when {
-            //hard aspects to sun / moon midpoint are positive
-            ( (aspectCelestialFirst == AspectCelestial.ASPECT_SUN_MOON_MIDPOINT
-                    || aspectCelestialSecond == AspectCelestial.ASPECT_SUN_MOON_MIDPOINT) && (
-                    (aspectType == AspectType.CONJUNCTION)
-                            || (aspectType == AspectType.OPPOSITION)
-                            || (aspectType == AspectType.SEMISQUARE)
-                            || (aspectType == AspectType.SQUARE) ) ) -> Value(aspectValue, 0)
-            //      https://en.wikipedia.org/wiki/Astrological_aspect#Conjunction
-            //      In particular, conjunctions involving the Sun, Venus, and/or Jupiter, in any of the three possible conjunction combinations, are
-            //      considered highly favourable, while conjunctions involving the Moon, Mars, and/or Saturn, again in any of the three possible
-            //      conjunction combinations, are considered highly unfavourable.
-            ( (aspectType == AspectType.CONJUNCTION) &&
-                    (aspectCelestialFirst == AspectCelestial.ASPECT_MOON && (aspectCelestialSecond == AspectCelestial.ASPECT_MARS || aspectCelestialSecond == AspectCelestial.ASPECT_SATURN) )
-                    || (aspectCelestialFirst == AspectCelestial.ASPECT_MARS && (aspectCelestialSecond == AspectCelestial.ASPECT_MOON || aspectCelestialSecond == AspectCelestial.ASPECT_SATURN) )
-                    || (aspectCelestialFirst == AspectCelestial.ASPECT_SATURN && (aspectCelestialSecond == AspectCelestial.ASPECT_MOON || aspectCelestialSecond == AspectCelestial.ASPECT_MARS) ) ) -> Value(0, -aspectValue)
-            (aspectType.isPositive) -> Value(aspectValue, 0)
-            (aspectType.isNegative) -> Value(0, -aspectValue)
-            else -> Value(0, 0)
-        }
-    }
-    override fun toString() = "Aspect($signFirst $aspectCelestialFirst $signSecond $aspectCelestialSecond $aspectsState $aspectOverlayState $chartState $analysisState) : baseValue:${baseValue} modValue:${modValue} AspectMod:${getAspectModifier()} signFirstMod:${getSignFirstModifier()} signSecondMod:${getSignSecondModifier()} aspectCelFirstMod:${getAspectCelestialFirstModifier()} aspectCelSecondMod:${getAspectCelestialSecondModifier()}"
-
-    fun calcOrb() : Double {
-
-        val aspectTypes = AspectType.filterState(aspectsState).sortedByDescending { it.angleDegree }
-        var checkAspectTypeIdx = 0
-
-        val aspectCelestialFirstOrbModifier = aspectCelestialFirst.aspectOverlayOrbModifier(aspectOverlayState)
-        val aspectCelestialSecondOrbModifier = aspectCelestialSecond.aspectOverlayOrbModifier(aspectOverlayState)
-
-        val aspectCelestialDiff = abs(aspectCelestialFirstLong - aspectCelestialSecondLong)
-
-        while (checkAspectTypeIdx < aspectTypes.size) {
-            val aspectCelestialTypeDiff = aspectCelestialDiff / 360.0
-            val aspectTypeAngle = aspectTypes[checkAspectTypeIdx].angleDegree / 360.0
-
-            val aspectCelestialFirstBound = (aspectTypes[checkAspectTypeIdx].getAspectAngleOrb(aspectOverlayState) * aspectCelestialFirstOrbModifier) / 360.0
-            val aspectCelestialSecondBound = (aspectTypes[checkAspectTypeIdx].getAspectAngleOrb(aspectOverlayState) * aspectCelestialSecondOrbModifier) / 360.0
-
-            val orbLimitMax = aspectCelestialTypeDiff + aspectCelestialFirstBound + aspectCelestialSecondBound
-            val orbLimitMin = aspectCelestialTypeDiff - aspectCelestialFirstBound - aspectCelestialSecondBound
-
-            if (aspectTypeAngle in orbLimitMin..orbLimitMax) {
-                this.aspectType = aspectTypes[checkAspectTypeIdx]
-                return aspectTypes[checkAspectTypeIdx].angleDegree % aspectCelestialDiff
-            } else {
-                checkAspectTypeIdx++
+            return when {
+                //hard aspects to sun / moon midpoint are positive
+                ( (this.aspectCelestialFirst == AspectCelestial.ASPECT_SUN_MOON_MIDPOINT
+                        || this.aspectCelestialSecond == AspectCelestial.ASPECT_SUN_MOON_MIDPOINT) && (
+                        (this.aspectType == AspectType.CONJUNCTION)
+                                || (this.aspectType == AspectType.OPPOSITION)
+                                || (this.aspectType == AspectType.SEMISQUARE)
+                                || (this.aspectType == AspectType.SQUARE) ) ) -> Value(aspectValue, 0)
+                //      https://en.wikipedia.org/wiki/Astrological_aspect#Conjunction
+                //      In particular, conjunctions involving the Sun, Venus, and/or Jupiter, in any of the three possible conjunction combinations, are
+                //      considered highly favourable, while conjunctions involving the Moon, Mars, and/or Saturn, again in any of the three possible
+                //      conjunction combinations, are considered highly unfavourable.
+                ( (this.aspectType == AspectType.CONJUNCTION) &&
+                        (this.aspectCelestialFirst == AspectCelestial.ASPECT_MOON && (this.aspectCelestialSecond == AspectCelestial.ASPECT_MARS || this.aspectCelestialSecond == AspectCelestial.ASPECT_SATURN) )
+                        || (this.aspectCelestialFirst == AspectCelestial.ASPECT_MARS && (this.aspectCelestialSecond == AspectCelestial.ASPECT_MOON || this.aspectCelestialSecond == AspectCelestial.ASPECT_SATURN) )
+                        || (this.aspectCelestialFirst == AspectCelestial.ASPECT_SATURN && (this.aspectCelestialSecond == AspectCelestial.ASPECT_MOON || this.aspectCelestialSecond == AspectCelestial.ASPECT_MARS) ) ) -> Value(0, -aspectValue)
+                (this.aspectType.isPositive) -> Value(aspectValue, 0)
+                (this.aspectType.isNegative) -> Value(0, -aspectValue)
+                else -> Value(0, 0)
             }
         }
 
-        return 0.0
-    }
+        fun Aspect.calcOrb() : Double {
 
-    companion object {
+            val aspectTypes = AspectType.filterState(this.aspectsState).sortedByDescending { it.angleDegree }
+            var checkAspectTypeIdx = 0
+
+            val aspectCelestialFirstOrbModifier = this.aspectCelestialFirst.aspectOverlayOrbModifier(this.aspectOverlayState)
+            val aspectCelestialSecondOrbModifier = this.aspectCelestialSecond.aspectOverlayOrbModifier(this.aspectOverlayState)
+
+            val aspectCelestialDiff = abs(aspectCelestialFirstLong - aspectCelestialSecondLong)
+
+            while (checkAspectTypeIdx < aspectTypes.size) {
+                val aspectCelestialTypeDiff = aspectCelestialDiff / 360.0
+                val aspectTypeAngle = aspectTypes[checkAspectTypeIdx].angleDegree / 360.0
+
+                val aspectCelestialFirstBound = (aspectTypes[checkAspectTypeIdx].getAspectAngleOrb(aspectOverlayState) * aspectCelestialFirstOrbModifier) / 360.0
+                val aspectCelestialSecondBound = (aspectTypes[checkAspectTypeIdx].getAspectAngleOrb(aspectOverlayState) * aspectCelestialSecondOrbModifier) / 360.0
+
+                val orbLimitMax = aspectCelestialTypeDiff + min(aspectCelestialFirstBound, aspectCelestialSecondBound)
+                val orbLimitMin = aspectCelestialTypeDiff - min(aspectCelestialFirstBound, aspectCelestialSecondBound)
+
+                if (aspectTypeAngle in orbLimitMin..orbLimitMax) {
+                    this.aspectType = aspectTypes[checkAspectTypeIdx]
+                    return abs(aspectTypes[checkAspectTypeIdx].angleDegree - aspectCelestialDiff)
+                } else {
+                    checkAspectTypeIdx++
+                }
+            }
+
+            return 0.0
+        }
+        
         fun List<Aspect>.aspectFromCelestialAspect(celestialAspect: CelestialAspect) = this.firstOrNull { it.celestialAspect() == celestialAspect }
 
         fun List<Aspect>.sortFilterValueAspects() : List<Aspect> {
