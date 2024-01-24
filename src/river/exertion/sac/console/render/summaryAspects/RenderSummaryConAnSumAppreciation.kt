@@ -4,6 +4,7 @@ import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutCell
 import river.exertion.kcop.view.layout.displayViewLayout.DVLayoutHandler
 import river.exertion.kcop.view.layout.displayViewLayout.DVTable
 import river.exertion.kcop.view.layout.displayViewLayout.DVTextPane
+import river.exertion.sac.astro.ChartValue.analysisAppreciationValue
 import river.exertion.sac.astro.Value
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.render.IConsoleRender

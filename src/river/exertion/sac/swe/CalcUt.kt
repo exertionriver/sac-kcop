@@ -1,7 +1,7 @@
 package river.exertion.sac.swe
 
 import river.exertion.kcop.base.Log
-import river.exertion.sac.astro.CelestialData
+import river.exertion.sac.astro.base.CelestialData
 import river.exertion.sac.astro.base.Celestial
 import river.exertion.sac.astro.base.CelestialHouse
 import swisseph.SweConst.*

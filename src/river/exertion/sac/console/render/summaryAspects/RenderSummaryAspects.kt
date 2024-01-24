@@ -2,7 +2,14 @@ package river.exertion.sac.console.render.summaryAspects
 
 import river.exertion.kcop.view.layout.displayViewLayout.*
 import river.exertion.kcop.view.layout.displayViewLayout.asset.DVAlign
-import river.exertion.sac.astro.Aspect.Companion.sortFilterValueAspects
+import river.exertion.sac.astro.AspectValue.getAspectCelestial1Label
+import river.exertion.sac.astro.AspectValue.getAspectCelestial2Label
+import river.exertion.sac.astro.AspectValue.getAspectDelimLabel
+import river.exertion.sac.astro.AspectValue.getAspectTypeLabel
+import river.exertion.sac.astro.AspectValue.getAspectValueRenderLabel
+import river.exertion.sac.astro.AspectValue.getRenderCharacterModLabel
+import river.exertion.sac.astro.AspectValue.getRenderRomanticModLabel
+import river.exertion.sac.astro.AspectValue.sortFilterValueAspects
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.console.render.IConsoleRender
 import river.exertion.sac.console.render.header.RenderHeaderTitleState

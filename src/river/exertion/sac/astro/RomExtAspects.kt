@@ -2,11 +2,12 @@ package river.exertion.sac.astro
 
 import river.exertion.sac.astro.base.AspectCelestial
 import river.exertion.sac.astro.base.AspectType
+import river.exertion.sac.astro.base.CelestialAspectModifier
 
 //data gathered from https://cafeastrology.com/synastry-2.html
 //see: https://cafeastrology.com/termsofuse.html "Limited License"
 
-object RomanticAnalysis {
+object RomExtAspects {
 
 /*It is desirable to have:
 

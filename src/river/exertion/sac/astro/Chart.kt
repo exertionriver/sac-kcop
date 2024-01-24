@@ -1,7 +1,10 @@
 package river.exertion.sac.astro
 
 import river.exertion.sac.astro.Aspect.Companion.aspectFromCelestialAspect
-import river.exertion.sac.astro.Aspect.Companion.sortFilterValueAspects
+import river.exertion.sac.astro.AspectValue.sortFilterValueAspects
+import river.exertion.sac.astro.ChartValue.getChartBaseValue
+import river.exertion.sac.astro.ChartValue.getChartModValue
+import river.exertion.sac.astro.ChartValue.getChartNetValue
 import river.exertion.sac.astro.base.*
 import river.exertion.sac.console.state.*
 import river.exertion.sac.swe.SwiLib
@@ -46,62 +49,9 @@ class Chart (val chartAspects : List<Aspect>, var firstCelestialSnapshot: Celest
         , analysisState: AnalysisState
     ) : this (firstCelestialSnapshot, firstCelestialSnapshot, chartState, aspectsState, timeAspectsState, aspectOverlayState, analysisState)
 
-    val baseValue = Value(chartAspects.sortFilterValueAspects().map { it.baseValue.positive }.reduce { acc, basePositive -> acc + basePositive },
-        chartAspects.sortFilterValueAspects().map { it.baseValue.negative }.reduce { acc, baseNegative -> acc + baseNegative } )
-
-    val modValue = Value(chartAspects.sortFilterValueAspects().map { it.modValue.positive }.reduce { acc, modPositive -> acc + modPositive },
-        chartAspects.sortFilterValueAspects().map { it.modValue.negative }.reduce { acc, modNegative -> acc + modNegative } )
-
-    fun netValue() = Value(chartAspects.sortFilterValueAspects().map { it.netValue().positive }.reduce { acc, netPositive -> acc + netPositive },
-        chartAspects.sortFilterValueAspects().map { it.netValue().negative }.reduce { acc, netNegative -> acc + netNegative } )
-
-    fun analysisAppreciationValue() = if (chartState == ChartState.COMBINED_CHART) {
-            Value(chartAspects.sortFilterValueAspects().filter {
-                it.aspectValueType.chartValueType == ChartValueType.APPRECIATION
-            }.map { it.baseValue.positive }.reduceOrNull { acc, basePositive -> acc + basePositive } ?: 0
-                ,chartAspects.sortFilterValueAspects().filter {
-                    it.aspectValueType.chartValueType == ChartValueType.APPRECIATION
-                }.map { it.baseValue.negative }.reduceOrNull { acc, baseNegative -> acc + baseNegative } ?: 0
-            )
-        } else {
-            Value(0, 0)
-        }
-
-    fun analysisAffinityValue() = if (chartState == ChartState.COMBINED_CHART) {
-            Value(chartAspects.sortFilterValueAspects().filter {
-                it.aspectValueType.chartValueType == ChartValueType.AFFINITY
-            }.map { it.baseValue.positive }.reduceOrNull { acc, basePositive -> acc + basePositive } ?: 0
-                ,chartAspects.sortFilterValueAspects().filter {
-                    it.aspectValueType.chartValueType == ChartValueType.AFFINITY
-                }.map { it.baseValue.negative }.reduceOrNull { acc, baseNegative -> acc + baseNegative } ?: 0
-            )
-        } else {
-            Value(0, 0)
-        }
-
-    fun analysisCommonalityValue() = if (chartState == ChartState.COMBINED_CHART) {
-            Value(chartAspects.sortFilterValueAspects().filter {
-                it.aspectValueType.chartValueType == ChartValueType.COMMONALITY
-            }.map { it.baseValue.positive }.reduceOrNull { acc, basePositive -> acc + basePositive } ?: 0
-            ,chartAspects.sortFilterValueAspects().filter {
-                it.aspectValueType.chartValueType == ChartValueType.COMMONALITY
-            }.map { it.baseValue.negative }.reduceOrNull { acc, baseNegative -> acc + baseNegative } ?: 0
-        )
-    } else {
-        Value(0, 0)
-    }
-
-    fun analysisCompatibilityValue() = if (chartState == ChartState.COMBINED_CHART) {
-            Value(chartAspects.sortFilterValueAspects().filter {
-                it.aspectValueType.chartValueType == ChartValueType.COMPATIBILITY
-            }.map { it.baseValue.positive }.reduceOrNull { acc, basePositive -> acc + basePositive } ?: 0
-                ,chartAspects.sortFilterValueAspects().filter {
-                    it.aspectValueType.chartValueType == ChartValueType.COMPATIBILITY
-                }.map { it.baseValue.negative }.reduceOrNull { acc, baseNegative -> acc + baseNegative } ?: 0
-            )
-        } else {
-            Value(0, 0)
-        }
+    val baseValue = getChartBaseValue()
+    val modValue = getChartModValue()
+    fun netValue() = getChartNetValue()
 
     fun getAspects() : List<Aspect> =
         chartAspects.filter { it.aspectType != AspectType.ASPECT_NONE }.sortedBy { it.aspectCelestialSecond }.sortedBy { it.aspectCelestialFirst }
@@ -164,7 +114,7 @@ class Chart (val chartAspects : List<Aspect>, var firstCelestialSnapshot: Celest
             var secondExtendedCelestialLongitude : Double?
             var aspect : Aspect
 
-            for(extendedAspect in RomanticAnalysis.extendedCelestialAspectModifiers) {
+            for(extendedAspect in RomExtAspects.extendedCelestialAspectModifiers) {
                 firstExtendedCelestialLongitude = firstCelestialAspectMap[extendedAspect.aspectCelestialFirst]
 
 //                print("checking ${extendedAspect.aspectCelestialFirst}")
@@ -257,16 +207,12 @@ class Chart (val chartAspects : List<Aspect>, var firstCelestialSnapshot: Celest
                         )
 
                     if (aspect.aspectType == extendedAspect.aspectType) {
-//                        println("found $aspect")
 
                         returnAspects.add(aspect)
                     }
                 }
 
             }
-
-//            println("aspects found:")
-//            returnAspects.forEach { println(it) }
 
             return returnAspects
         }

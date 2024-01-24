@@ -2,7 +2,7 @@ package river.exertion.sac.console.render.celestials
 
 import river.exertion.kcop.view.layout.displayViewLayout.*
 import river.exertion.kcop.view.layout.displayViewLayout.asset.DVAlign
-import river.exertion.sac.astro.CelestialData
+import river.exertion.sac.astro.base.CelestialData
 import river.exertion.sac.astro.base.Celestial
 import river.exertion.sac.astro.base.CelestialHouse
 import river.exertion.sac.astro.base.Sign

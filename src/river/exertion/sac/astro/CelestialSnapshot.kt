@@ -2,6 +2,7 @@ package river.exertion.sac.astro
 
 import river.exertion.sac.astro.base.AspectCelestial
 import river.exertion.sac.astro.base.Celestial
+import river.exertion.sac.astro.base.CelestialData
 import river.exertion.sac.astro.base.CelestialHouse
 import river.exertion.sac.swe.CalcUt
 import river.exertion.sac.swe.Houses
