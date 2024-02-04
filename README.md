@@ -9,6 +9,10 @@ Built to run as a plugin for [LibGDX framework](https://libgdx.com/) [Kobold Cav
 
 v0.5: Sweet Astro Console implemented as a KCOP plugin, adding Character Chart to previous version.
 
+https://github.com/exertionriver/sac-kcop/assets/13192685/2f3ff265-e20c-482c-8933-2cfacd821707
+
+---
+
 v0.4: initial commit of libGDX / libKTX port of SAC using TM's Java port.
 
 v0.3.*: Kotlin Native version of SAC.
