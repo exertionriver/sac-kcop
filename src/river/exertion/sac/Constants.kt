@@ -1,11 +1,9 @@
 package river.exertion.sac
 
-import kotlin.math.PI
-
 @Suppress("UNUSED")
 object Constants {
     const val APP_NAME = "SweetAstroConsole"
-    const val APP_VERSION = "0.4"
+    const val APP_VERSION = "0.5"
 
     const val SYM_RETRO = "\u211E"
     //https://en.wikipedia.org/wiki/Longitude

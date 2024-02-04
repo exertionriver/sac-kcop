@@ -9,7 +9,7 @@ import river.exertion.sac.console.state.NavState
 import river.exertion.sac.component.SACComponent
 import river.exertion.sac.view.SACInputProcessor
 
-class SACSystem : IntervalIteratingSystem(allOf(SACComponent::class).get(), .4f) {
+class SACSystem : IntervalIteratingSystem(allOf(SACComponent::class).get(), 1.0f) {
 
     override fun processEntity(entity: Entity) {
 
