@@ -27,16 +27,23 @@ object SACInputProcessor : InputProcessor {
         override fun keyDown(event : InputEvent, keycode : Int) : Boolean {
             //used to escape from text entry
             if ( (keycode == Input.Keys.ESCAPE) && (navStateMachine.isInState(NavState.ENTRY_PAUSED) ) )  {
-                entryStateMachine.changeState(EntryState.NO_ENTRY)
-                navStateMachine.changeState(NavState.NAV_PAUSED)
-                MultiKeys.keysDown.clear()
+                entryCompleted()
             }
             return false
         }
     }
 
+    fun entryCompleted() {
+        MultiKeys.keysDown.clear()
+        SACComponent.headerChanged = true
+        SACComponent.dataChanged = true
+        entryStateMachine.changeState(EntryState.NO_ENTRY)
+        navStateMachine.changeState(NavState.NAV_PAUSED)
+    }
 
     override fun keyDown(keycode: Int): Boolean {
+
+        if (navStateMachine.isInState(NavState.ENTRY_PAUSED)) return true
 
         MultiKeys.keysDown.add(keycode)
 
@@ -53,7 +60,7 @@ object SACInputProcessor : InputProcessor {
                 aspectOverlayStateMachine.changeState(AspectOverlayState.defaultState)
                 locationRecallStateMachine.changeState(LocationRecallState.defaultState)
 
-                SACComponent.resetEarthLocations()
+                SACComponent.resetCurNav()
 
                 SACComponent.dataChanged = true
             }

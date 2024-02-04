@@ -123,16 +123,21 @@ class SACComponent : IComponent, Telegraph {
         var refEarthLocation : EarthLocation? = null
         var synEarthLocation : EarthLocation? = null
 
-        fun resetEarthLocations() {
+        fun resetCurNav() {
             sacEarthLocation.tag = "curNav"
-            sacEarthLocation.longitude = SACDefaultAssetStore.Default.get().longitude
-            sacEarthLocation.latitude = SACDefaultAssetStore.Default.get().latitude
-            sacEarthLocation.altitude = SACDefaultAssetStore.Default.get().altitude
-            sacEarthLocation.timeZone = SACDefaultAssetStore.Default.get().timeZone
             sacEarthLocation.utcDateTime = NavState.curNavDateTimeUTC()
 
             refEarthLocation = null
             synEarthLocation = null
+        }
+
+        fun resetEarthLocations() {
+            sacEarthLocation.longitude = SACDefaultAssetStore.Default.get().longitude
+            sacEarthLocation.latitude = SACDefaultAssetStore.Default.get().latitude
+            sacEarthLocation.altitude = SACDefaultAssetStore.Default.get().altitude
+            sacEarthLocation.timeZone = SACDefaultAssetStore.Default.get().timeZone
+
+            resetCurNav()
         }
 
         var sacCelestialSnapshot = CelestialSnapshot(sacEarthLocation)

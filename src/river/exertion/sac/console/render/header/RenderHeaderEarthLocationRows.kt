@@ -12,6 +12,7 @@ import river.exertion.sac.console.render.celestials.RenderCelestialsRows
 import river.exertion.sac.console.state.EntryState
 import river.exertion.sac.console.state.NavState
 import river.exertion.sac.view.SACInputProcessor
+import river.exertion.sac.view.SACInputProcessor.entryCompleted
 import river.exertion.sac.view.SACLayoutHandler
 
 object RenderHeaderEarthLocationRows : IConsoleRender {
@@ -58,9 +59,10 @@ object RenderHeaderEarthLocationRows : IConsoleRender {
 
             DVLayoutHandler.currentDvLayout.setTextPaneMode("${layoutTag}_localTimezone", DVTextPane.DVTextPaneMode.WRITE, "UTC([-+]((1[0-8])|([0-9])))?") {
                 SACComponent.sacEarthLocation.timeZone = TimeZone.of(it)
-                SACInputProcessor.entryStateMachine.changeState(EntryState.NO_ENTRY)
-                SACInputProcessor.navStateMachine.changeState(NavState.NAV_PAUSED)
-                MultiKeys.keysDown.clear()
+                SACComponent.sacEarthLocation.localDateTime = SACComponent.sacEarthLocation.utcDateTime.toInstant(
+                    TimeZone.UTC).toLocalDateTime(SACComponent.sacEarthLocation.timeZone)
+
+                entryCompleted()
             }
         } else {
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_localTimezoneLabel", colorOverride = SACLayoutHandler.baseFontColor)
@@ -77,9 +79,8 @@ object RenderHeaderEarthLocationRows : IConsoleRender {
 
             DVLayoutHandler.currentDvLayout.setTextPaneMode("${layoutTag}_localLatitude", DVTextPane.DVTextPaneMode.WRITE, "(-)?[0-9]{1,3}(.[0-9]{1,4})?") {
                 SACComponent.sacEarthLocation.latitude = if (it.toDouble() < 0) it.toDouble().mod(-90.0) else it.toDouble().mod(90.0)
-                SACInputProcessor.entryStateMachine.changeState(EntryState.NO_ENTRY)
-                SACInputProcessor.navStateMachine.changeState(NavState.NAV_PAUSED)
-                MultiKeys.keysDown.clear()
+
+                entryCompleted()
             }
         } else {
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_localLatitudeLabel", colorOverride = SACLayoutHandler.baseFontColor)
@@ -95,9 +96,8 @@ object RenderHeaderEarthLocationRows : IConsoleRender {
 
             DVLayoutHandler.currentDvLayout.setTextPaneMode("${layoutTag}_localLongitude", DVTextPane.DVTextPaneMode.WRITE, "(-)?[0-9]{1,3}(.[0-9]{1,4})?") {
                 SACComponent.sacEarthLocation.longitude = if (it.toDouble() < 0) it.toDouble().mod(-180.0) else it.toDouble().mod(180.0)
-                SACInputProcessor.entryStateMachine.changeState(EntryState.NO_ENTRY)
-                SACInputProcessor.navStateMachine.changeState(NavState.NAV_PAUSED)
-                MultiKeys.keysDown.clear()
+
+                entryCompleted()
             }
         } else {
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_localLongitudeLabel", colorOverride = SACLayoutHandler.baseFontColor)
@@ -117,10 +117,10 @@ object RenderHeaderEarthLocationRows : IConsoleRender {
                 NavState.curNavInstant = NavState.curNavInstant.toLocalDateTime(TimeZone.UTC).date.atTime(it.toLocalTime()).toInstant(
                     TimeZone.UTC)
                 SACComponent.sacEarthLocation.utcDateTime = NavState.curNavDateTimeUTC()
+                SACComponent.sacEarthLocation.localDateTime = SACComponent.sacEarthLocation.utcDateTime.toInstant(
+                    TimeZone.UTC).toLocalDateTime(SACComponent.sacEarthLocation.timeZone)
 
-                SACInputProcessor.entryStateMachine.changeState(EntryState.NO_ENTRY)
-                SACInputProcessor.navStateMachine.changeState(NavState.NAV_PAUSED)
-                MultiKeys.keysDown.clear()
+                entryCompleted()
             }
         } else {
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_utcTimeLabel", colorOverride = SACLayoutHandler.baseFontColor)
@@ -140,10 +140,10 @@ object RenderHeaderEarthLocationRows : IConsoleRender {
                 NavState.curNavInstant = it.toLocalDate().atTime(NavState.curNavInstant.toLocalDateTime(TimeZone.UTC).time).toInstant(
                     TimeZone.UTC)
                 SACComponent.sacEarthLocation.utcDateTime = NavState.curNavDateTimeUTC()
+                SACComponent.sacEarthLocation.localDateTime = SACComponent.sacEarthLocation.utcDateTime.toInstant(
+                    TimeZone.UTC).toLocalDateTime(SACComponent.sacEarthLocation.timeZone)
 
-                SACInputProcessor.entryStateMachine.changeState(EntryState.NO_ENTRY)
-                SACInputProcessor.navStateMachine.changeState(NavState.NAV_PAUSED)
-                MultiKeys.keysDown.clear()
+                entryCompleted()
             }
         } else {
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_utcDateLabel", colorOverride = SACLayoutHandler.baseFontColor)
@@ -159,13 +159,13 @@ object RenderHeaderEarthLocationRows : IConsoleRender {
 
             DVLayoutHandler.currentDvLayout.setTextPaneMode("${layoutTag}_localAltitude", DVTextPane.DVTextPaneMode.WRITE, "[0-9]{1,4}") {
                 SACComponent.sacEarthLocation.altitude = it.toInt()
-                SACInputProcessor.entryStateMachine.changeState(EntryState.NO_ENTRY)
-                SACInputProcessor.navStateMachine.changeState(NavState.NAV_PAUSED)
-                MultiKeys.keysDown.clear()
+                entryCompleted()
             }
         } else {
             DVLayoutHandler.currentDvLayout.setTextPaneContent("${layoutTag}_localAltitudeLabel", colorOverride = SACLayoutHandler.baseFontColor)
             DVLayoutHandler.currentDvLayout.setTextPaneMode("${layoutTag}_localAltitude", DVTextPane.DVTextPaneMode.READ)
         }
     }
+
+
 }

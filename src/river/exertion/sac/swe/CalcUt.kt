@@ -1,14 +1,13 @@
 package river.exertion.sac.swe
 
 import river.exertion.kcop.base.Log
-import river.exertion.sac.astro.base.CelestialData
 import river.exertion.sac.astro.base.Celestial
+import river.exertion.sac.astro.base.CelestialData
 import river.exertion.sac.astro.base.CelestialHouse
 import swisseph.SweConst.*
 
 
 object CalcUt {
-
     // NOT-TESTED
     fun getSweCelestialIdx(celestialIdx: Int) : Int {
 
