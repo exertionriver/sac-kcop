@@ -1,13 +1,13 @@
-# sac-kcop
-Sweet Astro Console kcop Plugin
+# sac-tnm
+Sweet Astro Console Thenuim Plugin
 
 Open-source, Kotlin Astrology Navigation / Analysis Console tool.
 
 Data backed by [Swiss Ephemeris](https://www.astro.com/swisseph/swephinfo_e.htm) libraries using [Thomas Mack's 2.00.00-01 Java port](http://www.th-mack.de/international/download/index.html).
 
-Built to run as a plugin for [LibGDX framework](https://libgdx.com/) [Kobold Cave Operating Platform](https://github.com/exertionriver/kcop) v0.12
+Built to run as a plugin for [LibGDX framework](https://libgdx.com/) [Thenuim](https://github.com/exertionriver/thenuim) v0.12
 
-v0.5: Sweet Astro Console implemented as a KCOP plugin, adding Character Chart to previous version.
+v0.5: Sweet Astro Console implemented as a Thenuim plugin, adding Character Chart to previous version.
 
 https://github.com/exertionriver/sac-kcop/assets/13192685/2f3ff265-e20c-482c-8933-2cfacd821707
 
